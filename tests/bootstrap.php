@@ -6,13 +6,14 @@
  * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-error_reporting(E_ALL);
+error_reporting(-1);
 ini_set('display_errors', 1);
 
 spl_autoload_register(function ($class) {
     if (strpos($class, 'nicoSWD') !== 0) {
-        return;
+        return null;
     }
 
-    return require __DIR__ . '/../src/' . str_replace('\\', DIRECTORY_SEPARATOR, ltrim(str_replace('nicoSWD\Rules', '', $class), '\\')) . '.php';
+    $class = str_replace('\\', DIRECTORY_SEPARATOR, ltrim(str_replace('nicoSWD\Rules', '', $class), '\\'));
+    return require __DIR__ . '/../src/' . $class . '.php';
 });

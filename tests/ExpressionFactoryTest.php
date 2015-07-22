@@ -9,7 +9,7 @@
 use nicoSWD\Rules\Expressions\Factory;
 
 /**
- * Class RuleEvaluatesTrueTest
+ * Class ExpressionFactoryTest
  */
 class ExpressionFactoryTest extends \PHPUnit_Framework_TestCase
 {

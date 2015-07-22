@@ -9,7 +9,7 @@
 use nicoSWD\Rules;
 
 /**
- * Class TokenizerTest
+ * Class RuleTest
  */
 class RuleTest extends \PHPUnit_Framework_TestCase
 {
