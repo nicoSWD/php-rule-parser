@@ -42,7 +42,7 @@ final class Tokenizer implements TokenizerInterface
 
     /**
      * @param string $string
-     * @return SplObjectStorage<Tokens\BaseToken>
+     * @return SplObjectStorage
      */
     public function tokenize($string)
     {

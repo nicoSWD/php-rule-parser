@@ -16,7 +16,7 @@ interface TokenizerInterface
 {
     /**
      * @param string $string
-     * @return \SplObjectStorage<Tokens\BaseToken>
+     * @return \SplObjectStorage
      * @throws \Exception
      */
     public function tokenize($string);
