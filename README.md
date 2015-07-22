@@ -1,6 +1,6 @@
 ## Rules Parser and Evaluator for PHP 5.4
 
-[![Build Status](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/badges/build.png?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/build-status/master) [![Code Coverage](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/?branch=master) [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/nicoswd/php-rules-parser.svg?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/badges/build.png?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/build-status/master) [![Code Coverage](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/?branch=master) [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/nicoswd/php-rules-parser.svg?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/?branch=master) [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rules-parser.svg)](https://packagist.org/packages/nicoswd/php-rules-parser)
 
 You're looking at a PHP library to parse and evaluate text based rules. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server side, using PHP.
 
@@ -44,7 +44,7 @@ It supports JavaScript syntax, as well as a custom syntax for easier usage.
 $ruleStr = 'foo is "abc" and (bar is 123 or bar is 321)';
 ```
 
-Standard JavaScript code comments are supported, as well as PHP-style # comments.
+Standard JavaScript code comments are supported, as well as PHP-style `#` comments.
 
 ```php
 $ruleStr = '
