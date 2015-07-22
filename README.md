@@ -164,4 +164,4 @@ Pull requests are very welcome! If they include tests, even better. This project
 
 ## License
 
-[![License](https://img.shields.io/packagist/l/nicoSWD/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
+[![License](https://img.shields.io/packagist/l/nicoSWD/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rules-parser)
