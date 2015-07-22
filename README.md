@@ -71,17 +71,17 @@ var_dump($rule->isTrue()); // bool(true)
 ```
 
 ## Error Handling
-`$rule->isTrue()` and `$rule->isFalse()` will throw an exception if the syntax is invalid. This call can be placed inside a `try` / `catch` block, or it can be checked prior using `$rule->isValid()`.
+`$rule->isTrue()` and `$rule->isFalse()` will throw an exception if the syntax is invalid. These calls can be placed inside a `try` / `catch` block, or it can be checked prior using `$rule->isValid()`.
 
 ```php
 $ruleStr = '
     (2 is 2) and (
-        1 < 3 and 3 == 2 ( // missing and/or
+        1 < 3 and 3 == 2 ( // Missing and/or before parentheses
             1 is 1
         )
     )';
 
-$rule = new Rules\Rule($ruleStr);
+$rule = new Rule($ruleStr);
 
 try {
     $rule->isTrue();
