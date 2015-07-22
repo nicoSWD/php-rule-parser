@@ -14,6 +14,6 @@ spl_autoload_register(function ($class) {
         return null;
     }
 
-    $class = str_replace('\\', DIRECTORY_SEPARATOR, ltrim(str_replace('nicoSWD\Rules', '', $class), '\\'));
+    $class = str_replace('\\', DIRECTORY_SEPARATOR, ltrim($class, '\\'));
     return require __DIR__ . '/../src/' . $class . '.php';
 });
