@@ -30,6 +30,16 @@ class Rule
     private $evaluator;
 
     /**
+     * @var string
+     */
+    private $parsedRule = '';
+
+    /**
+     * @var string
+     */
+    private $error = '';
+
+    /**
      * @param string $rule
      * @param array  $variables
      */
@@ -48,6 +58,7 @@ class Rule
     public function isTrue()
     {
         return $this->evaluator->evaluate(
+            $this->parsedRule ?:
             $this->parser->parse($this->rule)
         );
     }
@@ -58,5 +69,30 @@ class Rule
     public function isFalse()
     {
         return !$this->isTrue();
+    }
+
+    /**
+     * Tells whether a rule is valid (as in "can be parsed") or not.
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        try {
+            $this->parsedRule = $this->parser->parse($this->rule);
+        } catch (\Exception $e) {
+            $this->error = $e->getMessage();
+            return \false;
+        }
+
+        return \true;
+    }
+
+    /**
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->error;
     }
 }

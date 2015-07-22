@@ -39,4 +39,25 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($rule->isTrue());
         $this->assertTrue(!$rule->isFalse());
     }
+
+    public function testIsValidReturnsFalseOnInvalidSyntax()
+    {
+        $ruleStr = '(2 is 2) and (1 < 3 and 3 > 2 (1 is 1))';
+
+        $rule = new Rules\Rule($ruleStr);
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected token "(" at position 30 on line 1', $rule->getError());
+    }
+
+    public function testIsValidReturnsTrueOnValidSyntax()
+    {
+        $ruleStr = '(2 is 2) and (1 < 3 and 3 > 2 or (1 is 1))';
+
+        $rule = new Rules\Rule($ruleStr);
+
+        $this->assertTrue($rule->isValid());
+        $this->assertEmpty($rule->getError());
+        $this->assertTrue($rule->isTrue());
+    }
 }
