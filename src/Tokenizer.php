@@ -67,7 +67,7 @@ final class Tokenizer implements TokenizerInterface
     }
 
     /**
-     * @param array $matches
+     * @param string[] $matches
      * @return string
      */
     private function getMatchedToken(array $matches)
