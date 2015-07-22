@@ -19,7 +19,7 @@ $ composer require "nicoswd/php-rules-parser": "0.3.*"
 
 Via git
 ``` bash
-$ git clone git@github.com:nicoSWD/php-rules-parser.git
+$ git clone git@github.com:nicoSWD/php-rule-parser.git
 ```
 
 
@@ -160,8 +160,8 @@ $ phpunit
 ```
 
 ## Contributing
-Pull requests are very welcome! If they include tests, even better. This project follows PSR-2 coding standards, please make sure your pull requestst do too.
+Pull requests are very welcome! If they include tests, even better. This project follows PSR-2 coding standards, please make sure your pull requests do too.
 
 ## License
 
-[![License](https://img.shields.io/packagist/l/nicoSWD/php-rules-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
+[![License](https://img.shields.io/packagist/l/nicoSWD/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
