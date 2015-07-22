@@ -109,7 +109,7 @@ Output:
 - Variables are case-insensitive.
 - Parentheses can be nested, and will be evaluated from right to left.
 - Strict comparison operators (`===`, `!==`) are supported, but all values and variables will be treated as strings internally.
-- Only value/variable comparison expressions are supported. This is not a JavaScript full emulator.
+- Only value/variable comparison expressions with optional logical ANDs/ORs, are supported. This is not a full JavaScript emulator.
 
 ## Security
 
