@@ -70,6 +70,14 @@ $rule = new Rule($ruleStr, $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
+## Supported Comparison Operators
+- Equal: `=`, `==`, `===`, `is`
+- Not equal: `!=`, `!==`, `is not`
+- Greater than: `>`
+- Less than: `<`
+- Greater than/equal: `>=`
+- Less than/equal: ' `<=`
+
 ## Notes
 - Variables are case-insensitive
 - Parentheses can be nested, and will be evaluated from right to left.
