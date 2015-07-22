@@ -2,7 +2,7 @@
 
 [![Build Status](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/badges/build.png?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/build-status/master) [![Code Coverage](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/?branch=master) [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/nicoswd/php-rules-parser.svg?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/?branch=master) [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rules-parser.svg)](https://packagist.org/packages/nicoswd/php-rules-parser)
 
-You're looking at a PHP library to parse and evaluate text based rules. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server side, using PHP.
+You're looking at a PHP library to parse and evaluate text based rules. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
 
 This library has initially been used to change and configure the behavior of certain "Workflows" (without changing actual code) in an intranet application, but it may serve a purpose elsewhere.
 
@@ -38,7 +38,7 @@ $rule = new Rule($ruleStr, $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
-It supports JavaScript syntax, as well as a custom syntax for easier usage.
+It supports JavaScript syntax, as well as a custom syntax for an easier, more user friendly usage.
 
 ```php
 $ruleStr = 'foo is "abc" and (bar is 123 or bar is 321)';
@@ -71,7 +71,7 @@ var_dump($rule->isTrue()); // bool(true)
 ```
 
 ## Error Handling
-`$rule->isTrue()` and `$rule->isFalse()` will throw an exception if the syntax is invalid. These calls can be placed inside a `try` / `catch` block, or it can be checked prior using `$rule->isValid()`.
+Both, `$rule->isTrue()` and `$rule->isFalse()` will throw an exception if the syntax is invalid. These calls can either be placed inside a `try` / `catch` block, or it can be checked prior using `$rule->isValid()`.
 
 ```php
 $ruleStr = '

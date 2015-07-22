@@ -102,10 +102,7 @@ class Parser
                 case Constants::GROUP_OPERATOR:
                     $this->assignOperator($token);
                     continue 2;
-                case Constants::GROUP_SPACE:
-                case Constants::GROUP_COMMENT:
-                    break;
-                default:
+                case Constants::GROUP_UNKNOWN:
                     throw new Exceptions\ParserException(sprintf(
                         'Unknown token "%s" at position %d on line %d',
                         $token->getValue(),
