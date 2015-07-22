@@ -1,9 +1,10 @@
 <?php
 
 /**
- * @author   Nicolas Oelgart <nicolas.oelgart@non.schneider-electric.com>
- * @date     28/05/2015
- * @version  0.1
+ * @license     http://opensource.org/licenses/mit-license.php MIT
+ * @link        https://github.com/nicoSWD
+ * @since       0.3
+ * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules;
 

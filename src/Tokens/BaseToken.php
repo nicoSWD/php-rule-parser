@@ -1,12 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Nico
- * Date: 17/07/15
- * Time: 14:10
- */
 
+/**
+ * @license     http://opensource.org/licenses/mit-license.php MIT
+ * @link        https://github.com/nicoSWD
+ * @since       0.3
+ * @author      Nicolas Oelgart <nico@oelgart.com>
+ */
 namespace nicoSWD\Rules\Tokens;
+
+use SplObjectStorage;
 
 /**
  * Class BaseToken
@@ -25,16 +27,16 @@ abstract class BaseToken
     protected $offset = 0;
 
     /**
-     * @var \SplObjectStorage
+     * @var SplObjectStorage
      */
     protected $stack;
 
     /**
-     * @param string            $value
-     * @param int               $offset
-     * @param \SplObjectStorage $stack
+     * @param string           $value
+     * @param int              $offset
+     * @param SplObjectStorage $stack
      */
-    public function __construct($value, $offset, \SplObjectStorage $stack)
+    public function __construct($value, $offset, SplObjectStorage $stack)
     {
         $this->value = $value;
         $this->offset = $offset;
@@ -67,6 +69,8 @@ abstract class BaseToken
     }
 
     /**
+     * Returns offset in the whole rule string.
+     *
      * @return int
      */
     public function getOffset()
@@ -75,6 +79,8 @@ abstract class BaseToken
     }
 
     /**
+     * Returns position in the line the token is placed in.
+     *
      * @return int
      */
     public function getPosition()
@@ -104,11 +110,14 @@ abstract class BaseToken
 
         foreach ($this->stack as $token) {
             if ($token instanceof TokenNewline) {
-                $line++;
+                $line += 1;
+            } elseif ($token instanceof TokenComment) {
+                $line += substr_count($token->getValue(), "\n");
             } elseif ($token === $this) {
                 break;
             }
         }
+
         return $line;
     }
 }

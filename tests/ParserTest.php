@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @author   Nicolas Oelgart <nicolas.oelgart@non.schneider-electric.com>
- * @date     12/11/2014
+ * @license     http://opensource.org/licenses/mit-license.php MIT
+ * @link        https://github.com/nicoSWD
+ * @since       0.3
+ * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace tests\Offers;
-
 use nicoSWD\Rules\Evaluator;
 use nicoSWD\Rules\Parser;
 use nicoSWD\Rules\Tokenizer;
@@ -34,39 +34,39 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $this->evaluator = new Evaluator();
     }
 
+    public function testMultipleAnds()
+    {
+        $rule = 'COUNTRY=="MA" and CURRENCY=="EGP" && TOTALAMOUNT>50000';
+
+        $this->assertTrue($this->ruleEvaluatesTrue($rule, [
+            'COUNTRY'     => 'MA',
+            'CURRENCY'    => 'EGP',
+            'TOTALAMOUNT' => '50001'
+        ]));
+
+        $rule = 'COUNTRY = "EG" and CURRENCY=="EGP" && TOTALAMOUNT>50000';
+
+        $this->assertFalse($this->ruleEvaluatesTrue($rule, [
+            'COUNTRY'     => 'MA',
+            'CURRENCY'    => 'EGP',
+            'TOTALAMOUNT' => '50001'
+        ]));
+
+        $rule = '((COUNTRY=="EG") and (CURRENCY=="EGP") && (TOTALAMOUNT>50000))';
+
+        $this->assertFalse($this->ruleEvaluatesTrue($rule, [
+            'COUNTRY'     => 'MA',
+            'CURRENCY'    => 'EGP',
+            'TOTALAMOUNT' => '50001'
+        ]));
+    }
+
     private function ruleEvaluatesTrue($rule, array $variables = [])
     {
         $this->parser->assignVariables($variables);
         $result = $this->parser->parse($rule);
 
         return $this->evaluator->evaluate($result);
-    }
-
-    public function testMultipleAnds()
-    {
-        $rule = 'COUNTRY=="MA" and CURRENCY=="EGP" && TOTALAMOUNT>50000';
-
-        $this->assertTrue($this->ruleEvaluatesTrue($rule, array(
-            'COUNTRY'     => 'MA',
-            'CURRENCY'    => 'EGP',
-            'TOTALAMOUNT' => '50001'
-        )));
-
-        $rule = 'COUNTRY = "EG" and CURRENCY=="EGP" && TOTALAMOUNT>50000';
-
-        $this->assertFalse($this->ruleEvaluatesTrue($rule, array(
-            'COUNTRY'     => 'MA',
-            'CURRENCY'    => 'EGP',
-            'TOTALAMOUNT' => '50001'
-        )));
-
-        $rule = '((COUNTRY=="EG") and (CURRENCY=="EGP") && (TOTALAMOUNT>50000))';
-
-        $this->assertFalse($this->ruleEvaluatesTrue($rule, array(
-            'COUNTRY'     => 'MA',
-            'CURRENCY'    => 'EGP',
-            'TOTALAMOUNT' => '50001'
-        )));
     }
 
     public function testMixedOrsAndAnds()
@@ -77,11 +77,11 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             TOTALAMOUNT>50000 ||
             TOTALAMOUNT == 0)';
 
-        $this->assertTrue($this->ruleEvaluatesTrue($rule, array(
+        $this->assertTrue($this->ruleEvaluatesTrue($rule, [
             'COUNTRY'     => 'MA',
             'CURRENCY'    => 'EGP',
             'TOTALAMOUNT' => '50001'
-        )));
+        ]));
     }
 
     /**
@@ -91,9 +91,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = '';
 
-        $this->assertFalse($this->ruleEvaluatesTrue($rule, array(
+        $this->assertFalse($this->ruleEvaluatesTrue($rule, [
             'COUNTRY' => 'MA'
-        )));
+        ]));
     }
 
     /**
@@ -105,11 +105,11 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             || PAYMENTCONDITION=="LM18" || PAYMENTCONDITION=="LM19" || PAYMENTCONDITION=="LM20")
             && (OFFERTYPE=="ZNOR" || OFFERTYPE=="ZNOD" || OFFERTYPE=="ZNOP")';
 
-        $this->assertFalse($this->ruleEvaluatesTrue($rule, array(
+        $this->assertFalse($this->ruleEvaluatesTrue($rule, [
             'PAYMENTCONDITION' => 'LM18',
             'COUNTRY'          => 'EMD',
             'OFFERTYPE'        => null
-        )));
+        ]));
     }
 
     public function testFreakingLongRule()
@@ -125,17 +125,17 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             CUSTOMERCODE=="0002951140" || CUSTOMERCODE=="100209") &&
             ISDISCOUNT==1';
 
-        $this->assertTrue($this->ruleEvaluatesTrue($rule, array(
+        $this->assertTrue($this->ruleEvaluatesTrue($rule, [
             'COUNTRY'      => 'SA',
             'CUSTOMERCODE' => '0002950751',
             'ISDISCOUNT'   => '1'
-        )));
+        ]));
 
-        $this->assertFalse($this->ruleEvaluatesTrue($rule, array(
+        $this->assertFalse($this->ruleEvaluatesTrue($rule, [
             'COUNTRY'      => 'SA',
             'CUSTOMERCODE' => '0002950751',
             'ISDISCOUNT'   => '0'
-        )));
+        ]));
     }
 
     public function testNegativeComparison()
@@ -149,12 +149,12 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             TOTALAMOUNT>500000 &&
             TOTALAMOUNT<=1000000';
 
-        $this->assertTrue($this->ruleEvaluatesTrue($rule, array(
-            'COUNTRY'       => 'MA',
-            'CURRENCY'      => 'MAD',
-            'CUSTOMERCODE'  => '0002950751',
-            'TOTALAMOUNT'   => '999999'
-        )));
+        $this->assertTrue($this->ruleEvaluatesTrue($rule, [
+            'COUNTRY'      => 'MA',
+            'CURRENCY'     => 'MAD',
+            'CUSTOMERCODE' => '0002950751',
+            'TOTALAMOUNT'  => '999999'
+        ]));
     }
 
     public function testAllAvailableOperators()
@@ -193,55 +193,55 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = 'TOTALAMOUNT > -1 && TOTALAMOUNT < 1';
 
-        $this->assertTrue($this->ruleEvaluatesTrue($rule, array(
+        $this->assertTrue($this->ruleEvaluatesTrue($rule, [
             'TOTALAMOUNT' => '0'
-        )));
+        ]));
 
         $rule = 'TOTALAMOUNT = -1';
 
-        $this->assertTrue($this->ruleEvaluatesTrue($rule, array(
+        $this->assertTrue($this->ruleEvaluatesTrue($rule, [
             'TOTALAMOUNT' => -1
-        )));
+        ]));
     }
 
     public function testSpacesInValues()
     {
         $rule = 'GREETING is "whaddup yall"';
 
-        $this->assertTrue($this->ruleEvaluatesTrue($rule, array(
+        $this->assertTrue($this->ruleEvaluatesTrue($rule, [
             'GREETING' => 'whaddup yall'
-        )));
+        ]));
     }
 
     public function testIsOperator()
     {
         $rule = 'totalamount is -1';
 
-        $this->assertTrue($this->ruleEvaluatesTrue($rule, array(
+        $this->assertTrue($this->ruleEvaluatesTrue($rule, [
             'TOTALAMOUNT' => '-1'
-        )));
+        ]));
 
         $rule = 'totalamount is 3';
 
-        $this->assertFalse($this->ruleEvaluatesTrue($rule, array(
+        $this->assertFalse($this->ruleEvaluatesTrue($rule, [
             'TOTALAMOUNT' => '-1'
-        )));
+        ]));
 
         $rule = 'totalamount is not 3 and 3 is not totalamount';
 
-        $this->assertTrue($this->ruleEvaluatesTrue($rule, array(
+        $this->assertTrue($this->ruleEvaluatesTrue($rule, [
             'TOTALAMOUNT' => '-1'
-        )));
+        ]));
 
-        $this->assertFalse($this->ruleEvaluatesTrue($rule, array(
+        $this->assertFalse($this->ruleEvaluatesTrue($rule, [
             'TOTALAMOUNT' => '3'
-        )));
+        ]));
 
         $rule = 'totalamount is not 3 and 3 is not totalamount';
 
-        $this->assertTrue($this->ruleEvaluatesTrue($rule, array(
+        $this->assertTrue($this->ruleEvaluatesTrue($rule, [
             'TOTALAMOUNT' => '-3'
-        )));
+        ]));
     }
 
     public function testSpacesBetweenStuff()
@@ -253,9 +253,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                 totalamount
             )';
 
-        $this->assertTrue($this->ruleEvaluatesTrue($rule, array(
+        $this->assertTrue($this->ruleEvaluatesTrue($rule, [
             'TOTALAMOUNT' => '-1'
-        )));
+        ]));
     }
 
     public function testSingleLineCommentDoesNotKillTheRest()
@@ -267,9 +267,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                 or totalamount is -1
             ';
 
-        $this->assertTrue($this->ruleEvaluatesTrue($rule, array(
+        $this->assertTrue($this->ruleEvaluatesTrue($rule, [
             'totalamount' => '-1'
-        )));
+        ]));
     }
 
     /**
@@ -280,9 +280,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = '(totalamount is not 3) ()';
 
-        $this->ruleEvaluatesTrue($rule, array(
+        $this->ruleEvaluatesTrue($rule, [
             'TOTALAMOUNT' => '-1'
-        ));
+        ]);
     }
 
     /**
@@ -293,10 +293,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = 'country is "EMD" and currency is "EUR" not';
 
-        $this->ruleEvaluatesTrue($rule, array(
+        $this->ruleEvaluatesTrue($rule, [
             'COUNTRY'  => 'GLF',
             'CURRENCY' => 'USD'
-        ));
+        ]);
     }
 
     /**
@@ -307,9 +307,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = 'country is is "EMD"';
 
-        $this->ruleEvaluatesTrue($rule, array(
-            'COUNTRY'  => 'GLF',
-        ));
+        $this->ruleEvaluatesTrue($rule, [
+            'COUNTRY' => 'GLF',
+        ]);
     }
 
     /**
@@ -320,9 +320,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = 'country is = "EMD"';
 
-        $this->ruleEvaluatesTrue($rule, array(
-            'COUNTRY'  => 'GLF',
-        ));
+        $this->ruleEvaluatesTrue($rule, [
+            'COUNTRY' => 'GLF',
+        ]);
     }
 
     /**
@@ -333,9 +333,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = 'is "EMD"';
 
-        $this->ruleEvaluatesTrue($rule, array(
-            'COUNTRY'  => 'GLF',
-        ));
+        $this->ruleEvaluatesTrue($rule, [
+            'COUNTRY' => 'GLF',
+        ]);
     }
 
     /**
@@ -346,9 +346,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = 'TOTALAMOUNT = -1 TOTALAMOUNT > 10';
 
-        $this->ruleEvaluatesTrue($rule, array(
+        $this->ruleEvaluatesTrue($rule, [
             'TOTALAMOUNT' => '-1'
-        ));
+        ]);
     }
 
     /**
@@ -359,9 +359,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = 'customercode = 2951356 CUSTOMERCODE=="2951356"';
 
-        $this->ruleEvaluatesTrue($rule, array(
+        $this->ruleEvaluatesTrue($rule, [
             'CUSTOMERCODE' => '12347'
-        ));
+        ]);
     }
 
     /**
@@ -388,7 +388,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testMisplacedMinusThrowsException()
     {
-        $this->ruleEvaluatesTrue('1 = 1 && -foo = 1', array('FOO' => 1));
+        $this->ruleEvaluatesTrue('1 = 1 && -foo = 1', ['FOO' => 1]);
     }
 
     /**
@@ -411,9 +411,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = '1 is 1 and COUNTRY';
 
-        $this->ruleEvaluatesTrue($rule, array(
+        $this->ruleEvaluatesTrue($rule, [
             'COUNTRY' => 'MA'
-        ));
+        ]);
     }
 
     /**
@@ -435,9 +435,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = 'COUNTRY == "MA" &&';
 
-        $this->ruleEvaluatesTrue($rule, array(
+        $this->ruleEvaluatesTrue($rule, [
             'COUNTRY' => 'EG'
-        ));
+        ]);
     }
 
     /**
@@ -448,9 +448,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = 'COUNTRY == "MA" && and';
 
-        $this->ruleEvaluatesTrue($rule, array(
-            'COUNTRY' => 'EG'
-        ));
+        $this->ruleEvaluatesTrue($rule, ['COUNTRY' => 'EG']);
     }
 
     /**
@@ -461,8 +459,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = 'COUNTRY == "MA" ^';
 
-        $this->ruleEvaluatesTrue($rule, array(
+        $this->ruleEvaluatesTrue($rule, [
             'COUNTRY' => 'MA'
-        ));
+        ]);
     }
 }

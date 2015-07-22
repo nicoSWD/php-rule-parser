@@ -1,8 +1,10 @@
 <?php
 
 /**
- * @author Nicolas Oelgart
- * @version  0.3
+ * @license     http://opensource.org/licenses/mit-license.php MIT
+ * @link        https://github.com/nicoSWD
+ * @since       0.3
+ * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules;
 
@@ -10,7 +12,7 @@ namespace nicoSWD\Rules;
  * Class Parser
  * @package nicoSWD\Rules
  */
-final class Parser
+class Parser
 {
     /**
      * @var array
@@ -131,7 +133,7 @@ final class Parser
      * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
-    private function assignVariableValueFromArray(Tokens\BaseToken $token)
+    protected function assignVariableValueFromArray(Tokens\BaseToken $token)
     {
         if ($this->operatorRequired) {
             throw new Exceptions\ParserException(sprintf(
@@ -166,7 +168,7 @@ final class Parser
     /**
      * @param Tokens\BaseToken $token
      */
-    private function assignVariableValueFromToken(Tokens\BaseToken $token)
+    protected function assignVariableValueFromToken(Tokens\BaseToken $token)
     {
         $this->incompleteCondition = \false;
         $this->operatorRequired = !$this->operatorRequired;
@@ -182,7 +184,7 @@ final class Parser
      * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
-    private function assignParentheses(Tokens\BaseToken $token)
+    protected function assignParentheses(Tokens\BaseToken $token)
     {
         if ($token instanceof Tokens\TokenOpeningParentheses) {
             if ($this->operatorRequired) {
@@ -213,7 +215,7 @@ final class Parser
      * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
-    private function assignLogicalToken(Tokens\BaseToken $token)
+    protected function assignLogicalToken(Tokens\BaseToken $token)
     {
         if (!$this->operatorRequired) {
             throw new Exceptions\ParserException(sprintf(
@@ -233,7 +235,7 @@ final class Parser
      * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
-    private function assignOperator(Tokens\BaseToken $token)
+    protected function assignOperator(Tokens\BaseToken $token)
     {
         if (isset($this->operator)) {
             throw new Exceptions\ParserException(sprintf(
@@ -258,7 +260,7 @@ final class Parser
     /**
      * @throws Exceptions\ExpressionFactoryException
      */
-    private function parseExpression()
+    protected function parseExpression()
     {
         if (!isset($this->leftValue, $this->operator, $this->rightValue)) {
             return;
@@ -276,7 +278,7 @@ final class Parser
     /**
      * @throws Exceptions\ParserException
      */
-    private function assertSyntaxSeemsOkay()
+    protected function assertSyntaxSeemsOkay()
     {
         if ($this->incompleteCondition) {
             throw new Exceptions\ParserException(

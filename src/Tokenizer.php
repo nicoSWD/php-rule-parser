@@ -1,10 +1,14 @@
 <?php
 
 /**
- * @author   Nicolas Oelgart <nicolas.oelgart@non.schneider-electric.com>
- * @version  0.2
+ * @license     http://opensource.org/licenses/mit-license.php MIT
+ * @link        https://github.com/nicoSWD
+ * @since       0.3
+ * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules;
+
+use SplObjectStorage;
 
 /**
  * Class Tokenizer
@@ -17,7 +21,7 @@ final class Tokenizer implements TokenizerInterface
      */
     private $tokens = '
         ~(
-            (?<And>(\band\b|&&))
+            (?<And>(?:\band\b|&&))
             | (?<Or>(?:\bor\b|\|\|))
             | (?<NotEqual><>|!==?|\bis[\s\r\n]+not\b)
             | (?<Equal>={1,3}|\bis\b)
@@ -42,7 +46,7 @@ final class Tokenizer implements TokenizerInterface
      */
     public function tokenize($string)
     {
-        $stack = new \SplObjectStorage();
+        $stack = new SplObjectStorage();
         $baseNameSpace = __NAMESPACE__ . '\\Tokens\\Token';
         $offset = 0;
 

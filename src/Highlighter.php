@@ -1,8 +1,10 @@
 <?php
 
 /**
- * @author   Nicolas Oelgart <nicolas.oelgart@non.schneider-electric.com>
- * @version  0.1
+ * @license     http://opensource.org/licenses/mit-license.php MIT
+ * @link        https://github.com/nicoSWD
+ * @since       0.3
+ * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules;
 
@@ -40,6 +42,22 @@ final class Highlighter
     }
 
     /**
+     * @param int    $group
+     * @param string $style
+     * @throws Exceptions\HighlighterException
+     */
+    public function setStyle($group, $style)
+    {
+        if (!isset($this->styles[$group])) {
+            throw new Exceptions\HighlighterException(
+                'Invalid group'
+            );
+        }
+
+        $this->styles[$group] = (string) $style;
+    }
+
+    /**
      * @param string $string
      * @return string
      * @throws Exceptions\HighlighterException
@@ -69,7 +87,8 @@ final class Highlighter
 
         foreach ($tokens as $token) {
             if ($style = $this->styles[$token->getGroup()]) {
-                $string .= '<span style="' . $style . '">' . $token->getValue() . '</span>';
+                $value = htmlentities($token->getValue(), \ENT_QUOTES, 'utf-8');
+                $string .= '<span style="' . $style . '">' . $value . '</span>';
             } else {
                 $string .= $token->getValue();
             }

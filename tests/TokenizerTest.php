@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @author   Nicolas Oelgart <nicolas.oelgart@non.schneider-electric.com>
- * @date     26/06/2015
+ * @license     http://opensource.org/licenses/mit-license.php MIT
+ * @link        https://github.com/nicoSWD
+ * @since       0.3
+ * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace tests\Rules;
-
 use nicoSWD\Rules;
 
 /**
@@ -37,17 +37,15 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
         $rule = 'country is "foo" && andvar is "bar"';
 
         $result = $this->tokenizer->tokenize($rule);
-        $andVar = null;
+        $andVar = \null;
 
         // Dirt
-        foreach ($result as $key => $token) {
-            if ($key === 8) {
+        foreach ($result as $token) {
+            if ($token->getValue() === 'andvar') {
                 $andVar = $token;
                 break;
             }
         }
-
-        //list ( , , , , , , , , $andVar, ) = $result;
 
         /** @var Rules\Tokens\BaseToken $andVar */
         $this->assertInstanceOf('\nicoSWD\Rules\Tokens\TokenVariable', $andVar);

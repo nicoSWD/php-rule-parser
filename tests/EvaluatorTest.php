@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @author   Nicolas Oelgart <nicolas.oelgart@non.schneider-electric.com>
- * @date     26/06/2015
+ * @license     http://opensource.org/licenses/mit-license.php MIT
+ * @link        https://github.com/nicoSWD
+ * @since       0.3
+ * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace tests\Rules;
-
 use nicoSWD\Rules\Evaluator;
 
 /**
@@ -30,22 +30,22 @@ class EvaluatorTest extends \PHPUnit_Framework_TestCase
 
         $result = $reflectionMethod->invokeArgs(
             $this->evaluator,
-            array(
-                array(
+            [
+                [
                     1 => '0|0|0|1|0&1'
-                )
-            )
+                ]
+            ]
         );
 
         $this->assertSame(1, $result);
 
         $result = $reflectionMethod->invokeArgs(
             $this->evaluator,
-            array(
-                array(
+            [
+                [
                     1 => '0|0|0|0|0&0'
-                )
-            )
+                ]
+            ]
         );
 
         $this->assertSame(0, $result);
