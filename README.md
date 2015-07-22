@@ -70,13 +70,40 @@ $rule = new Rule($ruleStr, $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
+A custom syntax highlighter is also provided.
+
+```php
+use nicoSWD\Rules;
+
+$highlighter = new Rules\Highlighter(new Rules\Tokenizer());
+
+$ruleStr = '
+/**
+ * This is a test rule with comments
+ */
+
+// This is true
+2 < 3 and (
+    # this is false, because foo does not equal 4
+    foo is 4
+    # but bar is greater than 6
+    or bar > 6
+)';
+
+echo $highlighter->highlightString($ruleStr);
+```
+
+Output:
+
+![Syntax preview](https://s3.amazonaws.com/f.cl.ly/items/2U1j2T0M1q3U0D1t1t1D/Screen%20Shot%202015-07-22%20at%2016.51.47.png)
+
 ## Supported Comparison Operators
 - Equal: `=`, `==`, `===`, `is`
 - Not equal: `!=`, `!==`, `is not`
 - Greater than: `>`
 - Less than: `<`
 - Greater than/equal: `>=`
-- Less than/equal: ' `<=`
+- Less than/equal: `<=`
 
 ## Notes
 - Variables are case-insensitive

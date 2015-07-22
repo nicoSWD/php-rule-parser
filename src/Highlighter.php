@@ -89,7 +89,7 @@ final class Highlighter
 
         foreach ($tokens as $token) {
             if ($style = $this->styles[$token->getGroup()]) {
-                $value = htmlentities($token->getValue(), \ENT_QUOTES, 'utf-8');
+                $value = htmlentities($token->getOriginalValue(), \ENT_QUOTES, 'utf-8');
                 $string .= '<span style="' . $style . '">' . $value . '</span>';
             } else {
                 $string .= $token->getValue();
