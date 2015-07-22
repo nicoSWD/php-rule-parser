@@ -1,0 +1,24 @@
+{
+  "name": "nicoswd/putio",
+  "type": "library",
+  "description": "PHP 5.4 Rule Parser",
+  "keywords": ["putio", "put.io", "api", "storage", "cloud", "torrent", "bittorrent"],
+  "homepage": "https://github.com/nicoSWD/put.io-api-v2",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Nicolas Oelgart",
+      "role": "Developer",
+      "homepage": "https://nicoswd.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4"
+  },
+  "autoload": {
+    "classmap": [
+      "src/"
+    ]
+  }
+}
+PHPEdict
