@@ -123,10 +123,10 @@ $ruleStr = '
 $highlighter = new Rules\Highlighter(new Rules\Tokenizer());
 
 // Optional custom styles
-// $highlighter->setStyle(
-//    Rules\Constants::GROUP_VARIABLE,
-//    'color: #007694; font-weight: 900;'
-// );
+$highlighter->setStyle(
+   Rules\Constants::GROUP_VARIABLE,
+   'color: #007694; font-weight: 900;'
+);
 
 echo $highlighter->highlightString($ruleStr);
 ```

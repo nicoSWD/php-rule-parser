@@ -13,7 +13,7 @@ use nicoSWD\Rules;
  */
 class RuleTest extends \PHPUnit_Framework_TestCase
 {
-    public function testBasicRuleWithCommentsParsesEvaluatesCorrectly()
+    public function testBasicRuleWithCommentsEvaluatesCorrectly()
     {
         $string = '
             /**

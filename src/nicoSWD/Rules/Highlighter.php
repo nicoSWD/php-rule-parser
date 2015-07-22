@@ -33,7 +33,7 @@ final class Highlighter
     /**
      * @var TokenizerInterface
      */
-    private $tokenizer = \null;
+    private $tokenizer;
 
     /**
      * @param TokenizerInterface $tokenizer
