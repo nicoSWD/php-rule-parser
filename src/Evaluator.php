@@ -23,6 +23,8 @@ final class Evaluator implements EvaluatorInterface
      */
     public function evaluate($group)
     {
+        $count = 0;
+
         do {
             $group = preg_replace_callback(
                 '~\(([^\(\)]+)\)~',
@@ -31,7 +33,7 @@ final class Evaluator implements EvaluatorInterface
                 -1,
                 $count
             );
-        } while ($count);
+        } while ($count > 0);
 
         return (bool) $this->evalGroup([1 => $group]);
     }

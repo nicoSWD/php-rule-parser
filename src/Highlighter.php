@@ -8,6 +8,8 @@
  */
 namespace nicoSWD\Rules;
 
+use SplObjectStorage;
+
 /**
  * Class Highlighter
  * @package nicoSWD\Rules
@@ -29,7 +31,7 @@ final class Highlighter
     ];
 
     /**
-     * @var Tokenizer
+     * @var TokenizerInterface
      */
     private $tokenizer = \null;
 
@@ -78,10 +80,10 @@ final class Highlighter
     }
 
     /**
-     * @param Tokens\BaseToken[] $tokens
+     * @param SplObjectStorage $tokens
      * @return string
      */
-    public function highlightTokens($tokens)
+    public function highlightTokens(SplObjectStorage $tokens)
     {
         $string = '';
 
