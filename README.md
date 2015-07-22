@@ -44,7 +44,7 @@ It supports JavaScript syntax, as well as a custom syntax for easier usage.
 $ruleStr = 'foo is "abc" and (bar is 123 or bar is 321)';
 ```
 
-Comments are supported as well.
+Standard JavaScript code comments are supported, as well as PHP-style # comments.
 
 ```php
 $ruleStr = '
@@ -65,10 +65,16 @@ $variables = [
     'bar' => 7
 ];
 
-$rule = new Rules\Rule($ruleStr, $variables);
+$rule = new Rule($ruleStr, $variables);
 
 var_dump($rule->isTrue()); // bool(true)
 ```
+
+## Notes
+- Variables are case-insensitive
+- Parentheses can be nested, and will be evaluated from right to left.
+- Strict comparison operators (`===`, `!==`) are supported, but all values and variables will be treated as strings internally.
+- Only value/variable comparison expressions are supported. This is not a JavaScript full emulator.
 
 ## Security
 
@@ -85,4 +91,4 @@ Pull requests are very welcome! If they include tests, even better. This project
 
 ## License
 
-[![License](https://img.shields.io/packagist/l/nicoSWD/putio.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
+[![License](https://img.shields.io/packagist/l/nicoSWD/php-rules-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
