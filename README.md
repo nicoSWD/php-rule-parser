@@ -14,7 +14,7 @@ Find me on Twitter: @[nicoSWD](https://twitter.com/nicoSWD)
 Via Composer
 
 ``` bash
-$ composer require "nicoswd/php-rules-parser": "0.3.*"
+$ composer require "nicoswd/php-rule-parser": "0.3.*"
 ```
 
 Via git
