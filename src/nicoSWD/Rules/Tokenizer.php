@@ -25,7 +25,7 @@ final class Tokenizer implements TokenizerInterface
             | (?<Or>(?:\bor\b|\|\|))
             | (?<NotEqual><>|!==?|\bis[\s\r\n]+not\b)
             | (?<Equal>={1,3}|\bis\b)
-            | (?<Variable>[a-z_]\w*)
+            | (?<Variable>[a-z_]\w*(?:\.[a-z_]\w*)*)
             | (?<Number>-?\d+(?:\.\d+)?)
             | (?<String>"[^"]*"|\'[^\']*\')
             | (?<SmallerEqual><=)

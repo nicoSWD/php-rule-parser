@@ -1,4 +1,4 @@
-## Rules Parser and Evaluator for PHP 5.4
+## Rules Parser and Evaluator for PHP 5.4+
 
 [![Build Status](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/badges/build.png?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/build-status/master) [![Code Coverage](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/?branch=master) [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/nicoswd/php-rules-parser.svg?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rules-parser/?branch=master) [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rules-parser.svg)](https://packagist.org/packages/nicoswd/php-rules-parser)
 
@@ -75,8 +75,6 @@ A custom syntax highlighter is also provided.
 ```php
 use nicoSWD\Rules;
 
-$highlighter = new Rules\Highlighter(new Rules\Tokenizer());
-
 $ruleStr = '
 /**
  * This is a test rule with comments
@@ -90,10 +88,14 @@ $ruleStr = '
     or bar > 6
 )';
 
+$highlighter = new Rules\Highlighter(new Rules\Tokenizer());
+// Optional custom styles
+// $highlighter->setStyle(Rules\Constants::GROUP_VARIABLE, 'color: #007694; font-weight: 900;');
+
 echo $highlighter->highlightString($ruleStr);
 ```
 
-Output:
+Outputs:
 
 ![Syntax preview](https://s3.amazonaws.com/f.cl.ly/items/2U1j2T0M1q3U0D1t1t1D/Screen%20Shot%202015-07-22%20at%2016.51.47.png)
 

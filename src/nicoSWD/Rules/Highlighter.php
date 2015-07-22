@@ -92,7 +92,7 @@ final class Highlighter
                 $value = htmlentities($token->getOriginalValue(), \ENT_QUOTES, 'utf-8');
                 $string .= '<span style="' . $style . '">' . $value . '</span>';
             } else {
-                $string .= $token->getValue();
+                $string .= $token->getOriginalValue();
             }
         }
 

@@ -271,6 +271,15 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         ]));
     }
 
+    public function testDotSeparatedVariablesParse()
+    {
+        $rule = 'window.title == "test"';
+
+        $this->assertTrue($this->evaluate($rule, [
+            'window.title' => 'test'
+        ]));
+    }
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage Unexpected token "(" at position 23 on line 1
