@@ -25,20 +25,20 @@ abstract class BaseToken
     protected $offset = 0;
 
     /**
-     * @var int
+     * @var \SplObjectStorage
      */
-    protected $line = 1;
+    protected $stack;
 
     /**
-     * @param string $value
-     * @param int    $offset
-     * @param int    $line
+     * @param string            $value
+     * @param int               $offset
+     * @param \SplObjectStorage $stack
      */
-    public function __construct($value, $offset, $line)
+    public function __construct($value, $offset, \SplObjectStorage $stack)
     {
         $this->value = $value;
         $this->offset = $offset;
-        $this->line = $line;
+        $this->stack = $stack;
     }
 
     /**
@@ -55,7 +55,7 @@ abstract class BaseToken
     }
 
     /**
-     * Some tokens can be represented by different symbols,
+     * Some tokens can be represented by different operators,
      * so the original value is used for error reporting,
      * while the other one is used internally.
      *
@@ -77,8 +77,38 @@ abstract class BaseToken
     /**
      * @return int
      */
+    public function getPosition()
+    {
+        $offset = 0;
+
+        foreach ($this->stack as $token) {
+            if ($token === $this) {
+                break;
+            } elseif ($token instanceof TokenNewline) {
+                $offset = 0;
+                continue;
+            }
+
+            $offset += strlen($token->getOriginalValue());
+        }
+
+        return $offset;
+    }
+
+    /**
+     * @return int
+     */
     public function getLine()
     {
-        return $this->line;
+        $line = 1;
+
+        foreach ($this->stack as $token) {
+            if ($token instanceof TokenNewline) {
+                $line++;
+            } elseif ($token === $this) {
+                break;
+            }
+        }
+        return $line;
     }
 }

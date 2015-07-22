@@ -393,7 +393,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Undefined variable "FOO" at position 36 on line 2
+     * @expectedExceptionMessage Undefined variable "FOO" at position 12 on line 2
      */
     public function testUndefinedVariableThrowsException()
     {

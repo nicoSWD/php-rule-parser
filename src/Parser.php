@@ -107,7 +107,7 @@ final class Parser
                     throw new Exceptions\ParserException(sprintf(
                         'Unknown token "%s" at position %d on line %d',
                         $token->getValue(),
-                        $token->getOffset(),
+                        $token->getPosition(),
                         $token->getLine()
                     ));
             }
@@ -136,7 +136,7 @@ final class Parser
         if ($this->operatorRequired) {
             throw new Exceptions\ParserException(sprintf(
                 'Missing operator at position %d on line %d',
-                $token->getOffset(),
+                $token->getPosition(),
                 $token->getLine()
             ));
         }
@@ -147,7 +147,7 @@ final class Parser
             throw new Exceptions\ParserException(sprintf(
                 'Undefined variable "%s" at position %d on line %d',
                 $tokenValue,
-                $token->getOffset(),
+                $token->getPosition(),
                 $token->getLine()
             ));
         }
@@ -188,7 +188,7 @@ final class Parser
             if ($this->operatorRequired) {
                 throw new Exceptions\ParserException(sprintf(
                     'Unexpected token "(" at position %d on line %d',
-                    $token->getOffset(),
+                    $token->getPosition(),
                     $token->getLine()
                 ));
             }
@@ -197,8 +197,9 @@ final class Parser
         } else {
             if ($this->openParenthesis < 1) {
                 throw new Exceptions\ParserException(sprintf(
-                    'Missing opening parenthesis at position %d',
-                    $token->getOffset()
+                    'Missing opening parenthesis at position %d on line %d',
+                    $token->getPosition(),
+                    $token->getLine()
                 ));
             }
 
@@ -218,7 +219,7 @@ final class Parser
             throw new Exceptions\ParserException(sprintf(
                 'Unexpected "%s" at position %d on line %d',
                 $token->getOriginalValue(),
-                $token->getOffset(),
+                $token->getPosition(),
                 $token->getLine()
             ));
         }
@@ -238,14 +239,14 @@ final class Parser
             throw new Exceptions\ParserException(sprintf(
                 'Unexpected "%s" at position %d on line %d',
                 $token->getOriginalValue(),
-                $token->getOffset(),
+                $token->getPosition(),
                 $token->getLine()
             ));
         } elseif (!isset($this->leftValue)) {
             throw new Exceptions\ParserException(sprintf(
                 'Incomplete expression for token "%s" at position %d on line %d',
                 $token->getOriginalValue(),
-                $token->getOffset(),
+                $token->getPosition(),
                 $token->getLine()
             ));
         }

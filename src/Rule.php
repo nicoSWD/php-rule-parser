@@ -37,8 +37,9 @@ class Rule
     {
         $this->rule = (string) $rule;
         $this->parser = new Parser(new Tokenizer());
-        $this->parser->assignVariables($variables);
         $this->evaluator = new Evaluator();
+
+        $this->parser->assignVariables($variables);
     }
 
     /**
@@ -58,28 +59,4 @@ class Rule
     {
         return !$this->isTrue();
     }
-}
-
-$string = '
-    /**
-     * This is a test rule with comments
-     */
-
-     // This is true
-     2 < 3 and (
-        // foo is not 4
-        foo is 4
-        // but bar is > 6
-        or bar > 6
-     )';
-
-$vars = [
-    'foo' => 5,
-    'bar' => 7
-];
-
-$rule = new Rule($string, $vars);
-
-if ($rule->isTrue()) {
-    echo 'yes';
 }

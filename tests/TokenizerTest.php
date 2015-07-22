@@ -37,8 +37,17 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
         $rule = 'country is "foo" && andvar is "bar"';
 
         $result = $this->tokenizer->tokenize($rule);
+        $andVar = null;
 
-        list ( , , , , , , , , $andVar, ) = $result;
+        // Dirt
+        foreach ($result as $key => $token) {
+            if ($key === 8) {
+                $andVar = $token;
+                break;
+            }
+        }
+
+        //list ( , , , , , , , , $andVar, ) = $result;
 
         /** @var Rules\Tokens\BaseToken $andVar */
         $this->assertInstanceOf('\nicoSWD\Rules\Tokens\TokenVariable', $andVar);

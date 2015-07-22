@@ -42,24 +42,19 @@ final class Tokenizer implements TokenizerInterface
      */
     public function tokenize($string)
     {
-        $stack = [];
-        $line = 1;
-        $offset = 0;
+        $stack = new \SplObjectStorage();
         $baseNameSpace = __NAMESPACE__ . '\\Tokens\\Token';
+        $offset = 0;
 
         while (preg_match($this->tokens, $string, $matches, 0, $offset)) {
             $token = $this->getMatchedToken($matches);
             $className = $baseNameSpace . $token;
 
-            $stack[] = new $className(
+            $stack->attach(new $className(
                 $matches[$token],
                 $offset,
-                $line
-            );
-
-            if ($token === 'Newline') {
-                $line++;
-            }
+                $stack
+            ));
 
             $offset += strlen($matches[0]);
         }
