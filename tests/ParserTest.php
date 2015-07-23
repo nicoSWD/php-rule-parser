@@ -31,22 +31,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $this->evaluator = new Evaluator();
     }
 
-    /**
-     * @internal
-     *
-     * @param string $rule
-     * @param array  $variables
-     * @return bool
-     * @throws \nicoSWD\Rules\Exceptions\ParserException
-     */
-    private function evaluate($rule, array $variables = [])
-    {
-        $this->parser->assignVariables($variables);
-        $result = $this->parser->parse($rule);
-
-        return $this->evaluator->evaluate($result);
-    }
-
     public function testMultipleAnds()
     {
         $rule = 'COUNTRY=="MA" and CURRENCY=="EGP" && TOTALAMOUNT>50000';
@@ -72,6 +56,22 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             'CURRENCY'    => 'EGP',
             'TOTALAMOUNT' => '50001'
         ]));
+    }
+
+    /**
+     * @internal
+     *
+     * @param string $rule
+     * @param array $variables
+     * @return bool
+     * @throws \nicoSWD\Rules\Exceptions\ParserException
+     */
+    private function evaluate($rule, array $variables = [])
+    {
+        $this->parser->assignVariables($variables);
+        $result = $this->parser->parse($rule);
+
+        return $this->evaluator->evaluate($result);
     }
 
     public function testMixedOrsAndAnds()
@@ -100,40 +100,40 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function testNullAsVariableDoesNotFail()
     {
-        $rule = 'COUNTRY == "EMD" && (PAYMENTCONDITION == "L000" || PAYMENTCONDITION=="L002"
-            || PAYMENTCONDITION=="LM18" || PAYMENTCONDITION=="LM19" || PAYMENTCONDITION=="LM20")
-            && (OFFERTYPE=="ZNOR" || OFFERTYPE=="ZNOD" || OFFERTYPE=="ZNOP")';
+        $rule = 'COUNTRY == "EMD" && (FOO == "L000" || FOO=="L002"
+            || FOO=="LM18" || FOO=="LM19" || FOO=="LM20")
+            && (BAR=="ZNOR" || BAR=="ZNOD" || BAR=="ZNOP")';
 
         $this->assertFalse($this->evaluate($rule, [
-            'PAYMENTCONDITION' => 'LM18',
-            'COUNTRY'          => 'EMD',
-            'OFFERTYPE'        => \null
+            'FOO'     => 'LM18',
+            'COUNTRY' => 'EMD',
+            'BAR'     => \null
         ]));
     }
 
     public function testFreakingLongRule()
     {
         $rule = '
-            COUNTRY=="SA" && (CUSTOMERCODE=="0002950182" ||
-            CUSTOMERCODE=="100130" || CUSTOMERCODE=="100143" ||
-            CUSTOMERCODE=="100149" || CUSTOMERCODE=="0002951129" ||
-            CUSTOMERCODE=="0002950746" || CUSTOMERCODE=="0002950747" ||
-            CUSTOMERCODE=="0002950748" || CUSTOMERCODE=="0002950749" ||
-            CUSTOMERCODE=="100392" || CUSTOMERCODE=="0002950751" ||
-            CUSTOMERCODE=="0002950897" || CUSTOMERCODE=="100208" ||
-            CUSTOMERCODE=="0002951140" || CUSTOMERCODE=="100209") &&
-            ISDISCOUNT==1';
+            COUNTRY=="SA" && (FOO=="0002950182" ||
+            FOO=="100130" || FOO=="100143" ||
+            FOO=="100149" || FOO=="0002951129" ||
+            FOO=="0002950746" || FOO=="0002950747" ||
+            FOO=="0002950748" || FOO=="0002950749" ||
+            FOO=="100392" || FOO=="0002950751" ||
+            FOO=="0002950897" || FOO=="100208" ||
+            FOO=="0002951140" || FOO=="100209") &&
+            BAR==1';
 
         $this->assertTrue($this->evaluate($rule, [
-            'COUNTRY'      => 'SA',
-            'CUSTOMERCODE' => '0002950751',
-            'ISDISCOUNT'   => '1'
+            'COUNTRY' => 'SA',
+            'FOO'     => '0002950751',
+            'BAR'     => '1'
         ]));
 
         $this->assertFalse($this->evaluate($rule, [
-            'COUNTRY'      => 'SA',
-            'CUSTOMERCODE' => '0002950751',
-            'ISDISCOUNT'   => '0'
+            'COUNTRY' => 'SA',
+            'FOO'     => '0002950751',
+            'BAR'     => '0'
         ]));
     }
 
@@ -141,18 +141,18 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $rule = '
             COUNTRY !== "EG" &&
-            CUSTOMERCODE!="55350000" &&
-            CUSTOMERCODE!="55358500" &&
-            CUSTOMERCODE!="55303100" &&
+            FOO!="55350000" &&
+            FOO!="55358500" &&
+            FOO!="55303100" &&
             CURRENCY=="MAD" &&
             TOTALAMOUNT>500000 &&
             TOTALAMOUNT<=1000000';
 
         $this->assertTrue($this->evaluate($rule, [
-            'COUNTRY'      => 'MA',
-            'CURRENCY'     => 'MAD',
-            'CUSTOMERCODE' => '0002950751',
-            'TOTALAMOUNT'  => '999999'
+            'COUNTRY'     => 'MA',
+            'CURRENCY'    => 'MAD',
+            'FOO'         => '0002950751',
+            'TOTALAMOUNT' => '999999'
         ]));
     }
 
@@ -361,14 +361,14 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Missing operator at position 23 on line 1
+     * @expectedExceptionMessage Missing operator at position 14 on line 1
      */
     public function testMissingOperatorThrowsException2()
     {
-        $rule = 'customercode = 2951356 CUSTOMERCODE=="2951356"';
+        $rule = 'foo = 2951356 FOO=="2951356"';
 
         $this->evaluate($rule, [
-            'CUSTOMERCODE' => '12347'
+            'FOO' => '12347'
         ]);
     }
 
