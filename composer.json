@@ -3,7 +3,7 @@
   "type": "library",
   "description": "PHP 5.4 Rule Parser and Evaluator",
   "keywords": ["rule", "parser", "tokenizer", "highlighter", "evaluator", "javascript", "workflow", "dsl"],
-  "homepage": "https://github.com/nicoSWD/php-rules-parser",
+  "homepage": "https://github.com/nicoSWD/php-rule-parser",
   "license": "MIT",
   "authors": [
     {
