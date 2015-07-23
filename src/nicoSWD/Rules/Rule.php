@@ -46,7 +46,7 @@ class Rule
     public function __construct($rule, array $variables = [])
     {
         $this->rule = (string) $rule;
-        $this->parser = new Parser(new Tokenizer());
+        $this->parser = new Parser(new Tokenizer(), new Expressions\Factory());
         $this->evaluator = new Evaluator();
 
         $this->parser->assignVariables($variables);
@@ -72,7 +72,7 @@ class Rule
     }
 
     /**
-     * Tells whether a rule is valid (as in "can be parsed") or not.
+     * Tells whether a rule is valid (as in "can be parsed without error") or not.
      *
      * @return bool
      */

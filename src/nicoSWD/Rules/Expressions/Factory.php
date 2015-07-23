@@ -17,30 +17,41 @@ use nicoSWD\Rules\Exceptions\ExpressionFactoryException;
 final class Factory
 {
     /**
+     * @var array
+     */
+    private $classLookup = [
+        '='  => '\nicoSWD\Rules\Expressions\EqualExpression',
+        '!=' => '\nicoSWD\Rules\Expressions\NotEqualExpression',
+        '>'  => '\nicoSWD\Rules\Expressions\GreaterThanExpression',
+        '<'  => '\nicoSWD\Rules\Expressions\LessThanExpression',
+        '<=' => '\nicoSWD\Rules\Expressions\LessThanEqualExpression',
+        '>=' => '\nicoSWD\Rules\Expressions\GreaterThanEqualExpression'
+    ];
+
+    /**
      * @param string $operator
      * @return BaseExpression
      * @throws ExpressionFactoryException
      */
-    public static function createFromOperator($operator)
+    public function createFromOperator($operator)
     {
-        switch ($operator) {
-            case '=':
-                return new EqualExpression();
-            case '!=':
-                return new NotEqualExpression();
-            case '>':
-                return new GreaterThanExpression();
-            case '<':
-                return new LessThanExpression();
-            case '<=':
-                return new LessThanEqualExpression();
-            case '>=':
-                return new GreaterThanEqualExpression();
+        if (isset($this->classLookup[$operator])) {
+            return new $this->classLookup[$operator]();
         }
 
         throw new ExpressionFactoryException(sprintf(
             'Unknown operator "%s"',
             $operator
         ));
+    }
+
+    /**
+     * @param string $operator
+     * @param string $class
+     * @since 0.3.2
+     */
+    public function mapOperatorToClass($operator, $class)
+    {
+        $this->classLookup[$operator] = $class;
     }
 }

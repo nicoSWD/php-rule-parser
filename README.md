@@ -28,6 +28,13 @@ $ git clone git@github.com:nicoSWD/php-rule-parser.git
 ## Usage
 
 ```php
+use nicoSWD\Rules\Rule;
+
+// Composer install
+require '/path/to/vendor/autoload.php';
+// Non-Composer install
+require '/path/to/src/nicoSWD/Rules/Autoloader.php';
+
 $ruleStr = 'foo == "abc" && (bar == 123 || bar == 321)';
 
 $variables = [

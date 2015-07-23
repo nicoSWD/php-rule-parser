@@ -9,6 +9,7 @@
 use nicoSWD\Rules\Evaluator;
 use nicoSWD\Rules\Parser;
 use nicoSWD\Rules\Tokenizer;
+use nicoSWD\Rules\Expressions\Factory as ExpressionFactory;
 
 /**
  * Class ParserTest
@@ -27,7 +28,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $this->parser = new Parser(new Tokenizer());
+        $this->parser = new Parser(new Tokenizer(), new ExpressionFactory());
         $this->evaluator = new Evaluator();
     }
 

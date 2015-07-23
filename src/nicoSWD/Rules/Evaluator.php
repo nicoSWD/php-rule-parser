@@ -48,19 +48,19 @@ final class Evaluator implements EvaluatorInterface
         $flag = \null;
         $operator = \null;
 
-        for ($offset = 0, $length = strlen($group[1]); $offset < $length; $offset += 1) {
-            $value = $group[1][$offset];
+        for ($offset = 0; isset($group[1][$offset]);) {
+            $value = $group[1][$offset++];
 
-            if (!isset($flag)) {
-                $flag = (int) $value;
-            } elseif ($value === '&' || $value === '|') {
-                $operator = $value;
-            } elseif ($value === '1' || $value === '0') {
-                if ($operator === '&') {
+            if ($value === '1' || $value === '0') {
+                if (!isset($flag)) {
+                    $flag = (int) $value;
+                } elseif ($operator === '&') {
                     $flag &= $value;
                 } else {
                     $flag |= $value;
                 }
+            } elseif ($value === '&' || $value === '|') {
+                $operator = $value;
             } else {
                 throw new Exceptions\EvaluatorException(sprintf(
                     'Unexpected "%s"',

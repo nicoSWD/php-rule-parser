@@ -65,11 +65,18 @@ class Parser
     protected $tokenizer;
 
     /**
-     * @param TokenizerInterface $tokenizer
+     * @var Expressions\Factory
      */
-    public function __construct(TokenizerInterface $tokenizer)
+    protected $expressionFactory;
+
+    /**
+     * @param TokenizerInterface  $tokenizer
+     * @param Expressions\Factory $expressionFactory
+     */
+    public function __construct(TokenizerInterface $tokenizer, Expressions\Factory $expressionFactory)
     {
         $this->tokenizer = $tokenizer;
+        $this->expressionFactory = $expressionFactory;
     }
 
     /**
@@ -132,17 +139,15 @@ class Parser
      */
     protected function assignVariableValueFromArray(Tokens\BaseToken $token)
     {
+        $tokenValue = strtoupper($token->getValue());
+
         if ($this->operatorRequired) {
             throw new Exceptions\ParserException(sprintf(
                 'Missing operator at position %d on line %d',
                 $token->getPosition(),
                 $token->getLine()
             ));
-        }
-
-        $tokenValue = strtoupper($token->getValue());
-
-        if (!array_key_exists($tokenValue, $this->variables)) {
+        } elseif (!array_key_exists($tokenValue, $this->variables)) {
             throw new Exceptions\ParserException(sprintf(
                 'Undefined variable "%s" at position %d on line %d',
                 $tokenValue,
@@ -183,7 +188,9 @@ class Parser
      */
     protected function assignParentheses(Tokens\BaseToken $token)
     {
-        if ($token instanceof Tokens\TokenOpeningParentheses) {
+        $tokenValue = $token->getValue();
+
+        if ($tokenValue === '(') {
             if ($this->operatorRequired) {
                 throw new Exceptions\ParserException(sprintf(
                     'Unexpected token "(" at position %d on line %d',
@@ -205,7 +212,7 @@ class Parser
             $this->closedParenthesis++;
         }
 
-        $this->output .= $token->getValue();
+        $this->output .= $tokenValue;
     }
 
     /**
@@ -263,11 +270,9 @@ class Parser
             return;
         }
 
-        $expression = Expressions\Factory::createFromOperator($this->operator);
-        $result = $expression->evaluate($this->leftValue, $this->rightValue);
-
-        $this->output .= (int) $result;
         $this->operatorRequired = \true;
+        $expression = $this->expressionFactory->createFromOperator($this->operator);
+        $this->output .= (int) $expression->evaluate($this->leftValue, $this->rightValue);
 
         unset($this->operator, $this->leftValue, $this->rightValue);
     }

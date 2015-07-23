@@ -13,9 +13,32 @@ use nicoSWD\Rules\Expressions\Factory;
  */
 class ExpressionFactoryTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Factory
+     */
+    private $factory;
+
+    public function setup()
+    {
+        $this->factory = new Factory();
+    }
+
     public function testCorrectInstancesAreCreated()
     {
-        $this->assertInstanceOf('\nicoSWD\Rules\Expressions\EqualExpression', Factory::createFromOperator('='));
+        $this->assertInstanceOf(
+            '\nicoSWD\Rules\Expressions\EqualExpression',
+            $this->factory->createFromOperator('=')
+        );
+    }
+
+    public function testOperatorMappingReturnsCorrectInstance()
+    {
+        $this->factory->mapOperatorToClass('+', '\nicoSWD\Rules\Expressions\NotEqualExpression');
+
+        $this->assertInstanceOf(
+            '\nicoSWD\Rules\Expressions\NotEqualExpression',
+            $this->factory->createFromOperator('+')
+        );
     }
 
     /**
@@ -24,6 +47,6 @@ class ExpressionFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionOnInvalidOperatorIsThrown()
     {
-        Factory::createFromOperator('.');
+        $this->factory->createFromOperator('.');
     }
 }
