@@ -1,0 +1,65 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "4d7a37c0dad11dbad7aaf3f9372ce527",
+    "packages": [
+        {
+            "name": "nicoswd/php-rule-parser",
+            "version": "0.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nicoSWD/php-rule-parser.git",
+                "reference": "e5b9c550113990b2fce0f129f0597ed0cf5f7584"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nicoSWD/php-rule-parser/zipball/e5b9c550113990b2fce0f129f0597ed0cf5f7584",
+                "reference": "e5b9c550113990b2fce0f129f0597ed0cf5f7584",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Oelgart",
+                    "homepage": "https://nicoswd.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP 5.4 Rule Parser and Evaluator",
+            "homepage": "https://github.com/nicoSWD/php-rules-parser",
+            "keywords": [
+                "evaluator",
+                "highlighter",
+                "javascript",
+                "parser",
+                "rule",
+                "tokenizer",
+                "workflow"
+            ],
+            "time": "2015-07-22 15:17:35"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

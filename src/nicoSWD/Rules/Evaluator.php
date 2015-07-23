@@ -39,7 +39,7 @@ final class Evaluator implements EvaluatorInterface
     }
 
     /**
-     * @param array $group
+     * @param string[] $group
      * @return int
      * @throws Exceptions\EvaluatorException
      */
@@ -51,7 +51,9 @@ final class Evaluator implements EvaluatorInterface
         for ($offset = 0; isset($group[1][$offset]);) {
             $value = $group[1][$offset++];
 
-            if ($value === '1' || $value === '0') {
+            if ($value === '&' || $value === '|') {
+                $operator = $value;
+            } elseif ($value === '1' || $value === '0') {
                 if (!isset($flag)) {
                     $flag = (int) $value;
                 } elseif ($operator === '&') {
@@ -59,8 +61,6 @@ final class Evaluator implements EvaluatorInterface
                 } else {
                     $flag |= $value;
                 }
-            } elseif ($value === '&' || $value === '|') {
-                $operator = $value;
             } else {
                 throw new Exceptions\EvaluatorException(sprintf(
                     'Unexpected "%s"',
