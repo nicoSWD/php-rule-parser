@@ -48,8 +48,8 @@ final class Evaluator implements EvaluatorInterface
         $flag = \null;
         $operator = \null;
 
-        for ($offset = 0; isset($group[1][$offset]);) {
-            $value = $group[1][$offset++];
+        for ($offset = 0; isset($group[1][$offset]); $offset++) {
+            $value = $group[1][$offset];
 
             if ($value === '&' || $value === '|') {
                 $operator = $value;
