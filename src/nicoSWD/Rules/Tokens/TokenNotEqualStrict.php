@@ -3,7 +3,7 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
+ * @since       0.3.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\Tokens;
@@ -11,10 +11,10 @@ namespace nicoSWD\Rules\Tokens;
 use nicoSWD\Rules\Constants;
 
 /**
- * Class TokenEqual
+ * Class TokenNotEqualStrict
  * @package nicoSWD\Rules\Tokens
  */
-final class TokenEqual extends BaseToken
+final class TokenNotEqualStrict extends BaseToken
 {
     /**
      * @return int
@@ -22,13 +22,5 @@ final class TokenEqual extends BaseToken
     public function getGroup()
     {
         return Constants::GROUP_OPERATOR;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue()
-    {
-        return '==';
     }
 }

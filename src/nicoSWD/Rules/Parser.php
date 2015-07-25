@@ -20,14 +20,9 @@ class Parser
     protected $variables = [];
 
     /**
-     * @var null|string
+     * @var null|mixed[]
      */
-    protected $leftValue = \null;
-
-    /**
-     * @var null|string
-     */
-    protected $rightValue = \null;
+    protected $values = \null;
 
     /**
      * @var null|string
@@ -88,8 +83,7 @@ class Parser
     {
         $this->output = '';
         $this->operator = \null;
-        $this->leftValue = \null;
-        $this->rightValue = \null;
+        $this->values = \null;
         $this->operatorRequired = \false;
 
         foreach ($this->tokenizer->tokenize($rule) as $token) {
@@ -158,12 +152,12 @@ class Parser
 
         $this->incompleteCondition = \false;
         $this->operatorRequired = !$this->operatorRequired;
-        $tokenValue = (string) $this->variables[$tokenValue];
+        $tokenValue = $this->variables[$tokenValue];
 
-        if (isset($this->leftValue)) {
-            $this->rightValue = $tokenValue;
+        if (!isset($this->values)) {
+            $this->values = [$tokenValue];
         } else {
-            $this->leftValue = $tokenValue;
+            $this->values[] = $tokenValue;
         }
     }
 
@@ -175,10 +169,10 @@ class Parser
         $this->incompleteCondition = \false;
         $this->operatorRequired = !$this->operatorRequired;
 
-        if (!isset($this->leftValue)) {
-            $this->leftValue = $token->getValue();
+        if (!isset($this->values)) {
+            $this->values = [$token->getValue()];
         } else {
-            $this->rightValue = $token->getValue();
+            $this->values[] = $token->getValue();
         }
     }
 
@@ -248,7 +242,7 @@ class Parser
                 $token->getPosition(),
                 $token->getLine()
             ));
-        } elseif (!isset($this->leftValue)) {
+        } elseif (!isset($this->values)) {
             throw new Exceptions\ParserException(sprintf(
                 'Incomplete expression for token "%s" at position %d on line %d',
                 $token->getOriginalValue(),
@@ -266,15 +260,15 @@ class Parser
      */
     protected function parseExpression()
     {
-        if (!isset($this->leftValue, $this->operator, $this->rightValue)) {
+        if (!isset($this->operator) || count($this->values) <> 2) {
             return;
         }
 
         $this->operatorRequired = \true;
         $expression = $this->expressionFactory->createFromOperator($this->operator);
-        $this->output .= (int) $expression->evaluate($this->leftValue, $this->rightValue);
+        $this->output .= (int) $expression->evaluate($this->values[0], $this->values[1]);
 
-        unset($this->operator, $this->leftValue, $this->rightValue);
+        unset($this->operator, $this->values);
     }
 
     /**
@@ -290,7 +284,7 @@ class Parser
             throw new Exceptions\ParserException(
                 'Missing closing parenthesis'
             );
-        } elseif (isset($this->operator) || isset($this->leftValue) || isset($this->rightValue)) {
+        } elseif (isset($this->operator) || (isset($this->values) && count($this->values) > 0)) {
             throw new Exceptions\ParserException(
                 'Incomplete expression'
             );

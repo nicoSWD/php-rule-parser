@@ -21,6 +21,6 @@ final class EqualExpression extends BaseExpression
      */
     public function evaluate($leftValue, $rightValue)
     {
-        return $leftValue === $rightValue;
+        return $leftValue == $rightValue;
     }
 }

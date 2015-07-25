@@ -27,7 +27,7 @@ class ExpressionFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             '\nicoSWD\Rules\Expressions\EqualExpression',
-            $this->factory->createFromOperator('=')
+            $this->factory->createFromOperator('==')
         );
     }
 
