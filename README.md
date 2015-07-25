@@ -2,7 +2,7 @@
 
 [![Build Status](https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/build.png?b=master)](https://travis-ci.org/nicoSWD/php-rule-parser) [![Code Coverage](https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master) [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master) [![HHVM tested](https://img.shields.io/hhvm/nicoswd/php-rule-parser.svg)](https://travis-ci.org/nicoSWD/php-rule-parser) [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
 
-You're looking at a PHP library to parse and evaluate text based rules. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
+You're looking at a PHP library to parse and evaluate text based rules with a Javascript like syntax. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
 
 This library has initially been used to change and configure the behavior of certain "Workflows" (without changing actual code) in an intranet application, but it may serve a purpose elsewhere.
 
@@ -35,11 +35,12 @@ require '/path/to/vendor/autoload.php';
 // Non-Composer install
 require '/path/to/src/nicoSWD/Rules/Autoloader.php';
 
-$ruleStr = 'foo == "abc" && (bar == 123 || bar == 321)';
+$ruleStr = 'foo == "abc" && (bar == 123 || bar >= 321) && baz === true';
 
 $variables = [
     'foo' => 'abc',
-    'bar' => 321
+    'bar' => 321,
+    'baz' => true
 ];
 
 $rule = new Rule($ruleStr, $variables);
@@ -145,8 +146,8 @@ Outputs:
 ![Syntax preview](https://s3.amazonaws.com/f.cl.ly/items/2U1j2T0M1q3U0D1t1t1D/Screen%20Shot%202015-07-22%20at%2016.51.47.png)
 
 ## Supported Comparison Operators
-- Equal: `=`, `==`, `===`, `is`
-- Not equal: `!=`, `!==`, `is not`
+- Equal: `=`, `==`, `===` (strict), `is`
+- Not equal: `!=`, `!==` (strict), `is not`
 - Greater than: `>`
 - Less than: `<`
 - Greater than/equal: `>=`
@@ -155,7 +156,6 @@ Outputs:
 ## Notes
 - Variables are case-insensitive.
 - Parentheses can be nested, and will be evaluated from right to left.
-- Strict comparison operators (`===`, `!==`) are supported, but all values and variables will be treated as strings internally.
 - Only value/variable comparison expressions with optional logical ANDs/ORs, are supported. This is not a full JavaScript emulator.
 
 ## Security

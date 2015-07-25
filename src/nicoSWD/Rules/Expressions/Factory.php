@@ -20,12 +20,14 @@ final class Factory
      * @var array
      */
     private $classLookup = [
-        '='  => '\nicoSWD\Rules\Expressions\EqualExpression',
-        '!=' => '\nicoSWD\Rules\Expressions\NotEqualExpression',
-        '>'  => '\nicoSWD\Rules\Expressions\GreaterThanExpression',
-        '<'  => '\nicoSWD\Rules\Expressions\LessThanExpression',
-        '<=' => '\nicoSWD\Rules\Expressions\LessThanEqualExpression',
-        '>=' => '\nicoSWD\Rules\Expressions\GreaterThanEqualExpression'
+        '=='  => '\nicoSWD\Rules\Expressions\EqualExpression',
+        '===' => '\nicoSWD\Rules\Expressions\EqualStrictExpression',
+        '!='  => '\nicoSWD\Rules\Expressions\NotEqualExpression',
+        '!==' => '\nicoSWD\Rules\Expressions\NotEqualStrictExpression',
+        '>'   => '\nicoSWD\Rules\Expressions\GreaterThanExpression',
+        '<'   => '\nicoSWD\Rules\Expressions\LessThanExpression',
+        '<='  => '\nicoSWD\Rules\Expressions\LessThanEqualExpression',
+        '>='  => '\nicoSWD\Rules\Expressions\GreaterThanEqualExpression'
     ];
 
     /**

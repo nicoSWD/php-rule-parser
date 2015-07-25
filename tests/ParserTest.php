@@ -32,6 +32,22 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $this->evaluator = new Evaluator();
     }
 
+    /**
+     * @internal
+     *
+     * @param string $rule
+     * @param array  $variables
+     * @return bool
+     * @throws \nicoSWD\Rules\Exceptions\ParserException
+     */
+    private function evaluate($rule, array $variables = [])
+    {
+        $this->parser->assignVariables($variables);
+        $result = $this->parser->parse($rule);
+
+        return $this->evaluator->evaluate($result);
+    }
+
     public function testMultipleAnds()
     {
         $rule = 'COUNTRY=="MA" and CURRENCY=="EGP" && TOTALAMOUNT>50000';
@@ -59,22 +75,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         ]));
     }
 
-    /**
-     * @internal
-     *
-     * @param string $rule
-     * @param array $variables
-     * @return bool
-     * @throws \nicoSWD\Rules\Exceptions\ParserException
-     */
-    private function evaluate($rule, array $variables = [])
-    {
-        $this->parser->assignVariables($variables);
-        $result = $this->parser->parse($rule);
-
-        return $this->evaluator->evaluate($result);
-    }
-
     public function testMixedOrsAndAnds()
     {
         $rule = '
@@ -99,19 +99,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         ]));
     }
 
-    public function testNullAsVariableDoesNotFail()
-    {
-        $rule = 'COUNTRY == "EMD" && (FOO == "L000" || FOO=="L002"
-            || FOO=="LM18" || FOO=="LM19" || FOO=="LM20")
-            && (BAR=="ZNOR" || BAR=="ZNOD" || BAR=="ZNOP")';
-
-        $this->assertFalse($this->evaluate($rule, [
-            'FOO'     => 'LM18',
-            'COUNTRY' => 'EMD',
-            'BAR'     => \null
-        ]));
-    }
-
     public function testFreakingLongRule()
     {
         $rule = '
@@ -128,7 +115,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->evaluate($rule, [
             'COUNTRY' => 'SA',
             'FOO'     => '0002950751',
-            'BAR'     => '1'
+            'BAR'     => 1
         ]));
 
         $this->assertFalse($this->evaluate($rule, [
@@ -178,6 +165,47 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->evaluate('2 is not 2'));
     }
 
+    public function testStrictOperators()
+    {
+        $this->assertFalse($this->evaluate('"4" === 4'));
+        $this->assertTrue($this->evaluate('4 === 4'));
+
+        $this->assertTrue($this->evaluate('4 !== "4"'));
+        $this->assertFalse($this->evaluate('4 !== 4'));
+    }
+
+    public function testBooleans()
+    {
+        $this->assertTrue($this->evaluate('"0" == false'));
+        $this->assertFalse($this->evaluate('"0" === false'));
+        $this->assertTrue($this->evaluate('1 == true'));
+        $this->assertFalse($this->evaluate('1 === true'));
+        $this->assertTrue($this->evaluate('foo == true', ['foo' => 'test']));
+        $this->assertFalse($this->evaluate('foo === true', ['foo' => 'test']));
+        $this->assertTrue($this->evaluate('foo === true', ['foo' => \true]));
+        $this->assertFalse($this->evaluate('foo === true', ['foo' => \false]));
+        $this->assertFalse($this->evaluate('foo !== true', ['foo' => \true]));
+    }
+
+    public function testNullValues()
+    {
+        $this->assertTrue($this->evaluate('foo === null', ['foo' => \null]));
+        $this->assertTrue($this->evaluate('foo !== null', ['foo' => 0]));
+        $this->assertTrue($this->evaluate('foo !== null', ['foo' => '']));
+        $this->assertTrue($this->evaluate('foo !== null', ['foo' => \false]));
+        $this->assertTrue($this->evaluate('"" == null', ['foo' => \null]));
+        $this->assertFalse($this->evaluate('"" === null', ['foo' => \null]));
+    }
+
+    public function testFloats()
+    {
+        $this->assertFalse($this->evaluate('foo === "1.0000034"', ['foo' => 1.0000034]));
+        $this->assertFalse($this->evaluate('foo === 1.0000034', ['foo' => '1.0000034']));
+        $this->assertTrue($this->evaluate('foo === 1.0000034', ['foo' => 1.0000034]));
+        $this->assertTrue($this->evaluate('1.0000035 > 1.0000034'));
+        $this->assertTrue($this->evaluate('2 > 1.0000034'));
+    }
+
     public function testCommentsAreIgnoredCorrectly()
     {
         $this->assertFalse($this->evaluate('1 = 2 // or 1 = 1'));
@@ -218,29 +246,29 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $rule = 'totalamount is -1';
 
         $this->assertTrue($this->evaluate($rule, [
-            'TOTALAMOUNT' => '-1'
+            'TOTALAMOUNT' => -1
         ]));
 
         $rule = 'totalamount is 3';
 
         $this->assertFalse($this->evaluate($rule, [
-            'TOTALAMOUNT' => '-1'
+            'TOTALAMOUNT' => -1
         ]));
 
         $rule = 'totalamount is not 3 and 3 is not totalamount';
 
         $this->assertTrue($this->evaluate($rule, [
-            'TOTALAMOUNT' => '-1'
+            'TOTALAMOUNT' => -1
         ]));
 
         $this->assertFalse($this->evaluate($rule, [
-            'TOTALAMOUNT' => '3'
+            'TOTALAMOUNT' => 3
         ]));
 
         $rule = 'totalamount is not 3 and 3 is not totalamount';
 
         $this->assertTrue($this->evaluate($rule, [
-            'TOTALAMOUNT' => '-3'
+            'TOTALAMOUNT' => -3
         ]));
     }
 

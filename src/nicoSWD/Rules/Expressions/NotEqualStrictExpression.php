@@ -3,16 +3,16 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
+ * @since       0.3.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\Expressions;
 
 /**
- * Class NotEqualExpression
+ * Class NotEqualStrictExpression
  * @package nicoSWD\Rules\Expressions
  */
-final class NotEqualExpression extends BaseExpression
+final class NotEqualStrictExpression extends BaseExpression
 {
     /**
      * @param string $leftValue
@@ -21,6 +21,6 @@ final class NotEqualExpression extends BaseExpression
      */
     public function evaluate($leftValue, $rightValue)
     {
-        return $leftValue != $rightValue;
+        return $leftValue !== $rightValue;
     }
 }
