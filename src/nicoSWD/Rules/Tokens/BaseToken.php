@@ -49,7 +49,7 @@ abstract class BaseToken
     abstract public function getGroup();
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getValue()
     {
