@@ -6,48 +6,13 @@
  * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-use nicoSWD\Rules\Evaluator;
-use nicoSWD\Rules\Parser;
-use nicoSWD\Rules\Tokenizer;
-use nicoSWD\Rules\Expressions\Factory as ExpressionFactory;
+require_once 'AbstractTestBase.php';
 
 /**
  * Class ParserTest
  */
-class ParserTest extends \PHPUnit_Framework_TestCase
+class ParserTest extends AbstractTestBase
 {
-    /**
-     * @var Parser
-     */
-    private $parser;
-
-    /**
-     * @var Evaluator
-     */
-    private $evaluator;
-
-    public function setup()
-    {
-        $this->parser = new Parser(new Tokenizer(), new ExpressionFactory());
-        $this->evaluator = new Evaluator();
-    }
-
-    /**
-     * @internal
-     *
-     * @param string $rule
-     * @param array  $variables
-     * @return bool
-     * @throws \nicoSWD\Rules\Exceptions\ParserException
-     */
-    private function evaluate($rule, array $variables = [])
-    {
-        $this->parser->assignVariables($variables);
-        $result = $this->parser->parse($rule);
-
-        return $this->evaluator->evaluate($result);
-    }
-
     public function testMultipleAnds()
     {
         $rule = 'COUNTRY=="MA" and CURRENCY=="EGP" && TOTALAMOUNT>50000';
@@ -204,6 +169,23 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->evaluate('foo === 1.0000034', ['foo' => 1.0000034]));
         $this->assertTrue($this->evaluate('1.0000035 > 1.0000034'));
         $this->assertTrue($this->evaluate('2 > 1.0000034'));
+    }
+
+    public function testArrays()
+    {
+        $this->assertFalse($this->evaluate('2 === [123, 12]'));
+        //$this->assertTrue($this->evaluate('foo === [123, [12]]', ['foo' => [123, [12]]]));
+        $this->assertTrue($this->evaluate('[123, 12] === [123, 12]'));
+        $this->assertTrue($this->evaluate('[123, 12] === foo && bar === [23]', [
+            'foo' => [123, 12],
+            'bar' => [23]
+        ]));
+
+        $this->assertTrue($this->evaluate('123 in [123, 12
+        // test
+        ]'));
+        $this->assertTrue($this->evaluate('123 in foo', ['foo' => [123, 12]]));
+        $this->assertFalse($this->evaluate('"123" in [123, 12]'));
     }
 
     public function testCommentsAreIgnoredCorrectly()

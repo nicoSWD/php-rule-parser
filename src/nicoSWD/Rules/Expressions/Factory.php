@@ -27,7 +27,8 @@ final class Factory
         '>'   => '\nicoSWD\Rules\Expressions\GreaterThanExpression',
         '<'   => '\nicoSWD\Rules\Expressions\LessThanExpression',
         '<='  => '\nicoSWD\Rules\Expressions\LessThanEqualExpression',
-        '>='  => '\nicoSWD\Rules\Expressions\GreaterThanEqualExpression'
+        '>='  => '\nicoSWD\Rules\Expressions\GreaterThanEqualExpression',
+        'in'  => '\nicoSWD\Rules\Expressions\InExpression'
     ];
 
     /**

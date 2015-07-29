@@ -79,6 +79,14 @@ abstract class BaseToken
     }
 
     /**
+     * @return SplObjectStorage
+     */
+    public function getStack()
+    {
+        return $this->stack;
+    }
+
+    /**
      * Returns position in the line the token is placed in.
      *
      * @return int

@@ -1,0 +1,170 @@
+<?php
+
+/**
+ * @license     http://opensource.org/licenses/mit-license.php MIT
+ * @link        https://github.com/nicoSWD
+ * @since       0.3.4
+ * @author      Nicolas Oelgart <nico@oelgart.com>
+ */
+namespace nicoSWD\Rules\AST;
+
+use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\Constants;
+use nicoSWD\Rules\Exceptions\ParserException;
+
+/**
+ * Class BaseNode
+ * @package nicoSWD\Rules\AST
+ */
+abstract class BaseNode
+{
+    /**
+     * @var Tokens\BaseToken
+     */
+    protected $token;
+
+    /**
+     * @param Tokens\BaseToken $token
+     */
+    public function __construct(Tokens\BaseToken $token)
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * @return Tokens\BaseToken
+     */
+    abstract public function getNode();
+
+    /**
+     * @since 0.3.4
+     * @return bool
+     */
+    protected function hasMethodCall()
+    {
+        $stackClone = clone $this->token->getStack();
+        $hasMethodCall = false;
+
+        // This is ugly and needs to be fixed
+        while ($stackClone->key() < $this->token->getStack()->key()) {
+            $stackClone->next();
+        }
+
+        while ($stackClone->valid()) {
+            $stackClone->next();
+
+            if (!($token = $stackClone->current())) {
+                break;
+            } elseif ($this->isIgnoredToken($token)) {
+                continue;
+            } elseif ($token instanceof Tokens\TokenMethod) {
+                $hasMethodCall = \true;
+                break;
+            } else {
+                break;
+            }
+        }
+
+        return $hasMethodCall;
+    }
+
+    /**
+     * @since 0.3.4
+     * @return string
+     */
+    protected function getMethodName()
+    {
+        $stack = $this->token->getStack();
+        $methodName = '';
+
+        while ($stack->valid()) {
+            $stack->next();
+
+            if (!($token = $stack->current())) {
+                break;
+            } elseif ($this->isIgnoredToken($token)) {
+                continue;
+            } elseif ($token instanceof Tokens\TokenMethod) {
+                $methodName = ltrim(rtrim($token->getValue(), " \r\n("), '.');
+                break;
+            } else {
+                break;
+            }
+        }
+
+        return $methodName;
+    }
+
+    /**
+     * @since 0.3.4
+     * @return mixed[]
+     * @throws ParserException
+     */
+    protected function getFunctionArgs()
+    {
+        $stack = $this->token->getStack();
+        $current = $stack->current();
+        $commaExpected = false;
+        $arguments = [];
+
+        while ($stack->valid()) {
+            $stack->next();
+            $current = $stack->current();
+            $value = $current->getValue();
+
+            if ($value === ')') {
+                $commaExpected = \false;
+                break;
+            } elseif ($current->getGroup() === Constants::GROUP_VALUE) {
+                if ($commaExpected) {
+                    throw new ParserException(sprintf(
+                        'Unexpected value at position %d on line %d',
+                        $current->getPosition(),
+                        $current->getLine()
+                    ));
+                }
+
+                $commaExpected = \true;
+                $arguments[] = $value;
+            } elseif ($current instanceof Tokens\TokenComma) {
+                if (!$commaExpected) {
+                    throw new ParserException(sprintf(
+                        'Unexpected token "," at position %d on line %d',
+                        $current->getPosition(),
+                        $current->getLine()
+                    ));
+                }
+
+                $commaExpected = \false;
+            } elseif (!$this->isIgnoredToken($current)) {
+                throw new ParserException('what');
+            }
+        }
+
+        if ($commaExpected) {
+            throw new ParserException(sprintf(
+                'Unexpected token "," at position %d on line %d',
+                $current->getPosition(),
+                $current->getLine()
+            ));
+        }
+
+        $stack->next();
+
+        return $arguments;
+    }
+
+    /**
+     * @since 0.3.4
+     * @param Tokens\BaseToken $token
+     * @return bool
+     */
+    protected function isIgnoredToken(Tokens\BaseToken $token)
+    {
+        return (
+            $token instanceof Tokens\TokenSpace ||
+            $token instanceof Tokens\TokenNewline ||
+            $token instanceof Tokens\TokenComment
+        );
+    }
+}

@@ -22,4 +22,6 @@ class Constants
     const GROUP_SPACE = 6;
     const GROUP_UNKNOWN = 7;
     const GROUP_PARENTHESES = 8;
+    const GROUP_SQUARE_BRACKETS = 9;
+    const GROUP_COMMA = 10;
 }

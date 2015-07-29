@@ -27,9 +27,12 @@ final class Tokenizer implements TokenizerInterface
             | (?<NotEqual><>|!=?|\bis[\s\r\n]+not\b)
             | (?<EqualStrict>===)
             | (?<Equal>==?|\bis\b)
+            | (?<In>\bin\b)
             | (?<Bool>\b(?:true|false)\b)
             | (?<Null>\bnull\b)
-            | (?<Variable>[a-z_]\w*(?:\.[a-z_]\w*)*)
+            | (?<Method>\.\s*[a-zA-Z_]\w*\s*\()
+            | (?<Function>[a-zA-Z_]\w*\s*\()
+            | (?<Variable>[a-zA-Z_]\w*(?:\.[a-zA-Z_]\w*)*)
             | (?<Float>-?\d+(?:\.\d+))
             | (?<Integer>-?\d+)
             | (?<String>"[^"]*"|\'[^\']*\')
@@ -39,11 +42,14 @@ final class Tokenizer implements TokenizerInterface
             | (?<Greater>>)
             | (?<OpeningParentheses>\()
             | (?<ClosingParentheses>\))
+            | (?<OpeningArray>\[)
+            | (?<ClosingArray>\])
+            | (?<Comma>,)
             | (?<Comment>(?://|\#)[^\r\n]*|/\*.*?\*/)
             | (?<Newline>\r?\n)
             | (?<Space>\s+)
             | (?<Unknown>.)
-        )~xAsi';
+        )~xAs';
 
     /**
      * @param string $string

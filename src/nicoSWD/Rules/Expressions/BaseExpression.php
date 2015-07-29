@@ -16,7 +16,7 @@ abstract class BaseExpression
 {
     /**
      * @param string $leftValue
-     * @param string $rightValue
+     * @param mixed  $rightValue
      * @return bool
      */
     abstract public function evaluate($leftValue, $rightValue);
