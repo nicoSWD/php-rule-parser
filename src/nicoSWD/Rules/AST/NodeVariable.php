@@ -8,11 +8,13 @@
  */
 namespace nicoSWD\Rules\AST;
 
+use nicoSWD\Rules\Tokens\TokenString;
+
 /**
- * Class NodeString
+ * Class NodeVariable
  * @package nicoSWD\Rules\AST
  */
-final class NodeString extends BaseNode
+final class NodeVariable extends BaseNode
 {
     /**
      * @return \nicoSWD\Rules\Tokens\BaseToken
@@ -20,6 +22,11 @@ final class NodeString extends BaseNode
     public function getNode()
     {
         $current = $this->token->getStack()->current();
+
+        switch (gettype($current->getValue())) {
+            case 'string':
+                $current = new TokenString('"' . $current->getValue() . '"', $current->getOffset(), $current->getStack());
+        }
 
         while ($this->hasMethodCall()) {
             $method = sprintf(

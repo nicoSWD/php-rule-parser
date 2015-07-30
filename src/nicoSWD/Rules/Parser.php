@@ -86,7 +86,7 @@ class Parser
         $this->values = \null;
         $this->operatorRequired = \false;
 
-        foreach (new AST($this->tokenizer->tokenize($rule)) as $token) {
+        foreach (new AST($this->tokenizer->tokenize($rule), $this->variables) as $token) {
             switch ($token->getGroup()) {
                 case Constants::GROUP_VARIABLE:
                     $this->assignVariableValueFromArray($token);

@@ -8,8 +8,6 @@
  */
 namespace nicoSWD\Rules;
 
-use SplObjectStorage;
-
 /**
  * Class Tokenizer
  * @package nicoSWD\Rules
@@ -53,11 +51,11 @@ final class Tokenizer implements TokenizerInterface
 
     /**
      * @param string $string
-     * @return SplObjectStorage
+     * @return Stack
      */
     public function tokenize($string)
     {
-        $stack = new SplObjectStorage();
+        $stack = new Stack();
         $baseNameSpace = __NAMESPACE__ . '\\Tokens\\Token';
         $offset = 0;
 

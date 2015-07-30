@@ -8,8 +8,6 @@
  */
 namespace nicoSWD\Rules;
 
-use SplObjectStorage;
-
 /**
  * Class Highlighter
  * @package nicoSWD\Rules
@@ -80,10 +78,10 @@ final class Highlighter
     }
 
     /**
-     * @param SplObjectStorage $tokens
+     * @param Stack $tokens
      * @return string
      */
-    public function highlightTokens(SplObjectStorage $tokens)
+    public function highlightTokens(Stack $tokens)
     {
         $string = '';
 

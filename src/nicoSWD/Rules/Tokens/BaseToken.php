@@ -8,7 +8,7 @@
  */
 namespace nicoSWD\Rules\Tokens;
 
-use SplObjectStorage;
+use nicoSWD\Rules\Stack;
 
 /**
  * Class BaseToken
@@ -27,16 +27,16 @@ abstract class BaseToken
     protected $offset = 0;
 
     /**
-     * @var SplObjectStorage
+     * @var Stack
      */
     protected $stack;
 
     /**
-     * @param string           $value
-     * @param int              $offset
-     * @param SplObjectStorage $stack
+     * @param string $value
+     * @param int    $offset
+     * @param Stack  $stack
      */
-    public function __construct($value, $offset, SplObjectStorage $stack)
+    public function __construct($value, $offset, Stack $stack)
     {
         $this->value = $value;
         $this->offset = $offset;
@@ -79,7 +79,7 @@ abstract class BaseToken
     }
 
     /**
-     * @return SplObjectStorage
+     * @return Stack
      */
     public function getStack()
     {

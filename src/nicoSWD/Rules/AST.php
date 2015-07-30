@@ -9,7 +9,6 @@
 namespace nicoSWD\Rules;
 
 use Iterator;
-use SplObjectStorage;
 
 /**
  * Class AST
@@ -18,17 +17,21 @@ use SplObjectStorage;
 final class AST implements Iterator
 {
     /**
-     * @var SplObjectStorage
+     * @var Stack
      */
     protected $stack;
 
+    protected $variables = [];
+
     /**
-     * @param SplObjectStorage $stack
+     * @param Stack   $stack
+     * @param mixed[] $variables
      */
-    public function __construct(SplObjectStorage $stack)
+    public function __construct(Stack $stack, array $variables = [])
     {
         $this->stack = $stack;
         $this->stack->rewind();
+        $this->variables = $variables;
     }
 
     /**
@@ -63,6 +66,8 @@ final class AST implements Iterator
                 return (new AST\NodeArray($current))->getNode();
             case $current instanceof Tokens\TokenFunction:
                 return (new AST\NodeFunction($current))->getNode();
+          //  case $current instanceof Tokens\TokenVariable:
+          //      return (new AST\NodeVariable($current))->getNode();
         }
     }
 
@@ -80,5 +85,10 @@ final class AST implements Iterator
     public function rewind()
     {
         $this->stack->rewind();
+    }
+
+    public function getVariable($name)
+    {
+        return $this->variables[$name];
     }
 }

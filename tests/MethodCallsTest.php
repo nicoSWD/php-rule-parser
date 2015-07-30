@@ -22,5 +22,20 @@ class MethodCallsTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('"foo".toUpperCase() === "FOO"'));
         $this->assertTrue($this->evaluate('"HeLLo World".charAt(3) === "l".toUpperCase()'));
         $this->assertTrue($this->evaluate('["foo", "bar", "baz"] === "foo|bar|baz".split("|")'));
+        $this->assertTrue($this->evaluate('["foo", "bar", "baz"].join("|") === "foo|bar|baz"'));
+
+        $this->assertTrue($this->evaluate(
+            '// Something true
+            1 === 1 &&
+            /* And something true */
+            "foo|bar|baz".split("|") === ["foo", "bar", "baz"] && (2 < 3) &&
+            // bar is indeed in the array
+            "bar" in "foo|bar".split("|") &&
+            // More
+            [1, 4, /* sneak */ 3].join("") === "143" &&
+            // More
+            "bar".toUpperCase() === "BAR"
+            '
+        ));
     }
 }

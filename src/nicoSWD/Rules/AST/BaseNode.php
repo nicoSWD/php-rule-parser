@@ -37,18 +37,15 @@ abstract class BaseNode
     abstract public function getNode();
 
     /**
+     * Looks ahead, but does not move the pointer.
+     *
      * @since 0.3.4
      * @return bool
      */
     protected function hasMethodCall()
     {
-        $stackClone = clone $this->token->getStack();
+        $stackClone = $this->token->getStack()->getClone();
         $hasMethodCall = false;
-
-        // This is ugly and needs to be fixed
-        while ($stackClone->key() < $this->token->getStack()->key()) {
-            $stackClone->next();
-        }
 
         while ($stackClone->valid()) {
             $stackClone->next();
@@ -85,7 +82,7 @@ abstract class BaseNode
             } elseif ($this->isIgnoredToken($token)) {
                 continue;
             } elseif ($token instanceof Tokens\TokenMethod) {
-                $methodName = ltrim(rtrim($token->getValue(), " \r\n("), '.');
+                $methodName = ltrim(rtrim($token->getValue(), " \r\n("), '. ');
                 break;
             } else {
                 break;
