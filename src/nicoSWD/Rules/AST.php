@@ -61,13 +61,13 @@ final class AST implements Iterator
             default:
                 return $current;
             case $current instanceof Tokens\TokenString:
-                return (new AST\NodeString($current))->getNode();
+                return (new AST\NodeString($this))->getNode();
             case $current instanceof Tokens\TokenOpeningArray:
-                return (new AST\NodeArray($current))->getNode();
+                return (new AST\NodeArray($this))->getNode();
             case $current instanceof Tokens\TokenFunction:
-                return (new AST\NodeFunction($current))->getNode();
-          //  case $current instanceof Tokens\TokenVariable:
-          //      return (new AST\NodeVariable($current))->getNode();
+                return (new AST\NodeFunction($this))->getNode();
+            case $current instanceof Tokens\TokenVariable:
+                return (new AST\NodeVariable($this))->getNode();
         }
     }
 
@@ -89,6 +89,22 @@ final class AST implements Iterator
 
     public function getVariable($name)
     {
+        if (!array_key_exists($name, $this->variables)) {
+            $token = $this->stack->current();
+
+            throw new Exceptions\ParserException(sprintf(
+                'Undefined variable "%s" at position %d on line %d',
+                $name,
+                $token->getPosition(),
+                $token->getLine()
+            ));
+        }
+
         return $this->variables[$name];
+    }
+
+    public function getStack()
+    {
+        return $this->stack;
     }
 }

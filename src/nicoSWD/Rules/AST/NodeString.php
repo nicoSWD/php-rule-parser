@@ -19,7 +19,7 @@ final class NodeString extends BaseNode
      */
     public function getNode()
     {
-        $current = $this->token->getStack()->current();
+        $current = $this->ast->getStack()->current();
 
         while ($this->hasMethodCall()) {
             $method = sprintf(

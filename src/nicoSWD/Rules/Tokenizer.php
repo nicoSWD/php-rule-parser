@@ -30,7 +30,7 @@ final class Tokenizer implements TokenizerInterface
             | (?<Null>\bnull\b)
             | (?<Method>\.\s*[a-zA-Z_]\w*\s*\()
             | (?<Function>[a-zA-Z_]\w*\s*\()
-            | (?<Variable>[a-zA-Z_]\w*(?:\.[a-zA-Z_]\w*)*)
+            | (?<Variable>[a-zA-Z_]\w*)
             | (?<Float>-?\d+(?:\.\d+))
             | (?<Integer>-?\d+)
             | (?<String>"[^"]*"|\'[^\']*\')

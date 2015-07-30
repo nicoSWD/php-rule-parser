@@ -26,7 +26,7 @@ final class NodeArray extends BaseNode
      */
     public function getNode()
     {
-        $stack = $this->token->getStack();
+        $stack = $this->ast->getStack();
         $offset = $stack->current()->getOffset();
         $commaExpected = \false;
         $items = [];

@@ -24,7 +24,7 @@ final class NodeFunction extends BaseNode
      */
     public function getNode()
     {
-        $stack = $this->token->getStack();
+        $stack = $this->ast->getStack();
         $offset = $stack->current()->getOffset();
 
         $current = $stack->current();

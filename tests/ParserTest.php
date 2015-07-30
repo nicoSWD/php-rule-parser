@@ -228,29 +228,29 @@ class ParserTest extends AbstractTestBase
         $rule = 'totalamount is -1';
 
         $this->assertTrue($this->evaluate($rule, [
-            'TOTALAMOUNT' => -1
+            'totalamount' => -1
         ]));
 
         $rule = 'totalamount is 3';
 
         $this->assertFalse($this->evaluate($rule, [
-            'TOTALAMOUNT' => -1
+            'totalamount' => -1
         ]));
 
         $rule = 'totalamount is not 3 and 3 is not totalamount';
 
         $this->assertTrue($this->evaluate($rule, [
-            'TOTALAMOUNT' => -1
+            'totalamount' => -1
         ]));
 
         $this->assertFalse($this->evaluate($rule, [
-            'TOTALAMOUNT' => 3
+            'totalamount' => 3
         ]));
 
         $rule = 'totalamount is not 3 and 3 is not totalamount';
 
         $this->assertTrue($this->evaluate($rule, [
-            'TOTALAMOUNT' => -3
+            'totalamount' => -3
         ]));
     }
 
@@ -264,7 +264,7 @@ class ParserTest extends AbstractTestBase
             )';
 
         $this->assertTrue($this->evaluate($rule, [
-            'TOTALAMOUNT' => '-1'
+            'totalamount' => '-1'
         ]));
     }
 
@@ -281,7 +281,7 @@ class ParserTest extends AbstractTestBase
             'totalamount' => '-1'
         ]));
     }
-
+/*
     public function testDotSeparatedVariablesParse()
     {
         $rule = 'window.title == "test"';
@@ -290,7 +290,7 @@ class ParserTest extends AbstractTestBase
             'window.title' => 'test'
         ]));
     }
-
+*/
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage Unexpected token "(" at position 23 on line 1
@@ -300,21 +300,7 @@ class ParserTest extends AbstractTestBase
         $rule = '(totalamount is not 3) ()';
 
         $this->evaluate($rule, [
-            'TOTALAMOUNT' => '-1'
-        ]);
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Missing operator at position 39 on line 1
-     */
-    public function testMisplacedNotThrowsException()
-    {
-        $rule = 'country is "EMD" and currency is "EUR" not';
-
-        $this->evaluate($rule, [
-            'COUNTRY'  => 'GLF',
-            'CURRENCY' => 'USD'
+            'totalamount' => '-1'
         ]);
     }
 
@@ -327,7 +313,7 @@ class ParserTest extends AbstractTestBase
         $rule = 'country is is "EMD"';
 
         $this->evaluate($rule, [
-            'COUNTRY' => 'GLF',
+            'country' => 'GLF',
         ]);
     }
 
@@ -340,7 +326,7 @@ class ParserTest extends AbstractTestBase
         $rule = 'country is = "EMD"';
 
         $this->evaluate($rule, [
-            'COUNTRY' => 'GLF',
+            'country' => 'GLF',
         ]);
     }
 
@@ -353,7 +339,7 @@ class ParserTest extends AbstractTestBase
         $rule = 'is "EMD"';
 
         $this->evaluate($rule, [
-            'COUNTRY' => 'GLF',
+            'country' => 'GLF',
         ]);
     }
 
@@ -376,10 +362,10 @@ class ParserTest extends AbstractTestBase
      */
     public function testMissingOperatorThrowsException2()
     {
-        $rule = 'foo = 2951356 FOO=="2951356"';
+        $rule = 'foo = 2951356 foo=="2951356"';
 
         $this->evaluate($rule, [
-            'FOO' => '12347'
+            'foo' => '12347'
         ]);
     }
 
@@ -407,12 +393,12 @@ class ParserTest extends AbstractTestBase
      */
     public function testMisplacedMinusThrowsException()
     {
-        $this->evaluate('1 = 1 && -foo = 1', ['FOO' => 1]);
+        $this->evaluate('1 = 1 && -foo = 1', ['foo' => 1]);
     }
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Undefined variable "FOO" at position 12 on line 2
+     * @expectedExceptionMessage Undefined variable "foo" at position 12 on line 2
      */
     public function testUndefinedVariableThrowsException()
     {

@@ -88,9 +88,6 @@ class Parser
 
         foreach (new AST($this->tokenizer->tokenize($rule), $this->variables) as $token) {
             switch ($token->getGroup()) {
-                case Constants::GROUP_VARIABLE:
-                    $this->assignVariableValueFromArray($token);
-                    break;
                 case Constants::GROUP_VALUE:
                     $this->assignVariableValueFromToken($token);
                     break;
@@ -124,48 +121,23 @@ class Parser
      */
     public function assignVariables(array $variables)
     {
-        $this->variables = array_change_key_case($variables, \CASE_UPPER);
+        $this->variables = $variables;
     }
 
     /**
      * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
-    protected function assignVariableValueFromArray(Tokens\BaseToken $token)
+    protected function assignVariableValueFromToken(Tokens\BaseToken $token)
     {
-        $tokenValue = strtoupper($token->getValue());
-
         if ($this->operatorRequired) {
             throw new Exceptions\ParserException(sprintf(
                 'Missing operator at position %d on line %d',
                 $token->getPosition(),
                 $token->getLine()
             ));
-        } elseif (!array_key_exists($tokenValue, $this->variables)) {
-            throw new Exceptions\ParserException(sprintf(
-                'Undefined variable "%s" at position %d on line %d',
-                $tokenValue,
-                $token->getPosition(),
-                $token->getLine()
-            ));
         }
 
-        $this->incompleteCondition = \false;
-        $this->operatorRequired = !$this->operatorRequired;
-        $tokenValue = $this->variables[$tokenValue];
-
-        if (!isset($this->values)) {
-            $this->values = [$tokenValue];
-        } else {
-            $this->values[] = $tokenValue;
-        }
-    }
-
-    /**
-     * @param Tokens\BaseToken $token
-     */
-    protected function assignVariableValueFromToken(Tokens\BaseToken $token)
-    {
         $this->incompleteCondition = \false;
         $this->operatorRequired = !$this->operatorRequired;
 

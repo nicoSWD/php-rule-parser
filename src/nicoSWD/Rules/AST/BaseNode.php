@@ -8,6 +8,7 @@
  */
 namespace nicoSWD\Rules\AST;
 
+use nicoSWD\Rules\AST;
 use nicoSWD\Rules\Tokens;
 use nicoSWD\Rules\Constants;
 use nicoSWD\Rules\Exceptions\ParserException;
@@ -21,14 +22,14 @@ abstract class BaseNode
     /**
      * @var Tokens\BaseToken
      */
-    protected $token;
+    protected $ast;
 
     /**
-     * @param Tokens\BaseToken $token
+     * @param AST $ast
      */
-    public function __construct(Tokens\BaseToken $token)
+    public function __construct(AST $ast)
     {
-        $this->token = $token;
+        $this->ast = $ast;
     }
 
     /**
@@ -44,7 +45,7 @@ abstract class BaseNode
      */
     protected function hasMethodCall()
     {
-        $stackClone = $this->token->getStack()->getClone();
+        $stackClone = $this->ast->getStack()->getClone();
         $hasMethodCall = false;
 
         while ($stackClone->valid()) {
@@ -71,7 +72,7 @@ abstract class BaseNode
      */
     protected function getMethodName()
     {
-        $stack = $this->token->getStack();
+        $stack = $this->ast->getStack();
         $methodName = '';
 
         while ($stack->valid()) {
@@ -99,7 +100,7 @@ abstract class BaseNode
      */
     protected function getFunctionArgs()
     {
-        $stack = $this->token->getStack();
+        $stack = $this->ast->getStack();
         $current = $stack->current();
         $commaExpected = false;
         $arguments = [];
