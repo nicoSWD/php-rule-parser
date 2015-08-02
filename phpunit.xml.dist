@@ -14,7 +14,7 @@
         </testsuite>
     </testsuites>
 
-    <!--<logging>
+    <logging>
         <log type="coverage-html"
              target="tests/log/report"
              charset="UTF-8"
@@ -23,5 +23,5 @@
              lowUpperBound="40"
              highLowerBound="70" />
         <log type="testdox-html" target="tests/log/testdox.html" />
-    </logging>-->
+    </logging>
 </phpunit>

@@ -20,7 +20,7 @@ use nicoSWD\Rules\Exceptions\ParserException;
 abstract class BaseNode
 {
     /**
-     * @var Tokens\BaseToken
+     * @var AST
      */
     protected $ast;
 
@@ -50,10 +50,9 @@ abstract class BaseNode
 
         while ($stackClone->valid()) {
             $stackClone->next();
+            $token = $stackClone->current();
 
-            if (!($token = $stackClone->current())) {
-                break;
-            } elseif ($this->isIgnoredToken($token)) {
+            if ($this->isIgnoredToken($token)) {
                 continue;
             } elseif ($token instanceof Tokens\TokenMethod) {
                 $hasMethodCall = \true;

@@ -9,33 +9,28 @@
 namespace nicoSWD\Rules\Core\Methods\Array_;
 
 use nicoSWD\Rules\Core\Methods\CallableMethod;
-use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Exceptions\ParserException;
-use nicoSWD\Rules\Tokens\TokenString;
+use nicoSWD\Rules\Tokens;
 
 /**
  * Class Join
  * @package nicoSWD\Rules\Core\Methods\Array_
  */
-class Join implements CallableMethod
+final class Join implements CallableMethod
 {
     /**
-     * @param BaseToken $token
-     * @param array     $parameters
-     * @return TokenString
-     * @throws \Exception
+     * @param Tokens\BaseToken $token
+     * @param mixed[]          $parameters
+     * @return Tokens\TokenString
+     * @throws ParserException
      */
-    public function call(BaseToken $token, array $parameters = [])
+    public function call(Tokens\BaseToken $token, array $parameters = [])
     {
-        if (($numArgs = count($parameters)) !== 1) {
-            throw new ParserException(sprintf(
-                'Method %s expected 1 argument, got %d',
-                __METHOD__,
-                $numArgs
-            ));
+        if (!isset($parameters[0])) {
+            $parameters[0] = ',';
         }
 
-        return new TokenString(
+        return new Tokens\TokenString(
             '"' . implode($parameters[0], $token->getValue()) . '"',
             $token->getOffset(),
             $token->getStack()

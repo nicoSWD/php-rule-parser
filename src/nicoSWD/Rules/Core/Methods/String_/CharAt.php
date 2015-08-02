@@ -16,20 +16,29 @@ use nicoSWD\Rules\Tokens\TokenString;
  * Class CharAt
  * @package nicoSWD\Rules\Core\Methods\String_
  */
-class CharAt implements CallableMethod
+final class CharAt implements CallableMethod
 {
     /**
      * @param BaseToken $token
-     * @param array     $parameters
+     * @param mixed[]   $parameters
      * @return TokenString
-     * @throws \Exception
      */
     public function call(BaseToken $token, array $parameters = [])
     {
-        if (!$parameters) {
-            throw new \Exception;
+        if (!array_key_exists(0, $parameters)) {
+            $parameters[0] = 0;
+        } else {
+            $parameters[0] = (int) $parameters[0];
         }
 
-        return new TokenString('"' . $token->getValue()[$parameters[0]] . '"', $token->getOffset(), $token->getStack());
+        $value = $token->getValue();
+
+        if (!isset($value[$parameters[0]])) {
+            $char = '';
+        } else {
+            $char = $value[$parameters[0]];
+        }
+
+        return new TokenString('"' . $char . '"', $token->getOffset(), $token->getStack());
     }
 }

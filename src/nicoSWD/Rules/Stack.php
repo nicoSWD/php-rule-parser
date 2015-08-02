@@ -17,6 +17,14 @@ use SplObjectStorage;
 final class Stack extends SplObjectStorage
 {
     /**
+     * @return \nicoSWD\Rules\Tokens\BaseToken
+     */
+    public function current()
+    {
+        return parent::current();
+    }
+
+    /**
      * @return Stack
      */
     public function getClone()

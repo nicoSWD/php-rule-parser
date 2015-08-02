@@ -17,7 +17,7 @@ use nicoSWD\Rules\Exceptions\ParserException;
  * Class Split
  * @package nicoSWD\Rules\Core\Methods\String_
  */
-class Split implements CallableMethod
+final class Split implements CallableMethod
 {
     /**
      * @param BaseToken $token

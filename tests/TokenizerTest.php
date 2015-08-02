@@ -34,7 +34,7 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
 
     public function testVariableStartingWithAndParsesCorrectly()
     {
-        $rule = 'country is "foo" && andvar is "bar"';
+        $rule = 'country == "foo" && andvar == "bar"';
 
         $result = $this->tokenizer->tokenize($rule);
         $andVar = \null;

@@ -21,6 +21,9 @@ final class AST implements Iterator
      */
     protected $stack;
 
+    /**
+     * @var mixed[]
+     */
     protected $variables = [];
 
     /**
@@ -30,7 +33,6 @@ final class AST implements Iterator
     public function __construct(Stack $stack, array $variables = [])
     {
         $this->stack = $stack;
-        $this->stack->rewind();
         $this->variables = $variables;
     }
 
@@ -61,14 +63,23 @@ final class AST implements Iterator
             default:
                 return $current;
             case $current instanceof Tokens\TokenString:
-                return (new AST\NodeString($this))->getNode();
+                $current = new AST\NodeString($this);
+                break;
             case $current instanceof Tokens\TokenOpeningArray:
-                return (new AST\NodeArray($this))->getNode();
+                $current = new AST\NodeArray($this);
+                break;
             case $current instanceof Tokens\TokenFunction:
-                return (new AST\NodeFunction($this))->getNode();
+                $current = new AST\NodeFunction($this);
+                break;
             case $current instanceof Tokens\TokenVariable:
-                return (new AST\NodeVariable($this))->getNode();
+                $current = new AST\NodeVariable($this);
+                break;
+            case $current instanceof Tokens\TokenVar:
+                $this->assignVariable();
+                return $this->current();
         }
+
+        return $current->getNode();
     }
 
     /**
@@ -87,6 +98,11 @@ final class AST implements Iterator
         $this->stack->rewind();
     }
 
+    /**
+     * @param string $name
+     * @return mixed
+     * @throws Exceptions\ParserException
+     */
     public function getVariable($name)
     {
         if (!array_key_exists($name, $this->variables)) {
@@ -103,6 +119,14 @@ final class AST implements Iterator
         return $this->variables[$name];
     }
 
+    public function assignVariable()
+    {
+
+    }
+
+    /**
+     * @return Stack
+     */
     public function getStack()
     {
         return $this->stack;

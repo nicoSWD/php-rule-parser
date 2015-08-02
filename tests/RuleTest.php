@@ -21,11 +21,11 @@ class RuleTest extends \PHPUnit_Framework_TestCase
              */
 
              // This is true
-             2 < 3 and (
-                # this is false, because foo does not equal 4
-                foo is 4
-                # but bar is greater than 6
-                or bar > 6
+             2 < 3 && (
+                // this is false, because foo does not equal 4
+                foo == 4
+                // but bar is greater than 6
+                || bar > 6
              )';
 
         $vars = [
@@ -42,17 +42,17 @@ class RuleTest extends \PHPUnit_Framework_TestCase
 
     public function testIsValidReturnsFalseOnInvalidSyntax()
     {
-        $ruleStr = '(2 is 2) and (1 < 3 and 3 > 2 (1 is 1))';
+        $ruleStr = '(2 == 2) && (1 < 3 && 3 > 2 (1 == 1))';
 
         $rule = new Rules\Rule($ruleStr);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected token "(" at position 30 on line 1', $rule->getError());
+        $this->assertSame('Unexpected token "(" at position 28 on line 1', $rule->getError());
     }
 
     public function testIsValidReturnsTrueOnValidSyntax()
     {
-        $ruleStr = '(2 is 2) and (1 < 3 and 3 > 2 or (1 is 1))';
+        $ruleStr = '(2 == 2) && (1 < 3 && 3 > 2 || (1 == 1))';
 
         $rule = new Rules\Rule($ruleStr);
 

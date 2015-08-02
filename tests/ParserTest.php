@@ -15,7 +15,7 @@ class ParserTest extends AbstractTestBase
 {
     public function testMultipleAnds()
     {
-        $rule = 'COUNTRY=="MA" and CURRENCY=="EGP" && TOTALAMOUNT>50000';
+        $rule = 'COUNTRY=="MA" && CURRENCY=="EGP" && TOTALAMOUNT>50000';
 
         $this->assertTrue($this->evaluate($rule, [
             'COUNTRY'     => 'MA',
@@ -23,7 +23,7 @@ class ParserTest extends AbstractTestBase
             'TOTALAMOUNT' => '50001'
         ]));
 
-        $rule = 'COUNTRY = "EG" and CURRENCY=="EGP" && TOTALAMOUNT>50000';
+        $rule = 'COUNTRY == "EG" && CURRENCY=="EGP" && TOTALAMOUNT>50000';
 
         $this->assertFalse($this->evaluate($rule, [
             'COUNTRY'     => 'MA',
@@ -31,7 +31,7 @@ class ParserTest extends AbstractTestBase
             'TOTALAMOUNT' => '50001'
         ]));
 
-        $rule = '((COUNTRY=="EG") and (CURRENCY=="EGP") && (TOTALAMOUNT>50000))';
+        $rule = '((COUNTRY=="EG") && (CURRENCY=="EGP") && (TOTALAMOUNT>50000))';
 
         $this->assertFalse($this->evaluate($rule, [
             'COUNTRY'     => 'MA',
@@ -43,7 +43,7 @@ class ParserTest extends AbstractTestBase
     public function testMixedOrsAndAnds()
     {
         $rule = '
-            COUNTRY=="MA" and
+            COUNTRY=="MA" &&
             CURRENCY=="EGP" && (
             TOTALAMOUNT>50000 ||
             TOTALAMOUNT == 0)';
@@ -111,23 +111,19 @@ class ParserTest extends AbstractTestBase
 
     public function testAllAvailableOperators()
     {
-        $this->assertTrue($this->evaluate('1 = 1'));
-        $this->assertTrue($this->evaluate('1 is 1'));
         $this->assertTrue($this->evaluate('3 == 3'));
-        $this->assertTrue($this->evaluate('4 == 4'));
+        $this->assertTrue($this->evaluate('4 === 4'));
         $this->assertTrue($this->evaluate('"4" == 4'));
         $this->assertTrue($this->evaluate('2 > 1'));
         $this->assertTrue($this->evaluate('1 < 2'));
         $this->assertTrue($this->evaluate('1 <> 2'));
         $this->assertTrue($this->evaluate('1 != 2'));
-        $this->assertTrue($this->evaluate('1 is not 2'));
         $this->assertTrue($this->evaluate('1 <= 2'));
         $this->assertTrue($this->evaluate('2 <= 2'));
         $this->assertTrue($this->evaluate('3 >= 2'));
         $this->assertTrue($this->evaluate('2 >= 2'));
 
         $this->assertFalse($this->evaluate('2 !== 2'));
-        $this->assertFalse($this->evaluate('2 is not 2'));
     }
 
     public function testStrictOperators()
@@ -190,12 +186,12 @@ class ParserTest extends AbstractTestBase
 
     public function testCommentsAreIgnoredCorrectly()
     {
-        $this->assertFalse($this->evaluate('1 = 2 // or 1 = 1'));
-        $this->assertTrue($this->evaluate('1 = 1 # and 2 = 1'));
-        $this->assertFalse($this->evaluate('1 = 1 /* or 2 = 1 */ and 2 != 2'));
-        $this->assertTrue($this->evaluate('1 = 3 /* or 2 = 1 */ or 2 = 2'));
+        $this->assertFalse($this->evaluate('1 == 2 // || 1 == 1'));
+        $this->assertTrue($this->evaluate('1 == 1 // && 2 == 1'));
+        $this->assertFalse($this->evaluate('1 == 1 /* || 2 == 1 */ && 2 != 2'));
+        $this->assertTrue($this->evaluate('1 == 3 /* || 2 == 1 */ || 2 == 2'));
         $this->assertTrue($this->evaluate(
-            '1 /* test */ = 1 /* test */ and /* test */ 2 /* test */ = /* test */ 2'
+            '1 /* test */ == 1 /* test */ && /* test */ 2 /* test */ == /* test */ 2'
         ));
     }
 
@@ -207,7 +203,7 @@ class ParserTest extends AbstractTestBase
             'TOTALAMOUNT' => '0'
         ]));
 
-        $rule = 'TOTALAMOUNT = -1';
+        $rule = 'TOTALAMOUNT == -1';
 
         $this->assertTrue($this->evaluate($rule, [
             'TOTALAMOUNT' => -1
@@ -216,7 +212,7 @@ class ParserTest extends AbstractTestBase
 
     public function testSpacesInValues()
     {
-        $rule = 'GREETING is "whaddup yall"';
+        $rule = 'GREETING == "whaddup yall"';
 
         $this->assertTrue($this->evaluate($rule, [
             'GREETING' => 'whaddup yall'
@@ -225,19 +221,19 @@ class ParserTest extends AbstractTestBase
 
     public function testIsOperator()
     {
-        $rule = 'totalamount is -1';
+        $rule = 'totalamount == -1';
 
         $this->assertTrue($this->evaluate($rule, [
             'totalamount' => -1
         ]));
 
-        $rule = 'totalamount is 3';
+        $rule = 'totalamount == 3';
 
         $this->assertFalse($this->evaluate($rule, [
             'totalamount' => -1
         ]));
 
-        $rule = 'totalamount is not 3 and 3 is not totalamount';
+        $rule = 'totalamount != 3 && 3 != totalamount';
 
         $this->assertTrue($this->evaluate($rule, [
             'totalamount' => -1
@@ -247,7 +243,7 @@ class ParserTest extends AbstractTestBase
             'totalamount' => 3
         ]));
 
-        $rule = 'totalamount is not 3 and 3 is not totalamount';
+        $rule = 'totalamount != 3 && 3 != totalamount';
 
         $this->assertTrue($this->evaluate($rule, [
             'totalamount' => -3
@@ -256,10 +252,10 @@ class ParserTest extends AbstractTestBase
 
     public function testSpacesBetweenStuff()
     {
-        $rule = 'totalamount   is     not   3
-                and    3        is    not   totalamount
-                    and ( (  totalamount   is   totalamount   )
-                        and   -2   <
+        $rule = 'totalamount   !=   3
+                &&    3        !=   totalamount
+                    && ( (  totalamount   ==   totalamount   )
+                        &&   -2   <
                 totalamount
             )';
 
@@ -272,9 +268,9 @@ class ParserTest extends AbstractTestBase
     {
         $rule = ' 2 > 3
 
-                // and    3        is    not   totalamount
+                // &&    3        !=   totalamount
 
-                or totalamount is -1
+                || totalamount == -1
             ';
 
         $this->assertTrue($this->evaluate($rule, [
@@ -293,11 +289,11 @@ class ParserTest extends AbstractTestBase
 */
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected token "(" at position 23 on line 1
+     * @expectedExceptionMessage Unexpected token "(" at position 19 on line 1
      */
     public function testEmptyParenthesisThrowException()
     {
-        $rule = '(totalamount is not 3) ()';
+        $rule = '(totalamount != 3) ()';
 
         $this->evaluate($rule, [
             'totalamount' => '-1'
@@ -306,11 +302,11 @@ class ParserTest extends AbstractTestBase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected "is" at position 11 on line 1
+     * @expectedExceptionMessage Unexpected "==" at position 11 on line 1
      */
     public function testDoubleIsOperatorThrowsException()
     {
-        $rule = 'country is is "EMD"';
+        $rule = 'country == == "EMD"';
 
         $this->evaluate($rule, [
             'country' => 'GLF',
@@ -319,11 +315,11 @@ class ParserTest extends AbstractTestBase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected "=" at position 11 on line 1
+     * @expectedExceptionMessage Unexpected "==" at position 11 on line 1
      */
     public function testDoubleOperatorThrowsException()
     {
-        $rule = 'country is = "EMD"';
+        $rule = 'country == == "EMD"';
 
         $this->evaluate($rule, [
             'country' => 'GLF',
@@ -332,11 +328,11 @@ class ParserTest extends AbstractTestBase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Incomplete expression for token "is" at position 0 on line 1
+     * @expectedExceptionMessage Incomplete expression for token "==" at position 0 on line 1
      */
     public function testMissingLeftValueThrowsException()
     {
-        $rule = 'is "EMD"';
+        $rule = '== "EMD"';
 
         $this->evaluate($rule, [
             'country' => 'GLF',
@@ -349,7 +345,7 @@ class ParserTest extends AbstractTestBase
      */
     public function testMissingOperatorThrowsException()
     {
-        $rule = 'TOTALAMOUNT = -1 TOTALAMOUNT > 10';
+        $rule = 'TOTALAMOUNT == -1 TOTALAMOUNT > 10';
 
         $this->evaluate($rule, [
             'TOTALAMOUNT' => '-1'
@@ -362,7 +358,7 @@ class ParserTest extends AbstractTestBase
      */
     public function testMissingOperatorThrowsException2()
     {
-        $rule = 'foo = 2951356 foo=="2951356"';
+        $rule = 'foo == 2951356 foo=="2951356"';
 
         $this->evaluate($rule, [
             'foo' => '12347'
@@ -371,11 +367,11 @@ class ParserTest extends AbstractTestBase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Missing opening parenthesis at position 5
+     * @expectedExceptionMessage Missing opening parenthesis at position 6
      */
     public function testMissingOpeningParenthesisThrowsException()
     {
-        $this->evaluate('1 = 1)', []);
+        $this->evaluate('1 == 1)', []);
     }
 
     /**
@@ -384,16 +380,16 @@ class ParserTest extends AbstractTestBase
      */
     public function testMissingClosingParenthesisThrowsException()
     {
-        $this->evaluate('(1 = 1', []);
+        $this->evaluate('(1 == 1', []);
     }
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Unknown token "-" at position 9
+     * @expectedExceptionMessage Unknown token "-" at position 10
      */
     public function testMisplacedMinusThrowsException()
     {
-        $this->evaluate('1 = 1 && -foo = 1', ['foo' => 1]);
+        $this->evaluate('1 == 1 && -foo == 1', ['foo' => 1]);
     }
 
     /**
@@ -403,7 +399,7 @@ class ParserTest extends AbstractTestBase
     public function testUndefinedVariableThrowsException()
     {
         $rule = ' // new line on purpose
-            foo = "MA"';
+            foo == "MA"';
 
         $this->evaluate($rule, []);
     }
@@ -414,7 +410,7 @@ class ParserTest extends AbstractTestBase
      */
     public function testIncompleteExpressionExceptionIsThrownCorrectly()
     {
-        $rule = '1 is 1 and COUNTRY';
+        $rule = '1 == 1 && COUNTRY';
 
         $this->evaluate($rule, [
             'COUNTRY' => 'MA'
@@ -447,11 +443,11 @@ class ParserTest extends AbstractTestBase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected "and" at position 19 on line 1
+     * @expectedExceptionMessage Unexpected "&&" at position 19 on line 1
      */
     public function testMultipleLogicalTokensThrowException()
     {
-        $rule = 'COUNTRY == "MA" && and';
+        $rule = 'COUNTRY == "MA" && &&';
 
         $this->evaluate($rule, [
             'COUNTRY' => 'EG'

@@ -16,7 +16,7 @@ use nicoSWD\Rules\Tokens\TokenString;
  * Class ToUpperCase
  * @package nicoSWD\Rules\Core\Methods\String_
  */
-class ToUpperCase implements CallableMethod
+final class ToUpperCase implements CallableMethod
 {
     /**
      * @param BaseToken $token
