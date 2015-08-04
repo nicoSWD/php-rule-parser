@@ -76,6 +76,11 @@ final class AST implements Iterator
                 break;
         }
 
+        while ($current->supportsMethodCalls() && $this->hasMethodCall()) {
+            $method = $this->getMethod($current);
+            $current = $method->call($this->getFunctionArgs());
+        }
+
         return $current->getNode();
     }
 
