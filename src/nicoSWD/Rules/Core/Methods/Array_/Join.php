@@ -16,24 +16,23 @@ use nicoSWD\Rules\Tokens;
  * Class Join
  * @package nicoSWD\Rules\Core\Methods\Array_
  */
-final class Join implements CallableMethod
+final class Join extends CallableMethod
 {
     /**
-     * @param Tokens\BaseToken $token
-     * @param mixed[]          $parameters
+     * @param mixed[] $parameters
      * @return Tokens\TokenString
      * @throws ParserException
      */
-    public function call(Tokens\BaseToken $token, array $parameters = [])
+    public function call(array $parameters = [])
     {
         if (!isset($parameters[0])) {
             $parameters[0] = ',';
         }
 
         return new Tokens\TokenString(
-            '"' . implode($parameters[0], $token->getValue()) . '"',
-            $token->getOffset(),
-            $token->getStack()
+            '"' . implode($parameters[0], $this->token->getValue()) . '"',
+            $this->token->getOffset(),
+            $this->token->getStack()
         );
     }
 }

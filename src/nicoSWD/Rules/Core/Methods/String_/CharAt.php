@@ -9,21 +9,19 @@
 namespace nicoSWD\Rules\Core\Methods\String_;
 
 use nicoSWD\Rules\Core\Methods\CallableMethod;
-use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenString;
 
 /**
  * Class CharAt
  * @package nicoSWD\Rules\Core\Methods\String_
  */
-final class CharAt implements CallableMethod
+final class CharAt extends CallableMethod
 {
     /**
-     * @param BaseToken $token
-     * @param mixed[]   $parameters
+     * @param mixed[] $parameters
      * @return TokenString
      */
-    public function call(BaseToken $token, array $parameters = [])
+    public function call(array $parameters = [])
     {
         if (!array_key_exists(0, $parameters)) {
             $parameters[0] = 0;
@@ -31,7 +29,7 @@ final class CharAt implements CallableMethod
             $parameters[0] = (int) $parameters[0];
         }
 
-        $value = $token->getValue();
+        $value = $this->token->getValue();
 
         if (!isset($value[$parameters[0]])) {
             $char = '';
@@ -39,6 +37,6 @@ final class CharAt implements CallableMethod
             $char = $value[$parameters[0]];
         }
 
-        return new TokenString('"' . $char . '"', $token->getOffset(), $token->getStack());
+        return new TokenString('"' . $char . '"', $this->token->getOffset(), $this->token->getStack());
     }
 }

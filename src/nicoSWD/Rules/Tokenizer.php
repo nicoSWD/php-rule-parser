@@ -28,7 +28,6 @@ final class Tokenizer implements TokenizerInterface
             | (?<In>\bin\b)
             | (?<Bool>\b(?:true|false)\b)
             | (?<Null>\bnull\b)
-            | (?<Var>\bvar\b)
             | (?<Method>\.\s*[a-zA-Z_]\w*\s*\()
             | (?<Function>[a-zA-Z_]\w*\s*\()
             | (?<Variable>[a-zA-Z_]\w*)

@@ -25,6 +25,11 @@ abstract class BaseNode
     protected $ast;
 
     /**
+     * @var array
+     */
+    protected $methodInstances = [];
+
+    /**
      * @param AST $ast
      */
     public function __construct(AST $ast)
@@ -50,9 +55,10 @@ abstract class BaseNode
 
         while ($stackClone->valid()) {
             $stackClone->next();
-            $token = $stackClone->current();
 
-            if ($this->isIgnoredToken($token)) {
+            if (!$token = $stackClone->current()) {
+                break;
+            } elseif ($this->isIgnoredToken($token)) {
                 continue;
             } elseif ($token instanceof Tokens\TokenMethod) {
                 $hasMethodCall = \true;
@@ -66,7 +72,27 @@ abstract class BaseNode
     }
 
     /**
+     * @param Tokens\BaseToken $token
+     * @return \nicoSWD\Rules\Core\Methods\CallableMethod
+     */
+    public function getMethod(Tokens\BaseToken $token)
+    {
+        $method = sprintf(
+            '\nicoSWD\Rules\Core\Methods\%s_\%s',
+            substr(strrchr(get_class($token), '\\'), 6),
+            ucfirst($this->getMethodName())
+        );
+
+        if (!isset($this->methodInstances[$method])) {
+            $this->methodInstances[$method] = new $method($token);
+        }
+
+        return $this->methodInstances[$method];
+    }
+
+    /**
      * @since 0.3.4
+     * @internal
      * @return string
      */
     protected function getMethodName()
@@ -99,7 +125,7 @@ abstract class BaseNode
      */
     protected function getFunctionArgs()
     {
-        $stack = $this->ast->getStack();
+        $stack = $this->ast;
         $current = $stack->current();
         $commaExpected = false;
         $arguments = [];

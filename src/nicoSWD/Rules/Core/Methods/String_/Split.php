@@ -9,7 +9,6 @@
 namespace nicoSWD\Rules\Core\Methods\String_;
 
 use nicoSWD\Rules\Core\Methods\CallableMethod;
-use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenArray;
 use nicoSWD\Rules\Exceptions\ParserException;
 
@@ -17,15 +16,14 @@ use nicoSWD\Rules\Exceptions\ParserException;
  * Class Split
  * @package nicoSWD\Rules\Core\Methods\String_
  */
-final class Split implements CallableMethod
+final class Split extends CallableMethod
 {
     /**
-     * @param BaseToken $token
-     * @param array     $parameters
+     * @param mixed[] $parameters
      * @return TokenArray
      * @throws \Exception
      */
-    public function call(BaseToken $token, array $parameters = [])
+    public function call(array $parameters = [])
     {
         if (($numArgs = count($parameters)) !== 1) {
             throw new ParserException(sprintf(
@@ -35,6 +33,10 @@ final class Split implements CallableMethod
             ));
         }
 
-        return new TokenArray(explode($parameters[0], $token->getValue()), $token->getOffset(), $token->getStack());
+        return new TokenArray(
+            explode($parameters[0], $this->token->getValue()),
+            $this->token->getOffset(),
+            $this->token->getStack()
+        );
     }
 }

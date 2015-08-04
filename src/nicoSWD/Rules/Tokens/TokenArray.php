@@ -24,8 +24,11 @@ final class TokenArray extends BaseToken
         return Constants::GROUP_VALUE;
     }
 
-    public function toString()
+    /**
+     * @return bool
+     */
+    public function supportsMethodCalls()
     {
-        $this->value = implode(',', $this->value);
+        return \true;
     }
 }

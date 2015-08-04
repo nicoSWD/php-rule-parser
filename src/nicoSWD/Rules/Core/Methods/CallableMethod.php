@@ -14,12 +14,24 @@ use nicoSWD\Rules\Tokens\BaseToken;
  * Interface CallableMethod
  * @package nicoSWD\Rules\Core\Methods
  */
-interface CallableMethod
+abstract class CallableMethod
 {
     /**
+     * @var BaseToken
+     */
+    protected $token;
+
+    /**
      * @param BaseToken $token
-     * @param array     $parameters
+     */
+    public function __construct(BaseToken $token)
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * @param mixed[] $parameters
      * @return mixed
      */
-    public function call(BaseToken $token, array $parameters = []);
+    abstract public function call(array $parameters = []);
 }

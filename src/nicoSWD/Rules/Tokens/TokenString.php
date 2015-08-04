@@ -25,6 +25,14 @@ final class TokenString extends BaseToken
     }
 
     /**
+     * @return bool
+     */
+    public function supportsMethodCalls()
+    {
+        return \true;
+    }
+
+    /**
      * @return string
      */
     public function getValue()

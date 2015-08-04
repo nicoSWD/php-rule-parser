@@ -9,27 +9,29 @@
 namespace nicoSWD\Rules\Core\Methods\String_;
 
 use nicoSWD\Rules\Core\Methods\CallableMethod;
-use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenString;
 
 /**
  * Class ToUpperCase
  * @package nicoSWD\Rules\Core\Methods\String_
  */
-final class ToUpperCase implements CallableMethod
+final class ToUpperCase extends CallableMethod
 {
     /**
-     * @param BaseToken $token
-     * @param array     $parameters
+     * @param mixed[] $parameters
      * @return TokenString
      * @throws \Exception
      */
-    public function call(BaseToken $token, array $parameters = [])
+    public function call(array $parameters = [])
     {
         if ($parameters) {
             throw new \Exception;
         }
 
-        return new TokenString('"' . strtoupper($token->getValue()) . '"', $token->getOffset(), $token->getStack());
+        return new TokenString(
+            '"' . strtoupper($this->token->getValue()) . '"',
+            $this->token->getOffset(),
+            $this->token->getStack()
+        );
     }
 }

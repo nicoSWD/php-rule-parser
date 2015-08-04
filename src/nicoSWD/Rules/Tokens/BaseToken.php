@@ -87,6 +87,14 @@ abstract class BaseToken
     }
 
     /**
+     * @return bool
+     */
+    public function supportsMethodCalls()
+    {
+        return \false;
+    }
+
+    /**
      * Returns position in the line the token is placed in.
      *
      * @return int

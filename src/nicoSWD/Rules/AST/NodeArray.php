@@ -87,18 +87,8 @@ final class NodeArray extends BaseNode
         $token = new TokenArray($items, $offset, $stack);
 
         while ($this->hasMethodCall()) {
-            $method = sprintf(
-                '\nicoSWD\Rules\Core\Methods\%s\%s',
-                'Array_',
-                ucfirst($this->getMethodName())
-            );
-
-            /** @var \nicoSWD\Rules\Core\Methods\CallableMethod $instance */
-            $instance = new $method();
-            $token = $instance->call($token, $this->getFunctionArgs());
+            $token = $this->getMethod($token)->call($this->getFunctionArgs());
         }
-
-       // var_dump($token->getValue());
 
         return $token;
     }

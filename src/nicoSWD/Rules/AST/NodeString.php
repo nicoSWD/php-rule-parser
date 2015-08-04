@@ -21,16 +21,9 @@ final class NodeString extends BaseNode
     {
         $current = $this->ast->getStack()->current();
 
-        while ($this->hasMethodCall()) {
-            $method = sprintf(
-                '\nicoSWD\Rules\Core\Methods\%s\%s',
-                'String_',
-                ucfirst($this->getMethodName())
-            );
-
-            /** @var \nicoSWD\Rules\Core\Methods\CallableMethod $instance */
-            $instance = new $method();
-            $current = $instance->call($current, $this->getFunctionArgs());
+        while ($current->supportsMethodCalls() && $this->hasMethodCall()) {
+            $method = $this->getMethod($current);
+            $current = $method->call($this->getFunctionArgs());
         }
 
         return $current;

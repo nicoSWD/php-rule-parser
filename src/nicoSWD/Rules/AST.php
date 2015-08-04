@@ -74,9 +74,6 @@ final class AST implements Iterator
             case $current instanceof Tokens\TokenVariable:
                 $current = new AST\NodeVariable($this);
                 break;
-            case $current instanceof Tokens\TokenVar:
-                $this->assignVariable();
-                return $this->current();
         }
 
         return $current->getNode();
@@ -117,11 +114,6 @@ final class AST implements Iterator
         }
 
         return $this->variables[$name];
-    }
-
-    public function assignVariable()
-    {
-
     }
 
     /**
