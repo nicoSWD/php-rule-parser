@@ -35,13 +35,15 @@ require '/path/to/vendor/autoload.php';
 // Non-Composer install
 require '/path/to/src/nicoSWD/Rules/Autoloader.php';
 
-$ruleStr = 'foo.toUpperCase() == "ABC" && (bar == 123 || bar >= 321) && foo in ["abc", "def", "ghi"]';
+$ruleStr = '
+    foo.toUpperCase() == "ABC" && (
+        bar == 123 || bar >= 321
+    ) && foo in ["abc", "def", "ghi"]';
 
 $variables = [
     'foo' => 'abc',
     'bar' => 321,
-    'baz' => 123,
-    'sep' => '|'
+    'baz' => 123
 ];
 
 $rule = new Rule($ruleStr, $variables);
@@ -153,9 +155,9 @@ Outputs:
 - Less than: `<`
 - Greater than/equal: `>=`
 - Less than/equal: `<=`
+- In: `in`
 
 ## Notes
-- Variables are case-insensitive.
 - Parentheses can be nested, and will be evaluated from right to left.
 - Only value/variable comparison expressions with optional logical ANDs/ORs, are supported. This is not a full JavaScript emulator.
 

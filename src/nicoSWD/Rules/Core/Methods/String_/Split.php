@@ -10,7 +10,6 @@ namespace nicoSWD\Rules\Core\Methods\String_;
 
 use nicoSWD\Rules\Core\Methods\CallableMethod;
 use nicoSWD\Rules\Tokens\TokenArray;
-use nicoSWD\Rules\Exceptions\ParserException;
 
 /**
  * Class Split
