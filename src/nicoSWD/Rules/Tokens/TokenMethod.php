@@ -21,6 +21,6 @@ final class TokenMethod extends BaseToken
      */
     public function getGroup()
     {
-        return Constants::GROUP_VALUE;
+        return Constants::GROUP_METHOD;
     }
 }

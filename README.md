@@ -2,7 +2,7 @@
 
 [![Build Status](https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/build.png?b=master)](https://travis-ci.org/nicoSWD/php-rule-parser) [![Code Coverage](https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master) [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=master)](https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master) [![HHVM tested](https://img.shields.io/hhvm/nicoswd/php-rule-parser.svg)](https://travis-ci.org/nicoSWD/php-rule-parser) [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
 
-You're looking at a PHP library to parse and evaluate text based rules with a Javascript like syntax. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
+You're looking at a PHP library to parse and evaluate text based rules with a Javascript-like syntax. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
 
 This library has initially been used to change and configure the behavior of certain "Workflows" (without changing actual code) in an intranet application, but it may serve a purpose elsewhere.
 
@@ -35,12 +35,13 @@ require '/path/to/vendor/autoload.php';
 // Non-Composer install
 require '/path/to/src/nicoSWD/Rules/Autoloader.php';
 
-$ruleStr = 'foo == "abc" && (bar == 123 || bar >= 321) && baz === true';
+$ruleStr = 'foo.toUpperCase() == "ABC" && (bar == 123 || bar >= 321) && foo in ["abc", "def", "ghi"]';
 
 $variables = [
     'foo' => 'abc',
     'bar' => 321,
-    'baz' => true
+    'baz' => 123,
+    'sep' => '|'
 ];
 
 $rule = new Rule($ruleStr, $variables);
@@ -48,13 +49,7 @@ $rule = new Rule($ruleStr, $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
-It supports JavaScript syntax, as well as a custom syntax for an easier, more user friendly usage.
-
-```php
-$ruleStr = 'foo is "abc" and (bar is 123 or bar is 321)';
-```
-
-Standard JavaScript code comments are supported, as well as PHP-style `#` comments.
+Standard JavaScript code comments are supported.
 
 ```php
 $ruleStr = '
@@ -63,11 +58,16 @@ $ruleStr = '
      */
 
     // This is true
-    2 < 3 and (
-        # this is false, because foo does not equal 4
-        foo is 4
-        # but bar is greater than 6
-        or bar > 6
+    2 < 3 && (
+        // This is false
+        foo in [4, 6, 7] ||
+        // True
+        [1, 4, 3].join("") === "143"
+    ) && (
+        // True
+        "foo|bar|baz".split("|" /* uh oh */) === ["foo", /* what */ "bar", "baz"] &&
+        // True
+        bar > 6
     )';
 
 $variables = [
@@ -111,24 +111,25 @@ if (!$rule->isValid()) {
 Both will output: `Unexpected token "(" at position 25 on line 3`
 
 ## Syntax Highlighting
-
+ 
 A custom syntax highlighter is also provided.
 
 ```php
 use nicoSWD\Rules;
 
 $ruleStr = '
-/**
- * This is a test rule with comments
- */
-
-// This is true
-2 < 3 and (
-    # this is false, because foo does not equal 4
-    foo is 4
-    # but bar is greater than 6
-    or bar > 6
-)';
+    // This is true
+    2 < 3 && (
+        // This is false
+        foo in [4, 6, 7] ||
+        // True
+        [1, 4, 3].join("") === "143"
+    ) && (
+        // True
+        "foo|bar|baz".split("|" /* uh oh */) === ["foo", /* what */ "bar", "baz"] &&
+        // True
+        bar > 6
+    )';
 
 $highlighter = new Rules\Highlighter(new Rules\Tokenizer());
 
@@ -143,7 +144,7 @@ echo $highlighter->highlightString($ruleStr);
 
 Outputs:
 
-![Syntax preview](https://s3.amazonaws.com/f.cl.ly/items/2U1j2T0M1q3U0D1t1t1D/Screen%20Shot%202015-07-22%20at%2016.51.47.png)
+![Syntax preview](https://s3.amazonaws.com/f.cl.ly/items/0y1b0s0J2v2v1u3O1F3M/Screen%20Shot%202015-08-05%20at%2012.15.21.png)
 
 ## Supported Comparison Operators
 - Equal: `=`, `==`, `===` (strict), `is`

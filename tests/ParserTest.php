@@ -341,7 +341,7 @@ class ParserTest extends AbstractTestBase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Missing operator at position 17 on line 1
+     * @expectedExceptionMessage Missing operator
      */
     public function testMissingOperatorThrowsException()
     {
@@ -354,7 +354,7 @@ class ParserTest extends AbstractTestBase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Missing operator at position 14 on line 1
+     * @expectedExceptionMessage Missing operator
      */
     public function testMissingOperatorThrowsException2()
     {

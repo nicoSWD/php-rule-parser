@@ -68,9 +68,6 @@ final class AST implements Iterator
             case $current instanceof Tokens\TokenOpeningArray:
                 $current = new AST\NodeArray($this);
                 break;
-            case $current instanceof Tokens\TokenFunction:
-                $current = new AST\NodeFunction($this);
-                break;
             case $current instanceof Tokens\TokenVariable:
                 $current = new AST\NodeVariable($this);
                 break;

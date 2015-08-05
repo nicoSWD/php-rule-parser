@@ -21,11 +21,12 @@ final class Highlighter
         Constants::GROUP_COMMENT     => 'color: #948a8a; font-style: italic;',
         Constants::GROUP_LOGICAL     => 'color: #c72d2d;',
         Constants::GROUP_OPERATOR    => 'color: #000;',
-        Constants::GROUP_PARENTHESES => 'color: #728c9f;',
+        Constants::GROUP_PARENTHESES => 'color: #000;',
         Constants::GROUP_SPACE       => '',
         Constants::GROUP_UNKNOWN     => '',
         Constants::GROUP_VALUE       => 'color: #e36700; font-style: italic;',
-        Constants::GROUP_VARIABLE    => 'color: #007694; font-weight: 900;'
+        Constants::GROUP_VARIABLE    => 'color: #007694; font-weight: 900;',
+        Constants::GROUP_METHOD      => 'color: #000'
     ];
 
     /**

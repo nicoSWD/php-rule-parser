@@ -25,12 +25,8 @@ final class Split extends CallableMethod
      */
     public function call(array $parameters = [])
     {
-        if (($numArgs = count($parameters)) !== 1) {
-            throw new ParserException(sprintf(
-                'Method %s expected 1 argument, got %d',
-                __METHOD__,
-                $numArgs
-            ));
+        if (!array_key_exists(0, $parameters)) {
+            $parameters[0] = '';
         }
 
         return new TokenArray(

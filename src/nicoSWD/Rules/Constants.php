@@ -24,4 +24,5 @@ class Constants
     const GROUP_PARENTHESES = 8;
     const GROUP_SQUARE_BRACKETS = 9;
     const GROUP_COMMA = 10;
+    const GROUP_METHOD = 11;
 }

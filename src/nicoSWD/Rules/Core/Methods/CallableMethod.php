@@ -11,7 +11,7 @@ namespace nicoSWD\Rules\Core\Methods;
 use nicoSWD\Rules\Tokens\BaseToken;
 
 /**
- * Interface CallableMethod
+ * Class CallableMethod
  * @package nicoSWD\Rules\Core\Methods
  */
 abstract class CallableMethod
