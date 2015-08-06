@@ -87,9 +87,9 @@ Both, `$rule->isTrue()` and `$rule->isFalse()` will throw an exception if the sy
 
 ```php
 $ruleStr = '
-    (2 is 2) and (
-        1 < 3 and 3 == 2 ( // Missing and/or before parentheses
-            1 is 1
+    (2 == 2) && (
+        1 < 3 && 3 == 2 ( // Missing and/or before parentheses
+            1 == 1
         )
     )';
 
