@@ -30,6 +30,16 @@ abstract class BaseNode
     protected $methodInstances = [];
 
     /**
+     * @var string
+     */
+    protected $methodName = '';
+
+    /**
+     * @var int
+     */
+    protected $methodOffset = 0;
+
+    /**
      * @param AST $ast
      */
     public function __construct(AST $ast)
@@ -51,7 +61,7 @@ abstract class BaseNode
     protected function hasMethodCall()
     {
         $stackClone = $this->ast->getStack()->getClone();
-        $hasMethodCall = false;
+        $hasMethodCall = \false;
 
         while ($stackClone->valid()) {
             $stackClone->next();
@@ -61,6 +71,9 @@ abstract class BaseNode
             } elseif ($this->isIgnoredToken($token)) {
                 continue;
             } elseif ($token instanceof Tokens\TokenMethod) {
+                $this->methodName = $token->getValue();
+                $this->methodOffset = $token->getOffset();
+
                 $hasMethodCall = \true;
                 break;
             } else {
@@ -80,7 +93,7 @@ abstract class BaseNode
         $method = sprintf(
             '\nicoSWD\Rules\Core\Methods\%s_\%s',
             substr(strrchr(get_class($token), '\\'), 6),
-            ucfirst($this->getMethodName())
+            ucfirst(trim($this->getMethodName()))
         );
 
         if (!isset($this->methodInstances[$method])) {
@@ -92,30 +105,15 @@ abstract class BaseNode
 
     /**
      * @since 0.3.4
-     * @internal
      * @return string
      */
     protected function getMethodName()
     {
-        $stack = $this->ast->getStack();
-        $methodName = '';
-
-        while ($stack->valid()) {
-            $stack->next();
-
-            if (!($token = $stack->current())) {
-                break;
-            } elseif ($this->isIgnoredToken($token)) {
-                continue;
-            } elseif ($token instanceof Tokens\TokenMethod) {
-                $methodName = ltrim(rtrim($token->getValue(), " \r\n("), '. ');
-                break;
-            } else {
-                break;
-            }
+        while ($this->ast->getStack()->current()->getOffset() < $this->methodOffset) {
+            $this->ast->getStack()->next();
         }
 
-        return $methodName;
+        return ltrim(rtrim($this->methodName, " \r\n("), '. ');
     }
 
     /**
@@ -125,20 +123,21 @@ abstract class BaseNode
      */
     protected function getFunctionArgs()
     {
-        $stack = $this->ast;
-        $current = $stack->current();
-        $commaExpected = false;
+        $commaExpected = \false;
         $arguments = [];
 
-        while ($stack->valid()) {
-            $stack->next();
-            $current = $stack->current();
+        do {
+            $this->ast->next();
+
+            if (!$current = $this->ast->current()) {
+                throw new ParserException(sprintf(
+                    'Unexpected end of string. Expected ")"'
+                ));
+            }
+
             $value = $current->getValue();
 
-            if ($value === ')') {
-                $commaExpected = \false;
-                break;
-            } elseif ($current->getGroup() === Constants::GROUP_VALUE) {
+            if ($current->getGroup() === Constants::GROUP_VALUE) {
                 if ($commaExpected) {
                     throw new ParserException(sprintf(
                         'Unexpected value at position %d on line %d',
@@ -159,20 +158,25 @@ abstract class BaseNode
                 }
 
                 $commaExpected = \false;
+            } elseif ($value === ')') {
+                break;
             } elseif (!$this->isIgnoredToken($current)) {
-                throw new ParserException('what');
+                throw new ParserException(sprintf(
+                    'Unexpected token "%s" at position %d on line %d',
+                    $current->getOriginalValue(),
+                    $current->getPosition(),
+                    $current->getLine()
+                ));
             }
-        }
+        } while ($this->ast->valid());
 
-        if ($commaExpected) {
+        if (!$commaExpected && $arguments) {
             throw new ParserException(sprintf(
                 'Unexpected token "," at position %d on line %d',
                 $current->getPosition(),
                 $current->getLine()
             ));
         }
-
-        $stack->next();
 
         return $arguments;
     }

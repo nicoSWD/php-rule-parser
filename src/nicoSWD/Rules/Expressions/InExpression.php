@@ -26,9 +26,8 @@ final class InExpression extends BaseExpression
     {
         if (!is_array($rightValue)) {
             throw new ParserException(sprintf(
-                'Expected array, got "%s" : "%s"',
-                gettype($rightValue),
-                $rightValue
+                'Expected array, got "%s"',
+                gettype($rightValue)
             ));
         }
 

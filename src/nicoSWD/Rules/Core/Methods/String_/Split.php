@@ -24,12 +24,16 @@ final class Split extends CallableMethod
      */
     public function call(array $parameters = [])
     {
-        if (!array_key_exists(0, $parameters)) {
-            $parameters[0] = '';
+        $tokenValue = $this->token->getValue();
+
+        if (!array_key_exists(0, $parameters) || !is_string($parameters[0])) {
+            $newValue = [$tokenValue];
+        } else {
+            $newValue = explode($parameters[0], $tokenValue);
         }
 
         return new TokenArray(
-            explode($parameters[0], $this->token->getValue()),
+            $newValue,
             $this->token->getOffset(),
             $this->token->getStack()
         );

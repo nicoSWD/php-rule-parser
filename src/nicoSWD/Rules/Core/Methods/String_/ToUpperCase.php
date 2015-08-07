@@ -18,16 +18,14 @@ use nicoSWD\Rules\Tokens\TokenString;
 final class ToUpperCase extends CallableMethod
 {
     /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
      * @param mixed[] $parameters
      * @return TokenString
      * @throws \Exception
      */
     public function call(array $parameters = [])
     {
-        if ($parameters) {
-            throw new \Exception;
-        }
-
         return new TokenString(
             '"' . strtoupper($this->token->getValue()) . '"',
             $this->token->getOffset(),

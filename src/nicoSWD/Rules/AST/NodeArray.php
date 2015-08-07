@@ -64,7 +64,6 @@ final class NodeArray extends BaseNode
 
                 $commaExpected = \false;
             } elseif ($value === ']') {
-                $commaExpected = \false;
                 break;
             } elseif (!$this->isIgnoredToken($current)) {
                 throw new ParserException(sprintf(
@@ -76,7 +75,7 @@ final class NodeArray extends BaseNode
             }
         } while ($stack->valid());
 
-        if ($commaExpected) {
+        if (!$commaExpected && $items) {
             throw new ParserException(sprintf(
                 'Unexpected token "," at position %d on line %d',
                 $current->getPosition(),
