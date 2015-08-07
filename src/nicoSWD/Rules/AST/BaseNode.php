@@ -137,9 +137,7 @@ abstract class BaseNode
 
             $value = $current->getValue();
 
-            if ($current instanceof Tokens\TokenMethod) {
-                continue;
-            } elseif ($current->getGroup() === Constants::GROUP_VALUE) {
+            if ($current->getGroup() === Constants::GROUP_VALUE) {
                 if ($commaExpected) {
                     throw new ParserException(sprintf(
                         'Unexpected value at position %d on line %d',
