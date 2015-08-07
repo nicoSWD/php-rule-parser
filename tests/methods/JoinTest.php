@@ -15,17 +15,17 @@ class JoinTest extends \AbstractTestBase
 {
     protected $array = ['foo' => ['foo', 'bar']];
 
-    public function testIfOmittedSeparatorFallsBackToDefault()
+    public function testIfOmittedDelimiterFallsBackToDefault()
     {
         $this->assertTrue($this->evaluate('foo.join() === "foo,bar"', $this->array));
     }
 
-    public function testLiteralSeparator()
+    public function testLiteralStringDelimiter()
     {
         $this->assertTrue($this->evaluate('foo.join("|") === "foo|bar"', $this->array));
     }
 
-    public function testVariableValueAsSeparator()
+    public function testVariableValueAsDelimiter()
     {
         $this->assertTrue($this->evaluate(
             'foo.join(separator) === "foo$bar"',

@@ -6,14 +6,13 @@
  * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\Core\Methods\String_;
+namespace nicoSWD\Rules\Core\Methods;
 
-use nicoSWD\Rules\Core\Methods\CallableMethod;
 use nicoSWD\Rules\Tokens\TokenString;
 
 /**
  * Class CharAt
- * @package nicoSWD\Rules\Core\Methods\String_
+ * @package nicoSWD\Rules\Core\Methods
  */
 final class CharAt extends CallableMethod
 {

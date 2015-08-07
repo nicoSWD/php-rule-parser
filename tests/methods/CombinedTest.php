@@ -13,7 +13,7 @@ namespace nicoSWD\Rules\tests\methods;
  */
 class CombinedTest extends \AbstractTestBase
 {
-    public function testFunctions()
+    public function testMixedMethodCalls()
     {
         $this->assertTrue($this->evaluate(
             '1 === 2 || ("foo|bar|baz".split("|") === ["foo", "bar", "baz"] && 2 < 3)'
@@ -39,6 +39,33 @@ class CombinedTest extends \AbstractTestBase
             // More
             "bar".toUpperCase() === "BAR"
             '
+        ));
+    }
+
+    public function testChainedMethodCalls()
+    {
+        $this->assertTrue($this->evaluate(
+            '"bar".toUpperCase().split("A") === ["B", "R"]'
+        ));
+
+        $this->assertTrue($this->evaluate(
+            '"bar".toUpperCase().split("A").join("c".toUpperCase()) === "BCR".toLowerCase().toUpperCase()'
+        ));
+
+        $this->assertTrue($this->evaluate(
+            '"bar"
+                .toUpperCase()
+                .split("A")
+                .join(
+                    "abc".substr(2) // "c"
+                    .toUpperCase()  // "C"
+                ).concat("-FOO", " ", "BAR")
+
+            ===
+
+            "BCR-FOO BAR"
+                .toLowerCase()
+                .toUpperCase()'
         ));
     }
 }

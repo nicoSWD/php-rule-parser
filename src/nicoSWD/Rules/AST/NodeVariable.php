@@ -8,12 +8,7 @@
  */
 namespace nicoSWD\Rules\AST;
 
-use nicoSWD\Rules\Tokens\TokenArray;
-use nicoSWD\Rules\Tokens\TokenBool;
-use nicoSWD\Rules\Tokens\TokenFloat;
-use nicoSWD\Rules\Tokens\TokenInteger;
-use nicoSWD\Rules\Tokens\TokenNull;
-use nicoSWD\Rules\Tokens\TokenString;
+use nicoSWD\Rules\Tokens;
 
 /**
  * Class NodeVariable
@@ -22,7 +17,7 @@ use nicoSWD\Rules\Tokens\TokenString;
 final class NodeVariable extends BaseNode
 {
     /**
-     * @return \nicoSWD\Rules\Tokens\BaseToken
+     * @return Tokens\BaseToken
      */
     public function getNode()
     {
@@ -31,28 +26,30 @@ final class NodeVariable extends BaseNode
 
         switch (gettype($value)) {
             case 'string':
-                $current = new TokenString('"' . $value . '"', $current->getOffset(), $current->getStack());
+                $current = new Tokens\TokenString('"' . $value . '"');
                 break;
             case 'integer':
-                $current = new TokenInteger($value, $current->getOffset(), $current->getStack());
+                $current = new Tokens\TokenInteger($value);
                 break;
             case 'boolean':
-                $current = new TokenBool($value, $current->getOffset(), $current->getStack());
+                $current = new Tokens\TokenBool($value);
                 break;
             case 'NULL':
-                $current = new TokenNull($value, $current->getOffset(), $current->getStack());
+                $current = new Tokens\TokenNull($value);
                 break;
             case 'double':
-                $current = new TokenFloat($value, $current->getOffset(), $current->getStack());
+                $current = new Tokens\TokenFloat($value);
                 break;
             case 'array':
-                $current = new TokenArray($value, $current->getOffset(), $current->getStack());
+                $current = new Tokens\TokenArray($value);
                 break;
         }
 
-        while ($current->supportsMethodCalls() && $this->hasMethodCall()) {
-            $method = $this->getMethod($current);
-            $current = $method->call($this->getFunctionArgs());
+        $current->setOffset($current->getOffset());
+        $current->setStack($this->ast->getStack());
+
+        while ($this->hasMethodCall()) {
+            $current = $this->getMethod($current)->call($this->getFunctionArgs());
         }
 
         return $current;

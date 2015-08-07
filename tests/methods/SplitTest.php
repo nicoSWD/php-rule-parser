@@ -41,4 +41,15 @@ class SplitTest extends \AbstractTestBase
             $this->var + ['delimiter' => ',']
         ));
     }
+
+    public function testSplitDelimiterAsVariableWithMethodCall()
+    {
+        $this->assertTrue($this->evaluate(
+            'foo.split(delimiter.toUpperCase()) === ["bbb", "bbb", "bbb"]',
+            [
+                'foo'       => 'bbbAbbbAbbb',
+                'delimiter' => 'a'
+            ]
+        ));
+    }
 }

@@ -61,7 +61,6 @@ abstract class BaseNode
     protected function hasMethodCall()
     {
         $stackClone = $this->ast->getStack()->getClone();
-        $hasMethodCall = \false;
 
         while ($stackClone->valid()) {
             $stackClone->next();
@@ -74,14 +73,13 @@ abstract class BaseNode
                 $this->methodName = $token->getValue();
                 $this->methodOffset = $token->getOffset();
 
-                $hasMethodCall = \true;
-                break;
+                return \true;
             } else {
                 break;
             }
         }
 
-        return $hasMethodCall;
+        return \false;
     }
 
     /**
@@ -91,8 +89,7 @@ abstract class BaseNode
     public function getMethod(Tokens\BaseToken $token)
     {
         $method = sprintf(
-            '\nicoSWD\Rules\Core\Methods\%s_\%s',
-            substr(strrchr(get_class($token), '\\'), 6),
+            '\nicoSWD\Rules\Core\Methods\%s',
             ucfirst(trim($this->getMethodName()))
         );
 
@@ -105,12 +102,13 @@ abstract class BaseNode
 
     /**
      * @since 0.3.4
+     * @internal
      * @return string
      */
     protected function getMethodName()
     {
         while ($this->ast->getStack()->current()->getOffset() < $this->methodOffset) {
-            $this->ast->getStack()->next();
+            $this->ast->next();
         }
 
         return ltrim(rtrim($this->methodName, " \r\n("), '. ');

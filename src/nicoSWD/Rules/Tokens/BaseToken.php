@@ -36,7 +36,7 @@ abstract class BaseToken
      * @param int    $offset
      * @param Stack  $stack
      */
-    public function __construct($value, $offset, Stack $stack)
+    public function __construct($value, $offset = 0, Stack $stack = \null)
     {
         $this->value = $value;
         $this->offset = $offset;
@@ -79,11 +79,27 @@ abstract class BaseToken
     }
 
     /**
+     * @param int $offset
+     */
+    public function setOffset($offset = 0)
+    {
+        $this->offset = $offset;
+    }
+
+    /**
      * @return Stack
      */
     public function getStack()
     {
         return $this->stack;
+    }
+
+    /**
+     * @param Stack $stack
+     */
+    public function setStack(Stack $stack)
+    {
+        $this->stack = $stack;
     }
 
     /**

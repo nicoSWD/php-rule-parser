@@ -6,15 +6,14 @@
  * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\Core\Methods\Array_;
+namespace nicoSWD\Rules\Core\Methods;
 
-use nicoSWD\Rules\Core\Methods\CallableMethod;
 use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\Tokens;
 
 /**
  * Class Join
- * @package nicoSWD\Rules\Core\Methods\Array_
+ * @package nicoSWD\Rules\Core\Methods
  */
 final class Join extends CallableMethod
 {
