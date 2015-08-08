@@ -59,11 +59,11 @@ class CombinedTest extends \AbstractTestBase
                 .join(
                     "abc".substr(2) // "c"
                     .toUpperCase()  // "C"
-                ).concat("-FOO", " ", "BAR")
+                ).concat("-FOO", "-", "BAR")
 
             ===
 
-            "BCR-FOO BAR"
+            "BCR-FOO-BAR"
                 .toLowerCase()
                 .toUpperCase()'
         ));

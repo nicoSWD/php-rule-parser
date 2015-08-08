@@ -107,9 +107,9 @@ abstract class BaseNode
      */
     protected function getMethodName()
     {
-        while ($this->ast->getStack()->current()->getOffset() < $this->methodOffset) {
+        do {
             $this->ast->next();
-        }
+        } while ($this->ast->getStack()->current()->getOffset() < $this->methodOffset);
 
         return ltrim(rtrim($this->methodName, " \r\n("), '. ');
     }

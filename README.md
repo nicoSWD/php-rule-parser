@@ -36,9 +36,21 @@ require '/path/to/vendor/autoload.php';
 require '/path/to/src/nicoSWD/Rules/Autoloader.php';
 
 $ruleStr = '
-    foo.toUpperCase() == "ABC" && (
-        bar == 123 || bar >= 321
-    ) && foo in ["abc", "def", "ghi"]';
+    2 < 3 && (
+        // False
+        foo in [4, 6, 7] ||
+        // True
+        [1, 4, 3].join("") === "143" &&
+        // True
+        "bar" in "foo bar".split(" ") &&
+        // True
+        "foo bar".substr(3) === "bar"
+    ) && (
+        // True
+        "foo|bar|baz".split("|") === ["foo", /* what */ "bar", "baz"] &&
+        // True
+        bar > 6
+    )';
 
 $variables = [
     'foo' => 'abc',
@@ -149,8 +161,8 @@ Outputs:
 ![Syntax preview](https://s3.amazonaws.com/f.cl.ly/items/0y1b0s0J2v2v1u3O1F3M/Screen%20Shot%202015-08-05%20at%2012.15.21.png)
 
 ## Supported Comparison Operators
-- Equal: `=`, `==`, `===` (strict), `is`
-- Not equal: `!=`, `!==` (strict), `is not`
+- Equal: `=`, `==`, `===` (strict)
+- Not equal: `!=`, `!==` (strict)
 - Greater than: `>`
 - Less than: `<`
 - Greater than/equal: `>=`
