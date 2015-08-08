@@ -63,37 +63,6 @@ $rule = new Rule($ruleStr, $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
-Standard JavaScript code comments are supported.
-
-```php
-$ruleStr = '
-    /**
-     * This is a test rule with comments
-     */
-
-    // This is true
-    2 < 3 && (
-        // This is false
-        foo in [4, 6, 7] ||
-        // True
-        [1, 4, 3].join("") === "143"
-    ) && (
-        // True
-        "foo|bar|baz".split("|" /* uh oh */) === ["foo", /* what */ "bar", "baz"] &&
-        // True
-        bar > 6
-    )';
-
-$variables = [
-    'foo' => 5,
-    'bar' => 7
-];
-
-$rule = new Rule($ruleStr, $variables);
-
-var_dump($rule->isTrue()); // bool(true)
-```
-
 ## Error Handling
 Both, `$rule->isTrue()` and `$rule->isFalse()` will throw an exception if the syntax is invalid. These calls can either be placed inside a `try` / `catch` block, or it can be checked prior using `$rule->isValid()`.
 
