@@ -130,7 +130,7 @@ Outputs:
 ![Syntax preview](https://s3.amazonaws.com/f.cl.ly/items/0y1b0s0J2v2v1u3O1F3M/Screen%20Shot%202015-08-05%20at%2012.15.21.png)
 
 ## Supported Operators
-- Equal: `=`, `==`, `===` (strict)
+- Equal: `==`, `===` (strict)
 - Not equal: `!=`, `!==` (strict)
 - Greater than: `>`
 - Less than: `<`
@@ -158,8 +158,10 @@ Pull requests are very welcome! If they include tests, even better. This project
 ## To Do
 - Fix build on PHP 7 / Nightly
 - Add support for function calls
+- Support for object properties (foo.length)
+- Support for returning actual results, other than true or false
 - Allow variables in arrays
-- Change regex and implementation for method calls. ".split(" should not be the token.
+- Change regex and implementation for method calls. ".split(" should not be the token
 - Add / implement missing methods
 - Add "typeof" construct
 - Do math (?)
