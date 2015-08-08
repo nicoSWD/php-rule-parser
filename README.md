@@ -44,7 +44,7 @@ $ruleStr = '
         // True
         "bar" in "foo bar".split(" ") &&
         // True
-        "foo bar".substr(3) === "bar"
+        "foo bar".substr(4) === "bar"
     ) && (
         // True
         "foo|bar|baz".split("|") === ["foo", /* what */ "bar", "baz"] &&
