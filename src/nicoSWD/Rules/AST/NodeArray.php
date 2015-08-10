@@ -75,7 +75,7 @@ final class NodeArray extends BaseNode
             }
         } while ($stack->valid());
 
-        if (!$commaExpected && $items) {
+        if (!$commaExpected && !empty($items)) {
             throw new ParserException(sprintf(
                 'Unexpected token "," at position %d on line %d',
                 $current->getPosition(),
