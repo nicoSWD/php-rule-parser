@@ -30,6 +30,7 @@ final class Stack extends SplObjectStorage
     public function getClone()
     {
         $stackClone = clone $this;
+        $stackClone->rewind();
 
         // This is ugly and needs to be fixed
         while ($stackClone->key() < $this->key()) {
