@@ -25,7 +25,7 @@ final class TokenBool extends BaseToken
     }
 
     /**
-     * @return bool
+     * @return mixed
      *
      * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
