@@ -159,7 +159,7 @@ abstract class BaseNode
             }
         } while ($this->ast->valid());
 
-        if (!$commaExpected && $arguments) {
+        if (!$commaExpected && !empty($arguments)) {
             throw new ParserException(sprintf(
                 'Unexpected token "," at position %d on line %d',
                 $current->getPosition(),
