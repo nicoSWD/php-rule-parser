@@ -23,4 +23,9 @@ class IndexOfTest extends \AbstractTestBase
     {
         $this->assertTrue($this->evaluate('"bar".indexOf() === -1'));
     }
+
+    public function testNegativeOneIsReturnedIfNeedleNotFound()
+    {
+        $this->assertTrue($this->evaluate('"bar".indexOf("foo") === -1'));
+    }
 }

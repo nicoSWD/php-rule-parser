@@ -135,14 +135,14 @@ class Parser
     {
         if ($this->operatorRequired) {
             throw new Exceptions\ParserException(sprintf(
-                'Missing operator', // at position %d on line %d',
+                'Missing operator at position %d on line %d',
                 $token->getPosition(),
                 $token->getLine()
             ));
         }
 
-        $this->incompleteCondition = \false;
         $this->operatorRequired = !$this->operatorRequired;
+        $this->incompleteCondition = \false;
 
         if (!isset($this->values)) {
             $this->values = [$token->getValue()];

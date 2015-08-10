@@ -167,7 +167,7 @@ Pull requests are very welcome! If they include tests, even better. This project
 - Allow string concatenating with "+"
 - Support for objects {} (?)
 - Support for regular expressions
-- - ~~Fix build on PHP 7 / Nightly~~
+- ~~Fix build on PHP 7 / Nightly~~
 - ...
 
 ## License
