@@ -49,7 +49,7 @@ final class NodeVariable extends BaseNode
         $current->setStack($this->ast->getStack());
 
         while ($this->hasMethodCall()) {
-            $current = $this->getMethod($current)->call($this->getFunctionArgs());
+            $current = $this->getMethod($current)->call($this->getCommaSeparatedValues());
         }
 
         return $current;

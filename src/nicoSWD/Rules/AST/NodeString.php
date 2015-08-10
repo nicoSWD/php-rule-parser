@@ -22,7 +22,7 @@ final class NodeString extends BaseNode
         $current = $this->ast->getStack()->current();
 
         while ($current->supportsMethodCalls() && $this->hasMethodCall()) {
-            $current = $this->getMethod($current)->call($this->getFunctionArgs());
+            $current = $this->getMethod($current)->call($this->getCommaSeparatedValues());
         }
 
         return $current;

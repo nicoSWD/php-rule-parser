@@ -107,20 +107,22 @@ abstract class BaseNode
 
     /**
      * @since 0.3.4
+     * @param string $stopAt
      * @return mixed[]
      * @throws ParserException
      */
-    protected function getFunctionArgs()
+    protected function getCommaSeparatedValues($stopAt = ')')
     {
         $commaExpected = \false;
-        $arguments = [];
+        $items = [];
 
         do {
             $this->ast->next();
 
             if (!$current = $this->ast->current()) {
                 throw new ParserException(sprintf(
-                    'Unexpected end of string. Expected ")"'
+                    'Unexpected end of string. Expected "%s"',
+                    $stopAt
                 ));
             }
 
@@ -136,7 +138,7 @@ abstract class BaseNode
                 }
 
                 $commaExpected = \true;
-                $arguments[] = $value;
+                $items[] = $value;
             } elseif ($current instanceof Tokens\TokenComma) {
                 if (!$commaExpected) {
                     throw new ParserException(sprintf(
@@ -147,7 +149,7 @@ abstract class BaseNode
                 }
 
                 $commaExpected = \false;
-            } elseif ($value === ')') {
+            } elseif ($value === $stopAt) {
                 break;
             } elseif (!$this->isIgnoredToken($current)) {
                 throw new ParserException(sprintf(
@@ -159,7 +161,7 @@ abstract class BaseNode
             }
         } while ($this->ast->valid());
 
-        if (!$commaExpected && !empty($arguments)) {
+        if (!$commaExpected && !empty($items)) {
             throw new ParserException(sprintf(
                 'Unexpected token "," at position %d on line %d',
                 $current->getPosition(),
@@ -167,7 +169,7 @@ abstract class BaseNode
             ));
         }
 
-        return $arguments;
+        return $items;
     }
 
     /**

@@ -39,14 +39,8 @@ class JoinTest extends \AbstractTestBase
         $this->assertTrue($this->evaluate('[1, 2, 3] . join("|") === "1|2|3"'));
     }
 
-    /**
-     * Not currently supported.
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected token "foo" at position 7 on line 1
-     */
-    public function testIfVariableInsideArrayThrowsException()
+    public function testVariableInArrayIsJoined()
     {
-        $this->evaluate('[1, 2, foo].join("|") === "1|2|3"');
+        $this->assertTrue($this->evaluate('[1, 2, foo].join("|") === "1|2|3"', ['foo' => 3]));
     }
 }
