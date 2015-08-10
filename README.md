@@ -156,7 +156,6 @@ $ phpunit
 Pull requests are very welcome! If they include tests, even better. This project follows PSR-2 coding standards, please make sure your pull requests do too.
 
 ## To Do
-- Fix build on PHP 7 / Nightly
 - Add support for function calls
 - Support for object properties (foo.length)
 - Support for returning actual results, other than true or false
@@ -168,6 +167,7 @@ Pull requests are very welcome! If they include tests, even better. This project
 - Allow string concatenating with "+"
 - Support for objects {} (?)
 - Support for regular expressions
+- - ~~Fix build on PHP 7 / Nightly~~
 - ...
 
 ## License
