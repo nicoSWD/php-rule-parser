@@ -32,7 +32,7 @@ abstract class BaseToken
     protected $stack;
 
     /**
-     * @param string $value
+     * @param mixed  $value
      * @param int    $offset
      * @param Stack  $stack
      */
