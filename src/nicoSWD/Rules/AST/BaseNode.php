@@ -85,7 +85,7 @@ abstract class BaseNode
     {
         $method = sprintf(
             '\nicoSWD\Rules\Core\Methods\%s',
-            ucfirst($this->getMethodName())
+            ucfirst(trim($this->getMethodName()))
         );
 
         return new $method($token);
