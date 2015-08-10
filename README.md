@@ -159,7 +159,7 @@ Pull requests are very welcome! If they include tests, even better. This project
 - Add support for function calls
 - Support for object properties (foo.length)
 - Support for returning actual results, other than true or false
-- Allow variables in arrays
+- Support for array / string dereferencing: "foo"[1]
 - Change regex and implementation for method calls. ".split(" should not be the token
 - Add / implement missing methods
 - Add "typeof" construct
@@ -168,6 +168,7 @@ Pull requests are very welcome! If they include tests, even better. This project
 - Support for objects {} (?)
 - Support for regular expressions
 - ~~Fix build on PHP 7 / Nightly~~
+- ~~Allow variables in arrays~~
 - ...
 
 ## License
