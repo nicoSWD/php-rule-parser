@@ -61,7 +61,7 @@ abstract class BaseToken
      * so the original value is used for error reporting,
      * while the other one is used internally.
      *
-     * @return string
+     * @return mixed
      */
     final public function getOriginalValue()
     {
