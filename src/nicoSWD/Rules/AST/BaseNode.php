@@ -25,11 +25,6 @@ abstract class BaseNode
     protected $ast;
 
     /**
-     * @var array
-     */
-    protected $methodInstances = [];
-
-    /**
      * @var string
      */
     protected $methodName = '';
@@ -90,14 +85,10 @@ abstract class BaseNode
     {
         $method = sprintf(
             '\nicoSWD\Rules\Core\Methods\%s',
-            ucfirst(trim($this->getMethodName()))
+            ucfirst($this->getMethodName())
         );
 
-        if (!isset($this->methodInstances[$method])) {
-            $this->methodInstances[$method] = new $method($token);
-        }
-
-        return $this->methodInstances[$method];
+        return new $method($token);
     }
 
     /**
