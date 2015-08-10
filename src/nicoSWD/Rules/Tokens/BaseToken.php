@@ -141,12 +141,12 @@ abstract class BaseToken
         $line = 1;
 
         foreach ($this->stack as $token) {
-            if ($token instanceof TokenNewline) {
+            if ($token === $this) {
+                break;
+            } elseif ($token instanceof TokenNewline) {
                 $line += 1;
             } elseif ($token instanceof TokenComment) {
                 $line += substr_count($token->getValue(), "\n");
-            } elseif ($token === $this) {
-                break;
             }
         }
 
