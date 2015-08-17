@@ -17,9 +17,9 @@ use nicoSWD\Rules\Stack;
 abstract class BaseToken
 {
     /**
-     * @var string
+     * @var mixed
      */
-    protected $value = '';
+    protected $value;
 
     /**
      * @var int
