@@ -25,7 +25,7 @@ final class ToLowerCase extends CallableFunction
      * @return TokenString
      * @throws \Exception
      */
-    public function call(TokenCollection $parameters = \null)
+    public function call(TokenCollection $parameters)
     {
         return new TokenString(
             strtolower($this->token->getValue()),

@@ -24,7 +24,7 @@ final class Join extends CallableFunction
      * @return Tokens\TokenString
      * @throws ParserException
      */
-    public function call(TokenCollection $parameters = \null)
+    public function call(TokenCollection $parameters)
     {
         if (!$this->token instanceof Tokens\TokenArray) {
             throw new ParserException(sprintf(

@@ -22,7 +22,7 @@ final class ParseFloat extends CallableFunction
      * @param TokenCollection $parameters
      * @return TokenFloat
      */
-    public function call(TokenCollection $parameters = \null)
+    public function call(TokenCollection $parameters)
     {
         $parameters->rewind();
 

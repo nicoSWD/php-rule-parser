@@ -25,7 +25,7 @@ final class Test extends CallableFunction
      * @return TokenBool
      * @throws ParserException
      */
-    public function call(TokenCollection $parameters = \null)
+    public function call(TokenCollection $parameters)
     {
         if (!$this->token instanceof TokenRegex) {
             throw new ParserException(sprintf(

@@ -24,7 +24,7 @@ final class IndexOf extends CallableFunction
      * @return TokenString
      * @throws \Exception
      */
-    public function call(TokenCollection $parameters = \null)
+    public function call(TokenCollection $parameters)
     {
         $parameters->rewind();
 

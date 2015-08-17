@@ -34,7 +34,7 @@ abstract class CallableFunction
      * @param TokenCollection $parameters
      * @return mixed
      */
-    abstract public function call(TokenCollection $parameters = \null);
+    abstract public function call(TokenCollection $parameters);
 
     /**
      * @return string

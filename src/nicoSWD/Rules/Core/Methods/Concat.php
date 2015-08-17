@@ -22,7 +22,7 @@ final class Concat extends CallableFunction
      * @param TokenCollection $parameters
      * @return Tokens\TokenString
      */
-    public function call(TokenCollection $parameters = \null)
+    public function call(TokenCollection $parameters)
     {
         $value = $this->token->getValue();
 

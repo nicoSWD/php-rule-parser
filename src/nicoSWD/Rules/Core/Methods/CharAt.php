@@ -22,7 +22,7 @@ final class CharAt extends CallableFunction
      * @param TokenCollection $parameters
      * @return TokenString
      */
-    public function call(TokenCollection $parameters = \null)
+    public function call(TokenCollection $parameters)
     {
         $parameters->rewind();
 

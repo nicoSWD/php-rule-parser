@@ -23,7 +23,7 @@ final class Split extends CallableFunction
      * @return Tokens\TokenArray
      * @throws \Exception
      */
-    public function call(TokenCollection $parameters = \null)
+    public function call(TokenCollection $parameters)
     {
         $parameters->rewind();
         $separator = $parameters->current();

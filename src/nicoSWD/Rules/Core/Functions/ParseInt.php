@@ -22,7 +22,7 @@ final class ParseInt extends CallableFunction
      * @param TokenCollection $parameters
      * @return TokenInteger
      */
-    public function call(TokenCollection $parameters = \null)
+    public function call(TokenCollection $parameters)
     {
         $parameters->rewind();
 
