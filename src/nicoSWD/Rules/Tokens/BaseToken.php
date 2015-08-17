@@ -32,9 +32,19 @@ abstract class BaseToken
     protected $stack;
 
     /**
-     * @param mixed  $value
-     * @param int    $offset
-     * @param Stack  $stack
+     * @var int
+     */
+    protected $position = \null;
+
+    /**
+     * @var int
+     */
+    protected $line = \null;
+
+    /**
+     * @param mixed $value
+     * @param int   $offset
+     * @param Stack $stack
      */
     public function __construct($value, $offset = 0, Stack $stack = \null)
     {
@@ -117,20 +127,11 @@ abstract class BaseToken
      */
     public function getPosition()
     {
-        $offset = 0;
-
-        foreach ($this->stack as $token) {
-            if ($token === $this) {
-                break;
-            } elseif ($token instanceof TokenNewline) {
-                $offset = 0;
-                continue;
-            }
-
-            $offset += strlen($token->getOriginalValue());
+        if (!isset($this->position)) {
+            $this->getLineAndPosition();
         }
 
-        return $offset;
+        return $this->position;
     }
 
     /**
@@ -138,18 +139,38 @@ abstract class BaseToken
      */
     public function getLine()
     {
-        $line = 1;
+        if (!isset($this->line)) {
+            $this->getLineAndPosition();
+        }
+
+        return $this->line;
+    }
+
+    /**
+     * @since 0.3.5
+     * @internal
+     * @return void
+     */
+    private function getLineAndPosition()
+    {
+        $this->line = 1;
 
         foreach ($this->stack as $token) {
+            $sumPosition = \true;
+
             if ($token === $this) {
                 break;
             } elseif ($token instanceof TokenNewline) {
-                $line += 1;
+                $this->line += 1;
+                $this->position = 0;
+                $sumPosition = \false;
             } elseif ($token instanceof TokenComment) {
-                $line += substr_count($token->getValue(), "\n");
+                $this->line += substr_count($token->getValue(), "\n");
+            }
+
+            if ($sumPosition) {
+                $this->position += strlen($token->getOriginalValue());
             }
         }
-
-        return $line;
     }
 }

@@ -52,4 +52,9 @@ class SplitTest extends \AbstractTestBase
             ]
         ));
     }
+
+    public function testSplitWithRegularExpression()
+    {
+        $this->assertTrue($this->evaluate('"foo     bar".split(/\s+/) === ["foo", "bar"]'));
+    }
 }

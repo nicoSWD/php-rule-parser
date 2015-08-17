@@ -6,15 +6,16 @@
  * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\Core\Methods;
+namespace nicoSWD\Rules\Core;
 
 use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\AST\TokenCollection;
 
 /**
- * Class CallableMethod
+ * Class CallableFunction
  * @package nicoSWD\Rules\Core\Methods
  */
-abstract class CallableMethod
+abstract class CallableFunction
 {
     /**
      * @var BaseToken
@@ -30,8 +31,13 @@ abstract class CallableMethod
     }
 
     /**
-     * @param mixed[] $parameters
+     * @param TokenCollection $parameters
      * @return mixed
      */
-    abstract public function call(array $parameters = []);
+    abstract public function call(TokenCollection $parameters = \null);
+
+    /**
+     * @return string
+     */
+    abstract public function getName();
 }

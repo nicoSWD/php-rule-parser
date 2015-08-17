@@ -8,34 +8,50 @@
  */
 namespace nicoSWD\Rules\Core\Methods;
 
+use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Tokens\TokenString;
+use nicoSWD\Rules\Core\CallableFunction;
 
 /**
  * Class Substr
  * @package nicoSWD\Rules\Core\Methods
  */
-final class Substr extends CallableMethod
+final class Substr extends CallableFunction
 {
     /**
-     * @param mixed[] $parameters
+     * @param TokenCollection $parameters
      * @return TokenString
      */
-    public function call(array $parameters = [])
+    public function call(TokenCollection $parameters = \null)
     {
+        $parameters->rewind();
         $params = [];
 
-        if (!array_key_exists(0, $parameters)) {
+        if ($parameters->count() < 1) {
             $params[] = 0;
         } else {
-            $params[] = (int) $parameters[0];
+            $params[] = (int) $parameters->current()->getValue();
         }
 
-        if (array_key_exists(1, $parameters)) {
-            $params[] = (int) $parameters[1];
+        if ($parameters->count() >= 2) {
+            $parameters->next();
+            $params[] = (int) $parameters->current()->getValue();
         }
 
         $value = call_user_func_array('substr', array_merge([$this->token->getValue()], $params));
 
-        return new TokenString('"' . $value . '"', $this->token->getOffset(), $this->token->getStack());
+        return new TokenString(
+            (string) $value,
+            $this->token->getOffset(),
+            $this->token->getStack()
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'substr';
     }
 }

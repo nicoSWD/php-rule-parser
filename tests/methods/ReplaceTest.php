@@ -28,4 +28,15 @@ class ReplaceTest extends \AbstractTestBase
     {
         $this->assertTrue($this->evaluate('"bar".replace("r") === "baundefined"'));
     }
+
+    public function testReplaceWithRegularExpression()
+    {
+        $this->assertTrue($this->evaluate('"arbar".replace(/ar$/, "") === "arb"'));
+    }
+
+    public function testRegularExpressionWithGModifier()
+    {
+        $this->assertTrue($this->evaluate('"foofoo".replace(/foo/, "") === "foo"'));
+        $this->assertTrue($this->evaluate('"foofoo".replace(/foo/g, "") === ""'));
+    }
 }

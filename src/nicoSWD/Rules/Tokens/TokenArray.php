@@ -31,4 +31,26 @@ final class TokenArray extends BaseToken
     {
         return \true;
     }
+
+    /**
+     * @since 0.3.5
+     * @return array
+     */
+    public function toArray()
+    {
+        $items = [];
+
+        foreach ($this->value as $value) {
+            /** @var self $value */
+            $val = $value->getValue();
+
+            if ($val instanceof TokenArray) {
+                $items += $val->toArray();
+            } else {
+                $items[] = $val;
+            }
+        }
+
+        return $items;
+    }
 }

@@ -8,27 +8,37 @@
  */
 namespace nicoSWD\Rules\Core\Methods;
 
+use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Tokens\TokenArray;
+use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Tokens\TokenRegex;
 
 /**
  * Class Split
  * @package nicoSWD\Rules\Core\Methods
  */
-final class Split extends CallableMethod
+final class Split extends CallableFunction
 {
     /**
-     * @param mixed[] $parameters
+     * @param TokenCollection $parameters
      * @return TokenArray
      * @throws \Exception
      */
-    public function call(array $parameters = [])
+    public function call(TokenCollection $parameters = \null)
     {
-        $tokenValue = $this->token->getValue();
+        $parameters->rewind();
 
-        if (!array_key_exists(0, $parameters) || !is_string($parameters[0])) {
+        $tokenValue = $this->token->getValue();
+        $param = $parameters->current();
+
+        if (!$param || !is_string($param->getValue())) {
             $newValue = [$tokenValue];
         } else {
-            $newValue = explode($parameters[0], $tokenValue);
+            if ($param instanceof TokenRegex) {
+                $newValue = preg_split($param->getValue(), $tokenValue);
+            } else {
+                $newValue = explode($param->getValue(), $tokenValue);
+            }
         }
 
         return new TokenArray(
@@ -36,5 +46,13 @@ final class Split extends CallableMethod
             $this->token->getOffset(),
             $this->token->getStack()
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'split';
     }
 }

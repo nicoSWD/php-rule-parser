@@ -8,31 +8,44 @@
  */
 namespace nicoSWD\Rules\Core\Methods;
 
-use nicoSWD\Rules\Tokens\TokenString;
+use nicoSWD\Rules\AST\TokenCollection;
+use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\Core\CallableFunction;
 
 /**
  * Class Concat
  * @package nicoSWD\Rules\Core\Methods
  */
-final class Concat extends CallableMethod
+final class Concat extends CallableFunction
 {
     /**
-     * @param mixed[] $parameters
-     * @return TokenString
-     * @throws \Exception
+     * @param TokenCollection $parameters
+     * @return Tokens\TokenString
      */
-    public function call(array $parameters = [])
+    public function call(TokenCollection $parameters = \null)
     {
         $value = $this->token->getValue();
 
         foreach ($parameters as $parameter) {
-            if (is_array($parameter)) {
-                $parameter = implode(',', $parameter);
+            if ($parameter instanceof Tokens\TokenArray) {
+                $value .= implode(',', $parameter->toArray());
+            } else {
+                $value .= $parameter->getValue();
             }
-
-            $value .= $parameter;
         }
 
-        return new TokenString('"' . $value . '"', $this->token->getOffset(), $this->token->getStack());
+        return new Tokens\TokenString(
+            $value,
+            $this->token->getOffset(),
+            $this->token->getStack()
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'concat';
     }
 }

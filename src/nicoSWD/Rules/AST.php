@@ -9,6 +9,8 @@
 namespace nicoSWD\Rules;
 
 use Iterator;
+use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\Tokens\TokenFactory;
 
 /**
  * Class AST
@@ -63,13 +65,17 @@ final class AST implements Iterator
             default:
                 return $current;
             case $current instanceof Tokens\TokenString:
-                $current = new AST\NodeString($this);
+            case $current instanceof Tokens\TokenRegex:
+                $current = new AST\Nodes\NodeString($this);
                 break;
             case $current instanceof Tokens\TokenOpeningArray:
-                $current = new AST\NodeArray($this);
+                $current = new AST\Nodes\NodeArray($this);
                 break;
             case $current instanceof Tokens\TokenVariable:
-                $current = new AST\NodeVariable($this);
+                $current = new AST\Nodes\NodeVariable($this);
+                break;
+            case $current instanceof Tokens\TokenFunction:
+                $current = new AST\Nodes\NodeFunction($this);
                 break;
         }
 
@@ -94,7 +100,7 @@ final class AST implements Iterator
 
     /**
      * @param string $name
-     * @return mixed
+     * @return BaseToken
      * @throws Exceptions\ParserException
      */
     public function getVariable($name)
@@ -110,7 +116,7 @@ final class AST implements Iterator
             ));
         }
 
-        return $this->variables[$name];
+        return TokenFactory::createFromPHPType($this->variables[$name]);
     }
 
     /**

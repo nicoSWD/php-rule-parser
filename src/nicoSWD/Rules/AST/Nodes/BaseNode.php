@@ -6,9 +6,10 @@
  * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\AST;
+namespace nicoSWD\Rules\AST\Nodes;
 
 use nicoSWD\Rules\AST;
+use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens;
 use nicoSWD\Rules\Constants;
 use nicoSWD\Rules\Exceptions\ParserException;
@@ -79,16 +80,34 @@ abstract class BaseNode
 
     /**
      * @param Tokens\BaseToken $token
-     * @return \nicoSWD\Rules\Core\Methods\CallableMethod
+     * @return \nicoSWD\Rules\Core\CallableFunction
+     * @throws ParserException
      */
     public function getMethod(Tokens\BaseToken $token)
     {
-        $method = sprintf(
-            '\nicoSWD\Rules\Core\Methods\%s',
-            ucfirst(trim($this->getMethodName()))
-        );
+        $methodName = trim($this->getMethodName());
+        $methodClass = '\nicoSWD\Rules\Core\Methods\\' . ucfirst($methodName);
 
-        return new $method($token);
+        if (!class_exists($methodClass)) {
+            $current = $this->ast->getStack()->current();
+
+            throw new ParserException(sprintf(
+                'undefined is not a function at position %d on line %d',
+                $current->getPosition(),
+                $current->getLine()
+            ));
+        }
+
+        /** @var CallableFunction $instance */
+        $instance = new $methodClass($token);
+
+        if ($instance->getName() !== $methodName) {
+            throw new ParserException(
+                'undefined is not a function'
+            );
+        }
+
+        return $instance;
     }
 
     /**
@@ -108,13 +127,13 @@ abstract class BaseNode
     /**
      * @since 0.3.4
      * @param string $stopAt
-     * @return mixed[]
+     * @return AST\TokenCollection
      * @throws ParserException
      */
     protected function getCommaSeparatedValues($stopAt = ')')
     {
         $commaExpected = \false;
-        $items = [];
+        $items = new AST\TokenCollection();
 
         do {
             $this->ast->next();
@@ -126,8 +145,6 @@ abstract class BaseNode
                 ));
             }
 
-            $value = $current->getValue();
-
             if ($current->getGroup() === Constants::GROUP_VALUE) {
                 if ($commaExpected) {
                     throw new ParserException(sprintf(
@@ -138,7 +155,7 @@ abstract class BaseNode
                 }
 
                 $commaExpected = \true;
-                $items[] = $value;
+                $items->attach($current);
             } elseif ($current instanceof Tokens\TokenComma) {
                 if (!$commaExpected) {
                     throw new ParserException(sprintf(
@@ -149,7 +166,7 @@ abstract class BaseNode
                 }
 
                 $commaExpected = \false;
-            } elseif ($value === $stopAt) {
+            } elseif ($current->getValue() === $stopAt) {
                 break;
             } elseif (!$this->isIgnoredToken($current)) {
                 throw new ParserException(sprintf(
@@ -161,7 +178,7 @@ abstract class BaseNode
             }
         } while ($this->ast->valid());
 
-        if (!$commaExpected && !empty($items)) {
+        if (!$commaExpected && $items->count() > 0) {
             throw new ParserException(sprintf(
                 'Unexpected token "," at position %d on line %d',
                 $current->getPosition(),

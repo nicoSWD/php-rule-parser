@@ -57,4 +57,13 @@ class SyntaxErrorTest extends \AbstractTestBase
     {
         $this->evaluate('"foo".charAt(1 , ');
     }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage undefined is not a function at position 7 on line 1
+     */
+    public function testUndefinedMethodThrowsException()
+    {
+        $this->evaluate('/^foo$/.teddst("foo") === true');
+    }
 }

@@ -8,34 +8,50 @@
  */
 namespace nicoSWD\Rules\Core\Methods;
 
+use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Tokens\TokenString;
+use nicoSWD\Rules\Core\CallableFunction;
 
 /**
  * Class CharAt
  * @package nicoSWD\Rules\Core\Methods
  */
-final class CharAt extends CallableMethod
+final class CharAt extends CallableFunction
 {
     /**
-     * @param mixed[] $parameters
+     * @param TokenCollection $parameters
      * @return TokenString
      */
-    public function call(array $parameters = [])
+    public function call(TokenCollection $parameters = \null)
     {
-        if (!array_key_exists(0, $parameters)) {
-            $parameters[0] = 0;
+        $parameters->rewind();
+
+        if ($parameters->count() < 1) {
+            $offset = 0;
         } else {
-            $parameters[0] = (int) $parameters[0];
+            $offset = (int) $parameters->current()->getValue();
         }
 
-        $value = $this->token->getValue();
+        $tokenValue = $this->token->getValue();
 
-        if (!isset($value[$parameters[0]])) {
+        if (!isset($tokenValue[$offset])) {
             $char = '';
         } else {
-            $char = $value[$parameters[0]];
+            $char = $tokenValue[$offset];
         }
 
-        return new TokenString('"' . $char . '"', $this->token->getOffset(), $this->token->getStack());
+        return new TokenString(
+            $char,
+            $this->token->getOffset(),
+            $this->token->getStack()
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'charAt';
     }
 }

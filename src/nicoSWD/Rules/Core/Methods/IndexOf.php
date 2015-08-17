@@ -8,32 +8,48 @@
  */
 namespace nicoSWD\Rules\Core\Methods;
 
+use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Tokens\TokenInteger;
 use nicoSWD\Rules\Tokens\TokenString;
+use nicoSWD\Rules\Core\CallableFunction;
 
 /**
  * Class IndexOf
  * @package nicoSWD\Rules\Core\Methods
  */
-final class IndexOf extends CallableMethod
+final class IndexOf extends CallableFunction
 {
     /**
-     * @param mixed[] $parameters
+     * @param TokenCollection $parameters
      * @return TokenString
      * @throws \Exception
      */
-    public function call(array $parameters = [])
+    public function call(TokenCollection $parameters = \null)
     {
-        if (!array_key_exists(0, $parameters)) {
+        $parameters->rewind();
+
+        if ($parameters->count() < 1) {
             $value = -1;
         } else {
-            $value = strpos($this->token->getValue(), $parameters[0]);
+            $value = strpos($this->token->getValue(), $parameters->current()->getValue());
 
             if ($value === \false) {
                 $value = -1;
             }
         }
 
-        return new TokenInteger($value, $this->token->getOffset(), $this->token->getStack());
+        return new TokenInteger(
+            $value,
+            $this->token->getOffset(),
+            $this->token->getStack()
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'indexOf';
     }
 }

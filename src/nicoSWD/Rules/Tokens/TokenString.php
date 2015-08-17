@@ -14,7 +14,7 @@ use nicoSWD\Rules\Constants;
  * Class TokenString
  * @package nicoSWD\Rules\Tokens
  */
-final class TokenString extends BaseToken
+class TokenString extends BaseToken
 {
     /**
      * @return int
@@ -30,13 +30,5 @@ final class TokenString extends BaseToken
     public function supportsMethodCalls()
     {
         return \true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue()
-    {
-        return substr(parent::getValue(), 1, -1);
     }
 }

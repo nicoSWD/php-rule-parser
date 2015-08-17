@@ -15,7 +15,7 @@ class OperatorsTest extends \AbstractTestBase
 {
     public function testAllAvailableOperators()
     {
-        $this->assertTrue($this->evaluate('3 == 3'));
+        $this->assertTrue($this->evaluate('3 == 3'), 'Equal operator failed on two integers');
         $this->assertTrue($this->evaluate('4 === 4'));
         $this->assertTrue($this->evaluate('"4" == 4'));
         $this->assertTrue($this->evaluate('2 > 1'));
