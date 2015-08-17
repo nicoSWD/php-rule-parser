@@ -26,6 +26,15 @@ final class Join extends CallableFunction
      */
     public function call(TokenCollection $parameters = \null)
     {
+        if (!$this->token instanceof Tokens\TokenArray) {
+            throw new ParserException(sprintf(
+               '%s.join is not a function at position %d on line %d',
+                $this->token->getValue(),
+                $this->token->getPosition(),
+                $this->token->getLine()
+            ));
+        }
+
         $parameters->rewind();
 
         if ($firstParam = $parameters->current()) {
@@ -34,9 +43,7 @@ final class Join extends CallableFunction
             $glue = ',';
         }
 
-        if (!$array = $this->token->getValue()) {
-            $array = [];
-        }
+        $array = $this->token->getValue();
 
         if ($array instanceof TokenCollection) {
             $array = $array->toArray();

@@ -48,12 +48,8 @@ class TestTest extends \AbstractTestBase
         $this->assertTrue($this->evaluate('/^true/.test(true) === false'));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage undefined is not a function at position 0 on line 1
-     */
-    public function testExceptionIsThrownOnTypeError()
+    public function testWithOmittedParameters()
     {
-        $this->evaluate('"foo".test("foo") === false');
+        $this->assertTrue($this->evaluate('/^foo$/.test() === false'));
     }
 }

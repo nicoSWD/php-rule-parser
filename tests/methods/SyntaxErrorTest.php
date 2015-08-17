@@ -66,4 +66,31 @@ class SyntaxErrorTest extends \AbstractTestBase
     {
         $this->evaluate('/^foo$/.teddst("foo") === true');
     }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage undefined is not a function
+     */
+    public function testIncorrectSpellingThrowsException()
+    {
+        $this->evaluate('"foo".ChARat(1) === "o"');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage foo.join is not a function at position 0 on line 1
+     */
+    public function testCallOnNonArray()
+    {
+        $this->assertTrue($this->evaluate('"foo".join("|") === ""'));
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage undefined is not a function at position 0 on line 1
+     */
+    public function testExceptionIsThrownOnTypeError()
+    {
+        $this->evaluate('"foo".test("foo") === false');
+    }
 }

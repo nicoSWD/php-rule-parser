@@ -43,4 +43,9 @@ class JoinTest extends \AbstractTestBase
     {
         $this->assertTrue($this->evaluate('[1, 2, foo].join("|") === "1|2|3"', ['foo' => 3]));
     }
+
+    public function testJoinOnEmptyArray()
+    {
+        $this->assertTrue($this->evaluate('[].join("|") === ""'));
+    }
 }

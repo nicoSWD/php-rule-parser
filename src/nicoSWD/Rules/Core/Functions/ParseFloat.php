@@ -38,6 +38,6 @@ final class ParseFloat extends CallableFunction
      */
     public function getName()
     {
-        return 'parseInt';
+        return 'parseFloat';
     }
 }
