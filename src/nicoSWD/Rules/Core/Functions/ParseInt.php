@@ -9,8 +9,8 @@
 namespace nicoSWD\Rules\Core\Functions;
 
 use nicoSWD\Rules\AST\TokenCollection;
-use nicoSWD\Rules\Tokens\TokenInteger;
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Tokens\TokenInteger;
 
 /**
  * Class ParseInt

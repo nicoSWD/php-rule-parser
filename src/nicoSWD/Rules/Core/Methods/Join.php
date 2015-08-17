@@ -28,7 +28,7 @@ final class Join extends CallableFunction
     {
         if (!$this->token instanceof Tokens\TokenArray) {
             throw new ParserException(sprintf(
-               '%s.join is not a function at position %d on line %d',
+                '%s.join is not a function at position %d on line %d',
                 $this->token->getValue(),
                 $this->token->getPosition(),
                 $this->token->getLine()

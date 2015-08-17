@@ -10,7 +10,6 @@ namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Tokens\TokenInteger;
-use nicoSWD\Rules\Tokens\TokenString;
 use nicoSWD\Rules\Core\CallableFunction;
 
 /**
@@ -21,7 +20,7 @@ final class IndexOf extends CallableFunction
 {
     /**
      * @param TokenCollection $parameters
-     * @return TokenString
+     * @return TokenInteger
      * @throws \Exception
      */
     public function call(TokenCollection $parameters)

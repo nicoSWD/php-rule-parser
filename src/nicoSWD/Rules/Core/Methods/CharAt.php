@@ -9,8 +9,8 @@
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
-use nicoSWD\Rules\Tokens\TokenString;
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Tokens\TokenString;
 
 /**
  * Class CharAt

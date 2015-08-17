@@ -9,10 +9,10 @@
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
+use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\Tokens\TokenBool;
 use nicoSWD\Rules\Tokens\TokenRegex;
-use nicoSWD\Rules\Core\CallableFunction;
 
 /**
  * Class Test
@@ -56,7 +56,7 @@ final class Test extends CallableFunction
                 $subject = current($subject->toArray());
             }
 
-            $bool = (bool) preg_match($pattern, (string) $subject);
+            $bool = (bool)preg_match($pattern, (string)$subject);
         }
 
         return new TokenBool(

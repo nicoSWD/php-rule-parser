@@ -9,8 +9,8 @@
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
-use nicoSWD\Rules\Tokens\TokenString;
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Tokens\TokenString;
 
 /**
  * Class Substr
@@ -30,7 +30,7 @@ final class Substr extends CallableFunction
         if ($parameters->count() < 1) {
             $params[] = 0;
         } else {
-            $params[] = (int) $parameters->current()->getValue();
+            $params[] = (int)$parameters->current()->getValue();
         }
 
         if ($parameters->count() >= 2) {
@@ -41,7 +41,7 @@ final class Substr extends CallableFunction
         $value = call_user_func_array('substr', array_merge([$this->token->getValue()], $params));
 
         return new TokenString(
-            (string) $value,
+            (string)$value,
             $this->token->getOffset(),
             $this->token->getStack()
         );

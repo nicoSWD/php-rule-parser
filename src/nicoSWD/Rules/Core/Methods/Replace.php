@@ -9,9 +9,9 @@
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
+use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens\TokenRegex;
 use nicoSWD\Rules\Tokens\TokenString;
-use nicoSWD\Rules\Core\CallableFunction;
 
 /**
  * Class Replace
@@ -68,14 +68,6 @@ final class Replace extends CallableFunction
     }
 
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'replace';
-    }
-
-    /**
      * @internal
      * @param string $regExpr
      * @return array
@@ -85,5 +77,13 @@ final class Replace extends CallableFunction
         preg_match('~(.*?/)([img]{0,3})?$~', $regExpr, $match);
 
         return [$match[1], $match[2]];
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'replace';
     }
 }
