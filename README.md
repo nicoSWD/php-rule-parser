@@ -1,12 +1,12 @@
 ## Rules Parser and Evaluator for PHP 5.4+
 
-| [Master][Master] | [Develop][Develop] | [v0.3][0.3] |
-|:----------------:|:----------:|:----------:|
-| [![Build status][Master image]][Master] | [![Build status][Develop image]][Develop] | [![Build status][0.3 image]][0.3] |
-| [![Coverage Status][Master coverage image]][Master coverage] | [![Coverage Status][Develop coverage image]][Develop coverage] | [![Coverage Status][0.3 coverage image]][0.3 coverage] |
-| [![Code Quality][Master quality image]][Master quality] | [![Code Quality][Develop quality image]][Develop quality] | [![Code Quality][0.3 quality image]][0.3 quality] |
+|  | Build Status | Code Quality | Coverage | HHVM |
+|:----------------:|:----------------:|:----------:|:----------:|:----------:|
+| [v0.3][0.3] | [![Build status][0.3 image]][0.3] | [![Code Quality][0.3 quality image]][0.3 quality] | [![Coverage Status][0.3 coverage image]][0.3 coverage] | [![HHVM Tested][0.3 hhvm image]][0.3 hhvm] |
+| [Master][Master] | [![Build status][Master image]][Master] | [![Code Quality][Master quality image]][Master quality] | [![Build status][Master coverage image]][Master coverage] | [![HHVM Tested][Master hhvm image]][Master hhvm] |
+| [Develop][Develop] | [![Build Status][Develop image]][Develop] | [![Code Quality][Develop quality image]][0.3 quality] | [![Coverage Status][Develop coverage image]][Develop coverage] | [![HHVM Tested][Develop hhvm image]][Develop hhvm] |
 
-[![HHVM tested](https://img.shields.io/hhvm/nicoswd/php-rule-parser.svg)](https://travis-ci.org/nicoSWD/php-rule-parser) [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
+[![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
 
 You're looking at a PHP library to parse and evaluate text based rules with a Javascript-like syntax. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
 
@@ -190,15 +190,21 @@ Pull requests are very welcome! If they include tests, even better. This project
   [Master coverage]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master
   [Master quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=master
   [Master quality]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master
+  [Master hhvm image]: https://img.shields.io/hhvm/nicoswd/php-rule-parser.svg?b=master
+  [Master hhvm]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master
   [0.3 image]: https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=v0.3
   [0.3]: https://github.com/nicoSWD/php-rule-parser/tree/v0.3
   [0.3 coverage image]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=v0.3
   [0.3 coverage]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=v0.3
   [0.3 quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=v0.3
   [0.3 quality]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=v0.3
+  [0.3 hhvm image]: https://img.shields.io/hhvm/nicoswd/php-rule-parser.svg?b=v0.3
+  [0.3 hhvm]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=v0.3
   [Develop image]: https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=develop
   [Develop]: https://github.com/nicoSWD/php-rule-parser/tree/develop
   [Develop coverage image]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=develop
   [Develop coverage]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=develop
   [Develop quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=develop
   [Develop quality]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=develop
+  [Develop hhvm image]: https://img.shields.io/hhvm/nicoswd/php-rule-parser.svg?b=develop
+  [Develop hhvm]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=develop
