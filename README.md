@@ -1,6 +1,12 @@
 ## Rules Parser and Evaluator for PHP 5.4+
 
-[![Build Status](https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=v0.3)](https://travis-ci.org/nicoSWD/php-rule-parser) [![Code Coverage](https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=v0.3)](https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=v0.3) [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=v0.3)](https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=v0.3) [![HHVM tested](https://img.shields.io/hhvm/nicoswd/php-rule-parser.svg)](https://travis-ci.org/nicoSWD/php-rule-parser) [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
+| [Master][Master] | [Develop][Develop] | [0.3][0.3] |
+|:----------------:|:----------:|:----------:|
+| [![Build status][Master image]][Master] | [![Build status][Develop image]][Develop] | [![Build status][0.3 image]][0.3] |
+| [![Coverage Status][Master coverage image]][Master coverage] | [![Coverage Status][Develop coverage image]][Develop coverage] | [![Coverage Status][0.3 coverage image]][0.3 coverage] |
+| [![Code Quality][Master quality image]][Master quality] | [![Code Quality][Develop quality image]][Develop quality] | [![Code Quality][0.3 quality image]][0.3 quality] |
+
+[![HHVM tested](https://img.shields.io/hhvm/nicoswd/php-rule-parser.svg)](https://travis-ci.org/nicoSWD/php-rule-parser) [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
 
 You're looking at a PHP library to parse and evaluate text based rules with a Javascript-like syntax. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
 
@@ -15,12 +21,12 @@ Find me on Twitter: @[nicoSWD](https://twitter.com/nicoSWD)
 
 Via Composer
 
-``` bash
+```bash
 $ composer require "nicoswd/php-rule-parser": "0.3.*"
 ```
 
 Via git
-``` bash
+```bash
 $ git clone git@github.com:nicoSWD/php-rule-parser.git
 ```
 
@@ -148,7 +154,7 @@ If you discover any security related issues, please email security@nic0.me inste
 
 ## Testing
 
-``` bash
+```bash
 $ phpunit
 ```
 
@@ -156,7 +162,6 @@ $ phpunit
 Pull requests are very welcome! If they include tests, even better. This project follows PSR-2 coding standards, please make sure your pull requests do too.
 
 ## To Do
-- Add support for function calls
 - Support for object properties (foo.length)
 - Support for returning actual results, other than true or false
 - Support for array / string dereferencing: "foo"[1]
@@ -166,11 +171,34 @@ Pull requests are very welcome! If they include tests, even better. This project
 - Do math (?)
 - Allow string concatenating with "+"
 - Support for objects {} (?)
-- Support for regular expressions
+- Invalid regex modifiers should not result in an unknown token
+- Duplicate regex modifiers should throw an error
+- ~~Add support for function calls~~
+- ~~Support for regular expressions~~
 - ~~Fix build on PHP 7 / Nightly~~
 - ~~Allow variables in arrays~~
+- ~~Verify function and method name spelling (.tOuPpErCAse() is currently valid)~~
 - ...
 
 ## License
 
 [![License](https://img.shields.io/packagist/l/nicoSWD/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rules-parser)
+
+  [Master image]: https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=master
+  [Master]: https://github.com/nicoSWD/php-rule-parser/tree/master
+  [Master coverage image]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=master
+  [Master coverage]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master
+  [Master quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=master
+  [Master quality]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master
+  [0.3 image]: https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=v0.3
+  [0.3]: https://github.com/nicoSWD/php-rule-parser/tree/v0.3
+  [0.3 coverage image]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=v0.3
+  [0.3 coverage]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=v0.3
+  [0.3 quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=v0.3
+  [0.3 quality]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=v0.3
+  [Develop image]: https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=develop
+  [Develop]: https://github.com/nicoSWD/php-rule-parser/tree/develop
+  [Develop coverage image]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=develop
+  [Develop coverage]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=develop
+  [Develop quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=develop
+  [Develop quality]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=develop
