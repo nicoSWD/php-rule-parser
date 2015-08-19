@@ -1,6 +1,6 @@
 ## Rules Parser and Evaluator for PHP 5.4+
 
-| [Master][Master] | [Develop][Develop] | [0.3][0.3] |
+| [Master][Master] | [Develop][Develop] | [v0.3][0.3] |
 |:----------------:|:----------:|:----------:|
 | [![Build status][Master image]][Master] | [![Build status][Develop image]][Develop] | [![Build status][0.3 image]][0.3] |
 | [![Coverage Status][Master coverage image]][Master coverage] | [![Coverage Status][Develop coverage image]][Develop coverage] | [![Coverage Status][0.3 coverage image]][0.3 coverage] |
