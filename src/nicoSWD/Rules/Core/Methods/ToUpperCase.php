@@ -8,27 +8,37 @@
  */
 namespace nicoSWD\Rules\Core\Methods;
 
+use nicoSWD\Rules\AST\TokenCollection;
+use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens\TokenString;
 
 /**
  * Class ToUpperCase
  * @package nicoSWD\Rules\Core\Methods
  */
-final class ToUpperCase extends CallableMethod
+final class ToUpperCase extends CallableFunction
 {
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
-     * @param mixed[] $parameters
+     * @param TokenCollection $parameters
      * @return TokenString
      * @throws \Exception
      */
-    public function call(array $parameters = [])
+    public function call(TokenCollection $parameters)
     {
         return new TokenString(
-            '"' . strtoupper($this->token->getValue()) . '"',
+            strtoupper($this->token->getValue()),
             $this->token->getOffset(),
             $this->token->getStack()
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'toUpperCase';
     }
 }

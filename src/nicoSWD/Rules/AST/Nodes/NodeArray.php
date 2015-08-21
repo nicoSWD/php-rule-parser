@@ -6,7 +6,7 @@
  * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\AST;
+namespace nicoSWD\Rules\AST\Nodes;
 
 use nicoSWD\Rules\Tokens\TokenArray;
 

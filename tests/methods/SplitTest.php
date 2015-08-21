@@ -52,4 +52,19 @@ class SplitTest extends \AbstractTestBase
             ]
         ));
     }
+
+    public function testSplitWithRegularExpression()
+    {
+        $this->assertTrue($this->evaluate('"foo     bar".split(/\s+/) === ["foo", "bar"]'));
+    }
+
+    public function testSplitWithRegexAndLimit()
+    {
+        $this->assertTrue($this->evaluate('"foo bar baz".split(/\s+/, 2) === ["foo", "bar baz"]'));
+    }
+
+    public function testSplitWithLimit()
+    {
+        $this->assertTrue($this->evaluate('"foo bar baz".split(" ", 2) === ["foo", "bar baz"]'));
+    }
 }

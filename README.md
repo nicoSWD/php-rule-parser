@@ -15,12 +15,12 @@ Find me on Twitter: @[nicoSWD](https://twitter.com/nicoSWD)
 
 Via Composer
 
-``` bash
+```bash
 $ composer require "nicoswd/php-rule-parser": "0.3.*"
 ```
 
 Via git
-``` bash
+```bash
 $ git clone git@github.com:nicoSWD/php-rule-parser.git
 ```
 
@@ -148,7 +148,7 @@ If you discover any security related issues, please email security@nic0.me inste
 
 ## Testing
 
-``` bash
+```bash
 $ phpunit
 ```
 
@@ -156,7 +156,6 @@ $ phpunit
 Pull requests are very welcome! If they include tests, even better. This project follows PSR-2 coding standards, please make sure your pull requests do too.
 
 ## To Do
-- Add support for function calls
 - Support for object properties (foo.length)
 - Support for returning actual results, other than true or false
 - Support for array / string dereferencing: "foo"[1]
@@ -166,9 +165,13 @@ Pull requests are very welcome! If they include tests, even better. This project
 - Do math (?)
 - Allow string concatenating with "+"
 - Support for objects {} (?)
-- Support for regular expressions
+- Invalid regex modifiers should not result in an unknown token
+- Duplicate regex modifiers should throw an error
+- ~~Add support for function calls~~
+- ~~Support for regular expressions~~
 - ~~Fix build on PHP 7 / Nightly~~
 - ~~Allow variables in arrays~~
+- ~~Verify function and method name spelling (.tOuPpErCAse() is currently valid)~~
 - ...
 
 ## License

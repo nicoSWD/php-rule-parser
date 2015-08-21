@@ -8,6 +8,8 @@
  */
 namespace nicoSWD\Rules\Expressions;
 
+use nicoSWD\Rules\AST\TokenCollection;
+
 /**
  * Class EqualStrictExpression
  * @package nicoSWD\Rules\Expressions
@@ -21,6 +23,18 @@ final class EqualStrictExpression extends BaseExpression
      */
     public function evaluate($leftValue, $rightValue)
     {
-        return $leftValue === $rightValue;
+        if ($rightValue instanceof TokenCollection) {
+            $rightItems = $rightValue->toArray();
+        } else {
+            $rightItems = $rightValue;
+        }
+
+        if ($leftValue instanceof TokenCollection) {
+            $leftItems = $leftValue->toArray();
+        } else {
+            $leftItems = $leftValue;
+        }
+
+        return $leftItems === $rightItems;
     }
 }

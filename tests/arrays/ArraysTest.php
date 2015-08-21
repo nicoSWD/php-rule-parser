@@ -16,8 +16,8 @@ class ArraysTest extends \AbstractTestBase
     public function testArraysEqualUserSuppliedArrays()
     {
         $this->assertTrue($this->evaluate(
-            'foo === ["foo", "bar", 1, true]',
-            ['foo' => ['foo', 'bar', 1, true]]
+            'foo === ["foo1", "bar", 2, true]',
+            ['foo' => ['foo1', 'bar', 2, true]]
         ));
 
         $this->assertTrue($this->evaluate('[123, 12] === foo && bar === [23]', [

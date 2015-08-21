@@ -68,4 +68,10 @@ class CombinedTest extends \AbstractTestBase
                 .toUpperCase()'
         ));
     }
+
+    public function testFunctionCallInsideMethod()
+    {
+        $this->assertTrue($this->evaluate('"abc".substr(parseInt(" 2 ")) === "c"'));
+        $this->assertTrue($this->evaluate('parseInt("ab3".substr(parseInt(" 2 "))) === 3'));
+    }
 }
