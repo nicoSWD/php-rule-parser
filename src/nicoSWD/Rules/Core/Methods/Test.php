@@ -56,7 +56,7 @@ final class Test extends CallableFunction
                 $subject = current($subject->toArray());
             }
 
-            $bool = (bool)preg_match($pattern, (string)$subject);
+            $bool = (bool) preg_match($pattern, (string) $subject);
         }
 
         return new TokenBool(
