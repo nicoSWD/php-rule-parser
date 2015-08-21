@@ -26,7 +26,7 @@ final class InExpression extends BaseExpression
      */
     public function evaluate($leftValue, $rightValue)
     {
-        // todo : fix all the different kind of crap that can get here
+        // Fix all the different kind of crap that can get here
         if (is_array($rightValue)) {
             $array = $rightValue;
         } elseif ($rightValue instanceof TokenCollection) {
