@@ -44,7 +44,7 @@ final class TokenFactory
                 $params = new TokenCollection();
 
                 foreach ($value as $item) {
-                    $params->attach(static::createFromPHPType($item));
+                    $params->attach(self::createFromPHPType($item));
                 }
 
                 $current = new TokenArray($params);
