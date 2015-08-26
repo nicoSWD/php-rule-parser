@@ -31,7 +31,7 @@ final class InExpression extends BaseExpression
             $array = $rightValue;
         } elseif ($rightValue instanceof TokenCollection) {
             $array = $rightValue->toArray();
-        } elseif (!$rightValue instanceof TokenArray) {
+        } else {
             throw new ParserException(sprintf(
                 'Expected array, got "%s"',
                 gettype($rightValue)
