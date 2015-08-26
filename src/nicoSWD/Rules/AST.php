@@ -83,6 +83,7 @@ final class AST implements Iterator
     }
 
     /**
+     * @codeCoverageIgnore
      * @return mixed
      */
     public function key()

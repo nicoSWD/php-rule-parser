@@ -23,18 +23,6 @@ final class EqualExpression extends BaseExpression
      */
     public function evaluate($leftValue, $rightValue)
     {
-        if ($rightValue instanceof TokenCollection) {
-            $rightItems = $rightValue->toArray();
-        } else {
-            $rightItems = $rightValue;
-        }
-
-        if ($leftValue instanceof TokenCollection) {
-            $leftItems = $leftValue->toArray();
-        } else {
-            $leftItems = $leftValue;
-        }
-
-        return $leftItems == $rightItems;
+        return $leftValue == $rightValue;
     }
 }

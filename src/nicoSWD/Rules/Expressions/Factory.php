@@ -17,7 +17,7 @@ use nicoSWD\Rules\Exceptions\ExpressionFactoryException;
 final class Factory
 {
     /**
-     * @var array
+     * @var string[]
      */
     private $classLookup = [
         '=='  => '\nicoSWD\Rules\Expressions\EqualExpression',
@@ -38,14 +38,14 @@ final class Factory
      */
     public function createFromOperator($operator)
     {
-        if (isset($this->classLookup[$operator])) {
-            return new $this->classLookup[$operator]();
+        if (!isset($this->classLookup[$operator])) {
+            throw new ExpressionFactoryException(sprintf(
+                'Unknown operator "%s"',
+                $operator
+            ));
         }
 
-        throw new ExpressionFactoryException(sprintf(
-            'Unknown operator "%s"',
-            $operator
-        ));
+        return new $this->classLookup[$operator]();
     }
 
     /**

@@ -50,10 +50,10 @@ final class TokenFactory
                 $current = new TokenArray($params);
                 break;
             default:
-                throw new ParserException(
+                throw new ParserException(sprintf(
                     'Unsupported PHP type: "%s"',
                     $type
-                );
+                ));
         }
 
         return $current;

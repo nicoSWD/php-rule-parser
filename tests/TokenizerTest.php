@@ -32,26 +32,13 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Unknown', $result);
     }
 
-    public function testVariableStartingWithAndParsesCorrectly()
+    public function testTokenPositionAndLineAreCorrect()
     {
-        $rule = 'country == "foo" && andvar == "bar"';
+        $tokens = $this->tokenizer->tokenize('1');
+        $tokens->rewind();
+        $firstToken = $tokens->current();
 
-        $result = $this->tokenizer->tokenize($rule);
-        $andVar = \null;
-
-        // Dirt
-        foreach ($result as $token) {
-            if ($token->getValue() === 'andvar') {
-                $andVar = $token;
-                break;
-            }
-        }
-
-        /** @var Rules\Tokens\BaseToken $andVar */
-        $this->assertInstanceOf('\nicoSWD\Rules\Tokens\TokenVariable', $andVar);
-        $this->assertSame($andVar->getValue(), 'andvar');
-        $this->assertSame($andVar->getLine(), 1);
-        $this->assertSame($andVar->getOffset(), 20);
-        $this->assertSame($andVar->getGroup(), Rules\Constants::GROUP_VARIABLE);
+        $this->assertEquals(1, $firstToken->getLine());
+        $this->assertEquals(0, $firstToken->getPosition());
     }
 }

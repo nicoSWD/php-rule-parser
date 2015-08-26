@@ -21,7 +21,6 @@ final class Split extends CallableFunction
     /**
      * @param TokenCollection $parameters
      * @return Tokens\TokenArray
-     * @throws \Exception
      */
     public function call(TokenCollection $parameters)
     {

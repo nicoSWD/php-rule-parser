@@ -23,12 +23,4 @@ final class TokenVariable extends BaseToken
     {
         return Constants::GROUP_VARIABLE;
     }
-
-    /**
-     * @return bool
-     */
-    public function supportsMethodCalls()
-    {
-        return \true;
-    }
 }

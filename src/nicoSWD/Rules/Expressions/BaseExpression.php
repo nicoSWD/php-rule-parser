@@ -15,7 +15,7 @@ namespace nicoSWD\Rules\Expressions;
 abstract class BaseExpression
 {
     /**
-     * @param string $leftValue
+     * @param mixed  $leftValue
      * @param mixed  $rightValue
      * @return bool
      */

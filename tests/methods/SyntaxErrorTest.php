@@ -82,7 +82,7 @@ class SyntaxErrorTest extends \AbstractTestBase
      */
     public function testCallOnNonArray()
     {
-        $this->assertTrue($this->evaluate('"foo".join("|") === ""'));
+        $this->evaluate('"foo".join("|") === ""');
     }
 
     /**

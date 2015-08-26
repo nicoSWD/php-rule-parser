@@ -23,7 +23,6 @@ final class ToUpperCase extends CallableFunction
      *
      * @param TokenCollection $parameters
      * @return TokenString
-     * @throws \Exception
      */
     public function call(TokenCollection $parameters)
     {

@@ -42,13 +42,7 @@ final class TokenArray extends BaseToken
 
         foreach ($this->value as $value) {
             /** @var self $value */
-            $val = $value->getValue();
-
-            if ($val instanceof TokenArray) {
-                $items += $val->toArray();
-            } else {
-                $items[] = $val;
-            }
+            $items[] = $value->getValue();
         }
 
         return $items;

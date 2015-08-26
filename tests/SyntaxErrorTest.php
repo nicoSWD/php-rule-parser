@@ -31,19 +31,6 @@ class SyntaxErrorTest extends \AbstractTestBase
      * @expectedException \Exception
      * @expectedExceptionMessage Unexpected "==" at position 11 on line 1
      */
-    public function testDoubleIsOperatorThrowsException()
-    {
-        $rule = 'country == == "EMD"';
-
-        $this->evaluate($rule, [
-            'country' => 'GLF',
-        ]);
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected "==" at position 11 on line 1
-     */
     public function testDoubleOperatorThrowsException()
     {
         $rule = 'country == == "EMD"';
@@ -76,19 +63,6 @@ class SyntaxErrorTest extends \AbstractTestBase
 
         $this->evaluate($rule, [
             'TOTALAMOUNT' => '-1'
-        ]);
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Missing operator
-     */
-    public function testMissingOperatorThrowsException2()
-    {
-        $rule = 'foo == 2951356 foo=="2951356"';
-
-        $this->evaluate($rule, [
-            'foo' => '12347'
         ]);
     }
 

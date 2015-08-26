@@ -15,18 +15,20 @@ namespace nicoSWD\Rules;
 final class Highlighter
 {
     /**
-     * @var array
+     * @var string[]
      */
     private $styles = [
-        Constants::GROUP_COMMENT     => 'color: #948a8a; font-style: italic;',
-        Constants::GROUP_LOGICAL     => 'color: #c72d2d;',
-        Constants::GROUP_OPERATOR    => 'color: #000;',
-        Constants::GROUP_PARENTHESES => 'color: #000;',
-        Constants::GROUP_SPACE       => '',
-        Constants::GROUP_UNKNOWN     => '',
-        Constants::GROUP_VALUE       => 'color: #e36700; font-style: italic;',
-        Constants::GROUP_VARIABLE    => 'color: #007694; font-weight: 900;',
-        Constants::GROUP_METHOD      => 'color: #000'
+        Constants::GROUP_COMMENT         => 'color: #948a8a; font-style: italic;',
+        Constants::GROUP_LOGICAL         => 'color: #c72d2d;',
+        Constants::GROUP_OPERATOR        => 'color: #000;',
+        Constants::GROUP_PARENTHESES     => 'color: #000;',
+        Constants::GROUP_SPACE           => '',
+        Constants::GROUP_UNKNOWN         => '',
+        Constants::GROUP_VALUE           => 'color: #e36700; font-style: italic;',
+        Constants::GROUP_VARIABLE        => 'color: #007694; font-weight: 900;',
+        Constants::GROUP_METHOD          => 'color: #000',
+        Constants::GROUP_SQUARE_BRACKETS => 9,
+        Constants::GROUP_COMMA           => 10
     ];
 
     /**
@@ -43,7 +45,7 @@ final class Highlighter
     }
 
     /**
-     * @param int    $group
+     * @param int $group
      * @param string $style
      * @throws Exceptions\HighlighterException
      */
@@ -55,7 +57,7 @@ final class Highlighter
             );
         }
 
-        $this->styles[$group] = (string) $style;
+        $this->styles[$group] = (string)$style;
     }
 
     /**
@@ -65,17 +67,7 @@ final class Highlighter
      */
     public function highlightString($string)
     {
-        try {
-            $tokens = $this->tokenizer->tokenize($string);
-        } catch (Exceptions\TokenizerException $e) {
-            throw new Exceptions\HighlighterException(
-                'Unable to highlight string',
-                0,
-                $e
-            );
-        }
-
-        return $this->highlightTokens($tokens);
+        return $this->highlightTokens($this->tokenizer->tokenize($string));
     }
 
     /**

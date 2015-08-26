@@ -70,7 +70,7 @@ final class Replace extends CallableFunction
     /**
      * @internal
      * @param string $regExpr
-     * @return array
+     * @return string[]
      */
     private function splitRegex($regExpr)
     {

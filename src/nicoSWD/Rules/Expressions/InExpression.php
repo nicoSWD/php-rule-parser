@@ -19,8 +19,8 @@ use nicoSWD\Rules\Tokens\TokenArray;
 final class InExpression extends BaseExpression
 {
     /**
-     * @param string     $leftValue
-     * @param TokenArray $rightValue
+     * @param mixed $leftValue
+     * @param mixed $rightValue
      * @return bool
      * @throws ParserException
      */
@@ -36,8 +36,6 @@ final class InExpression extends BaseExpression
                 'Expected array, got "%s"',
                 gettype($rightValue)
             ));
-        } else {
-            $array = $rightValue->getValue();
         }
 
         return in_array($leftValue, $array, \true);
