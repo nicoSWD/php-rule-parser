@@ -10,7 +10,6 @@ namespace nicoSWD\Rules\Expressions;
 
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Exceptions\ParserException;
-use nicoSWD\Rules\Tokens\TokenArray;
 
 /**
  * Class InExpression
