@@ -24,8 +24,6 @@ final class CharAt extends CallableFunction
      */
     public function call(TokenCollection $parameters)
     {
-        $parameters->rewind();
-
         if ($parameters->count() < 1) {
             $offset = 0;
         } else {

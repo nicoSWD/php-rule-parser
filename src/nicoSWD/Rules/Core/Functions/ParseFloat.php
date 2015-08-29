@@ -24,8 +24,6 @@ final class ParseFloat extends CallableFunction
      */
     public function call(TokenCollection $parameters)
     {
-        $parameters->rewind();
-
         return new TokenFloat(
             (float) $parameters->current()->getValue(),
             $this->token->getOffset(),

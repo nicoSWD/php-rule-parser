@@ -24,7 +24,6 @@ final class Substr extends CallableFunction
      */
     public function call(TokenCollection $parameters)
     {
-        $parameters->rewind();
         $params = [];
 
         if ($parameters->count() < 1) {

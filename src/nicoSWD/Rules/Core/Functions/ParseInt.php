@@ -24,8 +24,6 @@ final class ParseInt extends CallableFunction
      */
     public function call(TokenCollection $parameters)
     {
-        $parameters->rewind();
-
         return new TokenInteger(
             (int) $parameters->current()->getValue(),
             $this->token->getOffset(),

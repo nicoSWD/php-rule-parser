@@ -186,6 +186,7 @@ abstract class BaseNode
             ));
         }
 
+        $items->rewind();
         return $items;
     }
 

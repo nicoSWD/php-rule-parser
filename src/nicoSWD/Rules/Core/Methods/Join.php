@@ -35,8 +35,6 @@ final class Join extends CallableFunction
             ));
         }
 
-        $parameters->rewind();
-
         if ($firstParam = $parameters->current()) {
             $glue = $firstParam->getValue();
         } else {

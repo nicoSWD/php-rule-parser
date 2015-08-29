@@ -24,7 +24,6 @@ final class Split extends CallableFunction
      */
     public function call(TokenCollection $parameters)
     {
-        $parameters->rewind();
         $separator = $parameters->current();
 
         if (!$separator || !is_string($separator->getValue())) {

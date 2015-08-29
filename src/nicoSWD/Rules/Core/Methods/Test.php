@@ -35,8 +35,6 @@ final class Test extends CallableFunction
             ));
         }
 
-        $parameters->rewind();
-
         if ($parameters->count() < 1) {
             $bool = \false;
         } else {

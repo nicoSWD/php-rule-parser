@@ -26,7 +26,6 @@ final class Replace extends CallableFunction
      */
     public function call(TokenCollection $parameters)
     {
-        $parameters->rewind();
         $numParams = $parameters->count();
         $isRegExpr = \false;
 

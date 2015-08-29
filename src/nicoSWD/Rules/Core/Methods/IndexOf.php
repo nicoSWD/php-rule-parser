@@ -25,8 +25,6 @@ final class IndexOf extends CallableFunction
      */
     public function call(TokenCollection $parameters)
     {
-        $parameters->rewind();
-
         if ($parameters->count() < 1) {
             $value = -1;
         } else {
