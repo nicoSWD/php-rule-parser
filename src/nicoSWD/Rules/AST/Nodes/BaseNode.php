@@ -85,7 +85,7 @@ abstract class BaseNode
      */
     public function getMethod(Tokens\BaseToken $token)
     {
-        $methodName = trim($this->getMethodName());
+        $methodName = $this->getMethodName();
         $methodClass = '\nicoSWD\Rules\Core\Methods\\' . ucfirst($methodName);
 
         if (!class_exists($methodClass)) {
@@ -121,7 +121,7 @@ abstract class BaseNode
             $this->ast->next();
         } while ($this->ast->getStack()->current()->getOffset() < $this->methodOffset);
 
-        return ltrim(rtrim($this->methodName, " \r\n("), '. ');
+        return trim(ltrim(rtrim($this->methodName, "\r\n("), '.'));
     }
 
     /**
