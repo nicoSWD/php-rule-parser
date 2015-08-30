@@ -189,14 +189,14 @@ Pull requests are very welcome! If they include tests, even better. This project
   [Master coverage image]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=master
   [Master coverage]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master
   [Master quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=master
-  [Master quality]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master
+  [Master quality]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser/master.svg
   [Master hhvm image]: https://img.shields.io/hhvm/nicoswd/php-rule-parser.svg?b=master
   [Master hhvm]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master
   [0.3 image]: https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=v0.3
   [0.3]: https://github.com/nicoSWD/php-rule-parser/tree/v0.3
   [0.3 coverage image]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=v0.3
   [0.3 coverage]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=v0.3
-  [0.3 quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=v0.3
+  [0.3 quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser/v0.3.svg
   [0.3 quality]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=v0.3
   [0.3 hhvm image]: https://img.shields.io/hhvm/nicoswd/php-rule-parser.svg?b=v0.3
   [0.3 hhvm]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=v0.3
@@ -204,7 +204,7 @@ Pull requests are very welcome! If they include tests, even better. This project
   [Develop]: https://github.com/nicoSWD/php-rule-parser/tree/develop
   [Develop coverage image]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=develop
   [Develop coverage]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=develop
-  [Develop quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=develop
+  [Develop quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser/develop.svg
   [Develop quality]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=develop
   [Develop hhvm image]: https://img.shields.io/hhvm/nicoswd/php-rule-parser.svg?b=develop
   [Develop hhvm]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=develop
