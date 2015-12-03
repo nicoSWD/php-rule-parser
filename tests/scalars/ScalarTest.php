@@ -3,14 +3,10 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\tests\scalars;
 
-/**
- * Class ScalarTest
- */
 class ScalarTest extends \AbstractTestBase
 {
     public function testBooleans()
@@ -21,19 +17,19 @@ class ScalarTest extends \AbstractTestBase
         $this->assertFalse($this->evaluate('1 === true'));
         $this->assertTrue($this->evaluate('foo == true', ['foo' => 'test']));
         $this->assertFalse($this->evaluate('foo === true', ['foo' => 'test']));
-        $this->assertTrue($this->evaluate('foo === true', ['foo' => \true]));
-        $this->assertFalse($this->evaluate('foo === true', ['foo' => \false]));
-        $this->assertFalse($this->evaluate('foo !== true', ['foo' => \true]));
+        $this->assertTrue($this->evaluate('foo === true', ['foo' => true]));
+        $this->assertFalse($this->evaluate('foo === true', ['foo' => false]));
+        $this->assertFalse($this->evaluate('foo !== true', ['foo' => true]));
     }
 
     public function testNullValues()
     {
-        $this->assertTrue($this->evaluate('foo === null', ['foo' => \null]));
+        $this->assertTrue($this->evaluate('foo === null', ['foo' => null]));
         $this->assertTrue($this->evaluate('foo !== null', ['foo' => 0]));
         $this->assertTrue($this->evaluate('foo !== null', ['foo' => '']));
-        $this->assertTrue($this->evaluate('foo !== null', ['foo' => \false]));
-        $this->assertTrue($this->evaluate('"" == null', ['foo' => \null]));
-        $this->assertFalse($this->evaluate('"" === null', ['foo' => \null]));
+        $this->assertTrue($this->evaluate('foo !== null', ['foo' => false]));
+        $this->assertTrue($this->evaluate('"" == null', ['foo' => null]));
+        $this->assertFalse($this->evaluate('"" === null', ['foo' => null]));
     }
 
     public function testFloatPrecision()

@@ -51,10 +51,9 @@ final class Tokenizer implements TokenizerInterface
         )~xAs';
 
     /**
-     * @param string $string
-     * @return Stack
+     * {@inheritdoc}
      */
-    public function tokenize($string)
+    public function tokenize(string $string) : Stack
     {
         $stack = new Stack();
         $baseNameSpace = __NAMESPACE__ . '\\Tokens\\Token';
@@ -76,11 +75,7 @@ final class Tokenizer implements TokenizerInterface
         return $stack;
     }
 
-    /**
-     * @param string[] $matches
-     * @return string
-     */
-    private function getMatchedToken(array $matches)
+    private function getMatchedToken(array $matches) : string
     {
         foreach ($matches as $key => $value) {
             if ($value !== '' && !is_int($key)) {

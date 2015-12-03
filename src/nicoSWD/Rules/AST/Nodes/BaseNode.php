@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\AST\Nodes;
@@ -14,10 +15,6 @@ use nicoSWD\Rules\Tokens;
 use nicoSWD\Rules\Constants;
 use nicoSWD\Rules\Exceptions\ParserException;
 
-/**
- * Class BaseNode
- * @package nicoSWD\Rules\AST
- */
 abstract class BaseNode
 {
     /**
@@ -43,18 +40,12 @@ abstract class BaseNode
         $this->ast = $ast;
     }
 
-    /**
-     * @return Tokens\BaseToken
-     */
-    abstract public function getNode();
+    abstract public function getNode() : Tokens\BaseToken;
 
     /**
      * Looks ahead, but does not move the pointer.
-     *
-     * @since 0.3.4
-     * @return bool
      */
-    protected function hasMethodCall()
+    protected function hasMethodCall() : bool
     {
         $stackClone = $this->ast->getStack()->getClone();
 
@@ -69,21 +60,19 @@ abstract class BaseNode
                 $this->methodName = $token->getValue();
                 $this->methodOffset = $token->getOffset();
 
-                return \true;
+                return true;
             } else {
                 break;
             }
         }
 
-        return \false;
+        return false;
     }
 
     /**
-     * @param Tokens\BaseToken $token
-     * @return \nicoSWD\Rules\Core\CallableFunction
      * @throws ParserException
      */
-    public function getMethod(Tokens\BaseToken $token)
+    public function getMethod(Tokens\BaseToken $token) : CallableFunction
     {
         $methodName = $this->getMethodName();
         $methodClass = '\nicoSWD\Rules\Core\Methods\\' . ucfirst($methodName);
@@ -110,12 +99,7 @@ abstract class BaseNode
         return $instance;
     }
 
-    /**
-     * @since 0.3.4
-     * @internal
-     * @return string
-     */
-    protected function getMethodName()
+    protected function getMethodName() : string
     {
         do {
             $this->ast->next();
@@ -125,14 +109,11 @@ abstract class BaseNode
     }
 
     /**
-     * @since 0.3.4
-     * @param string $stopAt
-     * @return AST\TokenCollection
      * @throws ParserException
      */
-    protected function getCommaSeparatedValues($stopAt = ')')
+    protected function getCommaSeparatedValues(string $stopAt = ')') : AST\TokenCollection
     {
-        $commaExpected = \false;
+        $commaExpected = false;
         $items = new AST\TokenCollection();
 
         do {
@@ -154,7 +135,7 @@ abstract class BaseNode
                     ));
                 }
 
-                $commaExpected = \true;
+                $commaExpected = true;
                 $items->attach($current);
             } elseif ($current instanceof Tokens\TokenComma) {
                 if (!$commaExpected) {
@@ -165,7 +146,7 @@ abstract class BaseNode
                     ));
                 }
 
-                $commaExpected = \false;
+                $commaExpected = false;
             } elseif ($current->getValue() === $stopAt) {
                 break;
             } elseif (!$this->isIgnoredToken($current)) {
@@ -190,12 +171,7 @@ abstract class BaseNode
         return $items;
     }
 
-    /**
-     * @since 0.3.4
-     * @param Tokens\BaseToken $token
-     * @return bool
-     */
-    protected function isIgnoredToken(Tokens\BaseToken $token)
+    protected function isIgnoredToken(Tokens\BaseToken $token) : bool
     {
         return (
             $token instanceof Tokens\TokenSpace ||

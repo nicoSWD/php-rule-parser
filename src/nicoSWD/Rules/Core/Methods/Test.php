@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.5
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\Core\Methods;
@@ -14,18 +15,12 @@ use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\Tokens\TokenBool;
 use nicoSWD\Rules\Tokens\TokenRegex;
 
-/**
- * Class Test
- * @package nicoSWD\Rules\Core\Methods
- */
 final class Test extends CallableFunction
 {
     /**
-     * @param TokenCollection $parameters
-     * @return TokenBool
      * @throws ParserException
      */
-    public function call(TokenCollection $parameters)
+    public function call(TokenCollection $parameters) : TokenBool
     {
         if (!$this->token instanceof TokenRegex) {
             throw new ParserException(sprintf(
@@ -36,7 +31,7 @@ final class Test extends CallableFunction
         }
 
         if ($parameters->count() < 1) {
-            $bool = \false;
+            $bool = false;
         } else {
             // Remove "g" modifier as is does not exist in PHP
             // It's also irrelevant in .test() but allowed in JS here
@@ -64,10 +59,7 @@ final class Test extends CallableFunction
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName() : string
     {
         return 'test';
     }

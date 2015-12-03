@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\Core\Methods;
@@ -12,17 +13,9 @@ use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens;
 
-/**
- * Class Concat
- * @package nicoSWD\Rules\Core\Methods
- */
 final class Concat extends CallableFunction
 {
-    /**
-     * @param TokenCollection $parameters
-     * @return Tokens\TokenString
-     */
-    public function call(TokenCollection $parameters)
+    public function call(TokenCollection $parameters) : Tokens\TokenString
     {
         $value = $this->token->getValue();
 
@@ -41,10 +34,7 @@ final class Concat extends CallableFunction
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName() : string
     {
         return 'concat';
     }

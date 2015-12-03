@@ -14,9 +14,5 @@ namespace nicoSWD\Rules;
  */
 interface EvaluatorInterface
 {
-    /**
-     * @param string $group
-     * @return bool
-     */
-    public function evaluate($group);
+    public function evaluate(string $group) : bool;
 }

@@ -1,16 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.5
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\tests\methods;
 
-/**
- * Class TestTest
- */
 class TestTest extends \AbstractTestBase
 {
     public function testBasicRegularExpression()

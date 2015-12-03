@@ -1,16 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 use nicoSWD\Rules\Evaluator;
 
-/**
- * Class EvaluatorTest
- */
 class EvaluatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -18,7 +16,7 @@ class EvaluatorTest extends \PHPUnit_Framework_TestCase
      */
     private $evaluator;
 
-    public function setup()
+    protected function setUp()
     {
         $this->evaluator = new Evaluator();
     }
@@ -26,7 +24,7 @@ class EvaluatorTest extends \PHPUnit_Framework_TestCase
     public function testEvalGroupParsesSimpleAndsAndOrs()
     {
         $reflectionMethod = new \ReflectionMethod($this->evaluator, 'evalGroup');
-        $reflectionMethod->setAccessible(\true);
+        $reflectionMethod->setAccessible(true);
 
         $result = $reflectionMethod->invokeArgs(
             $this->evaluator,

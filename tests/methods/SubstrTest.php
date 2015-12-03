@@ -3,14 +3,10 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\tests\methods;
 
-/**
- * Class SubstrTest
- */
 class SubstrTest extends \AbstractTestBase
 {
     public function testSubstrReturnsCorrectPartOfString()

@@ -10,24 +10,14 @@ namespace nicoSWD\Rules\Tokens;
 
 use nicoSWD\Rules\Constants;
 
-/**
- * Class TokenAnd
- * @package nicoSWD\Rules\Tokens
- */
 final class TokenAnd extends BaseToken
 {
-    /**
-     * @return int
-     */
-    public function getGroup()
+    public function getGroup() : int
     {
         return Constants::GROUP_LOGICAL;
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue() : string
     {
         return '&';
     }

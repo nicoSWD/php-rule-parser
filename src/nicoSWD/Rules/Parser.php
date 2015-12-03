@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
@@ -64,10 +66,6 @@ class Parser
      */
     protected $expressionFactory;
 
-    /**
-     * @param TokenizerInterface  $tokenizer
-     * @param Expressions\Factory $expressionFactory
-     */
     public function __construct(TokenizerInterface $tokenizer, Expressions\Factory $expressionFactory)
     {
         $this->tokenizer = $tokenizer;
@@ -75,11 +73,9 @@ class Parser
     }
 
     /**
-     * @param string $rule
-     * @return string
      * @throws Exceptions\ParserException
      */
-    public function parse($rule)
+    public function parse(string $rule) : string
     {
         $this->output = '';
         $this->operator = \null;
@@ -119,16 +115,12 @@ class Parser
         return $this->output;
     }
 
-    /**
-     * @param array $variables
-     */
     public function assignVariables(array $variables)
     {
         $this->variables = $variables;
     }
 
     /**
-     * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
     protected function assignVariableValueFromToken(Tokens\BaseToken $token)
@@ -152,7 +144,6 @@ class Parser
     }
 
     /**
-     * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
     protected function assignParentheses(Tokens\BaseToken $token)
@@ -185,7 +176,6 @@ class Parser
     }
 
     /**
-     * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
     protected function assignLogicalToken(Tokens\BaseToken $token)
@@ -205,7 +195,6 @@ class Parser
     }
 
     /**
-     * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
     protected function assignOperator(Tokens\BaseToken $token)

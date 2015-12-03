@@ -1,19 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\Tokens;
 
 use nicoSWD\Rules\Stack;
 
-/**
- * Class BaseToken
- * @package nicoSWD\Rules\Tokens
- */
 abstract class BaseToken
 {
     /**
@@ -34,29 +31,26 @@ abstract class BaseToken
     /**
      * @var int
      */
-    protected $position = \null;
+    protected $position = null;
 
     /**
      * @var int
      */
-    protected $line = \null;
+    protected $line = null;
 
     /**
      * @param mixed $value
      * @param int   $offset
      * @param Stack $stack
      */
-    public function __construct($value, $offset = 0, Stack $stack = \null)
+    public function __construct($value, int $offset = 0, Stack $stack = null)
     {
         $this->value = $value;
         $this->offset = $offset;
         $this->stack = $stack;
     }
 
-    /**
-     * @return int
-     */
-    abstract public function getGroup();
+    abstract public function getGroup() : int;
 
     /**
      * @return mixed
@@ -78,54 +72,32 @@ abstract class BaseToken
         return $this->value;
     }
 
-    /**
-     * Returns offset in the whole rule string.
-     *
-     * @return int
-     */
-    public function getOffset()
+    public function getOffset() : int
     {
         return $this->offset;
     }
 
-    /**
-     * @param int $offset
-     */
-    public function setOffset($offset = 0)
+    public function setOffset(int $offset = 0)
     {
         $this->offset = $offset;
     }
 
-    /**
-     * @return Stack
-     */
-    public function getStack()
+    public function getStack() : Stack
     {
         return $this->stack;
     }
 
-    /**
-     * @param Stack $stack
-     */
     public function setStack(Stack $stack)
     {
         $this->stack = $stack;
     }
 
-    /**
-     * @return bool
-     */
-    public function supportsMethodCalls()
+    public function supportsMethodCalls() : bool
     {
         return \false;
     }
 
-    /**
-     * Returns position in the line the token is placed in.
-     *
-     * @return int
-     */
-    public function getPosition()
+    public function getPosition() : int
     {
         if (!isset($this->position)) {
             $this->getLineAndPosition();
@@ -134,10 +106,7 @@ abstract class BaseToken
         return $this->position;
     }
 
-    /**
-     * @return int
-     */
-    public function getLine()
+    public function getLine() : int
     {
         if (!isset($this->line)) {
             $this->getLineAndPosition();
@@ -147,13 +116,13 @@ abstract class BaseToken
     }
 
     /**
-     * @since 0.3.5
      * @internal
      * @return void
      */
     private function getLineAndPosition()
     {
         $this->line = 1;
+        $this->position = 0;
 
         foreach ($this->stack as $token) {
             $sumPosition = \true;

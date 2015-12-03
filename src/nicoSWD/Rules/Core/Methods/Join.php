@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\Core\Methods;
@@ -13,18 +14,12 @@ use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\Tokens;
 
-/**
- * Class Join
- * @package nicoSWD\Rules\Core\Methods
- */
 final class Join extends CallableFunction
 {
     /**
-     * @param TokenCollection $parameters
-     * @return Tokens\TokenString
      * @throws ParserException
      */
-    public function call(TokenCollection $parameters)
+    public function call(TokenCollection $parameters) : Tokens\TokenString
     {
         if (!$this->token instanceof Tokens\TokenArray) {
             throw new ParserException(sprintf(
@@ -54,10 +49,7 @@ final class Join extends CallableFunction
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName() : string
     {
         return 'join';
     }

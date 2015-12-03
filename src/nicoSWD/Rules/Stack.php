@@ -10,24 +10,17 @@ namespace nicoSWD\Rules;
 
 use SplObjectStorage;
 
-/**
- * Class Stack
- * @package nicoSWD\Rules
- */
 final class Stack extends SplObjectStorage
 {
     /**
-     * @return \nicoSWD\Rules\Tokens\BaseToken
+     * @return \nicoSWD\Rules\Tokens\BaseToken|null
      */
     public function current()
     {
         return parent::current();
     }
 
-    /**
-     * @return Stack
-     */
-    public function getClone()
+    public function getClone() : Stack
     {
         $stackClone = clone $this;
         $stackClone->rewind();

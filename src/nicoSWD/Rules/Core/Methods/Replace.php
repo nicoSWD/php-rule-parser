@@ -3,7 +3,6 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\Core\Methods;
@@ -13,21 +12,15 @@ use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens\TokenRegex;
 use nicoSWD\Rules\Tokens\TokenString;
 
-/**
- * Class Replace
- * @package nicoSWD\Rules\Core\Methods
- */
 final class Replace extends CallableFunction
 {
     /**
-     * @param TokenCollection $parameters
-     * @return TokenString
      * @throws \Exception
      */
-    public function call(TokenCollection $parameters)
+    public function call(TokenCollection $parameters) : TokenString
     {
         $numParams = $parameters->count();
-        $isRegExpr = \false;
+        $isRegExpr = false;
 
         if ($numParams < 1) {
             $search = '';
@@ -66,22 +59,14 @@ final class Replace extends CallableFunction
         );
     }
 
-    /**
-     * @internal
-     * @param string $regExpr
-     * @return string[]
-     */
-    private function splitRegex($regExpr)
+    private function splitRegex(string $regExpr) : array
     {
         preg_match('~(.*?/)([img]{0,3})?$~', $regExpr, $match);
 
         return [$match[1], $match[2]];
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName() : string
     {
         return 'replace';
     }

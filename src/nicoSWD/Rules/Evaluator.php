@@ -17,11 +17,7 @@ namespace nicoSWD\Rules;
  */
 final class Evaluator implements EvaluatorInterface
 {
-    /**
-     * @param string $group
-     * @return bool
-     */
-    public function evaluate($group)
+    public function evaluate(string $group) : bool
     {
         $count = 0;
 
@@ -40,8 +36,8 @@ final class Evaluator implements EvaluatorInterface
 
     /**
      * @param string[] $group
-     * @return int
      * @throws Exceptions\EvaluatorException
+     * @return int|null
      */
     private function evalGroup(array $group)
     {

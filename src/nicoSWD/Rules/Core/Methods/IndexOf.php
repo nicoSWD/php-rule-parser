@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\Core\Methods;
@@ -12,18 +13,12 @@ use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Tokens\TokenInteger;
 use nicoSWD\Rules\Core\CallableFunction;
 
-/**
- * Class IndexOf
- * @package nicoSWD\Rules\Core\Methods
- */
 final class IndexOf extends CallableFunction
 {
     /**
-     * @param TokenCollection $parameters
-     * @return TokenInteger
      * @throws \Exception
      */
-    public function call(TokenCollection $parameters)
+    public function call(TokenCollection $parameters) : TokenInteger
     {
         if ($parameters->count() < 1) {
             $value = -1;
@@ -42,10 +37,7 @@ final class IndexOf extends CallableFunction
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName() : string
     {
         return 'indexOf';
     }

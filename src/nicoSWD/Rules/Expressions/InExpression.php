@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\Expressions;
@@ -11,19 +12,12 @@ namespace nicoSWD\Rules\Expressions;
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Exceptions\ParserException;
 
-/**
- * Class InExpression
- * @package nicoSWD\Rules\Expressions
- */
 final class InExpression extends BaseExpression
 {
     /**
-     * @param mixed $leftValue
-     * @param mixed $rightValue
-     * @return bool
      * @throws ParserException
      */
-    public function evaluate($leftValue, $rightValue)
+    public function evaluate($leftValue, $rightValue) : bool
     {
         // Fix all the different kind of crap that can get here
         if (is_array($rightValue)) {
@@ -37,6 +31,6 @@ final class InExpression extends BaseExpression
             ));
         }
 
-        return in_array($leftValue, $array, \true);
+        return in_array($leftValue, $array, true);
     }
 }

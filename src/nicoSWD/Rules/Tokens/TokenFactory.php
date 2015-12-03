@@ -3,7 +3,6 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.5
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\Tokens;
@@ -11,18 +10,12 @@ namespace nicoSWD\Rules\Tokens;
 use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\AST\TokenCollection;
 
-/**
- * Class TokenFactory
- * @package nicoSWD\Rules\Tokens
- */
 final class TokenFactory
 {
     /**
-     * @param mixed $value
-     * @return BaseToken
      * @throws ParserException
      */
-    public static function createFromPHPType($value)
+    public static function createFromPHPType($value) : BaseToken
     {
         switch ($type = gettype($value)) {
             case 'string':

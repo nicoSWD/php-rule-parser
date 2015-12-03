@@ -38,30 +38,21 @@ final class AST implements Iterator
         $this->variables = $variables;
     }
 
-    /**
-     * @return void
-     */
     public function next()
     {
         $this->stack->next();
     }
 
-    /**
-     * @return bool
-     */
-    public function valid()
+    public function valid() : bool
     {
         return $this->stack->valid();
     }
 
-    /**
-     * @return Tokens\BaseToken
-     */
     public function current()
     {
         $current = $this->stack->current();
 
-        switch (\true) {
+        switch (true) {
             default:
                 return $current;
             case $current instanceof Tokens\TokenString:
@@ -84,9 +75,8 @@ final class AST implements Iterator
 
     /**
      * @codeCoverageIgnore
-     * @return mixed
      */
-    public function key()
+    public function key() : int
     {
         return $this->stack->key();
     }
@@ -100,11 +90,9 @@ final class AST implements Iterator
     }
 
     /**
-     * @param string $name
-     * @return BaseToken
      * @throws Exceptions\ParserException
      */
-    public function getVariable($name)
+    public function getVariable(string $name) : BaseToken
     {
         if (!array_key_exists($name, $this->variables)) {
             $token = $this->stack->current();
@@ -120,10 +108,7 @@ final class AST implements Iterator
         return TokenFactory::createFromPHPType($this->variables[$name]);
     }
 
-    /**
-     * @return Stack
-     */
-    public function getStack()
+    public function getStack() : Stack
     {
         return $this->stack;
     }

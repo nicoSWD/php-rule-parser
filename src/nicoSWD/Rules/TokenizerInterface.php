@@ -15,9 +15,7 @@ namespace nicoSWD\Rules;
 interface TokenizerInterface
 {
     /**
-     * @param string $string
-     * @return Stack
      * @throws \Exception
      */
-    public function tokenize($string);
+    public function tokenize(string $string) : Stack;
 }
