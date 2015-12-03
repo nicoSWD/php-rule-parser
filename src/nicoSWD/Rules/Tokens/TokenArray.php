@@ -20,7 +20,7 @@ final class TokenArray extends BaseToken
 
     public function supportsMethodCalls() : bool
     {
-        return \true;
+        return true;
     }
 
     public function toArray() : array

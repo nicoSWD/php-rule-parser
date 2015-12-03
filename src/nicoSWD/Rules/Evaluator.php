@@ -3,18 +3,10 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules;
 
-/**
- * Evaluates a pre-parsed rule, such as:
- * (1&(0|0|0|0|0)&0)
- *
- * Class Evaluator
- * @package nicoSWD\Rules
- */
 final class Evaluator implements EvaluatorInterface
 {
     public function evaluate(string $group) : bool

@@ -9,8 +9,7 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\AST\Nodes;
 
-use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenArray;
+use nicoSWD\Rules\Tokens\{BaseToken, TokenArray};
 
 final class NodeArray extends BaseNode
 {

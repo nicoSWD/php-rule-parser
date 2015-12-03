@@ -125,14 +125,14 @@ abstract class BaseToken
         $this->position = 0;
 
         foreach ($this->stack as $token) {
-            $sumPosition = \true;
+            $sumPosition = true;
 
             if ($token === $this) {
                 break;
             } elseif ($token instanceof TokenNewline) {
                 $this->line += 1;
                 $this->position = 0;
-                $sumPosition = \false;
+                $sumPosition = false;
             } elseif ($token instanceof TokenComment) {
                 $this->line += substr_count($token->getValue(), "\n");
             }

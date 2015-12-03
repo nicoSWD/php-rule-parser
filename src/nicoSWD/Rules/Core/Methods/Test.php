@@ -12,8 +12,7 @@ namespace nicoSWD\Rules\Core\Methods;
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
-use nicoSWD\Rules\Tokens\TokenBool;
-use nicoSWD\Rules\Tokens\TokenRegex;
+use nicoSWD\Rules\Tokens\{TokenBool, TokenRegex};
 
 final class Test extends CallableFunction
 {

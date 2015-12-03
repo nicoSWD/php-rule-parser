@@ -9,8 +9,7 @@ namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
-use nicoSWD\Rules\Tokens\TokenRegex;
-use nicoSWD\Rules\Tokens\TokenString;
+use nicoSWD\Rules\Tokens\{TokenRegex, TokenString};
 
 final class Replace extends CallableFunction
 {

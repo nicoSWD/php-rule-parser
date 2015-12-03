@@ -15,7 +15,7 @@ use SplObjectStorage;
 final class TokenCollection extends SplObjectStorage
 {
     /**
-     * @return BaseToken
+     * @return BaseToken|null
      */
     public function current()
     {

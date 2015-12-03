@@ -25,7 +25,7 @@ final class IndexOf extends CallableFunction
         } else {
             $value = strpos($this->token->getValue(), $parameters->current()->getValue());
 
-            if ($value === \false) {
+            if ($value === false) {
                 $value = -1;
             }
         }

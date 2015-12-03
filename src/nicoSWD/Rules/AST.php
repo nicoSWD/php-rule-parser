@@ -1,21 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules;
 
 use Iterator;
-use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenFactory;
+use nicoSWD\Rules\Tokens\{BaseToken, TokenFactory};
 
-/**
- * Class AST
- * @package nicoSWD\Rules
- */
 final class AST implements Iterator
 {
     /**
@@ -81,9 +77,6 @@ final class AST implements Iterator
         return $this->stack->key();
     }
 
-    /**
-     * @return void
-     */
     public function rewind()
     {
         $this->stack->rewind();

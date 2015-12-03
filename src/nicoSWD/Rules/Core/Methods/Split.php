@@ -12,10 +12,11 @@ namespace nicoSWD\Rules\Core\Methods;
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\Tokens\TokenArray;
 
 final class Split extends CallableFunction
 {
-    public function call(TokenCollection $parameters) : Tokens\TokenArray
+    public function call(TokenCollection $parameters) : TokenArray
     {
         $separator = $parameters->current();
 
@@ -38,7 +39,7 @@ final class Split extends CallableFunction
             $newValue = call_user_func_array($func, $params);
         }
 
-        return new Tokens\TokenArray(
+        return new TokenArray(
             $newValue,
             $this->token->getOffset(),
             $this->token->getStack()

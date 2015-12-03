@@ -13,13 +13,14 @@ use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\Tokens\TokenString;
 
 final class Join extends CallableFunction
 {
     /**
      * @throws ParserException
      */
-    public function call(TokenCollection $parameters) : Tokens\TokenString
+    public function call(TokenCollection $parameters) : TokenString
     {
         if (!$this->token instanceof Tokens\TokenArray) {
             throw new ParserException(sprintf(
@@ -42,7 +43,7 @@ final class Join extends CallableFunction
             $array = $array->toArray();
         }
 
-        return new Tokens\TokenString(
+        return new TokenString(
             implode($glue, $array),
             $this->token->getOffset(),
             $this->token->getStack()

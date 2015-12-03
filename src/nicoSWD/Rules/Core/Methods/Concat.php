@@ -12,10 +12,11 @@ namespace nicoSWD\Rules\Core\Methods;
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\Tokens\TokenString;
 
 final class Concat extends CallableFunction
 {
-    public function call(TokenCollection $parameters) : Tokens\TokenString
+    public function call(TokenCollection $parameters) : TokenString
     {
         $value = $this->token->getValue();
 
@@ -27,7 +28,7 @@ final class Concat extends CallableFunction
             }
         }
 
-        return new Tokens\TokenString(
+        return new TokenString(
             $value,
             $this->token->getOffset(),
             $this->token->getStack()
