@@ -10,10 +10,18 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\AST\Nodes;
 
 use nicoSWD\Rules\AST;
+use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens;
 use nicoSWD\Rules\Constants;
 use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Tokens\{
+    BaseToken,
+    TokenComment,
+    TokenMethod,
+    TokenNewline,
+    TokenSpace
+};
 
 abstract class BaseNode
 {
@@ -40,7 +48,7 @@ abstract class BaseNode
         $this->ast = $ast;
     }
 
-    abstract public function getNode() : Tokens\BaseToken;
+    abstract public function getNode() : BaseToken;
 
     /**
      * Looks ahead, but does not move the pointer.
@@ -56,7 +64,7 @@ abstract class BaseNode
                 break;
             } elseif ($this->isIgnoredToken($token)) {
                 continue;
-            } elseif ($token instanceof Tokens\TokenMethod) {
+            } elseif ($token instanceof TokenMethod) {
                 $this->methodName = $token->getValue();
                 $this->methodOffset = $token->getOffset();
 
@@ -72,7 +80,7 @@ abstract class BaseNode
     /**
      * @throws ParserException
      */
-    public function getMethod(Tokens\BaseToken $token) : CallableFunction
+    public function getMethod(BaseToken $token) : CallableFunction
     {
         $methodName = $this->getMethodName();
         $methodClass = '\nicoSWD\Rules\Core\Methods\\' . ucfirst($methodName);
@@ -111,10 +119,10 @@ abstract class BaseNode
     /**
      * @throws ParserException
      */
-    protected function getCommaSeparatedValues(string $stopAt = ')') : AST\TokenCollection
+    protected function getCommaSeparatedValues(string $stopAt = ')') : TokenCollection
     {
         $commaExpected = false;
-        $items = new AST\TokenCollection();
+        $items = new TokenCollection();
 
         do {
             $this->ast->next();
@@ -171,12 +179,12 @@ abstract class BaseNode
         return $items;
     }
 
-    protected function isIgnoredToken(Tokens\BaseToken $token) : bool
+    protected function isIgnoredToken(BaseToken $token) : bool
     {
         return (
-            $token instanceof Tokens\TokenSpace ||
-            $token instanceof Tokens\TokenNewline ||
-            $token instanceof Tokens\TokenComment
+            $token instanceof TokenSpace ||
+            $token instanceof TokenNewline ||
+            $token instanceof TokenComment
         );
     }
 }

@@ -11,8 +11,8 @@ namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Tokens\{TokenArray, TokenRegex};
 use nicoSWD\Rules\Tokens;
-use nicoSWD\Rules\Tokens\TokenArray;
 
 final class Split extends CallableFunction
 {
@@ -30,7 +30,7 @@ final class Split extends CallableFunction
                 $params[] = (int) $parameters->current()->getValue();
             }
 
-            if ($separator instanceof Tokens\TokenRegex) {
+            if ($separator instanceof TokenRegex) {
                 $func = 'preg_split';
             } else {
                 $func = 'explode';

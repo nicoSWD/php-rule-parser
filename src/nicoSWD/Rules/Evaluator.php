@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
@@ -33,8 +35,8 @@ final class Evaluator implements EvaluatorInterface
      */
     private function evalGroup(array $group)
     {
-        $flag = \null;
-        $operator = \null;
+        $flag = null;
+        $operator = null;
 
         for ($offset = 0; isset($group[1][$offset]); $offset++) {
             $value = $group[1][$offset];

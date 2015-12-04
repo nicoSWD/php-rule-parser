@@ -10,10 +10,11 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\AST\Nodes;
 
 use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\Tokens\BaseToken;
 
 final class NodeVariable extends BaseNode
 {
-    public function getNode() : Tokens\BaseToken
+    public function getNode() : BaseToken
     {
         $value = $this->ast->getStack()->current()->getValue();
         $current = $this->ast->getVariable($value);

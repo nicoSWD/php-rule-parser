@@ -94,7 +94,7 @@ abstract class BaseToken
 
     public function supportsMethodCalls() : bool
     {
-        return \false;
+        return false;
     }
 
     public function getPosition() : int
@@ -115,10 +115,6 @@ abstract class BaseToken
         return $this->line;
     }
 
-    /**
-     * @internal
-     * @return void
-     */
     private function getLineAndPosition()
     {
         $this->line = 1;

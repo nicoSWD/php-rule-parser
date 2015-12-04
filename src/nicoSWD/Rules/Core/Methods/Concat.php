@@ -11,8 +11,8 @@ namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Tokens\{TokenArray, TokenString};
 use nicoSWD\Rules\Tokens;
-use nicoSWD\Rules\Tokens\TokenString;
 
 final class Concat extends CallableFunction
 {
@@ -21,7 +21,7 @@ final class Concat extends CallableFunction
         $value = $this->token->getValue();
 
         foreach ($parameters as $parameter) {
-            if ($parameter instanceof Tokens\TokenArray) {
+            if ($parameter instanceof TokenArray) {
                 $value .= implode(',', $parameter->toArray());
             } else {
                 $value .= $parameter->getValue();

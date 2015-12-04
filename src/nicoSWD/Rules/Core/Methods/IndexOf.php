@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
-use nicoSWD\Rules\Tokens\TokenInteger;
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Tokens\TokenInteger;
 
 final class IndexOf extends CallableFunction
 {

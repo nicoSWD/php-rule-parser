@@ -12,8 +12,8 @@ namespace nicoSWD\Rules\Core\Methods;
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Tokens\{TokenArray, TokenString};
 use nicoSWD\Rules\Tokens;
-use nicoSWD\Rules\Tokens\TokenString;
 
 final class Join extends CallableFunction
 {
@@ -22,7 +22,7 @@ final class Join extends CallableFunction
      */
     public function call(TokenCollection $parameters) : TokenString
     {
-        if (!$this->token instanceof Tokens\TokenArray) {
+        if (!$this->token instanceof TokenArray) {
             throw new ParserException(sprintf(
                 '%s.join is not a function at position %d on line %d',
                 $this->token->getValue(),
