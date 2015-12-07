@@ -1,17 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules;
 
-/**
- * Class Tokenizer
- * @package nicoSWD\Rules
- */
 final class Tokenizer implements TokenizerInterface
 {
     /**
@@ -50,9 +47,6 @@ final class Tokenizer implements TokenizerInterface
             | (?<Unknown>.)
         )~xAs';
 
-    /**
-     * {@inheritdoc}
-     */
     public function tokenize(string $string) : Stack
     {
         $stack = new Stack();

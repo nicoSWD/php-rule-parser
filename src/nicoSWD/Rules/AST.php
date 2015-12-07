@@ -10,7 +10,21 @@ declare(strict_types=1);
 namespace nicoSWD\Rules;
 
 use Iterator;
-use nicoSWD\Rules\Tokens\{BaseToken, TokenFactory};
+use nicoSWD\Rules\Tokens\{
+    BaseToken,
+    TokenFactory,
+    TokenFunction,
+    TokenOpeningArray,
+    TokenRegex,
+    TokenString,
+    TokenVariable
+};
+use nicoSWD\Rules\AST\Nodes\{
+    NodeArray,
+    NodeFunction,
+    NodeString,
+    NodeVariable
+};
 
 final class AST implements Iterator
 {
@@ -51,18 +65,18 @@ final class AST implements Iterator
         switch (true) {
             default:
                 return $current;
-            case $current instanceof Tokens\TokenString:
-            case $current instanceof Tokens\TokenRegex:
-                $current = new AST\Nodes\NodeString($this);
+            case $current instanceof TokenString:
+            case $current instanceof TokenRegex:
+                $current = new NodeString($this);
                 break;
-            case $current instanceof Tokens\TokenOpeningArray:
-                $current = new AST\Nodes\NodeArray($this);
+            case $current instanceof TokenOpeningArray:
+                $current = new NodeArray($this);
                 break;
-            case $current instanceof Tokens\TokenVariable:
-                $current = new AST\Nodes\NodeVariable($this);
+            case $current instanceof TokenVariable:
+                $current = new NodeVariable($this);
                 break;
-            case $current instanceof Tokens\TokenFunction:
-                $current = new AST\Nodes\NodeFunction($this);
+            case $current instanceof TokenFunction:
+                $current = new NodeFunction($this);
                 break;
         }
 
