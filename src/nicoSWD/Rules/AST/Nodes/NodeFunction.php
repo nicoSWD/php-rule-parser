@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\AST\Nodes;
 
 use nicoSWD\Rules\Core\CallableFunction;
@@ -25,10 +25,14 @@ final class NodeFunction extends BaseNode
         $class = '\nicoSWD\Rules\Core\Functions\\' . ucfirst($function);
 
         if (!class_exists($class)) {
-            throw new ParserException(sprintf(
-                '%s is not defined',
-                $function
-            ));
+            if (!$userFunction = $this->ast->parser->getFunction($function)) {
+                throw new ParserException(sprintf(
+                    '%s is not defined',
+                    $function
+                ));
+            }
+
+            return $userFunction->call($this, $this->getCommaSeparatedValues());
         }
 
         /** @var CallableFunction $instance */

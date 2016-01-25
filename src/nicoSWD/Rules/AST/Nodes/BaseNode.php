@@ -1,20 +1,20 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types = 1);
+
 namespace nicoSWD\Rules\AST\Nodes;
 
 use nicoSWD\Rules\AST;
 use nicoSWD\Rules\AST\TokenCollection;
-use nicoSWD\Rules\Core\CallableFunction;
-use nicoSWD\Rules\Tokens;
 use nicoSWD\Rules\Constants;
+use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Tokens;
 use nicoSWD\Rules\Tokens\{
     BaseToken,
     TokenComment,
@@ -107,7 +107,7 @@ abstract class BaseNode
         return $instance;
     }
 
-    protected function getMethodName() : string
+    private function getMethodName() : string
     {
         do {
             $this->ast->next();
@@ -176,10 +176,11 @@ abstract class BaseNode
         }
 
         $items->rewind();
+
         return $items;
     }
 
-    protected function isIgnoredToken(BaseToken $token) : bool
+    private function isIgnoredToken(BaseToken $token) : bool
     {
         return (
             $token instanceof TokenSpace ||

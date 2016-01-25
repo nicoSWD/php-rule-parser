@@ -1,14 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules;
 
+use Closure;
 use nicoSWD\Rules\Tokens\BaseToken;
 
 class Parser
@@ -16,7 +17,7 @@ class Parser
     /**
      * @var array
      */
-    protected $variables = [];
+    public $variables = [];
 
     /**
      * @var null|mixed[]
@@ -63,6 +64,8 @@ class Parser
      */
     protected $expressionFactory;
 
+    protected $userDefinedFunctions = [];
+
     public function __construct(TokenizerInterface $tokenizer, Expressions\Factory $expressionFactory)
     {
         $this->tokenizer = $tokenizer;
@@ -79,7 +82,7 @@ class Parser
         $this->values = null;
         $this->operatorRequired = false;
 
-        foreach (new AST($this->tokenizer->tokenize($rule), $this->variables) as $token) {
+        foreach (new AST($this->tokenizer->tokenize($rule), $this) as $token) {
             switch ($token->getGroup()) {
                 case Constants::GROUP_VALUE:
                     $this->assignVariableValueFromToken($token);
@@ -250,5 +253,21 @@ class Parser
                 'Incomplete expression'
             );
         }
+    }
+
+    public function registerFunction(string $name, Closure $callback)
+    {
+        $this->userDefinedFunctions[$name] = $callback;
+    }
+
+    /**
+     * @param string $name
+     * @return Closure|null
+     */
+    public function getFunction(string $name)
+    {
+        return isset($this->userDefinedFunctions[$name])
+            ? $this->userDefinedFunctions[$name]
+            : null;
     }
 }

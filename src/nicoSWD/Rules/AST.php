@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules;
 
 use Iterator;
@@ -28,6 +28,8 @@ use nicoSWD\Rules\AST\Nodes\{
 
 final class AST implements Iterator
 {
+    public $parser;
+
     /**
      * @var Stack
      */
@@ -42,10 +44,11 @@ final class AST implements Iterator
      * @param Stack   $stack
      * @param mixed[] $variables
      */
-    public function __construct(Stack $stack, array $variables = [])
+    public function __construct(Stack $stack, Parser $parser)
     {
         $this->stack = $stack;
-        $this->variables = $variables;
+        $this->variables = $parser->variables;
+        $this->parser = $parser;
     }
 
     public function next()

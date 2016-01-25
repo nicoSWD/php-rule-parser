@@ -9,6 +9,9 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\tests;
 
+use nicoSWD\Rules\AST\TokenCollection;
+use nicoSWD\Rules\Tokens\TokenInteger;
+
 class ParserTest extends \AbstractTestBase
 {
     public function testMultipleAnds()
@@ -130,5 +133,16 @@ class ParserTest extends \AbstractTestBase
         $this->assertTrue($this->evaluate($rule, [
             'foo' => '-1'
         ]));
+    }
+
+    public function testFunc()
+    {
+        $this->parser->registerFunction('multiply', function (TokenCollection $parameters) {
+            return new TokenInteger($parameters->current()->getValue() * 2);
+        });
+
+        $rule = 'multiply(4) === 8';
+
+        $this->assertTrue($this->evaluate($rule));
     }
 }

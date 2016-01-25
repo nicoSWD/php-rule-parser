@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
@@ -15,9 +15,6 @@ use nicoSWD\Rules\Tokens\TokenInteger;
 
 final class IndexOf extends CallableFunction
 {
-    /**
-     * @throws \Exception
-     */
     public function call(TokenCollection $parameters) : TokenInteger
     {
         if ($parameters->count() < 1) {
