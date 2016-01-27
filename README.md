@@ -155,7 +155,7 @@ If you discover any security related issues, please email security@nic0.me inste
 ## Testing
 
 ```bash
-$ phpunit
+$ composer test
 ```
 
 ## Contributing
