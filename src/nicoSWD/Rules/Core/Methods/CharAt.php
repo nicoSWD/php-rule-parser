@@ -9,21 +9,28 @@ declare(strict_types=1);
 
 namespace nicoSWD\Rules\Core\Methods;
 
-use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\Tokens\TokenInteger;
 use nicoSWD\Rules\Tokens\TokenString;
 
 final class CharAt extends CallableFunction
 {
-    public function call(TokenCollection $parameters) : TokenString
+    /**
+     * @param BaseToken $offset
+     */
+    public function call($offset = null) : TokenString
     {
-        if ($parameters->count() < 1) {
-            $offset = 0;
-        } else {
-            $offset = (int) $parameters->current()->getValue();
-        }
-
         $tokenValue = $this->token->getValue();
+
+        if (!$offset) {
+            $offset = 0;
+        }
+        elseif (!$offset instanceof TokenInteger) {
+            $offset = (int) $offset->getValue();
+        } else {
+            $offset = $offset->getValue();
+        }
 
         if (!isset($tokenValue[$offset])) {
             $char = '';

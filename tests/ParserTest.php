@@ -1,16 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\tests;
+declare(strict_types=1);
 
-use nicoSWD\Rules\AST\TokenCollection;
-use nicoSWD\Rules\Tokens\TokenInteger;
+namespace nicoSWD\Rules\tests;
 
 class ParserTest extends \AbstractTestBase
 {
@@ -133,16 +130,5 @@ class ParserTest extends \AbstractTestBase
         $this->assertTrue($this->evaluate($rule, [
             'foo' => '-1'
         ]));
-    }
-
-    public function testFunc()
-    {
-        $this->parser->registerFunction('multiply', function (TokenCollection $parameters) {
-            return new TokenInteger($parameters->current()->getValue() * 2);
-        });
-
-        $rule = 'multiply(4) === 8';
-
-        $this->assertTrue($this->evaluate($rule));
     }
 }

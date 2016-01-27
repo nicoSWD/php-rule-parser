@@ -9,16 +9,22 @@ declare(strict_types=1);
 
 namespace nicoSWD\Rules\Core\Methods;
 
-use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens\{TokenArray, TokenString};
 use nicoSWD\Rules\Tokens;
 
 final class Concat extends CallableFunction
 {
-    public function call(TokenCollection $parameters) : TokenString
+    /**
+     * @param Tokens\BaseToken $parameters
+     * @param Tokens\BaseToken $parameters...
+     * @return TokenString
+     */
+    public function call($parameters = null) : TokenString
     {
         $value = $this->token->getValue();
+        /** @var Tokens\BaseToken[] $parameters */
+        $parameters = func_get_args();
 
         foreach ($parameters as $parameter) {
             if ($parameter instanceof TokenArray) {

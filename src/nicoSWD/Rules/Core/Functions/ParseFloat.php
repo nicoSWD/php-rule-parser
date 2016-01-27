@@ -9,16 +9,15 @@ declare(strict_types=1);
 
 namespace nicoSWD\Rules\Core\Functions;
 
-use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens\TokenFloat;
 
 final class ParseFloat extends CallableFunction
 {
-    public function call(TokenCollection $parameters) : TokenFloat
+    public function call($value = null) : TokenFloat
     {
         return new TokenFloat(
-            (float) $parameters->current()->getValue(),
+            (float) $value->getValue(),
             $this->token->getOffset(),
             $this->token->getStack()
         );

@@ -28,6 +28,9 @@ use nicoSWD\Rules\AST\Nodes\{
 
 final class AST implements Iterator
 {
+    /**
+     * @var Parser
+     */
     public $parser;
 
     /**
@@ -41,8 +44,8 @@ final class AST implements Iterator
     protected $variables = [];
 
     /**
-     * @param Stack   $stack
-     * @param mixed[] $variables
+     * @param Stack  $stack
+     * @param Parser $parser
      */
     public function __construct(Stack $stack, Parser $parser)
     {

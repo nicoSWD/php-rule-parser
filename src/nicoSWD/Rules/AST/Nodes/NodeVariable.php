@@ -18,12 +18,10 @@ final class NodeVariable extends BaseNode
     {
         $value = $this->ast->getStack()->current()->getValue();
         $current = $this->ast->getVariable($value);
-
-        $current->setOffset($current->getOffset());
         $current->setStack($this->ast->getStack());
 
         while ($this->hasMethodCall()) {
-            $current = $this->getMethod($current)->call($this->getCommaSeparatedValues());
+            $current = $this->getMethod($current)->call(...$this->getArguments());
         }
 
         return $current;

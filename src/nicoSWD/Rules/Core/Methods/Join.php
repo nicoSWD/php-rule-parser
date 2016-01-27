@@ -14,13 +14,16 @@ use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\Tokens\{TokenArray, TokenString};
 use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\Tokens\BaseToken;
 
 final class Join extends CallableFunction
 {
     /**
+     * @param BaseToken $glue
+     * @return TokenString
      * @throws ParserException
      */
-    public function call(TokenCollection $parameters) : TokenString
+    public function call($glue = null) : TokenString
     {
         if (!$this->token instanceof TokenArray) {
             throw new ParserException(sprintf(
@@ -31,8 +34,8 @@ final class Join extends CallableFunction
             ));
         }
 
-        if ($firstParam = $parameters->current()) {
-            $glue = $firstParam->getValue();
+        if ($glue) {
+            $glue = $glue->getValue();
         } else {
             $glue = ',';
         }

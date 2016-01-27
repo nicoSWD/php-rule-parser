@@ -5,6 +5,8 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\tests\methods;
 
 class JoinTest extends \AbstractTestBase

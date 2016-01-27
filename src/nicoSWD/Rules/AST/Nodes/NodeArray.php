@@ -20,10 +20,10 @@ final class NodeArray extends BaseNode
     {
         $stack = $this->ast->getStack();
         $offset = $stack->current()->getOffset();
-        $token = new TokenArray($this->getCommaSeparatedValues(']'), $offset, $stack);
+        $token = new TokenArray($this->getArrayItems(), $offset, $stack);
 
         while ($this->hasMethodCall()) {
-            $token = $this->getMethod($token)->call($this->getCommaSeparatedValues());
+            $token = $this->getMethod($token)->call(...$this->getArguments());
         }
 
         return $token;

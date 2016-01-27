@@ -116,10 +116,20 @@ abstract class BaseNode
         return trim(ltrim(rtrim($this->methodName, "\r\n("), '.'));
     }
 
+    public function getArrayItems() : TokenCollection
+    {
+        return $this->getCommaSeparatedValues(']');
+    }
+
+    public function getArguments() : TokenCollection
+    {
+        return $this->getCommaSeparatedValues(')');
+    }
+
     /**
      * @throws ParserException
      */
-    protected function getCommaSeparatedValues(string $stopAt = ')') : TokenCollection
+    private function getCommaSeparatedValues(string $stopAt) : TokenCollection
     {
         $commaExpected = false;
         $items = new TokenCollection();

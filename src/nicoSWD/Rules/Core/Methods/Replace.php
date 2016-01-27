@@ -9,32 +9,33 @@ declare(strict_types=1);
 
 namespace nicoSWD\Rules\Core\Methods;
 
-use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens\{TokenRegex, TokenString};
+use nicoSWD\Rules\Tokens\BaseToken;
 
 final class Replace extends CallableFunction
 {
     /**
+     * @param BaseToken $search
+     * @param BaseToken $replace
+     * @return TokenString
      * @throws \Exception
      */
-    public function call(TokenCollection $parameters) : TokenString
+    public function call($search = null, $replace = null) : TokenString
     {
-        $numParams = $parameters->count();
         $isRegExpr = false;
 
-        if ($numParams < 1) {
+        if (!$search) {
             $search = '';
         } else {
-            $search = $parameters->current()->getValue();
-            $isRegExpr = ($parameters->current() instanceof TokenRegex);
+            $isRegExpr = ($search instanceof TokenRegex);
+            $search = $search->getValue();
         }
 
-        if ($numParams < 2) {
+        if (!$replace) {
             $replace = 'undefined';
         } else {
-            $parameters->next();
-            $replace = $parameters->current()->getValue();
+            $replace = $replace->getValue();
         }
 
         if ($isRegExpr) {

@@ -21,8 +21,8 @@ final class NodeFunction extends BaseNode
     public function getNode() : BaseToken
     {
         $current = $this->ast->getStack()->current();
-        $function = rtrim($current->getValue(), " \r\n(");
-        $class = '\nicoSWD\Rules\Core\Functions\\' . ucfirst($function);
+        $function = $this->resolveFunctionName($current);
+        $class = $this->resolveClassName($function);
 
         if (!class_exists($class)) {
             if (!$userFunction = $this->ast->parser->getFunction($function)) {
@@ -32,7 +32,7 @@ final class NodeFunction extends BaseNode
                 ));
             }
 
-            return $userFunction->call($this, $this->getCommaSeparatedValues());
+            return $userFunction->call($this, ...$this->getArguments());
         }
 
         /** @var CallableFunction $instance */
@@ -45,6 +45,16 @@ final class NodeFunction extends BaseNode
             ));
         }
 
-        return $instance->call($this->getCommaSeparatedValues());
+        return $instance->call(...$this->getArguments());
+    }
+
+    private function resolveClassName(string $class) : string
+    {
+        return '\nicoSWD\Rules\Core\Functions\\' . ucfirst($class);
+    }
+
+    private function resolveFunctionName(BaseToken $token) : string
+    {
+        return rtrim($token->getValue(), " \r\n(");
     }
 }

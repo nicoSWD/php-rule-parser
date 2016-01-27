@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Core;
 
 use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\AST\TokenCollection;
 
 abstract class CallableFunction
 {
@@ -25,9 +24,11 @@ abstract class CallableFunction
     }
 
     /**
+     * @param BaseToken $param
+     * @param BaseToken $param...
      * @return mixed
      */
-    abstract public function call(TokenCollection $parameters);
+    abstract public function call($param = null);
 
     abstract public function getName() : string;
 }

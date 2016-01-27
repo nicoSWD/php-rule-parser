@@ -9,16 +9,15 @@ declare(strict_types=1);
 
 namespace nicoSWD\Rules\Core\Functions;
 
-use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens\TokenInteger;
 
 final class ParseInt extends CallableFunction
 {
-    public function call(TokenCollection $parameters) : TokenInteger
+    public function call($value = null) : TokenInteger
     {
         return new TokenInteger(
-            (int) $parameters->current()->getValue(),
+            (int) $value->getValue(),
             $this->token->getOffset(),
             $this->token->getStack()
         );

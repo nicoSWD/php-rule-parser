@@ -13,13 +13,16 @@ use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\Tokens\{TokenBool, TokenRegex};
+use nicoSWD\Rules\Tokens\BaseToken;
 
 final class Test extends CallableFunction
 {
     /**
+     * @param BaseToken $string
+     * @return TokenBool
      * @throws ParserException
      */
-    public function call(TokenCollection $parameters) : TokenBool
+    public function call($string = null) : TokenBool
     {
         if (!$this->token instanceof TokenRegex) {
             throw new ParserException(sprintf(
@@ -29,7 +32,7 @@ final class Test extends CallableFunction
             ));
         }
 
-        if ($parameters->count() < 1) {
+        if (!$string) {
             $bool = false;
         } else {
             // Remove "g" modifier as is does not exist in PHP
@@ -42,7 +45,7 @@ final class Test extends CallableFunction
                 $this->token->getValue()
             );
 
-            $subject = $parameters->current()->getValue();
+            $subject = $string->getValue();
 
             while ($subject instanceof TokenCollection) {
                 $subject = current($subject->toArray());
