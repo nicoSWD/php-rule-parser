@@ -1,7 +1,7 @@
 {
   "name": "nicoswd/php-rule-parser",
   "type": "library",
-  "description": "PHP 5.4 Rule Parser and Evaluator",
+  "description": "PHP 7 Rule Parser and Evaluator",
   "keywords": ["rule", "parser", "tokenizer", "highlighter", "evaluator", "javascript", "workflow", "dsl"],
   "homepage": "https://github.com/nicoSWD/php-rule-parser",
   "license": "MIT",
@@ -12,12 +12,16 @@
       "homepage": "https://nicoswd.com"
     }
   ],
-  "require": {
-    "php": ">=5.4"
+  "psr-4": {
+    "nicoSWD\\Rules": "src/nicoSWD/Rules"
   },
-  "autoload": {
-    "classmap": [
-      "src/"
-    ]
+  "require": {
+    "php": "^7.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.1"
+  },
+  "scripts": {
+    "test": "phpunit"
   }
 }
