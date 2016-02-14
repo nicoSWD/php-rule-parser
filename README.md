@@ -94,9 +94,10 @@ $rule->registerFunction('double', function (BaseToken $multiplier) : BaseToken {
 var_dump($rule->isTrue()); // bool(true)
 ```
 
-## Redefine Operators
-Operators can be overwritten with custom ones, if desired. Note that it's easy to break stuff by doing that.
-You may want to set a different `$priority` when registering a token. `::registerToken($type, $regex, $priority)`. Take a look at `Tokenizer::__construct()` for more info.
+## Redefine Tokens
+Tokens can be customized, if desired. Note that it's very easy to break stuff by doing that, if you have colliding regular expressions.
+You may want to set a different `$priority` when registering a token: `::registerToken($type, $regex, $priority)`
+(take a look at `Tokenizer::__construct()` for more info).
 
 ```php
 $ruleStr = ':this is greater than :that';
@@ -108,15 +109,8 @@ $variables = [
 
 $rule = new Rule($ruleStr, $variables);
 
-$rule->registerToken(
-    Tokenizer::TOKEN_GREATER,
-    '\bis\s+greater\s+than\b'
-);
-
-$rule->registerToken(
-    Tokenizer::TOKEN_VARIABLE,
-    ':\w+'
-);
+$rule->registerToken(Tokenizer::TOKEN_GREATER, '\bis\s+greater\s+than\b');
+$rule->registerToken(Tokenizer::TOKEN_VARIABLE, ':\w+');
 
 var_dump($rule->isTrue()); // bool(true)
 ```
