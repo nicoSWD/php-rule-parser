@@ -260,6 +260,11 @@ class Parser
         $this->userDefinedFunctions[$name] = $callback;
     }
 
+    public function registerToken(string $token, string $regex, int $priority = 10)
+    {
+        $this->tokenizer->registerToken($token, $regex, $priority);
+    }
+
     /**
      * @param string $name
      * @return Closure|null

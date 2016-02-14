@@ -15,4 +15,6 @@ interface TokenizerInterface
      * @throws \Exception
      */
     public function tokenize(string $string) : Stack;
+
+    public function registerToken(string $token, string $regex, int $priority);
 }

@@ -17,4 +17,9 @@ final class TokenClosingArray extends BaseToken
     {
         return Constants::GROUP_SQUARE_BRACKETS;
     }
+
+    public function getValue()
+    {
+        return ']';
+    }
 }

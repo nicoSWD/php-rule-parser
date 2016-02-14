@@ -21,20 +21,15 @@ final class TokenFactory
     {
         switch ($type = gettype($value)) {
             case 'string':
-                $current = new TokenString($value);
-                break;
+                return new TokenString($value);
             case 'integer':
-                $current = new TokenInteger($value);
-                break;
+                return new TokenInteger($value);
             case 'boolean':
-                $current = new TokenBool($value);
-                break;
+                return new TokenBool($value);
             case 'NULL':
-                $current = new TokenNull($value);
-                break;
+                return new TokenNull($value);
             case 'double':
-                $current = new TokenFloat($value);
-                break;
+                return new TokenFloat($value);
             case 'array':
                 $params = new TokenCollection();
 
@@ -42,15 +37,12 @@ final class TokenFactory
                     $params->attach(self::createFromPHPType($item));
                 }
 
-                $current = new TokenArray($params);
-                break;
+                return new TokenArray($params);
             default:
                 throw new ParserException(sprintf(
                     'Unsupported PHP type: "%s"',
                     $type
                 ));
         }
-
-        return $current;
     }
 }

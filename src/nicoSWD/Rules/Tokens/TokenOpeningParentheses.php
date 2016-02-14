@@ -17,4 +17,9 @@ final class TokenOpeningParentheses extends BaseToken
     {
         return Constants::GROUP_PARENTHESES;
     }
+
+    public function getValue()
+    {
+        return '(';
+    }
 }

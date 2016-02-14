@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace nicoSWD\Rules;
 
 use Closure;
+use Exception;
+use nicoSWD\Rules\Expressions\BaseExpression;
 
 class Rule
 {
@@ -40,7 +42,7 @@ class Rule
 
     public function __construct(string $rule, array $variables = [])
     {
-        $this->rule = (string) $rule;
+        $this->rule = $rule;
         $this->parser = new Parser(new Tokenizer(), new Expressions\Factory());
         $this->evaluator = new Evaluator();
 
@@ -67,7 +69,7 @@ class Rule
     {
         try {
             $this->parsedRule = $this->parser->parse($this->rule);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->error = $e->getMessage();
             return false;
         }
@@ -78,6 +80,11 @@ class Rule
     public function registerFunction(string $name, Closure $callback)
     {
         $this->parser->registerFunction($name, $callback);
+    }
+
+    public function registerOperator(string $operator, BaseExpression $token)
+    {
+        $this->parser->registerToken($operator, $token);
     }
 
     public function getError() : string

@@ -17,4 +17,9 @@ final class TokenSmallerEqual extends BaseToken
     {
         return Constants::GROUP_OPERATOR;
     }
+
+    public function getValue()
+    {
+        return '<=';
+    }
 }

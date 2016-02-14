@@ -11,15 +11,10 @@ namespace nicoSWD\Rules\Tokens;
 
 use nicoSWD\Rules\Constants;
 
-final class TokenClosingParentheses extends BaseToken
+final class TokenCustomOperator extends BaseToken
 {
     public function getGroup() : int
     {
-        return Constants::GROUP_PARENTHESES;
-    }
-
-    public function getValue()
-    {
-        return ')';
+        return Constants::GROUP_OPERATOR;
     }
 }

@@ -43,7 +43,7 @@ final class Factory
         return new $this->classLookup[$operator]();
     }
 
-    public function mapOperatorToClass(string $operator, string $class)
+    public function mapOperatorToClass(string $operator, $class)
     {
         $this->classLookup[$operator] = $class;
     }

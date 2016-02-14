@@ -17,4 +17,9 @@ final class TokenEqual extends BaseToken
     {
         return Constants::GROUP_OPERATOR;
     }
+
+    public function getValue()
+    {
+        return '==';
+    }
 }
