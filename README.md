@@ -115,6 +115,9 @@ $rule->registerToken(Tokenizer::TOKEN_VARIABLE, ':\w+');
 var_dump($rule->isTrue()); // bool(true)
 ```
 
+Also note that the original tokens will no longer be recognized after overwriting them. Thus, if you want to implement aliases
+for custom tokens, you have to group them into one regular expression: `(?:\b(?:is\s+)?greater\s+than\b|>)`
+
 ## Error Handling
 Both, `$rule->isTrue()` and `$rule->isFalse()` will throw an exception if the syntax is invalid. These calls can either be placed inside a `try` / `catch` block, or it can be checked prior using `$rule->isValid()`.
 
