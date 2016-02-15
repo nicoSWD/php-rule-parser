@@ -20,4 +20,11 @@ interface TokenizerInterface
      * @throws \Exception
      */
     public function tokenize($string);
+
+    /**
+     * @param string $class
+     * @param string $regex
+     * @param int    $priority
+     */
+    public function registerToken($class, $regex, $priority = null);
 }

@@ -89,6 +89,16 @@ class Rule
     }
 
     /**
+     * @param string $class
+     * @param string $regex
+     * @param int    $priority
+     */
+    public function registerToken($class, $regex, $priority = null)
+    {
+        $this->parser->registerToken($class, $regex, $priority);
+    }
+
+    /**
      * @return string
      */
     public function getError()

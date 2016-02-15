@@ -23,4 +23,12 @@ final class TokenNotEqualStrict extends BaseToken
     {
         return Constants::GROUP_OPERATOR;
     }
+
+    /**
+     * @return string
+     */
+    public function getValue()
+    {
+        return '!==';
+    }
 }
