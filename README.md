@@ -69,6 +69,30 @@ $rule = new Rule($ruleStr, $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
+## Redefine Tokens
+Tokens can be customized, if desired. Note that it's very easy to break stuff by doing that, if you have colliding regular expressions.
+You may want to set a different `$priority` when registering a token: `::registerToken($type, $regex, $priority)`
+(take a look at `Tokenizer::__construct()` for more info).
+
+```php
+$ruleStr = ':this is greater than :that';
+
+$variables = [
+    ':this' => 8,
+    ':that' => 7
+];
+
+$rule = new Rule($ruleStr, $variables);
+
+$rule->registerToken(Tokenizer::TOKEN_GREATER, '\bis\s+greater\s+than\b');
+$rule->registerToken(Tokenizer::TOKEN_VARIABLE, ':\w+');
+
+var_dump($rule->isTrue()); // bool(true)
+```
+
+Also note that the original tokens will no longer be recognized after overwriting them. Thus, if you want to implement aliases
+for custom tokens, you have to group them into one regular expression: `(?:\b(?:is\s+)?greater\s+than\b|>)`
+
 ## Error Handling
 Both, `$rule->isTrue()` and `$rule->isFalse()` will throw an exception if the syntax is invalid. These calls can either be placed inside a `try` / `catch` block, or it can be checked prior using `$rule->isValid()`.
 
