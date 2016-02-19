@@ -48,7 +48,7 @@ final class Tokenizer implements TokenizerInterface
 
     private $regex = '';
 
-    private $regexRequiresReassambly = false;
+    private $regexRequiresReassembly = false;
 
     public function __construct()
     {
@@ -108,13 +108,13 @@ final class Tokenizer implements TokenizerInterface
 
     public function registerToken(string $class, string $regex, int $priority = null)
     {
-        $token = new StdClass();
+        $token = new stdClass();
         $token->class = $class;
         $token->regex = $regex;
         $token->priority = $priority ?? $this->getPriority($class);
 
         $this->internalTokens[$class] = $token;
-        $this->regexRequiresReassambly = true;
+        $this->regexRequiresReassembly = true;
     }
 
     private function getMatchedToken(array $matches) : string
@@ -130,7 +130,7 @@ final class Tokenizer implements TokenizerInterface
 
     private function getRegex() : string
     {
-        if (!$this->regex || $this->regexRequiresReassambly) {
+        if (!$this->regex || $this->regexRequiresReassembly) {
             $regex = [];
 
             foreach ($this->getQueue() as $token) {
@@ -138,7 +138,7 @@ final class Tokenizer implements TokenizerInterface
             }
 
             $this->regex = sprintf('~(%s)~As', implode('|', $regex));
-            $this->regexRequiresReassambly = false;
+            $this->regexRequiresReassembly = false;
         }
 
         return $this->regex;
@@ -157,6 +157,6 @@ final class Tokenizer implements TokenizerInterface
 
     private function getPriority(string $class) : int
     {
-        return $this->internalTokens[$class] ?? 10;
+        return $this->internalTokens[$class]->priority ?? 10;
     }
 }
