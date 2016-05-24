@@ -22,7 +22,7 @@ Find me on Twitter: @[nicoSWD](https://twitter.com/nicoSWD)
 Via Composer
 
 ```bash
-$ composer require "nicoswd/php-rule-parser": "0.4.*"
+$ composer require nicoswd/php-rule-parser
 ```
 
 Via git
