@@ -86,6 +86,11 @@ class Rule
     {
         $this->parser->registerToken($operator, $token);
     }
+    
+    public function registerToken(string $class, string $regex, int $priority = null)		
+    {
+        $this->parser->registerToken($class, $regex, $priority);
+    }
 
     public function getError() : string
     {
