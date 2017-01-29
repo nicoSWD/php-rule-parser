@@ -121,6 +121,17 @@ class Parser
     }
 
     /**
+     * @param string $class
+     * @param string $regex
+     * @param int    $priority
+     */
+    public function registerToken($class, $regex, $priority = null)
+    {
+        $this->tokenizer->registerToken($class, $regex, $priority);
+    }
+
+    /**
+     * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
     protected function assignVariableValueFromToken(BaseToken $token)

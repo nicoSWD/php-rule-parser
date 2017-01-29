@@ -24,7 +24,7 @@ Find me on Twitter: @[nicoSWD](https://twitter.com/nicoSWD)
 Via Composer
 
 ```bash
-$ composer require "nicoswd/php-rule-parser": "0.3.*"
+$ composer require nicoswd/php-rule-parser
 ```
 
 Via git
@@ -71,6 +71,7 @@ $rule = new Rule($ruleStr, $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
+
 ## Custom Functions
 
 ```php
@@ -110,7 +111,7 @@ $variables = [
 $rule = new Rule($ruleStr, $variables);
 
 $rule->registerToken(Tokenizer::TOKEN_GREATER, '\bis\s+greater\s+than\b');
-$rule->registerToken(Tokenizer::TOKEN_VARIABLE, ':\w+');
+$rule->registerToken(Tokenizer::TOKEN_VARIABLE, ':[a-zA-Z_][\w-]*');
 
 var_dump($rule->isTrue()); // bool(true)
 ```

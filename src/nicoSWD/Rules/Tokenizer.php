@@ -83,6 +83,7 @@ final class Tokenizer implements TokenizerInterface
         $this->registerToken(self::TOKEN_UNKNOWN, '.', 5);
     }
 
+
     public function tokenize(string $string) : Stack
     {
         $stack = new Stack();
@@ -128,6 +129,7 @@ final class Tokenizer implements TokenizerInterface
         return 'Unknown';
     }
 
+
     private function getRegex() : string
     {
         if (!$this->regex || $this->regexRequiresReassembly) {
@@ -143,6 +145,7 @@ final class Tokenizer implements TokenizerInterface
 
         return $this->regex;
     }
+
 
     private function getQueue() : SplPriorityQueue
     {
