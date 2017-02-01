@@ -14,8 +14,15 @@ use nicoSWD\Rules\Tokens\TokenInteger;
 
 final class ParseInt extends CallableFunction
 {
+    /**
+     * {@inheritdoc}
+     */
     public function call($value = null) : TokenInteger
     {
+        if ($value === null) {
+            return new TokenInteger(NAN);
+        }
+
         return new TokenInteger(
             (int) $value->getValue(),
             $this->token->getOffset(),

@@ -11,11 +11,19 @@ namespace nicoSWD\Rules\Core\Functions;
 
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens\TokenFloat;
+use nicoSWD\Rules\Tokens\TokenInteger;
 
 final class ParseFloat extends CallableFunction
 {
+    /**
+     * {@inheritdoc}
+     */
     public function call($value = null) : TokenFloat
     {
+        if ($value === null) {
+            return new TokenFloat(NAN);
+        }
+
         return new TokenFloat(
             (float) $value->getValue(),
             $this->token->getOffset(),

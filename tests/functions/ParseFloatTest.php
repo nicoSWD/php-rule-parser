@@ -31,4 +31,9 @@ class ParseFloatTest extends \AbstractTestBase
         $this->assertTrue($this->evaluate('parseFloat(foo) === 3.4', ['foo' => '3.4']));
         $this->assertFalse($this->evaluate('parseFloat(foo) === "3.5"', ['foo' => 3.5]));
     }
+
+    public function testCallWithoutArgsShouldReturnNaN()
+    {
+        $this->assertFalse($this->evaluate('parseFloat() === 1'));
+    }
 }

@@ -31,4 +31,9 @@ class ParseIntTest extends \AbstractTestBase
         $this->assertTrue($this->evaluate('parseInt(foo) === 3', ['foo' => '3']));
         $this->assertFalse($this->evaluate('parseInt(foo) === "3"', ['foo' => 3]));
     }
+
+    public function testCallWithoutArgsShouldReturnNan()
+    {
+        $this->assertFalse($this->evaluate('parseInt() === 1'));
+    }
 }
