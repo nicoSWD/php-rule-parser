@@ -82,12 +82,7 @@ class Rule
         $this->parser->registerFunction($name, $callback);
     }
 
-    public function registerOperator(string $operator, BaseExpression $token)
-    {
-        $this->parser->registerToken($operator, $token);
-    }
-    
-    public function registerToken(string $class, string $regex, $priority = null)		
+    public function registerToken(string $class, string $regex, int $priority = 10)
     {
         $this->parser->registerToken($class, $regex, $priority);
     }

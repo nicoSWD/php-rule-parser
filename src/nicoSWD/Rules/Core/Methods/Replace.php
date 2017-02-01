@@ -10,7 +10,10 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\Core\CallableFunction;
-use nicoSWD\Rules\Tokens\{TokenRegex, TokenString};
+use nicoSWD\Rules\Tokens\{
+    TokenRegex,
+    TokenString
+};
 use nicoSWD\Rules\Tokens\BaseToken;
 
 final class Replace extends CallableFunction
