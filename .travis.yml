@@ -2,7 +2,7 @@ language: php
 
 php:
   - 7.0
-  - nightly
+  - 7.1
 
 script: phpunit --coverage-clover=coverage.clover
 
