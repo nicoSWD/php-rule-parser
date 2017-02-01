@@ -3,48 +3,45 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\Core\Methods;
 
-use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Tokens\{TokenArray, TokenString};
 use nicoSWD\Rules\Tokens;
 
-/**
- * Class Concat
- * @package nicoSWD\Rules\Core\Methods
- */
 final class Concat extends CallableFunction
 {
     /**
-     * @param TokenCollection $parameters
-     * @return Tokens\TokenString
+     * @param Tokens\BaseToken $parameters
+     * @param Tokens\BaseToken $parameters...
+     * @return TokenString
      */
-    public function call(TokenCollection $parameters)
+    public function call($parameters = null) : TokenString
     {
         $value = $this->token->getValue();
+        /** @var Tokens\BaseToken[] $parameters */
+        $parameters = func_get_args();
 
         foreach ($parameters as $parameter) {
-            if ($parameter instanceof Tokens\TokenArray) {
+            if ($parameter instanceof TokenArray) {
                 $value .= implode(',', $parameter->toArray());
             } else {
                 $value .= $parameter->getValue();
             }
         }
 
-        return new Tokens\TokenString(
+        return new TokenString(
             $value,
             $this->token->getOffset(),
             $this->token->getStack()
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName() : string
     {
         return 'concat';
     }

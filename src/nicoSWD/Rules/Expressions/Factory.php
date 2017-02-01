@@ -3,17 +3,14 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\Expressions;
 
 use nicoSWD\Rules\Exceptions\ExpressionFactoryException;
 
-/**
- * Class Factory
- * @package nicoSWD\Rules\Expressions
- */
 final class Factory
 {
     /**
@@ -32,11 +29,9 @@ final class Factory
     ];
 
     /**
-     * @param string $operator
-     * @return BaseExpression
      * @throws ExpressionFactoryException
      */
-    public function createFromOperator($operator)
+    public function createFromOperator(string $operator) : BaseExpression
     {
         if (!isset($this->classLookup[$operator])) {
             throw new ExpressionFactoryException(sprintf(
@@ -48,12 +43,7 @@ final class Factory
         return new $this->classLookup[$operator]();
     }
 
-    /**
-     * @param string $operator
-     * @param string $class
-     * @since 0.3.2
-     */
-    public function mapOperatorToClass($operator, $class)
+    public function mapOperatorToClass(string $operator, $class)
     {
         $this->classLookup[$operator] = $class;
     }

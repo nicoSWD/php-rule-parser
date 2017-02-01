@@ -3,14 +3,12 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 use nicoSWD\Rules;
 
-/**
- * Class RuleTest
- */
 class RuleTest extends \PHPUnit_Framework_TestCase
 {
     public function testBasicRuleWithCommentsEvaluatesCorrectly()

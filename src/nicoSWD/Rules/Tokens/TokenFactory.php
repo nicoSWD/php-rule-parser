@@ -3,43 +3,33 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.5
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\Tokens;
 
 use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\AST\TokenCollection;
 
-/**
- * Class TokenFactory
- * @package nicoSWD\Rules\Tokens
- */
 final class TokenFactory
 {
     /**
-     * @param mixed $value
-     * @return BaseToken
      * @throws ParserException
      */
-    public static function createFromPHPType($value)
+    public static function createFromPHPType($value) : BaseToken
     {
         switch ($type = gettype($value)) {
             case 'string':
-                $current = new TokenString($value);
-                break;
+                return new TokenString($value);
             case 'integer':
-                $current = new TokenInteger($value);
-                break;
+                return new TokenInteger($value);
             case 'boolean':
-                $current = new TokenBool($value);
-                break;
+                return new TokenBool($value);
             case 'NULL':
-                $current = new TokenNull($value);
-                break;
+                return new TokenNull($value);
             case 'double':
-                $current = new TokenFloat($value);
-                break;
+                return new TokenFloat($value);
             case 'array':
                 $params = new TokenCollection();
 
@@ -47,15 +37,12 @@ final class TokenFactory
                     $params->attach(self::createFromPHPType($item));
                 }
 
-                $current = new TokenArray($params);
-                break;
+                return new TokenArray($params);
             default:
                 throw new ParserException(sprintf(
                     'Unsupported PHP type: "%s"',
                     $type
                 ));
         }
-
-        return $current;
     }
 }

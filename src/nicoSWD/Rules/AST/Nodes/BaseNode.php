@@ -3,21 +3,26 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types = 1);
+
 namespace nicoSWD\Rules\AST\Nodes;
 
 use nicoSWD\Rules\AST;
-use nicoSWD\Rules\Core\CallableFunction;
-use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Constants;
+use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\Tokens\{
+    BaseToken,
+    TokenComment,
+    TokenMethod,
+    TokenNewline,
+    TokenSpace
+};
 
-/**
- * Class BaseNode
- * @package nicoSWD\Rules\AST
- */
 abstract class BaseNode
 {
     /**
@@ -43,18 +48,12 @@ abstract class BaseNode
         $this->ast = $ast;
     }
 
-    /**
-     * @return Tokens\BaseToken
-     */
-    abstract public function getNode();
+    abstract public function getNode() : BaseToken;
 
     /**
      * Looks ahead, but does not move the pointer.
-     *
-     * @since 0.3.4
-     * @return bool
      */
-    protected function hasMethodCall()
+    protected function hasMethodCall() : bool
     {
         $stackClone = $this->ast->getStack()->getClone();
 
@@ -65,25 +64,23 @@ abstract class BaseNode
                 break;
             } elseif ($this->isIgnoredToken($token)) {
                 continue;
-            } elseif ($token instanceof Tokens\TokenMethod) {
+            } elseif ($token instanceof TokenMethod) {
                 $this->methodName = $token->getValue();
                 $this->methodOffset = $token->getOffset();
 
-                return \true;
+                return true;
             } else {
                 break;
             }
         }
 
-        return \false;
+        return false;
     }
 
     /**
-     * @param Tokens\BaseToken $token
-     * @return \nicoSWD\Rules\Core\CallableFunction
      * @throws ParserException
      */
-    public function getMethod(Tokens\BaseToken $token)
+    public function getMethod(BaseToken $token) : CallableFunction
     {
         $methodName = $this->getMethodName();
         $methodClass = '\nicoSWD\Rules\Core\Methods\\' . ucfirst($methodName);
@@ -110,12 +107,7 @@ abstract class BaseNode
         return $instance;
     }
 
-    /**
-     * @since 0.3.4
-     * @internal
-     * @return string
-     */
-    protected function getMethodName()
+    private function getMethodName() : string
     {
         do {
             $this->ast->next();
@@ -124,16 +116,23 @@ abstract class BaseNode
         return trim(ltrim(rtrim($this->methodName, "\r\n("), '.'));
     }
 
+    public function getArrayItems() : TokenCollection
+    {
+        return $this->getCommaSeparatedValues(']');
+    }
+
+    public function getArguments() : TokenCollection
+    {
+        return $this->getCommaSeparatedValues(')');
+    }
+
     /**
-     * @since 0.3.4
-     * @param string $stopAt
-     * @return AST\TokenCollection
      * @throws ParserException
      */
-    protected function getCommaSeparatedValues($stopAt = ')')
+    private function getCommaSeparatedValues(string $stopAt) : TokenCollection
     {
-        $commaExpected = \false;
-        $items = new AST\TokenCollection();
+        $commaExpected = false;
+        $items = new TokenCollection();
 
         do {
             $this->ast->next();
@@ -154,7 +153,7 @@ abstract class BaseNode
                     ));
                 }
 
-                $commaExpected = \true;
+                $commaExpected = true;
                 $items->attach($current);
             } elseif ($current instanceof Tokens\TokenComma) {
                 if (!$commaExpected) {
@@ -165,7 +164,7 @@ abstract class BaseNode
                     ));
                 }
 
-                $commaExpected = \false;
+                $commaExpected = false;
             } elseif ($current->getValue() === $stopAt) {
                 break;
             } elseif (!$this->isIgnoredToken($current)) {
@@ -187,20 +186,16 @@ abstract class BaseNode
         }
 
         $items->rewind();
+
         return $items;
     }
 
-    /**
-     * @since 0.3.4
-     * @param Tokens\BaseToken $token
-     * @return bool
-     */
-    protected function isIgnoredToken(Tokens\BaseToken $token)
+    private function isIgnoredToken(BaseToken $token) : bool
     {
         return (
-            $token instanceof Tokens\TokenSpace ||
-            $token instanceof Tokens\TokenNewline ||
-            $token instanceof Tokens\TokenComment
+            $token instanceof TokenSpace ||
+            $token instanceof TokenNewline ||
+            $token instanceof TokenComment
         );
     }
 }

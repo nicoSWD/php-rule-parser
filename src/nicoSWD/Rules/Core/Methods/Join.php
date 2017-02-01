@@ -3,30 +3,29 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Tokens\{TokenArray, TokenString};
 use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\Tokens\BaseToken;
 
-/**
- * Class Join
- * @package nicoSWD\Rules\Core\Methods
- */
 final class Join extends CallableFunction
 {
     /**
-     * @param TokenCollection $parameters
-     * @return Tokens\TokenString
+     * @param BaseToken $glue
+     * @return TokenString
      * @throws ParserException
      */
-    public function call(TokenCollection $parameters)
+    public function call($glue = null) : TokenString
     {
-        if (!$this->token instanceof Tokens\TokenArray) {
+        if (!$this->token instanceof TokenArray) {
             throw new ParserException(sprintf(
                 '%s.join is not a function at position %d on line %d',
                 $this->token->getValue(),
@@ -35,8 +34,8 @@ final class Join extends CallableFunction
             ));
         }
 
-        if ($firstParam = $parameters->current()) {
-            $glue = $firstParam->getValue();
+        if ($glue) {
+            $glue = $glue->getValue();
         } else {
             $glue = ',';
         }
@@ -47,17 +46,14 @@ final class Join extends CallableFunction
             $array = $array->toArray();
         }
 
-        return new Tokens\TokenString(
+        return new TokenString(
             implode($glue, $array),
             $this->token->getOffset(),
             $this->token->getStack()
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName() : string
     {
         return 'join';
     }

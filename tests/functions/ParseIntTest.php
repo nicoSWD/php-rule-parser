@@ -1,16 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\tests\functions;
 
-/**
- * Class ParseIntTest
- */
 class ParseIntTest extends \AbstractTestBase
 {
     public function testOnStringLiteral()
@@ -32,5 +30,10 @@ class ParseIntTest extends \AbstractTestBase
     {
         $this->assertTrue($this->evaluate('parseInt(foo) === 3', ['foo' => '3']));
         $this->assertFalse($this->evaluate('parseInt(foo) === "3"', ['foo' => 3]));
+    }
+
+    public function testCallWithoutArgsShouldReturnNan()
+    {
+        $this->assertFalse($this->evaluate('parseInt() === 1'));
     }
 }

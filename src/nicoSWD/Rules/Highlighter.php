@@ -3,15 +3,12 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules;
 
-/**
- * Class Highlighter
- * @package nicoSWD\Rules
- */
 final class Highlighter
 {
     /**
@@ -36,20 +33,15 @@ final class Highlighter
      */
     private $tokenizer;
 
-    /**
-     * @param TokenizerInterface $tokenizer
-     */
     public function __construct(TokenizerInterface $tokenizer)
     {
         $this->tokenizer = $tokenizer;
     }
 
     /**
-     * @param int $group
-     * @param string $style
      * @throws Exceptions\HighlighterException
      */
-    public function setStyle($group, $style)
+    public function setStyle(int $group, string $style)
     {
         if (!isset($this->styles[$group])) {
             throw new Exceptions\HighlighterException(
@@ -61,20 +53,14 @@ final class Highlighter
     }
 
     /**
-     * @param string $string
-     * @return string
      * @throws Exceptions\HighlighterException
      */
-    public function highlightString($string)
+    public function highlightString(string $string) : string
     {
         return $this->highlightTokens($this->tokenizer->tokenize($string));
     }
 
-    /**
-     * @param Stack $tokens
-     * @return string
-     */
-    public function highlightTokens(Stack $tokens)
+    public function highlightTokens(Stack $tokens) : string
     {
         $string = '';
 

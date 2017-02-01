@@ -3,25 +3,15 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules;
 
-/**
- * Evaluates a pre-parsed rule, such as:
- * (1&(0|0|0|0|0)&0)
- *
- * Class Evaluator
- * @package nicoSWD\Rules
- */
 final class Evaluator implements EvaluatorInterface
 {
-    /**
-     * @param string $group
-     * @return bool
-     */
-    public function evaluate($group)
+    public function evaluate(string $group) : bool
     {
         $count = 0;
 
@@ -40,13 +30,13 @@ final class Evaluator implements EvaluatorInterface
 
     /**
      * @param string[] $group
-     * @return int
      * @throws Exceptions\EvaluatorException
+     * @return int|null
      */
     private function evalGroup(array $group)
     {
-        $flag = \null;
-        $operator = \null;
+        $flag = null;
+        $operator = null;
 
         for ($offset = 0; isset($group[1][$offset]); $offset++) {
             $value = $group[1][$offset];

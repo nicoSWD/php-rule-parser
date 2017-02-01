@@ -3,38 +3,34 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.5
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\Core\Functions;
 
-use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens\TokenInteger;
 
-/**
- * Class ParseInt
- * @package nicoSWD\Rules\Core\Methods
- */
 final class ParseInt extends CallableFunction
 {
     /**
-     * @param TokenCollection $parameters
-     * @return TokenInteger
+     * {@inheritdoc}
      */
-    public function call(TokenCollection $parameters)
+    public function call($value = null) : TokenInteger
     {
+        if ($value === null) {
+            return new TokenInteger(NAN);
+        }
+
         return new TokenInteger(
-            (int) $parameters->current()->getValue(),
+            (int) $value->getValue(),
             $this->token->getOffset(),
             $this->token->getStack()
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName() : string
     {
         return 'parseInt';
     }

@@ -3,31 +3,27 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\AST\Nodes;
 
-use nicoSWD\Rules\Tokens\TokenArray;
+use nicoSWD\Rules\Tokens\{BaseToken, TokenArray};
 
-/**
- * Class NodeArray
- * @package nicoSWD\Rules\AST
- */
 final class NodeArray extends BaseNode
 {
     /**
-     * @return \nicoSWD\Rules\Tokens\BaseToken
      * @throws \nicoSWD\Rules\Exceptions\ParserException
      */
-    public function getNode()
+    public function getNode() : BaseToken
     {
         $stack = $this->ast->getStack();
         $offset = $stack->current()->getOffset();
-        $token = new TokenArray($this->getCommaSeparatedValues(']'), $offset, $stack);
+        $token = new TokenArray($this->getArrayItems(), $offset, $stack);
 
         while ($this->hasMethodCall()) {
-            $token = $this->getMethod($token)->call($this->getCommaSeparatedValues());
+            $token = $this->getMethod($token)->call(...$this->getArguments());
         }
 
         return $token;

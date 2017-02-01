@@ -3,29 +3,26 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.5
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
-use nicoSWD\Rules\Tokens\TokenBool;
-use nicoSWD\Rules\Tokens\TokenRegex;
+use nicoSWD\Rules\Tokens\{TokenBool, TokenRegex};
+use nicoSWD\Rules\Tokens\BaseToken;
 
-/**
- * Class Test
- * @package nicoSWD\Rules\Core\Methods
- */
 final class Test extends CallableFunction
 {
     /**
-     * @param TokenCollection $parameters
+     * @param BaseToken $string
      * @return TokenBool
      * @throws ParserException
      */
-    public function call(TokenCollection $parameters)
+    public function call($string = null) : TokenBool
     {
         if (!$this->token instanceof TokenRegex) {
             throw new ParserException(sprintf(
@@ -35,8 +32,8 @@ final class Test extends CallableFunction
             ));
         }
 
-        if ($parameters->count() < 1) {
-            $bool = \false;
+        if (!$string) {
+            $bool = false;
         } else {
             // Remove "g" modifier as is does not exist in PHP
             // It's also irrelevant in .test() but allowed in JS here
@@ -48,7 +45,7 @@ final class Test extends CallableFunction
                 $this->token->getValue()
             );
 
-            $subject = $parameters->current()->getValue();
+            $subject = $string->getValue();
 
             while ($subject instanceof TokenCollection) {
                 $subject = current($subject->toArray());
@@ -64,10 +61,7 @@ final class Test extends CallableFunction
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName() : string
     {
         return 'test';
     }

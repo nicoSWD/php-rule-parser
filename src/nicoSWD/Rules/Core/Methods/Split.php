@@ -3,59 +3,51 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\Core\Methods;
 
-use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Tokens\{TokenArray, TokenRegex};
 use nicoSWD\Rules\Tokens;
 
-/**
- * Class Split
- * @package nicoSWD\Rules\Core\Methods
- */
 final class Split extends CallableFunction
 {
     /**
-     * @param TokenCollection $parameters
-     * @return Tokens\TokenArray
+     * @param Tokens\BaseToken $separator
+     * @param Tokens\BaseToken $limit
+     * @return TokenArray
      */
-    public function call(TokenCollection $parameters)
+    public function call($separator = null, $limit = null) : TokenArray
     {
-        $separator = $parameters->current();
-
         if (!$separator || !is_string($separator->getValue())) {
             $newValue = [$this->token->getValue()];
         } else {
             $params = [$separator->getValue(), $this->token->getValue()];
 
-            if ($parameters->count() >= 2) {
-                $parameters->next();
-                $params[] = (int) $parameters->current()->getValue();
+            if ($limit) {
+                $params[] = (int) $limit->getValue();
             }
 
-            if ($separator instanceof Tokens\TokenRegex) {
+            if ($separator instanceof TokenRegex) {
                 $func = 'preg_split';
             } else {
                 $func = 'explode';
             }
 
-            $newValue = call_user_func_array($func, $params);
+            $newValue = $func(...$params);
         }
 
-        return new Tokens\TokenArray(
+        return new TokenArray(
             $newValue,
             $this->token->getOffset(),
             $this->token->getStack()
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName() : string
     {
         return 'split';
     }

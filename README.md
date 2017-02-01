@@ -1,4 +1,4 @@
-## Rules Parser and Evaluator for PHP 5.4+
+## Rules Parser and Evaluator for PHP 7
 
 |  | Build Status | Code Quality | Coverage | HHVM |
 |:----------------:|:----------------:|:----------:|:----------:|:----------:|
@@ -7,6 +7,8 @@
 | [Develop][Develop] | [![Build Status][Develop image]][Develop] | [![Code Quality][Develop quality image]][0.3 quality] | [![Coverage Status][Develop coverage image]][Develop coverage] | [![HHVM Tested][Develop hhvm image]][Develop hhvm] |
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
+
+*Note:* This is a development branch. Use at own risk until tagged stable.
 
 You're looking at a PHP library to parse and evaluate text based rules with a Javascript-like syntax. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
 
@@ -65,6 +67,30 @@ $variables = [
 ];
 
 $rule = new Rule($ruleStr, $variables);
+
+var_dump($rule->isTrue()); // bool(true)
+```
+
+
+## Custom Functions
+
+```php
+$ruleStr = 'double(value) === result';
+
+$variables = [
+    'value'  => 2,
+    'result' => 4
+];
+
+$rule = new Rule($ruleStr, $variables);
+
+$rule->registerFunction('double', function (BaseToken $multiplier) : BaseToken {
+    if (!$multiplier instanceof TokenInteger) {
+        throw new \Exception;
+    }
+
+    return new TokenInteger($multiplier->getValue() * 2);
+});
 
 var_dump($rule->isTrue()); // bool(true)
 ```
@@ -148,8 +174,8 @@ $highlighter = new Rules\Highlighter(new Rules\Tokenizer());
 
 // Optional custom styles
 $highlighter->setStyle(
-   Rules\Constants::GROUP_VARIABLE,
-   'color: #007694; font-weight: 900;'
+    Rules\Constants::GROUP_VARIABLE,
+    'color: #007694; font-weight: 900;'
 );
 
 echo $highlighter->highlightString($ruleStr);
@@ -179,7 +205,7 @@ If you discover any security related issues, please email security@nic0.me inste
 ## Testing
 
 ```bash
-$ phpunit
+$ composer test
 ```
 
 ## Contributing

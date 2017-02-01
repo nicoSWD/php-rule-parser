@@ -3,40 +3,33 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\Core\Methods;
 
-use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenString;
 
-/**
- * Class ToUpperCase
- * @package nicoSWD\Rules\Core\Methods
- */
 final class ToUpperCase extends CallableFunction
 {
     /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
-     * @param TokenCollection $parameters
+     * @param BaseToken $string
      * @return TokenString
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function call(TokenCollection $parameters)
+    public function call($string = null) : TokenString
     {
         return new TokenString(
-            strtoupper($this->token->getValue()),
+            strtoupper((string) $this->token->getValue()),
             $this->token->getOffset(),
             $this->token->getStack()
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName() : string
     {
         return 'toUpperCase';
     }

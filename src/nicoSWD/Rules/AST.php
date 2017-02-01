@@ -3,21 +3,36 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules;
 
 use Iterator;
-use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenFactory;
+use nicoSWD\Rules\Tokens\{
+    BaseToken,
+    TokenFactory,
+    TokenFunction,
+    TokenOpeningArray,
+    TokenRegex,
+    TokenString,
+    TokenVariable
+};
+use nicoSWD\Rules\AST\Nodes\{
+    NodeArray,
+    NodeFunction,
+    NodeString,
+    NodeVariable
+};
 
-/**
- * Class AST
- * @package nicoSWD\Rules
- */
 final class AST implements Iterator
 {
+    /**
+     * @var Parser
+     */
+    public $parser;
+
     /**
      * @var Stack
      */
@@ -29,53 +44,45 @@ final class AST implements Iterator
     protected $variables = [];
 
     /**
-     * @param Stack   $stack
-     * @param mixed[] $variables
+     * @param Stack  $stack
+     * @param Parser $parser
      */
-    public function __construct(Stack $stack, array $variables = [])
+    public function __construct(Stack $stack, Parser $parser)
     {
         $this->stack = $stack;
-        $this->variables = $variables;
+        $this->variables = $parser->variables;
+        $this->parser = $parser;
     }
 
-    /**
-     * @return void
-     */
     public function next()
     {
         $this->stack->next();
     }
 
-    /**
-     * @return bool
-     */
-    public function valid()
+    public function valid() : bool
     {
         return $this->stack->valid();
     }
 
-    /**
-     * @return Tokens\BaseToken
-     */
     public function current()
     {
         $current = $this->stack->current();
 
-        switch (\true) {
+        switch (true) {
             default:
                 return $current;
-            case $current instanceof Tokens\TokenString:
-            case $current instanceof Tokens\TokenRegex:
-                $current = new AST\Nodes\NodeString($this);
+            case $current instanceof TokenString:
+            case $current instanceof TokenRegex:
+                $current = new NodeString($this);
                 break;
-            case $current instanceof Tokens\TokenOpeningArray:
-                $current = new AST\Nodes\NodeArray($this);
+            case $current instanceof TokenOpeningArray:
+                $current = new NodeArray($this);
                 break;
-            case $current instanceof Tokens\TokenVariable:
-                $current = new AST\Nodes\NodeVariable($this);
+            case $current instanceof TokenVariable:
+                $current = new NodeVariable($this);
                 break;
-            case $current instanceof Tokens\TokenFunction:
-                $current = new AST\Nodes\NodeFunction($this);
+            case $current instanceof TokenFunction:
+                $current = new NodeFunction($this);
                 break;
         }
 
@@ -84,27 +91,21 @@ final class AST implements Iterator
 
     /**
      * @codeCoverageIgnore
-     * @return mixed
      */
-    public function key()
+    public function key() : int
     {
         return $this->stack->key();
     }
 
-    /**
-     * @return void
-     */
     public function rewind()
     {
         $this->stack->rewind();
     }
 
     /**
-     * @param string $name
-     * @return BaseToken
      * @throws Exceptions\ParserException
      */
-    public function getVariable($name)
+    public function getVariable(string $name) : BaseToken
     {
         if (!array_key_exists($name, $this->variables)) {
             $token = $this->stack->current();
@@ -120,10 +121,7 @@ final class AST implements Iterator
         return TokenFactory::createFromPHPType($this->variables[$name]);
     }
 
-    /**
-     * @return Stack
-     */
-    public function getStack()
+    public function getStack() : Stack
     {
         return $this->stack;
     }

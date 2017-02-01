@@ -3,15 +3,16 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules;
 
-/**
- * Class Rule
- * @package nicoSWD\Rules
- */
+use Closure;
+use Exception;
+use nicoSWD\Rules\Expressions\BaseExpression;
+
 class Rule
 {
     /**
@@ -39,23 +40,16 @@ class Rule
      */
     private $error = '';
 
-    /**
-     * @param string $rule
-     * @param array  $variables
-     */
-    public function __construct($rule, array $variables = [])
+    public function __construct(string $rule, array $variables = [])
     {
-        $this->rule = (string) $rule;
+        $this->rule = $rule;
         $this->parser = new Parser(new Tokenizer(), new Expressions\Factory());
         $this->evaluator = new Evaluator();
 
         $this->parser->assignVariables($variables);
     }
 
-    /**
-     * @return bool
-     */
-    public function isTrue()
+    public function isTrue() : bool
     {
         return $this->evaluator->evaluate(
             $this->parsedRule ?:
@@ -63,45 +57,37 @@ class Rule
         );
     }
 
-    /**
-     * @return bool
-     */
-    public function isFalse()
+    public function isFalse() : bool
     {
         return !$this->isTrue();
     }
 
     /**
      * Tells whether a rule is valid (as in "can be parsed without error") or not.
-     *
-     * @return bool
      */
-    public function isValid()
+    public function isValid() : bool
     {
         try {
             $this->parsedRule = $this->parser->parse($this->rule);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->error = $e->getMessage();
-            return \false;
+            return false;
         }
 
-        return \true;
+        return true;
     }
 
-    /**
-     * @param string $class
-     * @param string $regex
-     * @param int    $priority
-     */
-    public function registerToken($class, $regex, $priority = null)
+    public function registerFunction(string $name, Closure $callback)
+    {
+        $this->parser->registerFunction($name, $callback);
+    }
+
+    public function registerToken(string $class, string $regex, int $priority = 10)
     {
         $this->parser->registerToken($class, $regex, $priority);
     }
 
-    /**
-     * @return string
-     */
-    public function getError()
+    public function getError() : string
     {
         return $this->error;
     }

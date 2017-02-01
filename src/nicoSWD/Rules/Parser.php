@@ -3,31 +3,31 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules;
 
-/**
- * Class Parser
- * @package nicoSWD\Rules
- */
+use Closure;
+use nicoSWD\Rules\Tokens\BaseToken;
+
 class Parser
 {
     /**
      * @var array
      */
-    protected $variables = [];
+    public $variables = [];
 
     /**
      * @var null|mixed[]
      */
-    protected $values = \null;
+    protected $values = null;
 
     /**
      * @var null|string
      */
-    protected $operator =  \null;
+    protected $operator =  null;
 
     /**
      * @var string
@@ -37,12 +37,12 @@ class Parser
     /**
      * @var bool
      */
-    protected $operatorRequired = \false;
+    protected $operatorRequired = false;
 
     /**
      * @var bool
      */
-    protected $incompleteCondition = \false;
+    protected $incompleteCondition = false;
 
     /**
      * @var int
@@ -64,10 +64,8 @@ class Parser
      */
     protected $expressionFactory;
 
-    /**
-     * @param TokenizerInterface  $tokenizer
-     * @param Expressions\Factory $expressionFactory
-     */
+    protected $userDefinedFunctions = [];
+
     public function __construct(TokenizerInterface $tokenizer, Expressions\Factory $expressionFactory)
     {
         $this->tokenizer = $tokenizer;
@@ -75,18 +73,16 @@ class Parser
     }
 
     /**
-     * @param string $rule
-     * @return string
      * @throws Exceptions\ParserException
      */
-    public function parse($rule)
+    public function parse(string $rule) : string
     {
         $this->output = '';
-        $this->operator = \null;
-        $this->values = \null;
-        $this->operatorRequired = \false;
+        $this->operator = null;
+        $this->values = null;
+        $this->operatorRequired = false;
 
-        foreach (new AST($this->tokenizer->tokenize($rule), $this->variables) as $token) {
+        foreach (new AST($this->tokenizer->tokenize($rule), $this) as $token) {
             switch ($token->getGroup()) {
                 case Constants::GROUP_VALUE:
                     $this->assignVariableValueFromToken($token);
@@ -119,29 +115,16 @@ class Parser
         return $this->output;
     }
 
-    /**
-     * @param array $variables
-     */
     public function assignVariables(array $variables)
     {
         $this->variables = $variables;
     }
 
     /**
-     * @param string $class
-     * @param string $regex
-     * @param int    $priority
-     */
-    public function registerToken($class, $regex, $priority = null)
-    {
-        $this->tokenizer->registerToken($class, $regex, $priority);
-    }
-
-    /**
      * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
-    protected function assignVariableValueFromToken(Tokens\BaseToken $token)
+    protected function assignVariableValueFromToken(BaseToken $token)
     {
         if ($this->operatorRequired) {
             throw new Exceptions\ParserException(sprintf(
@@ -152,7 +135,7 @@ class Parser
         }
 
         $this->operatorRequired = !$this->operatorRequired;
-        $this->incompleteCondition = \false;
+        $this->incompleteCondition = false;
 
         if (!isset($this->values)) {
             $this->values = [$token->getValue()];
@@ -162,10 +145,9 @@ class Parser
     }
 
     /**
-     * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
-    protected function assignParentheses(Tokens\BaseToken $token)
+    protected function assignParentheses(BaseToken $token)
     {
         $tokenValue = $token->getValue();
 
@@ -195,10 +177,9 @@ class Parser
     }
 
     /**
-     * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
-    protected function assignLogicalToken(Tokens\BaseToken $token)
+    protected function assignLogicalToken(BaseToken $token)
     {
         if (!$this->operatorRequired) {
             throw new Exceptions\ParserException(sprintf(
@@ -210,15 +191,14 @@ class Parser
         }
 
         $this->output .= $token->getValue();
-        $this->incompleteCondition = \true;
-        $this->operatorRequired = \false;
+        $this->incompleteCondition = true;
+        $this->operatorRequired = false;
     }
 
     /**
-     * @param Tokens\BaseToken $token
      * @throws Exceptions\ParserException
      */
-    protected function assignOperator(Tokens\BaseToken $token)
+    protected function assignOperator(BaseToken $token)
     {
         if (isset($this->operator)) {
             throw new Exceptions\ParserException(sprintf(
@@ -237,7 +217,7 @@ class Parser
         }
 
         $this->operator = $token->getValue();
-        $this->operatorRequired = \false;
+        $this->operatorRequired = false;
     }
 
     /**
@@ -249,7 +229,7 @@ class Parser
             return;
         }
 
-        $this->operatorRequired = \true;
+        $this->operatorRequired = true;
         $expression = $this->expressionFactory->createFromOperator($this->operator);
         $this->output .= (int) $expression->evaluate($this->values[0], $this->values[1]);
 
@@ -274,5 +254,26 @@ class Parser
                 'Incomplete expression'
             );
         }
+    }
+
+    public function registerFunction(string $name, Closure $callback)
+    {
+        $this->userDefinedFunctions[$name] = $callback;
+    }
+
+    public function registerToken(string $token, string $regex, int $priority = 10)
+    {
+        $this->tokenizer->registerToken($token, $regex, $priority);
+    }
+
+    /**
+     * @param string $name
+     * @return Closure|null
+     */
+    public function getFunction(string $name)
+    {
+        return isset($this->userDefinedFunctions[$name])
+            ? $this->userDefinedFunctions[$name]
+            : null;
     }
 }

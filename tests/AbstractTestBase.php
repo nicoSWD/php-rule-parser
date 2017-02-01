@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 use nicoSWD\Rules\Evaluator;
@@ -11,9 +12,6 @@ use nicoSWD\Rules\Parser;
 use nicoSWD\Rules\Tokenizer;
 use nicoSWD\Rules\Expressions\Factory as ExpressionFactory;
 
-/**
- * Class AbstractTestBase
- */
 abstract class AbstractTestBase extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -29,7 +27,7 @@ abstract class AbstractTestBase extends \PHPUnit_Framework_TestCase
     /**
      * @return void
      */
-    final public function setup()
+    final protected function setUp()
     {
         $this->parser = new Parser(new Tokenizer(), new ExpressionFactory());
         $this->evaluator = new Evaluator();
@@ -41,7 +39,7 @@ abstract class AbstractTestBase extends \PHPUnit_Framework_TestCase
      * @return bool
      * @throws \nicoSWD\Rules\Exceptions\ParserException
      */
-    protected function evaluate($rule, array $variables = [])
+    protected function evaluate(string $rule, array $variables = [])
     {
         $this->parser->assignVariables($variables);
         $result = $this->parser->parse($rule);

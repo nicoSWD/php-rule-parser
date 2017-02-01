@@ -3,14 +3,12 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\tests\methods;
 
-/**
- * Class ReplaceTest
- */
 class ReplaceTest extends \AbstractTestBase
 {
     public function testValidNeedleReturnsCorrectPosition()

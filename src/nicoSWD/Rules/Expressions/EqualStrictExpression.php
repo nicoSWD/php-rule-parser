@@ -3,38 +3,26 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules\Expressions;
 
 use nicoSWD\Rules\AST\TokenCollection;
 
-/**
- * Class EqualStrictExpression
- * @package nicoSWD\Rules\Expressions
- */
 final class EqualStrictExpression extends BaseExpression
 {
-    /**
-     * @param string $leftValue
-     * @param string $rightValue
-     * @return bool
-     */
-    public function evaluate($leftValue, $rightValue)
+    public function evaluate($leftValue, $rightValue) : bool
     {
-        if ($rightValue instanceof TokenCollection) {
-            $rightItems = $rightValue->toArray();
-        } else {
-            $rightItems = $rightValue;
-        }
-
         if ($leftValue instanceof TokenCollection) {
-            $leftItems = $leftValue->toArray();
-        } else {
-            $leftItems = $leftValue;
+            $leftValue = $leftValue->toArray();
         }
 
-        return $leftItems === $rightItems;
+        if ($rightValue instanceof TokenCollection) {
+            $rightValue = $rightValue->toArray();
+        }
+
+        return $leftValue === $rightValue;
     }
 }

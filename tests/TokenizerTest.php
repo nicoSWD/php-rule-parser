@@ -1,16 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 use nicoSWD\Rules;
 
-/**
- * Class TokenizerTest
- */
 class TokenizerTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -18,7 +16,7 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
      */
     private $tokenizer;
 
-    public function setup()
+    protected function setUp()
     {
         $this->tokenizer = new Rules\Tokenizer();
     }
@@ -26,7 +24,7 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
     public function testGetMatchedTokenReturnsFalseOnFailure()
     {
         $reflection = new \ReflectionMethod($this->tokenizer, 'getMatchedToken');
-        $reflection->setAccessible(\true);
+        $reflection->setAccessible(true);
         $result = $reflection->invoke($this->tokenizer, []);
 
         $this->assertSame('Unknown', $result);

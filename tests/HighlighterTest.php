@@ -1,16 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.5
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 use nicoSWD\Rules;
 
-/**
- * Class HighlighterTest
- */
 class HighlighterTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -18,7 +16,7 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase
      */
     private $highlighter;
 
-    public function setup()
+    protected function setUp()
     {
         $this->highlighter = new Rules\Highlighter(new Rules\Tokenizer());
     }

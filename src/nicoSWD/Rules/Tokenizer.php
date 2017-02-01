@@ -3,9 +3,10 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+declare(strict_types=1);
+
 namespace nicoSWD\Rules;
 
 use SplPriorityQueue;
@@ -47,7 +48,7 @@ final class Tokenizer implements TokenizerInterface
 
     private $regex = '';
 
-    private $regexRequiresReassambly = false;
+    private $regexRequiresReassembly = false;
 
     public function __construct()
     {
@@ -82,10 +83,8 @@ final class Tokenizer implements TokenizerInterface
         $this->registerToken(self::TOKEN_UNKNOWN, '.', 5);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function tokenize($string)
+
+    public function tokenize(string $string) : Stack
     {
         $stack = new Stack();
         $regex = $this->getRegex();
@@ -108,25 +107,18 @@ final class Tokenizer implements TokenizerInterface
         return $stack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function registerToken($class, $regex, $priority = null)
+    public function registerToken(string $class, string $regex, int $priority = null)
     {
-        $token = new StdClass();
+        $token = new stdClass();
         $token->class = $class;
         $token->regex = $regex;
-        $token->priority = $priority !== null ? $priority : $this->getPriority($class);
+        $token->priority = $priority ?? $this->getPriority($class);
 
         $this->internalTokens[$class] = $token;
-        $this->regexRequiresReassambly = true;
+        $this->regexRequiresReassembly = true;
     }
 
-    /**
-     * @param array $matches
-     * @return int|string
-     */
-    private function getMatchedToken(array $matches)
+    private function getMatchedToken(array $matches) : string
     {
         foreach ($matches as $key => $value) {
             if ($value !== '' && !is_int($key)) {
@@ -137,12 +129,10 @@ final class Tokenizer implements TokenizerInterface
         return 'Unknown';
     }
 
-    /**
-     * @return string
-     */
-    private function getRegex()
+
+    private function getRegex() : string
     {
-        if (!$this->regex || $this->regexRequiresReassambly) {
+        if (!$this->regex || $this->regexRequiresReassembly) {
             $regex = [];
 
             foreach ($this->getQueue() as $token) {
@@ -150,16 +140,14 @@ final class Tokenizer implements TokenizerInterface
             }
 
             $this->regex = sprintf('~(%s)~As', implode('|', $regex));
-            $this->regexRequiresReassambly = false;
+            $this->regexRequiresReassembly = false;
         }
 
         return $this->regex;
     }
 
-    /**
-     * @return SplPriorityQueue
-     */
-    private function getQueue()
+
+    private function getQueue() : SplPriorityQueue
     {
         $queue = new SplPriorityQueue();
 
@@ -170,14 +158,8 @@ final class Tokenizer implements TokenizerInterface
         return $queue;
     }
 
-    /**
-     * @param string $class
-     * @return int
-     */
-    private function getPriority($class)
+    private function getPriority(string $class) : int
     {
-        return isset($this->internalTokens[$class])
-            ? $this->internalTokens[$class]->priority
-            : 10;
+        return $this->internalTokens[$class]->priority ?? 10;
     }
 }

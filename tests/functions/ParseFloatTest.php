@@ -1,16 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @since       0.3.4
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\tests\functions;
 
-/**
- * Class ParseFloatTest
- */
 class ParseFloatTest extends \AbstractTestBase
 {
     public function testOnStringLiteral()
@@ -32,5 +30,10 @@ class ParseFloatTest extends \AbstractTestBase
     {
         $this->assertTrue($this->evaluate('parseFloat(foo) === 3.4', ['foo' => '3.4']));
         $this->assertFalse($this->evaluate('parseFloat(foo) === "3.5"', ['foo' => 3.5]));
+    }
+
+    public function testCallWithoutArgsShouldReturnNaN()
+    {
+        $this->assertFalse($this->evaluate('parseFloat() === 1'));
     }
 }
