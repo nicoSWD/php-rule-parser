@@ -6,8 +6,7 @@ php:
   - 5.6
   - '7.0'
   - hhvm
-  - nightly
-
+  
 script: phpunit --coverage-clover=coverage.clover
 
 after_script:
