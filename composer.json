@@ -12,8 +12,10 @@
       "homepage": "https://nicoswd.com"
     }
   ],
-  "psr-4": {
-    "nicoSWD\\Rules": "src/nicoSWD/Rules"
+  "autoload": {
+    "psr-4": {
+      "nicoSWD\\Rules\\": "src"
+    }
   },
   "require": {
     "php": "^7.0"
