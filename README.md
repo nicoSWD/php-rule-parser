@@ -1,4 +1,4 @@
-## Rules Parser and Evaluator for PHP 7
+## Rule Parser and Evaluator for PHP 7
 
 |  | Build Status | Code Quality | Coverage | HHVM |
 |:----------------:|:----------------:|:----------:|:----------:|:----------:|
