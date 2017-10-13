@@ -12,7 +12,7 @@ use nicoSWD\Rules\Parser;
 use nicoSWD\Rules\Tokenizer;
 use nicoSWD\Rules\Expressions\Factory as ExpressionFactory;
 
-abstract class AbstractTestBase extends \PHPUnit_Framework_TestCase
+abstract class AbstractTestBase extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Parser

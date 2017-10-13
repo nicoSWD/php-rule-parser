@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 use nicoSWD\Rules;
 
-class TokenizerTest extends \PHPUnit_Framework_TestCase
+class TokenizerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Rules\Tokenizer

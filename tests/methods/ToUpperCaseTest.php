@@ -22,14 +22,6 @@ class ToUpperCaseTest extends \AbstractTestBase
         ));
     }
 
-    /**
-     * @todo : Rethink tokenizer
-     */
-    public function testCommentsBeforeAndAfterPeriodWord()
-    {
-      //  $this->assertTrue($this->evaluate('"bar" /* what */ . /*what */ toUpperCase() === "BAR"'));
-    }
-
     public function testIfCallOnStringLiteralsWorks()
     {
         $this->assertTrue($this->evaluate('"bar".toUpperCase() === "BAR"'));

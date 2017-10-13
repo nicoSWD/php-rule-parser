@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 use nicoSWD\Rules;
 
-class RuleTest extends \PHPUnit_Framework_TestCase
+class RuleTest extends \PHPUnit\Framework\TestCase
 {
     public function testBasicRuleWithCommentsEvaluatesCorrectly()
     {

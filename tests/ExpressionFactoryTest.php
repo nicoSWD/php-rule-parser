@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 use nicoSWD\Rules\Expressions\Factory;
 
-class ExpressionFactoryTest extends \PHPUnit_Framework_TestCase
+class ExpressionFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Factory

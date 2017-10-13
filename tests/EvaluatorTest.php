@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 use nicoSWD\Rules\Evaluator;
 
-class EvaluatorTest extends \PHPUnit_Framework_TestCase
+class EvaluatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Evaluator

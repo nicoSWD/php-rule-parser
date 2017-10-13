@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 use nicoSWD\Rules;
 
-class HighlighterTest extends \PHPUnit_Framework_TestCase
+class HighlighterTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Rules\Highlighter
