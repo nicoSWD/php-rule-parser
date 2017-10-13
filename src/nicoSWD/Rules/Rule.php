@@ -11,7 +11,6 @@ namespace nicoSWD\Rules;
 
 use Closure;
 use Exception;
-use nicoSWD\Rules\Expressions\BaseExpression;
 
 class Rule
 {
