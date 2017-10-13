@@ -5,21 +5,18 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules\Core;
 
 use nicoSWD\Rules\Tokens\BaseToken;
 
-abstract class CallableFunction implements CallableUserFunction
+interface CallableUserFunction
 {
     /**
-     * @var BaseToken
+     * @param BaseToken $param
+     * @param BaseToken $param ...
+     * @return BaseToken
      */
-    protected $token;
+    public function call($param = null);
 
-    public function __construct(BaseToken $token)
-    {
-        $this->token = $token;
-    }
+    public function getName() : string;
 }
