@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace nicoSWD\Rules;
 
-final class Evaluator implements EvaluatorInterface
+class Evaluator implements EvaluatorInterface
 {
     public function evaluate(string $group) : bool
     {
