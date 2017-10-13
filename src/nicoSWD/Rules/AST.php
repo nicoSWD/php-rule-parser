@@ -10,21 +10,18 @@ declare(strict_types=1);
 namespace nicoSWD\Rules;
 
 use Iterator;
-use nicoSWD\Rules\Tokens\{
-    BaseToken,
-    TokenFactory,
-    TokenFunction,
-    TokenOpeningArray,
-    TokenRegex,
-    TokenString,
-    TokenVariable
-};
-use nicoSWD\Rules\AST\Nodes\{
-    NodeArray,
-    NodeFunction,
-    NodeString,
-    NodeVariable
-};
+use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\Tokens\TokenEncapsedString;
+use nicoSWD\Rules\Tokens\TokenFactory;
+use nicoSWD\Rules\Tokens\TokenFunction;
+use nicoSWD\Rules\Tokens\TokenOpeningArray;
+use nicoSWD\Rules\Tokens\TokenRegex;
+use nicoSWD\Rules\Tokens\TokenString;
+use nicoSWD\Rules\Tokens\TokenVariable;
+use nicoSWD\Rules\AST\Nodes\NodeArray;
+use nicoSWD\Rules\AST\Nodes\NodeFunction;
+use nicoSWD\Rules\AST\Nodes\NodeString;
+use nicoSWD\Rules\AST\Nodes\NodeVariable;
 
 final class AST implements Iterator
 {
@@ -68,20 +65,21 @@ final class AST implements Iterator
     {
         $current = $this->stack->current();
 
-        switch (true) {
+        switch (get_class($current)) {
             default:
                 return $current;
-            case $current instanceof TokenString:
-            case $current instanceof TokenRegex:
+            case TokenString::class:
+            case TokenEncapsedString::class:
+            case TokenRegex::class:
                 $current = new NodeString($this);
                 break;
-            case $current instanceof TokenOpeningArray:
+            case TokenOpeningArray::class:
                 $current = new NodeArray($this);
                 break;
-            case $current instanceof TokenVariable:
+            case TokenVariable::class:
                 $current = new NodeVariable($this);
                 break;
-            case $current instanceof TokenFunction:
+            case TokenFunction::class:
                 $current = new NodeFunction($this);
                 break;
         }
