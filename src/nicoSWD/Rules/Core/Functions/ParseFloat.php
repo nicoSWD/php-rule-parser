@@ -11,7 +11,6 @@ namespace nicoSWD\Rules\Core\Functions;
 
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens\TokenFloat;
-use nicoSWD\Rules\Tokens\TokenInteger;
 
 final class ParseFloat extends CallableFunction
 {

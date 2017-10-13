@@ -15,13 +15,11 @@ use nicoSWD\Rules\Constants;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\Tokens;
-use nicoSWD\Rules\Tokens\{
-    BaseToken,
-    TokenComment,
-    TokenMethod,
-    TokenNewline,
-    TokenSpace
-};
+use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\Tokens\TokenComment;
+use nicoSWD\Rules\Tokens\TokenMethod;
+use nicoSWD\Rules\Tokens\TokenNewline;
+use nicoSWD\Rules\Tokens\TokenSpace;
 
 abstract class BaseNode
 {
