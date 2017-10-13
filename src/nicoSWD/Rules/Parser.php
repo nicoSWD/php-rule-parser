@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace nicoSWD\Rules;
 
 use Closure;
+use InvalidArgumentException;
+use nicoSWD\Rules\Core\CallableUserFunction;
 use nicoSWD\Rules\Tokens\BaseToken;
 
 class Parser
@@ -254,6 +256,26 @@ class Parser
                 'Incomplete expression'
             );
         }
+    }
+
+    public function registerFunctionClass(string $className)
+    {
+        /** @var CallableUserFunction $class */
+        $class = new $className();
+
+        if (!$class instanceof CallableUserFunction) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    "%s must be an instance of %s",
+                    get_class($className),
+                    CallableUserFunction::class
+                )
+            );
+        }
+
+        $this->registerFunction($class->getName(), function () use ($class) {
+            return $class->call(...func_get_args());
+        });
     }
 
     public function registerFunction(string $name, Closure $callback)
