@@ -83,7 +83,6 @@ final class Tokenizer implements TokenizerInterface
         $this->registerToken(self::TOKEN_UNKNOWN, '.', 5);
     }
 
-
     public function tokenize(string $string) : Stack
     {
         $stack = new Stack();

@@ -267,7 +267,7 @@ class Parser
             throw new InvalidArgumentException(
                 sprintf(
                     "%s must be an instance of %s",
-                    get_class($className),
+                    $className,
                     CallableUserFunction::class
                 )
             );

@@ -38,6 +38,8 @@ abstract class BaseToken
      */
     protected $line = null;
 
+    abstract public function getGroup() : int;
+
     /**
      * @param mixed $value
      * @param int   $offset
@@ -49,8 +51,6 @@ abstract class BaseToken
         $this->offset = $offset;
         $this->stack = $stack;
     }
-
-    abstract public function getGroup() : int;
 
     /**
      * @return mixed
@@ -75,11 +75,6 @@ abstract class BaseToken
     public function getOffset() : int
     {
         return $this->offset;
-    }
-
-    public function setOffset(int $offset = 0)
-    {
-        $this->offset = $offset;
     }
 
     public function getStack() : Stack

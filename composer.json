@@ -17,6 +17,11 @@
       "nicoSWD\\Rules\\": "src/nicoSWD/Rules"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "nicoSWD\\Rules\\tests\\": "tests"
+    }
+  },
   "require": {
     "php": "^7.0"
   },

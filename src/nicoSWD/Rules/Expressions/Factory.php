@@ -17,15 +17,15 @@ final class Factory
      * @var string[]
      */
     private $classLookup = [
-        '=='  => '\nicoSWD\Rules\Expressions\EqualExpression',
-        '===' => '\nicoSWD\Rules\Expressions\EqualStrictExpression',
-        '!='  => '\nicoSWD\Rules\Expressions\NotEqualExpression',
-        '!==' => '\nicoSWD\Rules\Expressions\NotEqualStrictExpression',
-        '>'   => '\nicoSWD\Rules\Expressions\GreaterThanExpression',
-        '<'   => '\nicoSWD\Rules\Expressions\LessThanExpression',
-        '<='  => '\nicoSWD\Rules\Expressions\LessThanEqualExpression',
-        '>='  => '\nicoSWD\Rules\Expressions\GreaterThanEqualExpression',
-        'in'  => '\nicoSWD\Rules\Expressions\InExpression'
+        '=='  => EqualExpression::class,
+        '===' => EqualStrictExpression::class,
+        '!='  => NotEqualExpression::class,
+        '!==' => NotEqualStrictExpression::class,
+        '>'   => GreaterThanExpression::class,
+        '<'   => LessThanExpression::class,
+        '<='  => LessThanEqualExpression::class,
+        '>='  => GreaterThanEqualExpression::class,
+        'in'  => InExpression::class
     ];
 
     /**
