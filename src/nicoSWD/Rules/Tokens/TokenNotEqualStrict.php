@@ -1,25 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules\Tokens;
 
-use nicoSWD\Rules\Constants;
+use nicoSWD\Rules\Token;
+use nicoSWD\Rules\TokenType;
 
 final class TokenNotEqualStrict extends BaseToken
 {
-    public function getGroup() : int
+    public function getType() : int
     {
-        return Constants::GROUP_OPERATOR;
+        return TokenType::OPERATOR;
     }
 
     public function getValue()
     {
-        return '!==';
+        return Token::NOT_EQUAL_STRICT;
     }
 }

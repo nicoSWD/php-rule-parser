@@ -16,54 +16,34 @@ use nicoSWD\Rules\Tokens\BaseToken;
 
 class Parser
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     public $variables = [];
 
-    /**
-     * @var null|mixed[]
-     */
+    /** @var null|mixed[] */
     protected $values = null;
 
-    /**
-     * @var null|string
-     */
+    /** @var null|string */
     protected $operator =  null;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $output = '';
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $operatorRequired = false;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $incompleteCondition = false;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $openParenthesis = 0;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $closedParenthesis = 0;
 
-    /**
-     * @var TokenizerInterface
-     */
+    /** @var TokenizerInterface */
     protected $tokenizer;
 
-    /**
-     * @var Expressions\Factory
-     */
+    /** @var Expressions\Factory */
     protected $expressionFactory;
 
     protected $userDefinedFunctions = [];
@@ -74,10 +54,8 @@ class Parser
         $this->expressionFactory = $expressionFactory;
     }
 
-    /**
-     * @throws Exceptions\ParserException
-     */
-    public function parse(string $rule) : string
+    /** @throws Exceptions\ParserException */
+    public function parse(string $rule): string
     {
         $this->output = '';
         $this->operator = null;
@@ -85,21 +63,21 @@ class Parser
         $this->operatorRequired = false;
 
         foreach (new AST($this->tokenizer->tokenize($rule), $this) as $token) {
-            switch ($token->getGroup()) {
-                case Constants::GROUP_VALUE:
+            switch ($token->getType()) {
+                case TokenType::VALUE:
                     $this->assignVariableValueFromToken($token);
                     break;
-                case Constants::GROUP_LOGICAL:
+                case TokenType::LOGICAL:
                     $this->assignLogicalToken($token);
                     continue 2;
-                case Constants::GROUP_PARENTHESES:
+                case TokenType::PARENTHESES:
                     $this->assignParentheses($token);
                     continue 2;
-                case Constants::GROUP_OPERATOR:
+                case TokenType::OPERATOR:
                     $this->assignOperator($token);
                     continue 2;
-                case Constants::GROUP_COMMENT:
-                case Constants::GROUP_SPACE:
+                case TokenType::COMMENT:
+                case TokenType::SPACE:
                     continue 2;
                 default:
                     throw new Exceptions\ParserException(sprintf(
@@ -122,10 +100,7 @@ class Parser
         $this->variables = $variables;
     }
 
-    /**
-     * @param Tokens\BaseToken $token
-     * @throws Exceptions\ParserException
-     */
+    /** @throws Exceptions\ParserException */
     protected function assignVariableValueFromToken(BaseToken $token)
     {
         if ($this->operatorRequired) {
@@ -146,9 +121,7 @@ class Parser
         }
     }
 
-    /**
-     * @throws Exceptions\ParserException
-     */
+    /** @throws Exceptions\ParserException */
     protected function assignParentheses(BaseToken $token)
     {
         $tokenValue = $token->getValue();
@@ -178,9 +151,7 @@ class Parser
         $this->output .= $tokenValue;
     }
 
-    /**
-     * @throws Exceptions\ParserException
-     */
+    /** @throws Exceptions\ParserException */
     protected function assignLogicalToken(BaseToken $token)
     {
         if (!$this->operatorRequired) {
@@ -197,9 +168,7 @@ class Parser
         $this->operatorRequired = false;
     }
 
-    /**
-     * @throws Exceptions\ParserException
-     */
+    /** @throws Exceptions\ParserException */
     protected function assignOperator(BaseToken $token)
     {
         if (isset($this->operator)) {
@@ -222,9 +191,7 @@ class Parser
         $this->operatorRequired = false;
     }
 
-    /**
-     * @throws Exceptions\ExpressionFactoryException
-     */
+    /** @throws Exceptions\ExpressionFactoryException */
     protected function parseExpression()
     {
         if (!isset($this->operator) || count($this->values) <> 2) {
@@ -238,9 +205,7 @@ class Parser
         unset($this->operator, $this->values);
     }
 
-    /**
-     * @throws Exceptions\ParserException
-     */
+    /** @throws Exceptions\ParserException */
     protected function assertSyntaxSeemsOkay()
     {
         if ($this->incompleteCondition) {
@@ -260,10 +225,10 @@ class Parser
 
     public function registerFunctionClass(string $className)
     {
-        /** @var CallableUserFunction $class */
-        $class = new $className();
+        /** @var CallableUserFunction $function */
+        $function = new $className();
 
-        if (!$class instanceof CallableUserFunction) {
+        if (!$function instanceof CallableUserFunction) {
             throw new InvalidArgumentException(
                 sprintf(
                     "%s must be an instance of %s",
@@ -273,8 +238,8 @@ class Parser
             );
         }
 
-        $this->registerFunction($class->getName(), function () use ($class) {
-            return $class->call(...func_get_args());
+        $this->registerFunction($function->getName(), function () use ($function): BaseToken {
+            return $function->call(...func_get_args());
         });
     }
 

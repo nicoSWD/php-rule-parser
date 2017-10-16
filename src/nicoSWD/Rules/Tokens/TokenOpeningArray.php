@@ -9,13 +9,13 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Tokens;
 
-use nicoSWD\Rules\Constants;
+use nicoSWD\Rules\TokenType;
 
 final class TokenOpeningArray extends BaseToken
 {
-    public function getGroup() : int
+    public function getType() : int
     {
-        return Constants::GROUP_SQUARE_BRACKETS;
+        return TokenType::SQUARE_BRACKETS;
     }
 
     public function getValue()

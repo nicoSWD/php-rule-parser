@@ -1,44 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules\Tokens;
 
 use nicoSWD\Rules\Stack;
 
 abstract class BaseToken
 {
-    /**
-     * @var mixed
-     */
+    /** @var mixed */
     protected $value;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $offset = 0;
 
-    /**
-     * @var Stack
-     */
+    /** @var Stack */
     protected $stack;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $position = null;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $line = null;
 
-    abstract public function getGroup() : int;
+    abstract public function getType() : int;
 
     /**
      * @param mixed $value

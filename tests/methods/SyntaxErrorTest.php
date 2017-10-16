@@ -49,7 +49,7 @@ class SyntaxErrorTest extends \AbstractTestBase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected end of string. Expected ")"
+     * @expectedExceptionMessage Unexpected end of string
      */
     public function testUnexpectedEndOfStringThrowsException()
     {

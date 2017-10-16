@@ -14,9 +14,7 @@ use nicoSWD\Rules\Exceptions\ParserException;
 
 final class InExpression extends BaseExpression
 {
-    /**
-     * @throws ParserException
-     */
+    /** @throws ParserException */
     public function evaluate($leftValue, $rightValue) : bool
     {
         // Fix all the different kind of crap that can get here

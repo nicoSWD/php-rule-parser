@@ -11,38 +11,29 @@ namespace nicoSWD\Rules;
 
 use Closure;
 use Exception;
+use nicoSWD\Rules\Grammar\JavaScript;
 
 class Rule
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $rule;
 
-    /**
-     * @var Parser
-     */
+    /** @var Parser */
     private $parser;
 
-    /**
-     * @var Evaluator
-     */
+    /** @var Evaluator */
     private $evaluator;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $parsedRule = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $error = '';
 
     public function __construct(string $rule, array $variables = [])
     {
         $this->rule = $rule;
-        $this->parser = new Parser(new Tokenizer(), new Expressions\Factory());
+        $this->parser = new Parser(new Tokenizer(new JavaScript()), new Expressions\Factory());
         $this->evaluator = new Evaluator();
 
         $this->parser->assignVariables($variables);

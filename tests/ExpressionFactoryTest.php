@@ -8,6 +8,7 @@ declare(strict_types=1);
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 use nicoSWD\Rules\Expressions\Factory;
+use nicoSWD\Rules\Token;
 
 class ExpressionFactoryTest extends \PHPUnit\Framework\TestCase
 {
@@ -25,7 +26,7 @@ class ExpressionFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(
             '\nicoSWD\Rules\Expressions\EqualExpression',
-            $this->factory->createFromOperator('==')
+            $this->factory->createFromOperator(Token::EQUAL)
         );
     }
 

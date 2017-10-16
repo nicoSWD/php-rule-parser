@@ -29,7 +29,7 @@ abstract class AbstractTestBase extends \PHPUnit\Framework\TestCase
      */
     final protected function setUp()
     {
-        $this->parser = new Parser(new Tokenizer(), new ExpressionFactory());
+        $this->parser = new Parser(new Tokenizer(new \nicoSWD\Rules\Grammar\JavaScript()), new ExpressionFactory());
         $this->evaluator = new Evaluator();
     }
 

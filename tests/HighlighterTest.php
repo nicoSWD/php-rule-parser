@@ -11,20 +11,18 @@ use nicoSWD\Rules;
 
 class HighlighterTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var Rules\Highlighter
-     */
+    /** @var Rules\Highlighter */
     private $highlighter;
 
     protected function setUp()
     {
-        $this->highlighter = new Rules\Highlighter(new Rules\Tokenizer());
+        $this->highlighter = new Rules\Highlighter(new Rules\Tokenizer(new Rules\Grammar\JavaScript()));
     }
 
     public function testGetMatchedTokenReturnsFalseOnFailure()
     {
         $this->highlighter->setStyle(
-            Rules\Constants::GROUP_SQUARE_BRACKETS,
+            Rules\TokenType::SQUARE_BRACKETS,
             'color: bracket-test-color;'
         );
 

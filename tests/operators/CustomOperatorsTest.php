@@ -9,11 +9,8 @@
 namespace nicoSWD\Rules\tests\operators;
 
 use nicoSWD\Rules\Rule;
-use nicoSWD\Rules\Tokenizer;
+use nicoSWD\Rules\Token;
 
-/**
- * Class OperatorsTest
- */
 class CustomOperatorsTest extends \AbstractTestBase
 {
     public function testCustomOperators()
@@ -23,8 +20,8 @@ class CustomOperatorsTest extends \AbstractTestBase
             ':that' => 7
         ]);
 
-        $rule->registerToken(Tokenizer::TOKEN_GREATER, '\bis\s+greater\s+than\b');
-        $rule->registerToken(Tokenizer::TOKEN_VARIABLE, ':\w+');
+        $rule->registerToken(Token::GREATER, '\bis\s+greater\s+than\b');
+        $rule->registerToken(Token::TOKEN_VARIABLE, ':\w+');
 
         $this->assertTrue($rule->isTrue());
     }

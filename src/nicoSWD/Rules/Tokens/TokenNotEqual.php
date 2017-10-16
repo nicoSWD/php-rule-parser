@@ -9,20 +9,19 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Tokens;
 
-use nicoSWD\Rules\Constants;
+use nicoSWD\Rules\Token;
+use nicoSWD\Rules\TokenType;
 
 final class TokenNotEqual extends BaseToken
 {
-    public function getGroup() : int
+    public function getType() : int
     {
-        return Constants::GROUP_OPERATOR;
+        return TokenType::OPERATOR;
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     public function getValue()
     {
-        return '!=';
+        return Token::NOT_EQUAL;
     }
 }

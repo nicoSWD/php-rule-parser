@@ -7,13 +7,13 @@
  */
 namespace nicoSWD\Rules\Tokens;
 
-use nicoSWD\Rules\Constants;
+use nicoSWD\Rules\TokenType;
 
 class TokenString extends BaseToken
 {
-    public function getGroup() : int
+    public function getType() : int
     {
-        return Constants::GROUP_VALUE;
+        return TokenType::VALUE;
     }
 
     public function supportsMethodCalls() : bool

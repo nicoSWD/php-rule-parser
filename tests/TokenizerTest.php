@@ -18,7 +18,7 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->tokenizer = new Rules\Tokenizer();
+        $this->tokenizer = new Rules\Tokenizer(new Rules\Grammar\JavaScript());
     }
 
     public function testGetMatchedTokenReturnsFalseOnFailure()

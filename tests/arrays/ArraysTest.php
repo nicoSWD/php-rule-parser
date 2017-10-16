@@ -33,6 +33,7 @@ class ArraysTest extends \AbstractTestBase
     {
         $this->assertTrue($this->evaluate('[123, 12] === [123, 12]'));
         $this->assertFalse($this->evaluate('[123, 12] === [123, 12, 1]'));
+        // $this->assertTrue($this->evaluate('[123, [12, 1]] === [123, [12, 1]]'));
     }
 
     public function testCommentsAreIgnoredInArray()
@@ -99,7 +100,7 @@ class ArraysTest extends \AbstractTestBase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected end of string. Expected "]"
+     * @expectedExceptionMessage Unexpected end of string
      */
     public function testUnexpectedEndOfStringThrowsException()
     {
