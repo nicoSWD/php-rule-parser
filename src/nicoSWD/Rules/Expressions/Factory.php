@@ -9,12 +9,10 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Expressions;
 
-use nicoSWD\Rules\Exceptions\ExpressionFactoryException;
 use nicoSWD\Rules\Tokens;
 
 final class Factory
 {
-    /** @var string[] */
     private $classLookup = [
         Tokens\TokenEqual::class          => EqualExpression::class,
         Tokens\TokenEqualStrict::class    => EqualStrictExpression::class,
@@ -27,22 +25,13 @@ final class Factory
         Tokens\TokenIn::class             => InExpression::class
     ];
 
-    public function createFromOperator($operator): BaseExpression
+    public function createFromOperator(Tokens\BaseToken $operator): BaseExpression
     {
-        $class = get_class($operator);
-
-        if (!isset($this->classLookup[$class])) {
-            throw new ExpressionFactoryException(sprintf(
-                'Unknown operator "%s"',
-                $class
-            ));
-        }
-
-        return new $this->classLookup[$class]();
+         return new $this->classLookup[get_class($operator)]();
     }
 
-    public function mapOperatorToClass(string $operator, $class)
+    public function mapOperatorToClass(Tokens\BaseToken $operator, $class)
     {
-        $this->classLookup[$operator] = $class;
+        $this->classLookup[get_class($operator)] = $class;
     }
 }

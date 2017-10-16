@@ -7,14 +7,13 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+use nicoSWD\Rules\Expressions\EqualExpression;
 use nicoSWD\Rules\Expressions\Factory;
-use nicoSWD\Rules\Token;
+use nicoSWD\Rules\Expressions\NotEqualExpression;
 
 class ExpressionFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var Factory
-     */
+    /** @var Factory */
     private $factory;
 
     protected function setUp()
@@ -25,27 +24,25 @@ class ExpressionFactoryTest extends \PHPUnit\Framework\TestCase
     public function testCorrectInstancesAreCreated()
     {
         $this->assertInstanceOf(
-            '\nicoSWD\Rules\Expressions\EqualExpression',
+            EqualExpression::class,
             $this->factory->createFromOperator(new \nicoSWD\Rules\Tokens\TokenEqual('=='))
         );
     }
 
     public function testOperatorMappingReturnsCorrectInstance()
     {
-        $this->factory->mapOperatorToClass(stdClass::class, '\nicoSWD\Rules\Expressions\NotEqualExpression');
+        $operator = new class ('%') extends \nicoSWD\Rules\Tokens\BaseToken {
+            public function getType(): int
+            {
+                return \nicoSWD\Rules\TokenType::OPERATOR;
+            }
+        };
+
+        $this->factory->mapOperatorToClass($operator, NotEqualExpression::class);
 
         $this->assertInstanceOf(
-            '\nicoSWD\Rules\Expressions\NotEqualExpression',
-            $this->factory->createFromOperator(new stdClass())
+            NotEqualExpression::class,
+            $this->factory->createFromOperator($operator)
         );
-    }
-
-    /**
-     * @expectedException \nicoSWD\Rules\Exceptions\ExpressionFactoryException
-     * @expectedExceptionMessage Unknown operator "class@anonymous
-     */
-    public function testExceptionOnInvalidOperatorIsThrown()
-    {
-        $this->factory->createFromOperator(new class {});
     }
 }

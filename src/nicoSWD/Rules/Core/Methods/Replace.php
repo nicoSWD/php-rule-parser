@@ -52,13 +52,6 @@ final class Replace extends CallableFunction
         );
     }
 
-    private function splitRegex(string $regExpr): array
-    {
-        preg_match('~(.*?/)([img]{0,3})?$~', $regExpr, $match);
-
-        return [$match[1], $match[2]];
-    }
-
     private function doRegexReplace($search, $replace)
     {
         list ($expression, $modifiers) = $this->splitRegex($search);
@@ -72,6 +65,13 @@ final class Replace extends CallableFunction
             $this->token->getValue(),
             $limit
         );
+    }
+
+    private function splitRegex(string $regExpr): array
+    {
+        preg_match('~(.*?/)([img]{0,3})?$~', $regExpr, $match);
+
+        return [$match[1], $match[2]];
     }
 
     public function getName(): string
