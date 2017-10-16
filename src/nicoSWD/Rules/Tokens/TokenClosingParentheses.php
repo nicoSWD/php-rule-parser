@@ -17,9 +17,4 @@ final class TokenClosingParentheses extends BaseToken
     {
         return TokenType::PARENTHESES;
     }
-
-    public function getValue()
-    {
-        return ')';
-    }
 }

@@ -18,9 +18,6 @@ final class TokenFloat extends BaseToken
         return TokenType::VALUE;
     }
 
-    /**
-     * @return float
-     */
     public function getValue()
     {
         return (float) $this->value;

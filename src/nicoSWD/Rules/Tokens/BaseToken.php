@@ -28,7 +28,7 @@ abstract class BaseToken
     /** @var int */
     protected $line = null;
 
-    abstract public function getType() : int;
+    abstract public function getType(): int;
 
     /**
      * @param mixed $value
@@ -62,12 +62,12 @@ abstract class BaseToken
         return $this->value;
     }
 
-    public function getOffset() : int
+    public function getOffset(): int
     {
         return $this->offset;
     }
 
-    public function getStack() : Stack
+    public function getStack(): Stack
     {
         return $this->stack;
     }
@@ -77,12 +77,12 @@ abstract class BaseToken
         $this->stack = $stack;
     }
 
-    public function supportsMethodCalls() : bool
+    public function supportsMethodCalls(): bool
     {
         return false;
     }
 
-    public function getPosition() : int
+    public function getPosition(): int
     {
         if (!isset($this->position)) {
             $this->getLineAndPosition();
@@ -91,7 +91,7 @@ abstract class BaseToken
         return $this->position;
     }
 
-    public function getLine() : int
+    public function getLine(): int
     {
         if (!isset($this->line)) {
             $this->getLineAndPosition();

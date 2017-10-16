@@ -14,10 +14,7 @@ use nicoSWD\Rules\AST\TokenCollection;
 
 final class TokenFactory
 {
-    /**
-     * @throws ParserException
-     */
-    public static function createFromPHPType($value) : BaseToken
+    public static function createFromPHPType($value): BaseToken
     {
         switch ($type = gettype($value)) {
             case 'string':

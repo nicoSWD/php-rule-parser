@@ -10,33 +10,35 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Expressions;
 
 use nicoSWD\Rules\Exceptions\ExpressionFactoryException;
-use nicoSWD\Rules\Token;
+use nicoSWD\Rules\Tokens;
 
 final class Factory
 {
     /** @var string[] */
     private $classLookup = [
-        Token::EQUAL            => EqualExpression::class,
-        Token::EQUAL_STRICT     => EqualStrictExpression::class,
-        Token::NOT_EQUAL        => NotEqualExpression::class,
-        Token::NOT_EQUAL_STRICT => NotEqualStrictExpression::class,
-        Token::GREATER          => GreaterThanExpression::class,
-        Token::SMALLER          => LessThanExpression::class,
-        Token::SMALLER_EQUAL    => LessThanEqualExpression::class,
-        Token::GREATER_EQUAL    => GreaterThanEqualExpression::class,
-        Token::IN               => InExpression::class
+        Tokens\TokenEqual::class          => EqualExpression::class,
+        Tokens\TokenEqualStrict::class    => EqualStrictExpression::class,
+        Tokens\TokenNotEqual::class       => NotEqualExpression::class,
+        Tokens\TokenNotEqualStrict::class => NotEqualStrictExpression::class,
+        Tokens\TokenGreater::class        => GreaterThanExpression::class,
+        Tokens\TokenSmaller::class        => LessThanExpression::class,
+        Tokens\TokenSmallerEqual::class   => LessThanEqualExpression::class,
+        Tokens\TokenGreaterEqual::class   => GreaterThanEqualExpression::class,
+        Tokens\TokenIn::class             => InExpression::class
     ];
 
-    public function createFromOperator(string $operator): BaseExpression
+    public function createFromOperator($operator): BaseExpression
     {
-        if (!isset($this->classLookup[$operator])) {
+        $class = get_class($operator);
+
+        if (!isset($this->classLookup[$class])) {
             throw new ExpressionFactoryException(sprintf(
                 'Unknown operator "%s"',
-                $operator
+                $class
             ));
         }
 
-        return new $this->classLookup[$operator]();
+        return new $this->classLookup[$class]();
     }
 
     public function mapOperatorToClass(string $operator, $class)

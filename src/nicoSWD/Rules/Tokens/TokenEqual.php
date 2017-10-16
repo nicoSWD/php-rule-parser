@@ -9,18 +9,12 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Tokens;
 
-use nicoSWD\Rules\Token;
 use nicoSWD\Rules\TokenType;
 
 final class TokenEqual extends BaseToken
 {
-    public function getType() : int
+    public function getType(): int
     {
         return TokenType::OPERATOR;
-    }
-
-    public function getValue()
-    {
-        return Token::EQUAL;
     }
 }

@@ -13,14 +13,11 @@ use nicoSWD\Rules\TokenType;
 
 final class TokenNull extends BaseToken
 {
-    public function getType() : int
+    public function getType(): int
     {
         return TokenType::VALUE;
     }
 
-    /**
-     * @return null
-     */
     public function getValue()
     {
         return null;

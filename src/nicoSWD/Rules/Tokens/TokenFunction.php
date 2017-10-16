@@ -13,7 +13,7 @@ use nicoSWD\Rules\TokenType;
 
 final class TokenFunction extends BaseToken
 {
-    public function getType() : int
+    public function getType(): int
     {
         return TokenType::VALUE;
     }

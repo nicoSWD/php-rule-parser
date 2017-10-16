@@ -26,26 +26,26 @@ class ExpressionFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(
             '\nicoSWD\Rules\Expressions\EqualExpression',
-            $this->factory->createFromOperator(Token::EQUAL)
+            $this->factory->createFromOperator(new \nicoSWD\Rules\Tokens\TokenEqual('=='))
         );
     }
 
     public function testOperatorMappingReturnsCorrectInstance()
     {
-        $this->factory->mapOperatorToClass('+', '\nicoSWD\Rules\Expressions\NotEqualExpression');
+        $this->factory->mapOperatorToClass(stdClass::class, '\nicoSWD\Rules\Expressions\NotEqualExpression');
 
         $this->assertInstanceOf(
             '\nicoSWD\Rules\Expressions\NotEqualExpression',
-            $this->factory->createFromOperator('+')
+            $this->factory->createFromOperator(new stdClass())
         );
     }
 
     /**
      * @expectedException \nicoSWD\Rules\Exceptions\ExpressionFactoryException
-     * @expectedExceptionMessage Unknown operator "."
+     * @expectedExceptionMessage Unknown operator "class@anonymous
      */
     public function testExceptionOnInvalidOperatorIsThrown()
     {
-        $this->factory->createFromOperator('.');
+        $this->factory->createFromOperator(new class {});
     }
 }

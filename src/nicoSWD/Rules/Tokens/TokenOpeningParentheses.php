@@ -13,13 +13,8 @@ use nicoSWD\Rules\TokenType;
 
 final class TokenOpeningParentheses extends BaseToken
 {
-    public function getType() : int
+    public function getType(): int
     {
         return TokenType::PARENTHESES;
-    }
-
-    public function getValue()
-    {
-        return '(';
     }
 }

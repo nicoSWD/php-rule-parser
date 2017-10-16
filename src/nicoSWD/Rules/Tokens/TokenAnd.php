@@ -17,9 +17,4 @@ final class TokenAnd extends BaseToken
     {
         return TokenType::LOGICAL;
     }
-
-    public function getValue() : string
-    {
-        return '&';
-    }
 }

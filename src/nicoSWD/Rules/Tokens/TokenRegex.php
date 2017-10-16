@@ -13,12 +13,12 @@ use nicoSWD\Rules\TokenType;
 
 final class TokenRegex extends BaseToken
 {
-    public function getType() : int
+    public function getType(): int
     {
         return TokenType::VALUE;
     }
 
-    public function supportsMethodCalls() : bool
+    public function supportsMethodCalls(): bool
     {
         return true;
     }

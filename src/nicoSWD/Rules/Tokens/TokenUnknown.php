@@ -13,7 +13,7 @@ use nicoSWD\Rules\TokenType;
 
 final class TokenUnknown extends BaseToken
 {
-    public function getType() : int
+    public function getType(): int
     {
         return TokenType::UNKNOWN;
     }

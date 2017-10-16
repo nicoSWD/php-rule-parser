@@ -22,7 +22,7 @@ class Parser
     /** @var null|mixed[] */
     protected $values = null;
 
-    /** @var null|string */
+    /** @var null|BaseToken */
     protected $operator =  null;
 
     /** @var string */
@@ -187,7 +187,7 @@ class Parser
             ));
         }
 
-        $this->operator = $token->getValue();
+        $this->operator = $token;
         $this->operatorRequired = false;
     }
 

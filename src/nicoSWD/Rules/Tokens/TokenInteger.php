@@ -13,15 +13,12 @@ use nicoSWD\Rules\TokenType;
 
 final class TokenInteger extends BaseToken
 {
-    public function getType() : int
+    public function getType(): int
     {
         return TokenType::VALUE;
     }
 
-    /**
-     * @return int
-     */
-    public function getValue()
+    public function getValue(): int
     {
         return (int) $this->value;
     }

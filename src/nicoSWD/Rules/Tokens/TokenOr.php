@@ -13,16 +13,8 @@ use nicoSWD\Rules\TokenType;
 
 final class TokenOr extends BaseToken
 {
-    public function getType() : int
+    public function getType(): int
     {
         return TokenType::LOGICAL;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue()
-    {
-        return '|';
     }
 }
