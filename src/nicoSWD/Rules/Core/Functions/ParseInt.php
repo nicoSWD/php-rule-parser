@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Core\Functions;
 
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenInteger;
 
 final class ParseInt extends CallableFunction
@@ -17,7 +18,7 @@ final class ParseInt extends CallableFunction
     /**
      * {@inheritdoc}
      */
-    public function call($value = null) : TokenInteger
+    public function call($value = null): BaseToken
     {
         if ($value === null) {
             return new TokenInteger(NAN);

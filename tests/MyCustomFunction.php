@@ -20,7 +20,7 @@ class MyCustomFunction implements CallableUserFunction
      * @param BaseToken $param ...
      * @return BaseToken
      */
-    public function call($param = null)
+    public function call($param = null): BaseToken
     {
         return new TokenInteger($param->getValue() * 2);
     }

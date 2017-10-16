@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
@@ -20,10 +20,10 @@ final class Join extends CallableFunction
 {
     /**
      * @param BaseToken $glue
-     * @return TokenString
+     * @return BaseToken
      * @throws ParserException
      */
-    public function call($glue = null) : TokenString
+    public function call($glue = null): BaseToken
     {
         if (!$this->token instanceof TokenArray) {
             throw new ParserException(sprintf(
@@ -53,7 +53,7 @@ final class Join extends CallableFunction
         );
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return 'join';
     }

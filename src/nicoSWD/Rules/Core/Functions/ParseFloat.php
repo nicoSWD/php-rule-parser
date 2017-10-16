@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Core\Functions;
 
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenFloat;
 
 final class ParseFloat extends CallableFunction
@@ -17,7 +18,7 @@ final class ParseFloat extends CallableFunction
     /**
      * {@inheritdoc}
      */
-    public function call($value = null) : TokenFloat
+    public function call($value = null): BaseToken
     {
         if ($value === null) {
             return new TokenFloat(NAN);

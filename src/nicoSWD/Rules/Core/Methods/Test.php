@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
@@ -20,10 +20,10 @@ final class Test extends CallableFunction
 {
     /**
      * @param BaseToken $string
-     * @return TokenBool
+     * @return BaseToken
      * @throws ParserException
      */
-    public function call($string = null) : TokenBool
+    public function call($string = null): BaseToken
     {
         if (!$this->token instanceof TokenRegex) {
             throw new ParserException(sprintf(
@@ -62,7 +62,7 @@ final class Test extends CallableFunction
         );
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return 'test';
     }

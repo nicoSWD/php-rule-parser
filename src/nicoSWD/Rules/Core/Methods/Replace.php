@@ -1,19 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\Core\CallableFunction;
-use nicoSWD\Rules\Tokens\{
-    TokenRegex,
-    TokenString
-};
+use nicoSWD\Rules\Tokens\TokenRegex;
+use nicoSWD\Rules\Tokens\TokenString;
 use nicoSWD\Rules\Tokens\BaseToken;
 
 final class Replace extends CallableFunction
@@ -21,10 +19,10 @@ final class Replace extends CallableFunction
     /**
      * @param BaseToken $search
      * @param BaseToken $replace
-     * @return TokenString
+     * @return BaseToken
      * @throws \Exception
      */
-    public function call($search = null, $replace = null) : TokenString
+    public function call($search = null, $replace = null): BaseToken
     {
         $isRegExpr = false;
 
@@ -42,17 +40,7 @@ final class Replace extends CallableFunction
         }
 
         if ($isRegExpr) {
-            list ($expression, $modifiers) = $this->splitRegex($search);
-
-            $modifiers = str_replace('g', '', $modifiers, $count);
-            $limit = $count > 0 ? -1 : 1;
-
-            $value = preg_replace(
-                $expression . $modifiers,
-                $replace,
-                $this->token->getValue(),
-                $limit
-            );
+            $value = $this->doRegexReplace($search, $replace);
         } else {
             $value = str_replace($search, $replace, $this->token->getValue());
         }
@@ -64,14 +52,29 @@ final class Replace extends CallableFunction
         );
     }
 
-    private function splitRegex(string $regExpr) : array
+    private function splitRegex(string $regExpr): array
     {
         preg_match('~(.*?/)([img]{0,3})?$~', $regExpr, $match);
 
         return [$match[1], $match[2]];
     }
 
-    public function getName() : string
+    private function doRegexReplace($search, $replace)
+    {
+        list ($expression, $modifiers) = $this->splitRegex($search);
+
+        $modifiers = str_replace('g', '', $modifiers, $count);
+        $limit = $count > 0 ? -1 : 1;
+
+        return preg_replace(
+            $expression . $modifiers,
+            $replace,
+            $this->token->getValue(),
+            $limit
+        );
+    }
+
+    public function getName(): string
     {
         return 'replace';
     }

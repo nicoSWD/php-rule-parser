@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\Core\CallableFunction;
@@ -17,10 +17,10 @@ final class ToLowerCase extends CallableFunction
 {
     /**
      * @param BaseToken $string
-     * @return TokenString
+     * @return BaseToken
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function call($string = null) : TokenString
+    public function call($string = null): BaseToken
     {
         return new TokenString(
             strtolower((string) $this->token->getValue()),
@@ -29,7 +29,7 @@ final class ToLowerCase extends CallableFunction
         );
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return 'toLowerCase';
     }

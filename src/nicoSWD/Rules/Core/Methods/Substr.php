@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\Core\CallableFunction;
@@ -18,9 +18,9 @@ final class Substr extends CallableFunction
     /**
      * @param BaseToken $start
      * @param BaseToken $offset
-     * @return TokenString
+     * @return BaseToken
      */
-    public function call($start = null, $offset = null) : TokenString
+    public function call($start = null, $offset = null): BaseToken
     {
         $params = [];
 
@@ -43,7 +43,7 @@ final class Substr extends CallableFunction
         );
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return 'substr';
     }

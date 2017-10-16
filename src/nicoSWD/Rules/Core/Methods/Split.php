@@ -1,26 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\Core\CallableFunction;
-use nicoSWD\Rules\Tokens\{TokenArray, TokenRegex};
-use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\Tokens\TokenArray;
+use nicoSWD\Rules\Tokens\TokenRegex;
 
 final class Split extends CallableFunction
 {
     /**
-     * @param Tokens\BaseToken $separator
-     * @param Tokens\BaseToken $limit
-     * @return TokenArray
+     * @param BaseToken $separator
+     * @param BaseToken $limit
+     * @return BaseToken
      */
-    public function call($separator = null, $limit = null) : TokenArray
+    public function call($separator = null, $limit = null): BaseToken
     {
         if (!$separator || !is_string($separator->getValue())) {
             $newValue = [$this->token->getValue()];
@@ -47,7 +48,7 @@ final class Split extends CallableFunction
         );
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return 'split';
     }

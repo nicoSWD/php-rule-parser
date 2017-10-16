@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules\Core\Methods;
 
 use nicoSWD\Rules\Core\CallableFunction;
@@ -17,9 +17,9 @@ final class IndexOf extends CallableFunction
 {
     /**
      * @param BaseToken $needle
-     * @return TokenInteger
+     * @return BaseToken
      */
-    public function call($needle = null) : TokenInteger
+    public function call($needle = null): BaseToken
     {
         if (!$needle) {
             $value = -1;
@@ -38,7 +38,7 @@ final class IndexOf extends CallableFunction
         );
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return 'indexOf';
     }

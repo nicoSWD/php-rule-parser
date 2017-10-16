@@ -18,8 +18,9 @@ final class CharAt extends CallableFunction
 {
     /**
      * @param BaseToken $offset
+     * @return BaseToken
      */
-    public function call($offset = null) : TokenString
+    public function call($offset = null): BaseToken
     {
         $tokenValue = $this->token->getValue();
 
