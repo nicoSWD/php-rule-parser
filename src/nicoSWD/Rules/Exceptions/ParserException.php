@@ -27,7 +27,7 @@ class ParserException extends \Exception
     {
         return new self(sprintf(
             'Unknown token "%s" at position %d on line %d',
-            $token->getOriginalValue(),
+            $token->getValue(),
             $token->getPosition(),
             $token->getLine()
         ));
@@ -37,7 +37,7 @@ class ParserException extends \Exception
     {
         return new self(sprintf(
             'Incomplete expression for token "%s" at position %d on line %d',
-            $token->getOriginalValue(),
+            $token->getValue(),
             $token->getPosition(),
             $token->getLine()
         ));
