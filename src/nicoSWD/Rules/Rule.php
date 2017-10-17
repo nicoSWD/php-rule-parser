@@ -1,15 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules;
 
-use Closure;
 use Exception;
 use nicoSWD\Rules\Grammar\JavaScript;
 
@@ -39,7 +38,7 @@ class Rule
         $this->parser->assignVariables($variables);
     }
 
-    public function isTrue() : bool
+    public function isTrue(): bool
     {
         return $this->evaluator->evaluate(
             $this->parsedRule ?:
@@ -47,7 +46,7 @@ class Rule
         );
     }
 
-    public function isFalse() : bool
+    public function isFalse(): bool
     {
         return !$this->isTrue();
     }
@@ -55,7 +54,7 @@ class Rule
     /**
      * Tells whether a rule is valid (as in "can be parsed without error") or not.
      */
-    public function isValid() : bool
+    public function isValid(): bool
     {
         try {
             $this->parsedRule = $this->parser->parse($this->rule);
@@ -67,18 +66,13 @@ class Rule
         return true;
     }
 
-    public function registerFunction(string $name, Closure $callback)
+    public function getError(): string
     {
-        $this->parser->registerFunction($name, $callback);
+        return $this->error;
     }
 
     public function registerToken(string $class, string $regex, int $priority = 10)
     {
         $this->parser->registerToken($class, $regex, $priority);
-    }
-
-    public function getError() : string
-    {
-        return $this->error;
     }
 }
