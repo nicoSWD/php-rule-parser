@@ -51,8 +51,7 @@ abstract class BaseToken
     }
 
     /**
-     * Some tokens can be represented by different operators,
-     * so the original value is used for error reporting,
+     * Some tokens can be represented by different operators, so the original value is used for error reporting,
      * while the other one is used internally.
      *
      * @return mixed

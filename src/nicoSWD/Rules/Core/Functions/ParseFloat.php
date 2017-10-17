@@ -10,10 +10,11 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Core\Functions;
 
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Core\CallableUserFunction;
 use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenFloat;
 
-final class ParseFloat extends CallableFunction
+final class ParseFloat extends CallableFunction implements CallableUserFunction
 {
     /**
      * @param BaseToken $value
@@ -26,11 +27,7 @@ final class ParseFloat extends CallableFunction
             return new TokenFloat(NAN);
         }
 
-        return new TokenFloat(
-            (float) $value->getValue(),
-            $this->token->getOffset(),
-            $this->token->getStack()
-        );
+        return new TokenFloat((float) $value->getValue());
     }
 
     public function getName(): string

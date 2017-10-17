@@ -10,10 +10,11 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Core\Functions;
 
 use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Core\CallableUserFunction;
 use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenInteger;
 
-final class ParseInt extends CallableFunction
+final class ParseInt extends CallableFunction implements CallableUserFunction
 {
     /**
      * @param BaseToken $value
@@ -26,11 +27,7 @@ final class ParseInt extends CallableFunction
             return new TokenInteger(NAN);
         }
 
-        return new TokenInteger(
-            (int) $value->getValue(),
-            $this->token->getOffset(),
-            $this->token->getStack()
-        );
+        return new TokenInteger((int) $value->getValue());
     }
 
     public function getName(): string

@@ -12,6 +12,8 @@ namespace nicoSWD\Rules;
 use Closure;
 use InvalidArgumentException;
 use nicoSWD\Rules\Core\CallableUserFunction;
+use nicoSWD\Rules\Core\Functions\ParseFloat;
+use nicoSWD\Rules\Core\Functions\ParseInt;
 use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\Tokens\BaseToken;
 
@@ -54,6 +56,9 @@ class Parser
     {
         $this->tokenizer = $tokenizer;
         $this->expressionFactory = $expressionFactory;
+
+        $this->registerFunctionClass(ParseInt::class);
+        $this->registerFunctionClass(ParseFloat::class);
     }
 
     public function parse(string $rule): string
@@ -218,11 +223,6 @@ class Parser
         });
     }
 
-    public function registerFunction(string $name, Closure $callback)
-    {
-        $this->userDefinedFunctions[$name] = $callback;
-    }
-
     public function registerToken(string $token, string $regex, int $priority = 10)
     {
         $this->tokenizer->registerToken($token, $regex, $priority);
@@ -238,5 +238,10 @@ class Parser
         }
 
         return $this->userDefinedFunctions[$name];
+    }
+
+    private function registerFunction(string $name, Closure $callback)
+    {
+        $this->userDefinedFunctions[$name] = $callback;
     }
 }

@@ -16,7 +16,7 @@ abstract class CallableFunction implements CallableUserFunction
     /** @var BaseToken */
     protected $token;
 
-    public function __construct(BaseToken $token)
+    public function __construct(BaseToken $token = null)
     {
         $this->token = $token;
     }
