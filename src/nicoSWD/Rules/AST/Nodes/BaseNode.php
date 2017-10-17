@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types = 1);
-
 namespace nicoSWD\Rules\AST\Nodes;
 
 use nicoSWD\Rules\AST;
@@ -126,40 +126,27 @@ abstract class BaseNode
 
             if ($current->getType() === TokenType::VALUE) {
                 if ($commaExpected) {
-                    throw new ParserException(sprintf(
-                        'Unexpected value at position %d on line %d',
-                        $current->getPosition(),
-                        $current->getLine()
-                    ));
+                    throw ParserException::unexpectedToken($current);
                 }
 
                 $commaExpected = true;
                 $items->attach($current);
             } elseif ($current instanceof Tokens\TokenComma) {
                 if (!$commaExpected) {
-                    throw new ParserException(sprintf(
-                        'Unexpected token "," at position %d on line %d',
-                        $current->getPosition(),
-                        $current->getLine()
-                    ));
+                    throw ParserException::unexpectedToken($current);
                 }
 
                 $commaExpected = false;
             } elseif ($current->getType() === $stopAt) {
                 break;
             } elseif (!$this->isIgnoredToken($current)) {
-                throw new ParserException(sprintf(
-                    'Unexpected token "%s" at position %d on line %d',
-                    $current->getOriginalValue(),
-                    $current->getPosition(),
-                    $current->getLine()
-                ));
+                throw ParserException::unexpectedToken($current);
             }
         } while ($this->ast->valid());
 
         if (!$commaExpected && $items->count() > 0) {
             throw new ParserException(sprintf(
-                'Unexpected token "," at position %d on line %d',
+                'Unexpected "," at position %d on line %d',
                 $current->getPosition(),
                 $current->getLine()
             ));

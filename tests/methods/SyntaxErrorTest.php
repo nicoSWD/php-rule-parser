@@ -1,94 +1,87 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules\tests\methods;
+
+use nicoSWD\Rules\Rule;
 
 class SyntaxErrorTest extends \AbstractTestBase
 {
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected value at position 15 on line 1
-     */
     public function testMissingCommaInArgumentsThrowsException()
     {
-        $this->evaluate('"foo".charAt(1 2 ) === "b"');
+        $rule = new Rule('"foo".charAt(1 2 ) === "b"');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected "2" at position 15 on line 1', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected token "," at position 17 on line 1
-     */
     public function testMissingValueInArgumentsThrowsException()
     {
-        $this->evaluate('"foo".charAt(1 , ) === "b"');
+        $rule = new Rule('"foo".charAt(1 , ) === "b"');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected "," at position 17 on line 1', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected token "," at position 17 on line 1
-     */
     public function testMissingValueBetweenCommasInArgumentsThrowsException()
     {
-        $this->evaluate('"foo".charAt(1 , , ) === "b"');
+        $rule = new Rule('"foo".charAt(1 , , ) === "b"');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected "," at position 17 on line 1', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected token "<" at position 17 on line 1
-     */
     public function testUnexpectedTokenInArgumentsThrowsException()
     {
-        $this->evaluate('"foo".charAt(1 , < , ) === "b"');
+        $rule = new Rule('"foo".charAt(1 , < , ) === "b"');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected "<" at position 17 on line 1', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected end of string
-     */
     public function testUnexpectedEndOfStringThrowsException()
     {
-        $this->evaluate('"foo".charAt(1 , ');
+        $rule = new Rule('"foo".charAt(1 , ');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected end of string', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage undefined is not a function at position 7 on line 1
-     */
     public function testUndefinedMethodThrowsException()
     {
-        $this->evaluate('/^foo$/.teddst("foo") === true');
+        $rule = new Rule('/^foo$/.teddst("foo") === true');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('undefined is not a function at position 7 on line 1', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage undefined is not a function
-     */
     public function testIncorrectSpellingThrowsException()
     {
-        $this->evaluate('"foo".ChARat(1) === "o"');
+        $rule = new Rule('"foo".ChARat(1) === "o"');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('undefined is not a function', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage foo.join is not a function at position 0 on line 1
-     */
     public function testCallOnNonArray()
     {
-        $this->evaluate('"foo".join("|") === ""');
+        $rule = new Rule('"foo".join("|") === ""');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('foo.join is not a function at position 0 on line 1', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage undefined is not a function at position 0 on line 1
-     */
     public function testExceptionIsThrownOnTypeError()
     {
-        $this->evaluate('"foo".test("foo") === false');
+        $rule = new Rule('"foo".test("foo") === false');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('undefined is not a function at position 0 on line 1', $rule->getError());
     }
 }

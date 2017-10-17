@@ -16,7 +16,7 @@ class SyntaxErrorTest extends \AbstractTestBase
 {
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected token "(" at position 19 on line 1
+     * @expectedExceptionMessage Unexpected "(" at position 19 on line 1
      */
     public function testEmptyParenthesisThrowException()
     {

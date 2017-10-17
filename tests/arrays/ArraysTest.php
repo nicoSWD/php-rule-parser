@@ -9,6 +9,8 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\tests\arrays;
 
+use nicoSWD\Rules\Rule;
+
 class ArraysTest extends \AbstractTestBase
 {
     public function testArraysEqualUserSuppliedArrays()
@@ -47,27 +49,17 @@ class ArraysTest extends \AbstractTestBase
         ));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected token "," at position 15 on line 1
-     */
     public function testTrailingCommaThrowsException()
     {
-        $this->evaluate('["foo", "bar", ] === ["foo", "bar"]');
+        $rule = new Rule('["foo", "bar", ] === ["foo", "bar"]');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected "," at position 15 on line 1', $rule->getError());
     }
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected token "," at position 15 on line 1
-     */
-    public function testLineIsReportedCorrectlyOnSyntaxError2()
-    {
-        $this->evaluate('["foo", "bar", ,] === ["foo", "bar"]');
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected token "," at position 12 on line 5
+     * @expectedExceptionMessage Unexpected "," at position 12 on line 5
      */
     public function testLineIsReportedCorrectlyOnSyntaxError()
     {
@@ -80,30 +72,35 @@ class ArraysTest extends \AbstractTestBase
         );
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected value at position 8 on line 1
-     */
+    public function testLineIsReportedCorrectlyOnSyntaxError2()
+    {
+        $rule = new Rule('["foo", "bar", ,] === ["foo", "bar"]');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected "," at position 15 on line 1', $rule->getError());
+    }
+
     public function testMissingCommaThrowsException()
     {
-        $this->evaluate('["foo"  "bar"] === ["foo", "bar"]');
+        $rule = new Rule('["foo"  "bar"] === ["foo", "bar"]');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected "bar" at position 8 on line 1', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected token "===" at position 8 on line 1
-     */
     public function testUnexpectedTokenThrowsException()
     {
-        $this->evaluate('["foo", ===] === ["foo", "bar"]');
+        $rule = new Rule('["foo", ===] === ["foo", "bar"]');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected "===" at position 8 on line 1', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected end of string
-     */
     public function testUnexpectedEndOfStringThrowsException()
     {
-        $this->evaluate('["foo", "bar"');
+        $rule = new Rule('["foo", "bar"');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected end of string', $rule->getError());
     }
 }

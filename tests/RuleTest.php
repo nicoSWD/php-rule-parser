@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
 
 use nicoSWD\Rules;
 
@@ -31,7 +32,6 @@ class RuleTest extends \PHPUnit\Framework\TestCase
             'bar' => 7
         ];
 
-
         $rule = new Rules\Rule($string, $vars);
 
         $this->assertTrue($rule->isTrue());
@@ -45,7 +45,7 @@ class RuleTest extends \PHPUnit\Framework\TestCase
         $rule = new Rules\Rule($ruleStr);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected token "(" at position 28 on line 1', $rule->getError());
+        $this->assertSame('Unexpected "(" at position 28 on line 1', $rule->getError());
     }
 
     public function testIsValidReturnsTrueOnValidSyntax()

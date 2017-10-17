@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules;
 
 use Closure;
 use InvalidArgumentException;
 use nicoSWD\Rules\Core\CallableUserFunction;
+use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\Tokens\BaseToken;
 
 class Parser
@@ -46,6 +47,7 @@ class Parser
     /** @var Expressions\Factory */
     protected $expressionFactory;
 
+    /** @var Callable[] */
     protected $userDefinedFunctions = [];
 
     public function __construct(TokenizerInterface $tokenizer, Expressions\Factory $expressionFactory)
@@ -54,7 +56,6 @@ class Parser
         $this->expressionFactory = $expressionFactory;
     }
 
-    /** @throws Exceptions\ParserException */
     public function parse(string $rule): string
     {
         $this->output = '';
@@ -80,18 +81,14 @@ class Parser
                 case TokenType::SPACE:
                     continue 2;
                 default:
-                    throw new Exceptions\ParserException(sprintf(
-                        'Unknown token "%s" at position %d on line %d',
-                        $token->getValue(),
-                        $token->getPosition(),
-                        $token->getLine()
-                    ));
+                    throw Exceptions\ParserException::unknownToken($token);
             }
 
             $this->parseExpression();
         }
 
         $this->assertSyntaxSeemsOkay();
+
         return $this->output;
     }
 
@@ -100,7 +97,6 @@ class Parser
         $this->variables = $variables;
     }
 
-    /** @throws Exceptions\ParserException */
     protected function assignVariableValueFromToken(BaseToken $token)
     {
         if ($this->operatorRequired) {
@@ -121,20 +117,14 @@ class Parser
         }
     }
 
-    /** @throws Exceptions\ParserException */
     protected function assignParentheses(BaseToken $token)
     {
-        $tokenValue = $token->getValue();
-
-        if ($tokenValue === '(') {
+        if ($token instanceof Tokens\TokenOpeningParentheses) {
             if ($this->operatorRequired) {
-                throw new Exceptions\ParserException(sprintf(
-                    'Unexpected token "(" at position %d on line %d',
-                    $token->getPosition(),
-                    $token->getLine()
-                ));
+                throw Exceptions\ParserException::unexpectedToken($token);
             }
 
+            $this->output .= '(';
             $this->openParenthesis++;
         } else {
             if ($this->openParenthesis < 1) {
@@ -146,52 +136,38 @@ class Parser
             }
 
             $this->closedParenthesis++;
+            $this->output .= ')';
         }
-
-        $this->output .= $tokenValue;
     }
 
-    /** @throws Exceptions\ParserException */
     protected function assignLogicalToken(BaseToken $token)
     {
         if (!$this->operatorRequired) {
-            throw new Exceptions\ParserException(sprintf(
-                'Unexpected "%s" at position %d on line %d',
-                $token->getOriginalValue(),
-                $token->getPosition(),
-                $token->getLine()
-            ));
+            throw Exceptions\ParserException::unexpectedToken($token);
         }
 
-        $this->output .= $token->getValue();
+        if ($token instanceof Tokens\TokenAnd) {
+            $this->output .= '&';
+        } else {
+            $this->output .= '|';
+        }
+
         $this->incompleteCondition = true;
         $this->operatorRequired = false;
     }
 
-    /** @throws Exceptions\ParserException */
     protected function assignOperator(BaseToken $token)
     {
         if (isset($this->operator)) {
-            throw new Exceptions\ParserException(sprintf(
-                'Unexpected "%s" at position %d on line %d',
-                $token->getOriginalValue(),
-                $token->getPosition(),
-                $token->getLine()
-            ));
+            throw Exceptions\ParserException::unexpectedToken($token);
         } elseif (!isset($this->values)) {
-            throw new Exceptions\ParserException(sprintf(
-                'Incomplete expression for token "%s" at position %d on line %d',
-                $token->getOriginalValue(),
-                $token->getPosition(),
-                $token->getLine()
-            ));
+            throw Exceptions\ParserException::incompleteExpression($token);
         }
 
         $this->operator = $token;
         $this->operatorRequired = false;
     }
 
-    /** @throws Exceptions\ExpressionFactoryException */
     protected function parseExpression()
     {
         if (!isset($this->operator) || count($this->values) <> 2) {
@@ -205,7 +181,6 @@ class Parser
         unset($this->operator, $this->values);
     }
 
-    /** @throws Exceptions\ParserException */
     protected function assertSyntaxSeemsOkay()
     {
         if ($this->incompleteCondition) {
@@ -253,14 +228,15 @@ class Parser
         $this->tokenizer->registerToken($token, $regex, $priority);
     }
 
-    /**
-     * @param string $name
-     * @return Closure|null
-     */
-    public function getFunction(string $name)
+    public function getFunction(string $name): Closure
     {
-        return isset($this->userDefinedFunctions[$name])
-            ? $this->userDefinedFunctions[$name]
-            : null;
+        if (!isset($this->userDefinedFunctions[$name])) {
+            throw new Exceptions\ParserException(sprintf(
+                '%s is not defined',
+                $name
+            ));
+        }
+
+        return $this->userDefinedFunctions[$name];
     }
 }
