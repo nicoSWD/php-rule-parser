@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules;
 
 use Iterator;
@@ -25,29 +25,15 @@ use nicoSWD\Rules\AST\Nodes\NodeVariable;
 
 final class AST implements Iterator
 {
-    /**
-     * @var Parser
-     */
+    /** @var Parser */
     public $parser;
 
-    /**
-     * @var Stack
-     */
+    /** @var Stack */
     protected $stack;
 
-    /**
-     * @var mixed[]
-     */
-    protected $variables = [];
-
-    /**
-     * @param Stack  $stack
-     * @param Parser $parser
-     */
     public function __construct(Stack $stack, Parser $parser)
     {
         $this->stack = $stack;
-        $this->variables = $parser->variables;
         $this->parser = $parser;
     }
 
@@ -56,7 +42,7 @@ final class AST implements Iterator
         $this->stack->next();
     }
 
-    public function valid() : bool
+    public function valid(): bool
     {
         return $this->stack->valid();
     }
@@ -87,10 +73,8 @@ final class AST implements Iterator
         return $current->getNode();
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
-    public function key() : int
+    /** @codeCoverageIgnore */
+    public function key(): int
     {
         return $this->stack->key();
     }
@@ -100,12 +84,9 @@ final class AST implements Iterator
         $this->stack->rewind();
     }
 
-    /**
-     * @throws Exceptions\ParserException
-     */
-    public function getVariable(string $name) : BaseToken
+    public function getVariable(string $name): BaseToken
     {
-        if (!array_key_exists($name, $this->variables)) {
+        if (!array_key_exists($name, $this->parser->variables)) {
             $token = $this->stack->current();
 
             throw new Exceptions\ParserException(sprintf(
@@ -116,10 +97,10 @@ final class AST implements Iterator
             ));
         }
 
-        return TokenFactory::createFromPHPType($this->variables[$name]);
+        return TokenFactory::createFromPHPType($this->parser->variables[$name]);
     }
 
-    public function getStack() : Stack
+    public function getStack(): Stack
     {
         return $this->stack;
     }

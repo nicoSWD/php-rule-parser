@@ -9,23 +9,23 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\tests\functions;
 
+use nicoSWD\Rules\Rule;
+
 class SyntaxErrorTest extends \AbstractTestBase
 {
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage nope is not defined
-     */
     public function testUndefinedFunctionThrowsException()
     {
-        $this->evaluate('nope() === true');
+        $rule = new Rule('nope() === true');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('nope is not defined', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage paRSeInt is not defined
-     */
     public function testIncorrectSpellingThrowsException()
     {
-        $this->evaluate('paRSeInt("2") === 2');
+        $rule = new Rule('paRSeInt("2") === 2');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('paRSeInt is not defined', $rule->getError());
     }
 }

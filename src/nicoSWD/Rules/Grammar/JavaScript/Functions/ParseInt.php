@@ -7,14 +7,14 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\Core\Functions;
+namespace nicoSWD\Rules\Grammar\JavaScript\Functions;
 
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Core\CallableUserFunction;
 use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenFloat;
+use nicoSWD\Rules\Tokens\TokenInteger;
 
-final class ParseFloat extends CallableFunction implements CallableUserFunction
+final class ParseInt extends CallableFunction implements CallableUserFunction
 {
     /**
      * @param BaseToken $value
@@ -24,14 +24,14 @@ final class ParseFloat extends CallableFunction implements CallableUserFunction
     public function call($value = null): BaseToken
     {
         if ($value === null) {
-            return new TokenFloat(NAN);
+            return new TokenInteger(NAN);
         }
 
-        return new TokenFloat((float) $value->getValue());
+        return new TokenInteger((int) $value->getValue());
     }
 
     public function getName(): string
     {
-        return 'parseFloat';
+        return 'parseInt';
     }
 }

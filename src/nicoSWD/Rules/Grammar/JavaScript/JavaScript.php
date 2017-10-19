@@ -7,9 +7,11 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>use nicoSWD\Rules\Tokenizer;
  */
-namespace nicoSWD\Rules\Grammar;
+namespace nicoSWD\Rules\Grammar\JavaScript;
 
 use nicoSWD\Rules\Grammar;
+use nicoSWD\Rules\Grammar\JavaScript\Functions\ParseFloat;
+use nicoSWD\Rules\Grammar\JavaScript\Functions\ParseInt;
 use nicoSWD\Rules\Token;
 
 class JavaScript implements Grammar
@@ -46,6 +48,14 @@ class JavaScript implements Grammar
             [Token::SPACE, '\s+', 15],
             [Token::TOKEN_VARIABLE, '[a-zA-Z_]\w*', 10],
             [Token::UNKNOWN, '.', 5],
+        ];
+    }
+
+    public function getInternalFunctions()
+    {
+        return [
+            ParseInt::class,
+            ParseFloat::class
         ];
     }
 }

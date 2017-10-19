@@ -16,7 +16,7 @@ class HighlighterTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->highlighter = new Rules\Highlighter(new Rules\Tokenizer(new Rules\Grammar\JavaScript()));
+        $this->highlighter = new Rules\Highlighter(new Rules\Tokenizer(new Rules\Grammar\JavaScript\JavaScript()));
     }
 
     public function testGetMatchedTokenReturnsFalseOnFailure()

@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace nicoSWD\Rules;
 
 use Exception;
-use nicoSWD\Rules\Grammar\JavaScript;
+use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
 
 class Rule
 {
@@ -32,7 +32,7 @@ class Rule
     public function __construct(string $rule, array $variables = [])
     {
         $this->rule = $rule;
-        $this->parser = new Parser(new Tokenizer(new JavaScript()), new Expressions\Factory());
+        $this->parser = new Parser(new Tokenizer(new JavaScript()), new Expressions\Factory(), new RuleGenerator());
         $this->evaluator = new Evaluator();
 
         $this->parser->assignVariables($variables);

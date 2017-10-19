@@ -12,9 +12,9 @@ namespace nicoSWD\Rules;
 use Closure;
 use InvalidArgumentException;
 use nicoSWD\Rules\Core\CallableUserFunction;
-use nicoSWD\Rules\Core\Functions\ParseFloat;
-use nicoSWD\Rules\Core\Functions\ParseInt;
 use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Grammar\JavaScript\Functions\ParseFloat;
+use nicoSWD\Rules\Grammar\JavaScript\Functions\ParseInt;
 use nicoSWD\Rules\Tokens\BaseToken;
 
 class Parser
@@ -23,39 +23,31 @@ class Parser
     public $variables = [];
 
     /** @var null|mixed[] */
-    protected $values = null;
+    private $values = null;
 
     /** @var null|BaseToken */
-    protected $operator =  null;
-
-    /** @var string */
-    protected $output = '';
-
-    /** @var bool */
-    protected $operatorRequired = false;
-
-    /** @var bool */
-    protected $incompleteCondition = false;
-
-    /** @var int */
-    protected $openParenthesis = 0;
-
-    /** @var int */
-    protected $closedParenthesis = 0;
+    private $operator =  null;
 
     /** @var TokenizerInterface */
-    protected $tokenizer;
+    private $tokenizer;
 
     /** @var Expressions\Factory */
-    protected $expressionFactory;
+    private $expressionFactory;
 
     /** @var Callable[] */
-    protected $userDefinedFunctions = [];
+    private $userDefinedFunctions = [];
 
-    public function __construct(TokenizerInterface $tokenizer, Expressions\Factory $expressionFactory)
-    {
+    /** @var RuleGenerator */
+    private $ruleGenerator;
+
+    public function __construct(
+        TokenizerInterface $tokenizer,
+        Expressions\Factory $expressionFactory,
+        RuleGenerator $ruleGenerator
+    ) {
         $this->tokenizer = $tokenizer;
         $this->expressionFactory = $expressionFactory;
+        $this->ruleGenerator = $ruleGenerator;
 
         $this->registerFunctionClass(ParseInt::class);
         $this->registerFunctionClass(ParseFloat::class);
@@ -63,10 +55,9 @@ class Parser
 
     public function parse(string $rule): string
     {
-        $this->output = '';
+        $this->ruleGenerator->clear();
         $this->operator = null;
         $this->values = null;
-        $this->operatorRequired = false;
 
         foreach (new AST($this->tokenizer->tokenize($rule), $this) as $token) {
             switch ($token->getType()) {
@@ -74,10 +65,10 @@ class Parser
                     $this->assignVariableValueFromToken($token);
                     break;
                 case TokenType::LOGICAL:
-                    $this->assignLogicalToken($token);
+                    $this->ruleGenerator->addLogical($token);
                     continue 2;
                 case TokenType::PARENTHESES:
-                    $this->assignParentheses($token);
+                    $this->ruleGenerator->addParentheses($token);
                     continue 2;
                 case TokenType::OPERATOR:
                     $this->assignOperator($token);
@@ -92,9 +83,7 @@ class Parser
             $this->parseExpression();
         }
 
-        $this->assertSyntaxSeemsOkay();
-
-        return $this->output;
+        return $this->ruleGenerator->get();
     }
 
     public function assignVariables(array $variables)
@@ -104,61 +93,13 @@ class Parser
 
     protected function assignVariableValueFromToken(BaseToken $token)
     {
-        if ($this->operatorRequired) {
-            throw new Exceptions\ParserException(sprintf(
-                'Missing operator at position %d on line %d',
-                $token->getPosition(),
-                $token->getLine()
-            ));
-        }
-
-        $this->operatorRequired = !$this->operatorRequired;
-        $this->incompleteCondition = false;
+        $this->ruleGenerator->flipOperatorRequired($token);
 
         if (!isset($this->values)) {
             $this->values = [$token->getValue()];
         } else {
             $this->values[] = $token->getValue();
         }
-    }
-
-    protected function assignParentheses(BaseToken $token)
-    {
-        if ($token instanceof Tokens\TokenOpeningParentheses) {
-            if ($this->operatorRequired) {
-                throw Exceptions\ParserException::unexpectedToken($token);
-            }
-
-            $this->output .= '(';
-            $this->openParenthesis++;
-        } else {
-            if ($this->openParenthesis < 1) {
-                throw new Exceptions\ParserException(sprintf(
-                    'Missing opening parenthesis at position %d on line %d',
-                    $token->getPosition(),
-                    $token->getLine()
-                ));
-            }
-
-            $this->closedParenthesis++;
-            $this->output .= ')';
-        }
-    }
-
-    protected function assignLogicalToken(BaseToken $token)
-    {
-        if (!$this->operatorRequired) {
-            throw Exceptions\ParserException::unexpectedToken($token);
-        }
-
-        if ($token instanceof Tokens\TokenAnd) {
-            $this->output .= '&';
-        } else {
-            $this->output .= '|';
-        }
-
-        $this->incompleteCondition = true;
-        $this->operatorRequired = false;
     }
 
     protected function assignOperator(BaseToken $token)
@@ -169,8 +110,8 @@ class Parser
             throw Exceptions\ParserException::incompleteExpression($token);
         }
 
+        $this->ruleGenerator->operatorRequired(false);
         $this->operator = $token;
-        $this->operatorRequired = false;
     }
 
     protected function parseExpression()
@@ -179,28 +120,10 @@ class Parser
             return;
         }
 
-        $this->operatorRequired = true;
         $expression = $this->expressionFactory->createFromOperator($this->operator);
-        $this->output .= (int) $expression->evaluate($this->values[0], $this->values[1]);
+        $this->ruleGenerator->addBoolean($expression->evaluate(...$this->values));
 
         unset($this->operator, $this->values);
-    }
-
-    protected function assertSyntaxSeemsOkay()
-    {
-        if ($this->incompleteCondition) {
-            throw new Exceptions\ParserException(
-                'Incomplete and/or condition'
-            );
-        } elseif ($this->openParenthesis > $this->closedParenthesis) {
-            throw new Exceptions\ParserException(
-                'Missing closing parenthesis'
-            );
-        } elseif (isset($this->operator) || (isset($this->values) && count($this->values) > 0)) {
-            throw new Exceptions\ParserException(
-                'Incomplete expression'
-            );
-        }
     }
 
     public function registerFunctionClass(string $className)

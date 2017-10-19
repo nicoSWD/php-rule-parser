@@ -9,6 +9,8 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\tests\operators;
 
+use nicoSWD\Rules\Rule;
+
 class OperatorsTest extends \AbstractTestBase
 {
     public function testAllAvailableOperators()
@@ -50,13 +52,12 @@ class OperatorsTest extends \AbstractTestBase
         $this->assertTrue($this->evaluate('"123" in "321,123".split(",")'));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Expected array, got "string"
-     */
     public function testInOperatorWithNonArrayRightValueThrowsException()
     {
-        $this->assertTrue($this->evaluate('"123" in "foo"'));
+        $rule = new Rule('"123" in "foo"');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Expected array, got "string"', $rule->getError());
     }
 
     public function testCommentsAreIgnoredCorrectly()

@@ -9,6 +9,8 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\tests;
 
+use nicoSWD\Rules\Rule;
+
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
@@ -53,118 +55,84 @@ class SyntaxErrorTest extends \AbstractTestBase
         ]);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Missing operator
-     */
     public function testMissingOperatorThrowsException()
     {
-        $rule = 'TOTALAMOUNT == -1 TOTALAMOUNT > 10';
+        $rule = new Rule('total == -1 total > 10', ['total' => 12]);
 
-        $this->evaluate($rule, [
-            'TOTALAMOUNT' => '-1'
-        ]);
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Missing operator at position 22 on line 1', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Missing opening parenthesis at position 6
-     */
     public function testMissingOpeningParenthesisThrowsException()
     {
-        $this->evaluate('1 == 1)', []);
+        $rule = new Rule('1 == 1)');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Missing opening parenthesis at position 6 on line 1', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Missing closing parenthesis
-     */
     public function testMissingClosingParenthesisThrowsException()
     {
-        $this->evaluate('(1 == 1', []);
+        $rule = new Rule('(1 == 1');
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Missing closing parenthesis', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unknown token "-" at position 10
-     */
     public function testMisplacedMinusThrowsException()
     {
-        $this->evaluate('1 == 1 && -foo == 1', ['foo' => 1]);
+        $rule = new Rule('1 == 1 && -foo == 1', ['foo' => 1]);
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unknown token "-" at position 10 on line 1', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Undefined variable "foo" at position 12 on line 2
-     */
     public function testUndefinedVariableThrowsException()
     {
-        $rule = ' // new line on purpose
-            foo == "MA"';
+        $rule = new Rule(' // new line on purpose
+            foo == "MA"', ['country' => 'es']);
 
-        $this->evaluate($rule, []);
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Undefined variable "foo" at position 12 on line 2', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Incomplete expression
-     */
     public function testIncompleteExpressionExceptionIsThrownCorrectly()
     {
-        $rule = '1 == 1 && COUNTRY';
+        $rule = new Rule('1 == 1 && country', ['country' => 'es']);
 
-        $this->evaluate($rule, [
-            'COUNTRY' => 'MA'
-        ]);
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Incomplete and/or condition', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Undefined variable "COUNTRY" at position 0
-     */
     public function testRulesEvaluatesTrueThrowsExceptionsForUndefinedVars()
     {
-        $rule = 'COUNTRY=="MA"';
+        $rule = new Rule('nonono=="MA"', ['country' => 'es']);
 
-        $this->evaluate($rule, []);
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Undefined variable "nonono" at position 0 on line 1', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Incomplete and/or condition
-     */
     public function testRulesEvaluatesTrueThrowsExceptionsOnSyntaxErrors()
     {
-        $rule = 'COUNTRY == "MA" &&';
+        $rule = new Rule('country == "MA" &&', ['country' => 'es']);
 
-        $this->evaluate($rule, [
-            'COUNTRY' => 'EG'
-        ]);
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Incomplete and/or condition', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected "&&" at position 19 on line 1
-     */
     public function testMultipleLogicalTokensThrowException()
     {
-        $rule = 'COUNTRY == "MA" && &&';
+        $rule = new Rule('country == "MA" && &&', ['country' => 'es']);
 
-        $this->evaluate($rule, [
-            'COUNTRY' => 'EG'
-        ]);
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected "&&" at position 19 on line 1', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unknown token "^" at position 16
-     */
     public function testUnknownTokenExceptionIsThrown()
     {
-        $rule = 'COUNTRY == "MA" ^';
+        $rule = new Rule('country == "MA" ^', ['country' => 'es']);
 
-        $this->evaluate($rule, [
-            'COUNTRY' => 'MA'
-        ]);
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unknown token "^" at position 16 on line 1', $rule->getError());
     }
 }
