@@ -11,6 +11,7 @@ namespace nicoSWD\Rules;
 
 use Exception;
 use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
+use nicoSWD\Rules\Tokens\TokenFactory;
 
 class Rule
 {
@@ -32,7 +33,15 @@ class Rule
     public function __construct(string $rule, array $variables = [])
     {
         $this->rule = $rule;
-        $this->parser = new Parser(new Tokenizer(new JavaScript()), new Expressions\Factory(), new RuleGenerator());
+        $this->parser = new Parser(
+            new Tokenizer(
+                new JavaScript(),
+                new TokenFactory()
+            ),
+            new Expressions\ExpressionFactory(),
+            new RuleGenerator()
+        );
+
         $this->evaluator = new Evaluator();
 
         $this->parser->assignVariables($variables);
@@ -69,10 +78,5 @@ class Rule
     public function getError(): string
     {
         return $this->error;
-    }
-
-    public function registerToken(string $class, string $regex, int $priority = 10)
-    {
-        $this->parser->registerToken($class, $regex, $priority);
     }
 }

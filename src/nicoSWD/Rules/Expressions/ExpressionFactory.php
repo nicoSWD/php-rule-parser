@@ -11,7 +11,7 @@ namespace nicoSWD\Rules\Expressions;
 
 use nicoSWD\Rules\Tokens;
 
-final class Factory
+final class ExpressionFactory
 {
     private $classLookup = [
         Tokens\TokenEqual::class          => EqualExpression::class,

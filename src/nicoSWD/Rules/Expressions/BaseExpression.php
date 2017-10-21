@@ -5,11 +5,9 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules\Expressions;
 
 abstract class BaseExpression
 {
-    abstract public function evaluate($leftValue, $rightValue) : bool;
+    abstract public function evaluate($leftValue, $rightValue): bool;
 }

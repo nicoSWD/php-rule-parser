@@ -1,27 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules;
 
+use nicoSWD\Rules\Tokens\TokenFactory;
 use SplPriorityQueue;
 use stdClass;
 
 final class Tokenizer implements TokenizerInterface
 {
+    /** @var TokenFactory */
+    private $tokenFactory;
+
     private $internalTokens = [];
 
     private $regex = '';
 
-    private $regexRequiresReassembly = false;
-
-    public function __construct(Grammar $grammar)
+    public function __construct(Grammar $grammar, TokenFactory $tokenFactory)
     {
+        $this->tokenFactory = $tokenFactory;
+
         foreach ($grammar->getDefinition() as list($class, $regex, $priority)) {
             $this->registerToken($class, $regex, $priority);
         }
@@ -31,12 +35,11 @@ final class Tokenizer implements TokenizerInterface
     {
         $stack = new Stack();
         $regex = $this->getRegex();
-        $baseNameSpace = __NAMESPACE__ . '\\Tokens\\Token';
         $offset = 0;
 
         while (preg_match($regex, $string, $matches, 0, $offset)) {
             $token = $this->getMatchedToken($matches);
-            $className = $baseNameSpace . $token;
+            $className = $this->tokenFactory->createFromTokenName($token);
 
             $stack->attach(new $className(
                 $matches[$token],
@@ -50,15 +53,14 @@ final class Tokenizer implements TokenizerInterface
         return $stack;
     }
 
-    public function registerToken(string $class, string $regex, int $priority = null)
+    private function registerToken(string $class, string $regex, int $priority)
     {
         $token = new stdClass();
         $token->class = $class;
         $token->regex = $regex;
-        $token->priority = $priority ?? $this->getPriority($class);
+        $token->priority = $priority;
 
         $this->internalTokens[$class] = $token;
-        $this->regexRequiresReassembly = true;
     }
 
     private function getMatchedToken(array $matches): string
@@ -74,15 +76,14 @@ final class Tokenizer implements TokenizerInterface
 
     private function getRegex(): string
     {
-        if (!$this->regex || $this->regexRequiresReassembly) {
+        if (!$this->regex) {
             $regex = [];
 
             foreach ($this->getQueue() as $token) {
                 $regex[] = "(?<$token->class>$token->regex)";
             }
 
-            $this->regex = sprintf('~(%s)~As', implode('|', $regex));
-            $this->regexRequiresReassembly = false;
+            $this->regex = '~(' . implode('|', $regex) . ')~As';
         }
 
         return $this->regex;
@@ -97,10 +98,5 @@ final class Tokenizer implements TokenizerInterface
         }
 
         return $queue;
-    }
-
-    private function getPriority(string $class): int
-    {
-        return $this->internalTokens[$class]->priority ?? 10;
     }
 }

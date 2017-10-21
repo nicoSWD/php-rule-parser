@@ -10,4 +10,6 @@ namespace nicoSWD\Rules;
 interface Grammar
 {
     public function getDefinition(): array;
+
+    public function getInternalFunctions(): array;
 }

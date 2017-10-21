@@ -12,7 +12,8 @@ use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rules\Parser;
 use nicoSWD\Rules\RuleGenerator;
 use nicoSWD\Rules\Tokenizer;
-use nicoSWD\Rules\Expressions\Factory as ExpressionFactory;
+use nicoSWD\Rules\Expressions\ExpressionFactory as ExpressionFactory;
+use nicoSWD\Rules\Tokens\TokenFactory;
 
 abstract class AbstractTestBase extends \PHPUnit\Framework\TestCase
 {
@@ -25,7 +26,7 @@ abstract class AbstractTestBase extends \PHPUnit\Framework\TestCase
     /** @return void */
     final protected function setUp()
     {
-        $this->parser = new Parser(new Tokenizer(new JavaScript()), new ExpressionFactory(), new RuleGenerator());
+        $this->parser = new Parser(new Tokenizer(new JavaScript(), new TokenFactory()), new ExpressionFactory(), new RuleGenerator());
         $this->evaluator = new Evaluator();
     }
 

@@ -11,6 +11,7 @@ namespace nicoSWD\Rules\AST\Nodes;
 
 use nicoSWD\Rules\AST;
 use nicoSWD\Rules\AST\TokenCollection;
+use nicoSWD\Rules\Parser;
 use nicoSWD\Rules\TokenType;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
@@ -72,7 +73,7 @@ abstract class BaseNode
         $methodClass = '\nicoSWD\Rules\Core\Methods\\' . ucfirst($methodName);
 
         if (!class_exists($methodClass)) {
-            $current = $this->ast->getStack()->current();
+            $current = $this->getCurrentNode();
 
             throw new ParserException(sprintf(
                 'undefined is not a function at position %d on line %d',
@@ -97,7 +98,7 @@ abstract class BaseNode
     {
         do {
             $this->ast->next();
-        } while ($this->ast->getStack()->current()->getOffset() < $this->methodOffset);
+        } while ($this->getCurrentNode()->getOffset() < $this->methodOffset);
 
         return trim(ltrim(rtrim($this->methodName, "\r\n("), '.'));
     }
@@ -110,6 +111,16 @@ abstract class BaseNode
     public function getArguments(): TokenCollection
     {
         return $this->getCommaSeparatedValues(TokenType::PARENTHESES);
+    }
+
+    public function getCurrentNode()
+    {
+        return $this->ast->getStack()->current();
+    }
+
+    public function getParser(): Parser
+    {
+        return $this->ast->parser;
     }
 
     private function getCommaSeparatedValues(int $stopAt): TokenCollection

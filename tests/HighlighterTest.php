@@ -8,27 +8,31 @@ declare(strict_types=1);
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 use nicoSWD\Rules;
+use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
+use nicoSWD\Rules\Highlighter;
+use nicoSWD\Rules\Tokenizer;
+use nicoSWD\Rules\Tokens\TokenFactory;
 
 class HighlighterTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var Rules\Highlighter */
+    /** @var Highlighter */
     private $highlighter;
 
     protected function setUp()
     {
-        $this->highlighter = new Rules\Highlighter(new Rules\Tokenizer(new Rules\Grammar\JavaScript\JavaScript()));
+        $this->highlighter = new Highlighter(new Tokenizer(new JavaScript(), new TokenFactory()));
     }
 
-    public function testGetMatchedTokenReturnsFalseOnFailure()
+    public function testGivenAStyleForATokenGroupItShouldBeUsed()
     {
         $this->highlighter->setStyle(
             Rules\TokenType::SQUARE_BRACKETS,
-            'color: bracket-test-color;'
+            'color: gray;'
         );
 
-        $code = $this->highlighter->highlightString('[1, 2] == "1,2".split(",") && parseInt(foo) === 12', ['foo' => '12']);
+        $code = $this->highlighter->highlightString('[1, 2] == "1,2".split(",") && parseInt(foo) === 12');
 
-        $this->assertContains('<span style="color: bracket-test-color;">[</span>', $code);
+        $this->assertContains('<span style="color: gray;">[</span>', $code);
     }
 
     /**

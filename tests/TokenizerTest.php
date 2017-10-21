@@ -8,17 +8,17 @@ declare(strict_types=1);
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 use nicoSWD\Rules;
+use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
+use nicoSWD\Rules\Tokens\TokenFactory;
 
 class TokenizerTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var Rules\Tokenizer
-     */
+    /** @var Rules\Tokenizer */
     private $tokenizer;
 
     protected function setUp()
     {
-        $this->tokenizer = new Rules\Tokenizer(new Rules\Grammar\JavaScript\JavaScript());
+        $this->tokenizer = new Rules\Tokenizer(new JavaScript(), new TokenFactory());
     }
 
     public function testGetMatchedTokenReturnsFalseOnFailure()

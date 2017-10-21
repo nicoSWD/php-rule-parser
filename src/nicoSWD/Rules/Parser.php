@@ -13,25 +13,24 @@ use Closure;
 use InvalidArgumentException;
 use nicoSWD\Rules\Core\CallableUserFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
-use nicoSWD\Rules\Grammar\JavaScript\Functions\ParseFloat;
-use nicoSWD\Rules\Grammar\JavaScript\Functions\ParseInt;
 use nicoSWD\Rules\Tokens\BaseToken;
+use SplStack;
 
 class Parser
 {
     /** @var array */
     public $variables = [];
 
-    /** @var null|mixed[] */
-    private $values = null;
-
     /** @var null|BaseToken */
-    private $operator =  null;
+    private $operator = null;
+
+    /** @var SplStack */
+    private $values;
 
     /** @var TokenizerInterface */
     private $tokenizer;
 
-    /** @var Expressions\Factory */
+    /** @var Expressions\ExpressionFactory */
     private $expressionFactory;
 
     /** @var Callable[] */
@@ -42,22 +41,19 @@ class Parser
 
     public function __construct(
         TokenizerInterface $tokenizer,
-        Expressions\Factory $expressionFactory,
+        Expressions\ExpressionFactory $expressionFactory,
         RuleGenerator $ruleGenerator
     ) {
         $this->tokenizer = $tokenizer;
         $this->expressionFactory = $expressionFactory;
         $this->ruleGenerator = $ruleGenerator;
-
-        $this->registerFunctionClass(ParseInt::class);
-        $this->registerFunctionClass(ParseFloat::class);
+        $this->values = new SplStack();
     }
 
     public function parse(string $rule): string
     {
         $this->ruleGenerator->clear();
         $this->operator = null;
-        $this->values = null;
 
         foreach (new AST($this->tokenizer->tokenize($rule), $this) as $token) {
             switch ($token->getType()) {
@@ -80,7 +76,7 @@ class Parser
                     throw Exceptions\ParserException::unknownToken($token);
             }
 
-            $this->parseExpression();
+            $this->evaluateExpression();
         }
 
         return $this->ruleGenerator->get();
@@ -89,41 +85,6 @@ class Parser
     public function assignVariables(array $variables)
     {
         $this->variables = $variables;
-    }
-
-    protected function assignVariableValueFromToken(BaseToken $token)
-    {
-        $this->ruleGenerator->flipOperatorRequired($token);
-
-        if (!isset($this->values)) {
-            $this->values = [$token->getValue()];
-        } else {
-            $this->values[] = $token->getValue();
-        }
-    }
-
-    protected function assignOperator(BaseToken $token)
-    {
-        if (isset($this->operator)) {
-            throw Exceptions\ParserException::unexpectedToken($token);
-        } elseif (!isset($this->values)) {
-            throw Exceptions\ParserException::incompleteExpression($token);
-        }
-
-        $this->ruleGenerator->operatorRequired(false);
-        $this->operator = $token;
-    }
-
-    protected function parseExpression()
-    {
-        if (!isset($this->operator) || count($this->values) <> 2) {
-            return;
-        }
-
-        $expression = $this->expressionFactory->createFromOperator($this->operator);
-        $this->ruleGenerator->addBoolean($expression->evaluate(...$this->values));
-
-        unset($this->operator, $this->values);
     }
 
     public function registerFunctionClass(string $className)
@@ -146,11 +107,6 @@ class Parser
         });
     }
 
-    public function registerToken(string $token, string $regex, int $priority = 10)
-    {
-        $this->tokenizer->registerToken($token, $regex, $priority);
-    }
-
     public function getFunction(string $name): Closure
     {
         if (!isset($this->userDefinedFunctions[$name])) {
@@ -163,8 +119,46 @@ class Parser
         return $this->userDefinedFunctions[$name];
     }
 
+    private function assignVariableValueFromToken(BaseToken $token)
+    {
+        $this->ruleGenerator->flipOperatorRequired($token);
+        $this->values->push($token->getValue());
+    }
+
+    private function assignOperator(BaseToken $token)
+    {
+        if (isset($this->operator)) {
+            throw Exceptions\ParserException::unexpectedToken($token);
+        } elseif ($this->values->isEmpty()) {
+            throw Exceptions\ParserException::incompleteExpression($token);
+        }
+
+        $this->ruleGenerator->operatorRequired(false);
+        $this->operator = $token;
+    }
+
+    private function evaluateExpression()
+    {
+        if (!isset($this->operator) || $this->values->count() !== 2) {
+            return;
+        }
+
+        list($rightValue, $leftValue) = $this->values;
+
+        $this->ruleGenerator->addBoolean($this->getExpression()->evaluate($leftValue, $rightValue));
+        $this->values->pop();
+        $this->values->pop();
+
+        unset($this->operator);
+    }
+
     private function registerFunction(string $name, Closure $callback)
     {
         $this->userDefinedFunctions[$name] = $callback;
+    }
+
+    private function getExpression(): Expressions\BaseExpression
+    {
+        return $this->expressionFactory->createFromOperator($this->operator);
     }
 }

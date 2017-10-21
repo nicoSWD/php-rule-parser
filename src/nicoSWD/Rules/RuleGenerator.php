@@ -101,7 +101,7 @@ class RuleGenerator
 
         $this->operatorRequired = true;
         $this->incompleteCondition = false;
-        $this->output .=  $bool ? '1' : '0';
+        $this->output .= $bool ? '1' : '0';
     }
 
     public function numParenthesesMatch(): bool

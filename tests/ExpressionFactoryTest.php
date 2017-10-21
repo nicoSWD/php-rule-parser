@@ -8,17 +8,17 @@ declare(strict_types=1);
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 use nicoSWD\Rules\Expressions\EqualExpression;
-use nicoSWD\Rules\Expressions\Factory;
+use nicoSWD\Rules\Expressions\ExpressionFactory;
 use nicoSWD\Rules\Expressions\NotEqualExpression;
 
 class ExpressionFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var Factory */
+    /** @var ExpressionFactory */
     private $factory;
 
     protected function setUp()
     {
-        $this->factory = new Factory();
+        $this->factory = new ExpressionFactory();
     }
 
     public function testCorrectInstancesAreCreated()
