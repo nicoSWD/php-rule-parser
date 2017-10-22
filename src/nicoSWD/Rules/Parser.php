@@ -55,7 +55,7 @@ class Parser
         $this->ruleGenerator->clear();
         $this->operator = null;
 
-        foreach (new AST($this->tokenizer->tokenize($rule), $this) as $token) {
+        foreach ($this->getTree($rule) as $token) {
             switch ($token->getType()) {
                 case TokenType::VALUE:
                     $this->assignVariableValueFromToken($token);
@@ -143,7 +143,7 @@ class Parser
             return;
         }
 
-        list($rightValue, $leftValue) = $this->values;
+        list ($rightValue, $leftValue) = $this->values;
 
         $this->ruleGenerator->addBoolean($this->getExpression()->evaluate($leftValue, $rightValue));
         $this->values->pop();
@@ -160,5 +160,10 @@ class Parser
     private function getExpression(): Expressions\BaseExpression
     {
         return $this->expressionFactory->createFromOperator($this->operator);
+    }
+
+    private function getTree(string $rule): AST
+    {
+        return new AST($this->tokenizer->tokenize($rule), $this);
     }
 }
