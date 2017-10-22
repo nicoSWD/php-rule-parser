@@ -13,7 +13,7 @@ use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Token;
 
-final class TokenFactory
+class TokenFactory
 {
     private $tokenMap = [
         Token::AND                 => TokenAnd::class,
@@ -35,8 +35,8 @@ final class TokenFactory
         Token::GREATER_EQUAL       => TokenGreaterEqual::class,
         Token::SMALLER             => TokenSmaller::class,
         Token::GREATER             => TokenGreater::class,
-        Token::OPENING_PARENTHESIS => TokenOpeningParentheses::class,
-        Token::CLOSING_PARENTHESIS => TokenClosingParentheses::class,
+        Token::OPENING_PARENTHESIS => TokenOpeningParenthesis::class,
+        Token::CLOSING_PARENTHESIS => TokenClosingParenthesis::class,
         Token::OPENING_ARRAY       => TokenOpeningArray::class,
         Token::CLOSING_ARRAY       => TokenClosingArray::class,
         Token::COMMA               => TokenComma::class,
@@ -47,7 +47,7 @@ final class TokenFactory
         Token::UNKNOWN             => TokenUnknown::class,
     ];
 
-    public static function createFromPHPType($value): BaseToken
+    public function createFromPHPType($value): BaseToken
     {
         switch ($type = gettype($value)) {
             case 'string':
@@ -64,7 +64,7 @@ final class TokenFactory
                 $params = new TokenCollection();
 
                 foreach ($value as $item) {
-                    $params->attach(self::createFromPHPType($item));
+                    $params->attach($this->createFromPHPType($item));
                 }
 
                 return new TokenArray($params);

@@ -11,10 +11,10 @@ namespace nicoSWD\Rules\Tokens;
 
 use nicoSWD\Rules\TokenType;
 
-final class TokenClosingParentheses extends BaseToken
+final class TokenOpeningParenthesis extends BaseToken
 {
-    public function getType() : int
+    public function getType(): int
     {
-        return TokenType::PARENTHESES;
+        return TokenType::PARENTHESIS;
     }
 }

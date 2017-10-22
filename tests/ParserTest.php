@@ -131,24 +131,4 @@ class ParserTest extends \AbstractTestBase
             'foo' => '-1'
         ]));
     }
-
-    public function testGivenAFunctionClassWhenRegisteredItShouldBeAvailable()
-    {
-        $this->parser->registerFunctionClass(MyCustomFunction::class);
-
-        $rule = 'double_value(my_value) === 4';
-
-        $this->assertTrue($this->evaluate($rule, [
-            'my_value' => 2
-        ]));
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage stdClass must be an instance of nicoSWD\Rules\Core\CallableUserFunction
-     */
-    public function testGivenAFunctionClassNotImplementsInterfaceItShouldThrowAnException()
-    {
-        $this->parser->registerFunctionClass(\stdClass::class);
-    }
 }

@@ -9,17 +9,20 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules;
 
-use Closure;
-use InvalidArgumentException;
-use nicoSWD\Rules\Core\CallableUserFunction;
-use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Expressions\ExpressionFactory;
 use nicoSWD\Rules\Tokens\BaseToken;
 use SplStack;
 
 class Parser
 {
-    /** @var array */
-    public $variables = [];
+    /** @var AST */
+    private $ast;
+
+    /** @var ExpressionFactory */
+    private $expressionFactory;
+
+    /** @var Compiler */
+    private $compiler;
 
     /** @var null|BaseToken */
     private $operator = null;
@@ -27,44 +30,29 @@ class Parser
     /** @var SplStack */
     private $values;
 
-    /** @var TokenizerInterface */
-    private $tokenizer;
-
-    /** @var Expressions\ExpressionFactory */
-    private $expressionFactory;
-
-    /** @var Callable[] */
-    private $userDefinedFunctions = [];
-
-    /** @var RuleGenerator */
-    private $ruleGenerator;
-
-    public function __construct(
-        TokenizerInterface $tokenizer,
-        Expressions\ExpressionFactory $expressionFactory,
-        RuleGenerator $ruleGenerator
-    ) {
-        $this->tokenizer = $tokenizer;
+    public function __construct(AST $ast, ExpressionFactory $expressionFactory, Compiler $compiler)
+    {
+        $this->ast = $ast;
         $this->expressionFactory = $expressionFactory;
-        $this->ruleGenerator = $ruleGenerator;
+        $this->compiler = $compiler;
         $this->values = new SplStack();
     }
 
     public function parse(string $rule): string
     {
-        $this->ruleGenerator->clear();
+        $this->compiler->clear();
         $this->operator = null;
 
-        foreach ($this->getTree($rule) as $token) {
+        foreach ($this->ast->getStream($rule) as $token) {
             switch ($token->getType()) {
                 case TokenType::VALUE:
                     $this->assignVariableValueFromToken($token);
                     break;
                 case TokenType::LOGICAL:
-                    $this->ruleGenerator->addLogical($token);
+                    $this->compiler->addLogical($token);
                     continue 2;
-                case TokenType::PARENTHESES:
-                    $this->ruleGenerator->addParentheses($token);
+                case TokenType::PARENTHESIS:
+                    $this->compiler->addParentheses($token);
                     continue 2;
                 case TokenType::OPERATOR:
                     $this->assignOperator($token);
@@ -79,49 +67,12 @@ class Parser
             $this->evaluateExpression();
         }
 
-        return $this->ruleGenerator->get();
-    }
-
-    public function assignVariables(array $variables)
-    {
-        $this->variables = $variables;
-    }
-
-    public function registerFunctionClass(string $className)
-    {
-        /** @var CallableUserFunction $function */
-        $function = new $className();
-
-        if (!$function instanceof CallableUserFunction) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    "%s must be an instance of %s",
-                    $className,
-                    CallableUserFunction::class
-                )
-            );
-        }
-
-        $this->registerFunction($function->getName(), function () use ($function): BaseToken {
-            return $function->call(...func_get_args());
-        });
-    }
-
-    public function getFunction(string $name): Closure
-    {
-        if (!isset($this->userDefinedFunctions[$name])) {
-            throw new Exceptions\ParserException(sprintf(
-                '%s is not defined',
-                $name
-            ));
-        }
-
-        return $this->userDefinedFunctions[$name];
+        return $this->compiler->getCompiledRule();
     }
 
     private function assignVariableValueFromToken(BaseToken $token)
     {
-        $this->ruleGenerator->flipOperatorRequired($token);
+        $this->compiler->flipOperatorRequired($token);
         $this->values->push($token->getValue());
     }
 
@@ -133,7 +84,7 @@ class Parser
             throw Exceptions\ParserException::incompleteExpression($token);
         }
 
-        $this->ruleGenerator->operatorRequired(false);
+        $this->compiler->operatorRequired(false);
         $this->operator = $token;
     }
 
@@ -145,25 +96,15 @@ class Parser
 
         list ($rightValue, $leftValue) = $this->values;
 
-        $this->ruleGenerator->addBoolean($this->getExpression()->evaluate($leftValue, $rightValue));
+        $this->compiler->addBoolean($this->getExpression()->evaluate($leftValue, $rightValue));
         $this->values->pop();
         $this->values->pop();
 
         unset($this->operator);
     }
 
-    private function registerFunction(string $name, Closure $callback)
-    {
-        $this->userDefinedFunctions[$name] = $callback;
-    }
-
     private function getExpression(): Expressions\BaseExpression
     {
         return $this->expressionFactory->createFromOperator($this->operator);
-    }
-
-    private function getTree(string $rule): AST
-    {
-        return new AST($this->tokenizer->tokenize($rule), $this);
     }
 }

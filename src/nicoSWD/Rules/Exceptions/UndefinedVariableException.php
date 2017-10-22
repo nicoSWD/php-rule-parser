@@ -5,11 +5,8 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules;
+namespace nicoSWD\Rules\Exceptions;
 
-interface TokenizerInterface
+class UndefinedVariableException extends \Exception
 {
-    public function tokenize(string $string): Stack;
-
-    public function getGrammar(): Grammar;
 }

@@ -12,4 +12,6 @@ interface Grammar
     public function getDefinition(): array;
 
     public function getInternalFunctions(): array;
+
+    public function getInternalMethods(): array;
 }

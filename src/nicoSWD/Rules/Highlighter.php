@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-declare(strict_types=1);
-
 namespace nicoSWD\Rules;
 
 final class Highlighter
@@ -16,7 +16,7 @@ final class Highlighter
         TokenType::COMMENT         => 'color: #948a8a; font-style: italic;',
         TokenType::LOGICAL         => 'color: #c72d2d;',
         TokenType::OPERATOR        => 'color: #000;',
-        TokenType::PARENTHESES     => 'color: #000;',
+        TokenType::PARENTHESIS     => 'color: #000;',
         TokenType::SPACE           => '',
         TokenType::UNKNOWN         => '',
         TokenType::VALUE           => 'color: #e36700; font-style: italic;',
@@ -34,7 +34,6 @@ final class Highlighter
         $this->tokenizer = $tokenizer;
     }
 
-    /** @throws Exceptions\HighlighterException */
     public function setStyle(int $group, string $style)
     {
         if (!isset($this->styles[$group])) {
@@ -46,7 +45,6 @@ final class Highlighter
         $this->styles[$group] = (string) $style;
     }
 
-    /** @throws Exceptions\HighlighterException */
     public function highlightString(string $string): string
     {
         return $this->highlightTokens($this->tokenizer->tokenize($string));
@@ -58,7 +56,7 @@ final class Highlighter
 
         foreach ($tokens as $token) {
             if ($style = $this->styles[$token->getType()]) {
-                $value = htmlentities($token->getOriginalValue(), \ENT_QUOTES, 'utf-8');
+                $value = htmlentities($token->getOriginalValue(), ENT_QUOTES, 'utf-8');
                 $string .= '<span style="' . $style . '">' . $value . '</span>';
             } else {
                 $string .= $token->getOriginalValue();

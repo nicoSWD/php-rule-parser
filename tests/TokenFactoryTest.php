@@ -15,9 +15,11 @@ class TokenFactoryTest extends \AbstractTestBase
 {
     public function testSimpleTypeReturnsCorrectInstance()
     {
-        $this->assertInstanceOf('nicoSWD\Rules\Tokens\TokenNull', TokenFactory::createFromPHPType(null));
-        $this->assertInstanceOf('nicoSWD\Rules\Tokens\TokenString', TokenFactory::createFromPHPType('string sample'));
-        $this->assertInstanceOf('nicoSWD\Rules\Tokens\TokenFloat', TokenFactory::createFromPHPType(0.3));
+        $tokenFactory = new TokenFactory();
+
+        $this->assertInstanceOf('nicoSWD\Rules\Tokens\TokenNull', $tokenFactory->createFromPHPType(null));
+        $this->assertInstanceOf('nicoSWD\Rules\Tokens\TokenString', $tokenFactory->createFromPHPType('string sample'));
+        $this->assertInstanceOf('nicoSWD\Rules\Tokens\TokenFloat', $tokenFactory->createFromPHPType(0.3));
     }
 
     /**
@@ -26,6 +28,7 @@ class TokenFactoryTest extends \AbstractTestBase
      */
     public function testUnsupportedTypeThrowsException()
     {
-        TokenFactory::createFromPHPType(new \StdClass());
+        $tokenFactory = new TokenFactory();
+        $tokenFactory->createFromPHPType(new \StdClass());
     }
 }

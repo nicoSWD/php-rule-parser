@@ -9,99 +9,103 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules;
 
-use Iterator;
+use Closure;
+use InvalidArgumentException;
+use nicoSWD\Rules\Core\CallableUserFunction;
 use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenEncapsedString;
 use nicoSWD\Rules\Tokens\TokenFactory;
-use nicoSWD\Rules\Tokens\TokenFunction;
-use nicoSWD\Rules\Tokens\TokenOpeningArray;
-use nicoSWD\Rules\Tokens\TokenRegex;
-use nicoSWD\Rules\Tokens\TokenString;
-use nicoSWD\Rules\Tokens\TokenVariable;
-use nicoSWD\Rules\AST\Nodes\NodeArray;
-use nicoSWD\Rules\AST\Nodes\NodeFunction;
-use nicoSWD\Rules\AST\Nodes\NodeString;
-use nicoSWD\Rules\AST\Nodes\NodeVariable;
 
-final class AST implements Iterator
+class AST
 {
-    /** @var Parser */
-    public $parser;
+    /** @var TokenizerInterface */
+    private $tokenizer;
 
-    /** @var Stack */
-    protected $stack;
+    /** @var TokenFactory */
+    private $tokenFactory;
 
-    public function __construct(Stack $stack, Parser $parser)
-    {
-        $this->stack = $stack;
-        $this->parser = $parser;
+    /** @var TokenStream */
+    private $tokenStream;
+
+    /** @var Callable[] */
+    private $functions = [];
+
+    /** @var mixed[] */
+    private $variables = [];
+
+    public function __construct(
+        TokenizerInterface $tokenizer,
+        TokenFactory $tokenFactory,
+        TokenStream $tokenStream
+    ) {
+        $this->tokenizer = $tokenizer;
+        $this->tokenFactory = $tokenFactory;
+        $this->tokenStream = $tokenStream;
     }
 
-    public function next()
+    public function getStream(string $rule): TokenStream
     {
-        $this->stack->next();
+        return $this->tokenStream->create($this->tokenizer->tokenize($rule), $this);
     }
 
-    public function valid(): bool
+    public function getFunction(string $name): Closure
     {
-        return $this->stack->valid();
-    }
-
-    public function current()
-    {
-        $current = $this->stack->current();
-
-        switch (get_class($current)) {
-            default:
-                return $current;
-            case TokenString::class:
-            case TokenEncapsedString::class:
-            case TokenRegex::class:
-                $current = new NodeString($this);
-                break;
-            case TokenOpeningArray::class:
-                $current = new NodeArray($this);
-                break;
-            case TokenVariable::class:
-                $current = new NodeVariable($this);
-                break;
-            case TokenFunction::class:
-                $current = new NodeFunction($this);
-                break;
+        if (empty($this->functions)) {
+            $this->registerFunctions($this->tokenizer->getGrammar()->getInternalFunctions());
         }
 
-        return $current->getNode();
+        if (!isset($this->functions[$name])) {
+            throw new Exceptions\ParserException(sprintf(
+                '%s is not defined',
+                $name
+            ));
+        }
+
+        return $this->functions[$name];
     }
 
-    /** @codeCoverageIgnore */
-    public function key(): int
+    public function variableExists(string $name): bool
     {
-        return $this->stack->key();
+        return array_key_exists($name, $this->variables);
     }
 
-    public function rewind()
+    public function setVariables(array $variables)
     {
-        $this->stack->rewind();
+        $this->variables = $variables;
     }
 
     public function getVariable(string $name): BaseToken
     {
-        if (!array_key_exists($name, $this->parser->variables)) {
-            $token = $this->stack->current();
-
-            throw new Exceptions\ParserException(sprintf(
-                'Undefined variable "%s" at position %d on line %d',
-                $name,
-                $token->getPosition(),
-                $token->getLine()
-            ));
+        if (!$this->variableExists($name)) {
+            throw new Exceptions\UndefinedVariableException();
         }
 
-        return TokenFactory::createFromPHPType($this->parser->variables[$name]);
+        return $this->tokenFactory->createFromPHPType($this->variables[$name]);
     }
 
-    public function getStack(): Stack
+    private function registerFunctionClass(string $className)
     {
-        return $this->stack;
+        /** @var CallableUserFunction $function */
+        $function = new $className();
+
+        if (!$function instanceof CallableUserFunction) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    "%s must be an instance of %s",
+                    $className,
+                    CallableUserFunction::class
+                )
+            );
+        }
+
+        $this->functions[$function->getName()] = function () use ($function): BaseToken {
+            return $function->call(...func_get_args());
+        };
+    }
+
+    private function registerFunctions(array $functions)
+    {
+        foreach ($functions as $function) {
+            $this->registerFunctionClass($function);
+        }
     }
 }

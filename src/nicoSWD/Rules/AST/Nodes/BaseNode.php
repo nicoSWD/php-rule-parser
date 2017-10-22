@@ -9,9 +9,8 @@ declare(strict_types = 1);
  */
 namespace nicoSWD\Rules\AST\Nodes;
 
-use nicoSWD\Rules\AST;
+use nicoSWD\Rules\TokenStream;
 use nicoSWD\Rules\AST\TokenCollection;
-use nicoSWD\Rules\Parser;
 use nicoSWD\Rules\TokenType;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
@@ -24,8 +23,8 @@ use nicoSWD\Rules\Tokens\TokenSpace;
 
 abstract class BaseNode
 {
-    /** @var AST */
-    protected $ast;
+    /** @var TokenStream */
+    protected $tokenStream;
 
     /** @var string */
     protected $methodName = '';
@@ -33,9 +32,9 @@ abstract class BaseNode
     /** @var int */
     protected $methodOffset = 0;
 
-    public function __construct(AST $ast)
+    public function __construct(TokenStream $tokenStream)
     {
-        $this->ast = $ast;
+        $this->tokenStream = $tokenStream;
     }
 
     abstract public function getNode(): BaseToken;
@@ -45,7 +44,7 @@ abstract class BaseNode
      */
     protected function hasMethodCall(): bool
     {
-        $stackClone = $this->ast->getStack()->getClone();
+        $stackClone = $this->tokenStream->getStack()->getClone();
 
         while ($stackClone->valid()) {
             $stackClone->next();
@@ -97,10 +96,20 @@ abstract class BaseNode
     private function getMethodName(): string
     {
         do {
-            $this->ast->next();
+            $this->tokenStream->next();
         } while ($this->getCurrentNode()->getOffset() < $this->methodOffset);
 
         return trim(ltrim(rtrim($this->methodName, "\r\n("), '.'));
+    }
+
+    public function getFunction(): \Closure
+    {
+        return $this->tokenStream->getFunction($this->getFunctionName());
+    }
+
+    private function getFunctionName(): string
+    {
+        return rtrim($this->getCurrentNode()->getValue(), " \r\n(");
     }
 
     public function getArrayItems(): TokenCollection
@@ -110,17 +119,12 @@ abstract class BaseNode
 
     public function getArguments(): TokenCollection
     {
-        return $this->getCommaSeparatedValues(TokenType::PARENTHESES);
+        return $this->getCommaSeparatedValues(TokenType::PARENTHESIS);
     }
 
     public function getCurrentNode()
     {
-        return $this->ast->getStack()->current();
-    }
-
-    public function getParser(): Parser
-    {
-        return $this->ast->parser;
+        return $this->tokenStream->getStack()->current();
     }
 
     private function getCommaSeparatedValues(int $stopAt): TokenCollection
@@ -129,9 +133,9 @@ abstract class BaseNode
         $items = new TokenCollection();
 
         do {
-            $this->ast->next();
+            $this->tokenStream->next();
 
-            if (!$current = $this->ast->current()) {
+            if (!$current = $this->tokenStream->current()) {
                 throw new ParserException('Unexpected end of string');
             }
 
@@ -153,7 +157,7 @@ abstract class BaseNode
             } elseif (!$this->isIgnoredToken($current)) {
                 throw ParserException::unexpectedToken($current);
             }
-        } while ($this->ast->valid());
+        } while ($this->tokenStream->valid());
 
         if (!$commaExpected && $items->count() > 0) {
             throw new ParserException(sprintf(

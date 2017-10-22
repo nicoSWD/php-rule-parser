@@ -33,18 +33,27 @@ class Rule
     public function __construct(string $rule, array $variables = [])
     {
         $this->rule = $rule;
+
+        $grammar = new JavaScript();
+        $tokenFactory = new TokenFactory();
+        $ruleGenerator = new Compiler();
+        $expressionFactory = new Expressions\ExpressionFactory();
+
+        $tokenizer = new Tokenizer(
+            $grammar,
+            $tokenFactory
+        );
+
+        $ast = new AST($tokenizer, $tokenFactory, new TokenStream());
+        $ast->setVariables($variables);
+
         $this->parser = new Parser(
-            new Tokenizer(
-                new JavaScript(),
-                new TokenFactory()
-            ),
-            new Expressions\ExpressionFactory(),
-            new RuleGenerator()
+            $ast,
+            $expressionFactory,
+            $ruleGenerator
         );
 
         $this->evaluator = new Evaluator();
-
-        $this->parser->assignVariables($variables);
     }
 
     public function isTrue(): bool

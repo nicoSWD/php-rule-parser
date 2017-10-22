@@ -16,7 +16,7 @@ class TokenType
     const COMMENT = 5;
     const SPACE = 6;
     const UNKNOWN = 7;
-    const PARENTHESES = 8;
+    const PARENTHESIS = 8;
     const SQUARE_BRACKETS = 9;
     const COMMA = 10;
     const METHOD = 11;

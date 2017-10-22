@@ -11,7 +11,7 @@ namespace nicoSWD\Rules;
 
 use nicoSWD\Rules\Tokens\BaseToken;
 
-class RuleGenerator
+class Compiler
 {
     private $output = '';
     private $openParenthesis = 0;
@@ -26,7 +26,7 @@ class RuleGenerator
         $this->output = '';
     }
 
-    public function get()
+    public function getCompiledRule()
     {
         if ($this->isIncompleteCondition()) {
             throw new Exceptions\ParserException(
@@ -63,7 +63,7 @@ class RuleGenerator
 
     public function addParentheses(BaseToken $token)
     {
-        if ($token instanceof Tokens\TokenOpeningParentheses) {
+        if ($token instanceof Tokens\TokenOpeningParenthesis) {
             $lastChar = substr($this->output, -1);
 
             if ($lastChar !== '' && $lastChar !== '&' && $lastChar !== '|' && $lastChar !== '(') {
@@ -93,9 +93,9 @@ class RuleGenerator
 
     public function addBoolean(bool $bool)
     {
-        $substr = substr($this->output, -1);
+        $lastChar = substr($this->output, -1);
 
-        if ($substr === '1' || $substr === '0') {
+        if ($lastChar === '1' || $lastChar === '0') {
             throw new \Exception('Missing operator');
         }
 
@@ -104,19 +104,19 @@ class RuleGenerator
         $this->output .= $bool ? '1' : '0';
     }
 
-    public function numParenthesesMatch(): bool
+    private function numParenthesesMatch(): bool
     {
         return $this->openParenthesis === $this->closedParenthesis;
     }
 
-    public function isIncompleteCondition(): bool
+    private function isIncompleteCondition(): bool
     {
         return $this->incompleteCondition;
     }
 
-    public function operatorRequired($false)
+    public function operatorRequired(bool $bool)
     {
-        $this->operatorRequired = $false;
+        $this->operatorRequired = $bool;
     }
 
     public function flipOperatorRequired(BaseToken $token)

@@ -18,13 +18,19 @@ final class Tokenizer implements TokenizerInterface
     /** @var TokenFactory */
     private $tokenFactory;
 
+    /** @var Grammar */
+    private $grammar;
+
+    /** @var stdClass[] */
     private $internalTokens = [];
 
+    /** @var string */
     private $regex = '';
 
     public function __construct(Grammar $grammar, TokenFactory $tokenFactory)
     {
         $this->tokenFactory = $tokenFactory;
+        $this->grammar = $grammar;
 
         foreach ($grammar->getDefinition() as list($class, $regex, $priority)) {
             $this->registerToken($class, $regex, $priority);
@@ -51,6 +57,11 @@ final class Tokenizer implements TokenizerInterface
         }
 
         return $stack;
+    }
+
+    public function getGrammar(): Grammar
+    {
+        return $this->grammar;
     }
 
     private function registerToken(string $class, string $regex, int $priority)
