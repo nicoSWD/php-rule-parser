@@ -29,9 +29,4 @@ final class ParseFloat extends CallableFunction implements CallableUserFunction
 
         return new TokenFloat((float) $value->getValue());
     }
-
-    public function getName(): string
-    {
-        return 'parseFloat';
-    }
 }

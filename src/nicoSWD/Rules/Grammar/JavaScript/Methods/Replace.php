@@ -73,9 +73,4 @@ final class Replace extends CallableFunction
 
         return [$match[1], $match[2]];
     }
-
-    public function getName(): string
-    {
-        return 'replace';
-    }
 }

@@ -52,9 +52,4 @@ final class Join extends CallableFunction
             $this->token->getStack()
         );
     }
-
-    public function getName(): string
-    {
-        return 'join';
-    }
 }

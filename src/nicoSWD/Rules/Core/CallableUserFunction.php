@@ -17,6 +17,4 @@ interface CallableUserFunction
      * @return BaseToken
      */
     public function call($param = null): BaseToken;
-
-    public function getName(): string;
 }

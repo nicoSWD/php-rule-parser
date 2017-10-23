@@ -52,8 +52,8 @@ class JavaScript implements Grammar
     public function getInternalFunctions(): array
     {
         return [
-            Functions\ParseInt::class,
-            Functions\ParseFloat::class,
+            'parseInt'   => Functions\ParseInt::class,
+            'parseFloat' => Functions\ParseFloat::class,
         ];
     }
 

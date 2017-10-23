@@ -42,9 +42,4 @@ final class Substr extends CallableFunction
             $this->token->getStack()
         );
     }
-
-    public function getName(): string
-    {
-        return 'substr';
-    }
 }

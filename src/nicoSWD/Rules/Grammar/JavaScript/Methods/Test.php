@@ -61,9 +61,4 @@ final class Test extends CallableFunction
             $this->token->getStack()
         );
     }
-
-    public function getName(): string
-    {
-        return 'test';
-    }
 }

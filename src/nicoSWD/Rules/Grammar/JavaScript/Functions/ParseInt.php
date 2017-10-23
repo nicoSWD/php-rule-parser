@@ -29,9 +29,4 @@ final class ParseInt extends CallableFunction implements CallableUserFunction
 
         return new TokenInteger((int) $value->getValue());
     }
-
-    public function getName(): string
-    {
-        return 'parseInt';
-    }
 }

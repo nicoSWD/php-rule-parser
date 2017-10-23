@@ -37,9 +37,4 @@ final class IndexOf extends CallableFunction
             $this->token->getStack()
         );
     }
-
-    public function getName(): string
-    {
-        return 'indexOf';
-    }
 }

@@ -110,30 +110,30 @@ class AST
         return $this->tokenFactory->createFromPHPType($this->variables[$name]);
     }
 
-    private function registerFunctionClass(string $className)
+    private function registerFunctionClass(string $functionName, string $className)
     {
-        /** @var CallableUserFunction $function */
-        $function = new $className();
+        $this->functions[$functionName] = function () use ($className): BaseToken {
+            /** @var CallableUserFunction $function */
+            $function = new $className();
 
-        if (!$function instanceof CallableUserFunction) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    "%s must be an instance of %s",
-                    $className,
-                    CallableUserFunction::class
-                )
-            );
-        }
+            if (!$function instanceof CallableUserFunction) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        "%s must be an instance of %s",
+                        $className,
+                        CallableUserFunction::class
+                    )
+                );
+            }
 
-        $this->functions[$function->getName()] = function () use ($function): BaseToken {
             return $function->call(...func_get_args());
         };
     }
 
     private function registerFunctions(array $functions)
     {
-        foreach ($functions as $function) {
-            $this->registerFunctionClass($function);
+        foreach ($functions as $functionName => $function) {
+            $this->registerFunctionClass($functionName, $function);
         }
     }
 

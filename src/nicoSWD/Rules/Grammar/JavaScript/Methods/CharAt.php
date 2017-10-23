@@ -45,9 +45,4 @@ final class CharAt extends CallableFunction
             $this->token->getStack()
         );
     }
-
-    public function getName() : string
-    {
-        return 'charAt';
-    }
 }
