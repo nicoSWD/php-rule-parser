@@ -15,11 +15,6 @@ use nicoSWD\Rules\TokenType;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
 use nicoSWD\Rules\Tokens;
-use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenComment;
-use nicoSWD\Rules\Tokens\TokenMethod;
-use nicoSWD\Rules\Tokens\TokenNewline;
-use nicoSWD\Rules\Tokens\TokenSpace;
 
 abstract class BaseNode
 {
@@ -37,7 +32,7 @@ abstract class BaseNode
         $this->tokenStream = $tokenStream;
     }
 
-    abstract public function getNode(): BaseToken;
+    abstract public function getNode(): Tokens\BaseToken;
 
     /**
      * Looks ahead, but does not move the pointer.
@@ -53,7 +48,7 @@ abstract class BaseNode
                 break;
             } elseif ($this->isIgnoredToken($token)) {
                 continue;
-            } elseif ($token instanceof TokenMethod) {
+            } elseif ($token instanceof Tokens\TokenMethod) {
                 $this->methodName = $token->getValue();
                 $this->methodOffset = $token->getOffset();
 
@@ -66,7 +61,7 @@ abstract class BaseNode
         return false;
     }
 
-    public function getMethod(BaseToken $token): CallableFunction
+    public function getMethod(Tokens\BaseToken $token): CallableFunction
     {
         $methodName = $this->getMethodName();
         $methodClass = '\nicoSWD\Rules\Core\Methods\\' . ucfirst($methodName);
@@ -172,12 +167,12 @@ abstract class BaseNode
         return $items;
     }
 
-    private function isIgnoredToken(BaseToken $token): bool
+    private function isIgnoredToken(Tokens\BaseToken $token): bool
     {
         return (
-            $token instanceof TokenSpace ||
-            $token instanceof TokenNewline ||
-            $token instanceof TokenComment
+            $token instanceof Tokens\TokenSpace ||
+            $token instanceof Tokens\TokenNewline ||
+            $token instanceof Tokens\TokenComment
         );
     }
 }

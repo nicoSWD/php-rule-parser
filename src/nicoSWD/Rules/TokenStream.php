@@ -11,18 +11,8 @@ namespace nicoSWD\Rules;
 
 use Closure;
 use Iterator;
-use nicoSWD\Rules\Exceptions\UndefinedVariableException;
-use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenEncapsedString;
-use nicoSWD\Rules\Tokens\TokenFunction;
-use nicoSWD\Rules\Tokens\TokenOpeningArray;
-use nicoSWD\Rules\Tokens\TokenRegex;
-use nicoSWD\Rules\Tokens\TokenString;
-use nicoSWD\Rules\Tokens\TokenVariable;
-use nicoSWD\Rules\AST\Nodes\NodeArray;
-use nicoSWD\Rules\AST\Nodes\NodeFunction;
-use nicoSWD\Rules\AST\Nodes\NodeString;
-use nicoSWD\Rules\AST\Nodes\NodeVariable;
+use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\AST\Nodes;
 
 class TokenStream implements Iterator
 {
@@ -58,19 +48,19 @@ class TokenStream implements Iterator
         switch (get_class($current)) {
             default:
                 return $current;
-            case TokenString::class:
-            case TokenEncapsedString::class:
-            case TokenRegex::class:
-                $current = new NodeString($this);
+            case Tokens\TokenString::class:
+            case Tokens\TokenEncapsedString::class:
+            case Tokens\TokenRegex::class:
+                $current = new Nodes\NodeString($this);
                 break;
-            case TokenOpeningArray::class:
-                $current = new NodeArray($this);
+            case Tokens\TokenOpeningArray::class:
+                $current = new Nodes\NodeArray($this);
                 break;
-            case TokenVariable::class:
-                $current = new NodeVariable($this);
+            case Tokens\TokenVariable::class:
+                $current = new Nodes\NodeVariable($this);
                 break;
-            case TokenFunction::class:
-                $current = new NodeFunction($this);
+            case Tokens\TokenFunction::class:
+                $current = new Nodes\NodeFunction($this);
                 break;
         }
 
@@ -87,11 +77,11 @@ class TokenStream implements Iterator
         $this->stack->rewind();
     }
 
-    public function getVariable(string $name): BaseToken
+    public function getVariable(string $name): Tokens\BaseToken
     {
         try {
             return $this->ast->getVariable($name);
-        } catch (UndefinedVariableException $e) {
+        } catch (Exceptions\UndefinedVariableException $e) {
             throw new Exceptions\ParserException(sprintf(
                 'Undefined variable "%s" at position %d on line %d',
                 $name,
