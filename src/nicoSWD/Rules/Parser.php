@@ -27,26 +27,23 @@ class Parser
     /** @var null|BaseToken */
     private $operator = null;
 
-    /** @var SplStack */
-    private $values;
-
     public function __construct(AST $ast, ExpressionFactory $expressionFactory, Compiler $compiler)
     {
         $this->ast = $ast;
         $this->expressionFactory = $expressionFactory;
         $this->compiler = $compiler;
-        $this->values = new SplStack();
     }
 
     public function parse(string $rule): string
     {
+        $values = new SplStack();
         $this->compiler->clear();
         $this->operator = null;
 
         foreach ($this->ast->getStream($rule) as $token) {
             switch ($token->getType()) {
                 case TokenType::VALUE:
-                    $this->assignVariableValueFromToken($token);
+                    $values->push($token->getValue());
                     break;
                 case TokenType::LOGICAL:
                     $this->compiler->addLogical($token);
@@ -55,7 +52,7 @@ class Parser
                     $this->compiler->addParentheses($token);
                     continue 2;
                 case TokenType::OPERATOR:
-                    $this->assignOperator($token);
+                    $this->assignOperator($token, $values);
                     continue 2;
                 case TokenType::COMMENT:
                 case TokenType::SPACE:
@@ -64,47 +61,45 @@ class Parser
                     throw Exceptions\ParserException::unknownToken($token);
             }
 
-            $this->evaluateExpression();
+            $this->evaluateExpression($values);
         }
 
         return $this->compiler->getCompiledRule();
     }
 
-    private function assignVariableValueFromToken(BaseToken $token)
-    {
-        $this->compiler->flipOperatorRequired($token);
-        $this->values->push($token->getValue());
-    }
-
-    private function assignOperator(BaseToken $token)
+    private function assignOperator(BaseToken $token, SplStack $values)
     {
         if (isset($this->operator)) {
             throw Exceptions\ParserException::unexpectedToken($token);
-        } elseif ($this->values->isEmpty()) {
+        } elseif ($values->isEmpty()) {
             throw Exceptions\ParserException::incompleteExpression($token);
         }
 
-        $this->compiler->operatorRequired(false);
         $this->operator = $token;
     }
 
-    private function evaluateExpression()
+    private function evaluateExpression(SplStack $values)
     {
-        if (!isset($this->operator) || $this->values->count() !== 2) {
+        if (!isset($this->operator) || $values->count() !== 2) {
             return;
         }
 
-        list ($rightValue, $leftValue) = $this->values;
+        list ($rightValue, $leftValue) = $values;
 
-        $this->compiler->addBoolean($this->getExpression()->evaluate($leftValue, $rightValue));
-        $this->values->pop();
-        $this->values->pop();
+        try {
+            $expression = $this->expressionFactory->createFromOperator($this->operator);
+
+            $this->compiler->addBoolean(
+                $expression->evaluate($leftValue, $rightValue)
+            );
+        } catch (Exceptions\MissingOperatorException $e) {
+            throw new Exceptions\ParserException('Missing operator');
+        }
+
+        while (!$values->isEmpty()) {
+            $values->pop();
+        }
 
         unset($this->operator);
-    }
-
-    private function getExpression(): Expressions\BaseExpression
-    {
-        return $this->expressionFactory->createFromOperator($this->operator);
     }
 }

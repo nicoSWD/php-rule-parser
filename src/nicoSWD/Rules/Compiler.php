@@ -10,44 +10,46 @@ declare(strict_types=1);
 namespace nicoSWD\Rules;
 
 use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\Tokens\TokenOpeningParenthesis;
 
 class Compiler
 {
+    const BOOL_TRUE = '1';
+    const BOOL_FALSE = '0';
+
+    const LOGICAL_AND = '&';
+    const LOGICAL_OR = '|';
+
+    const OPENING_PARENTHESIS = '(';
+    const CLOSING_PARENTHESIS = ')';
+
     private $output = '';
     private $openParenthesis = 0;
     private $closedParenthesis = 0;
-    private $incompleteCondition = false;
-    private $operatorRequired = false;
 
     public function clear()
     {
-        $this->operatorRequired = false;
-        $this->incompleteCondition = false;
         $this->output = '';
     }
 
     public function getCompiledRule()
     {
         if ($this->isIncompleteCondition()) {
-            throw new Exceptions\ParserException(
-                'Incomplete and/or condition'
-            );
+            throw new Exceptions\ParserException('Incomplete condition');
         } elseif (!$this->numParenthesesMatch()) {
-            throw new Exceptions\ParserException(
-                'Missing closing parenthesis'
-            );
+            throw new Exceptions\ParserException('Missing closing parenthesis');
         }
 
         return $this->output;
     }
 
-    public function openParentheses(BaseToken $token)
+    private function openParenthesis()
     {
         $this->openParenthesis++;
-        $this->output .= '(';
+        $this->output .= self::OPENING_PARENTHESIS;
     }
 
-    public function closeParentheses(BaseToken $token)
+    private function closeParenthesis(BaseToken $token)
     {
         if ($this->openParenthesis < 1) {
             throw new Exceptions\ParserException(sprintf(
@@ -58,50 +60,45 @@ class Compiler
         }
 
         $this->closedParenthesis++;
-        $this->output .= ')';
+        $this->output .= self::CLOSING_PARENTHESIS;
     }
 
     public function addParentheses(BaseToken $token)
     {
         if ($token instanceof Tokens\TokenOpeningParenthesis) {
-            $lastChar = substr($this->output, -1);
-
-            if ($lastChar !== '' && $lastChar !== '&' && $lastChar !== '|' && $lastChar !== '(') {
+            if (!$this->expectOpeningParenthesis()) {
                 throw Exceptions\ParserException::unexpectedToken($token);
             }
-            $this->openParentheses($token);
+            $this->openParenthesis();
         } else {
-            $this->closeParentheses($token);
+            $this->closeParenthesis($token);
         }
     }
 
     public function addLogical(BaseToken $token)
     {
-        if (!$this->operatorRequired) {
+        $lastChar = $this->getLastChar();
+
+        if ($lastChar === self::LOGICAL_AND || $lastChar === self::LOGICAL_OR) {
             throw Exceptions\ParserException::unexpectedToken($token);
         }
 
         if ($token instanceof Tokens\TokenAnd) {
-            $this->output .= '&';
+            $this->output .= self::LOGICAL_AND;
         } else {
-            $this->output .= '|';
+            $this->output .= self::LOGICAL_OR;
         }
-
-        $this->operatorRequired = false;
-        $this->incompleteCondition = true;
     }
 
     public function addBoolean(bool $bool)
     {
-        $lastChar = substr($this->output, -1);
+        $lastChar = $this->getLastChar();
 
-        if ($lastChar === '1' || $lastChar === '0') {
-            throw new \Exception('Missing operator');
+        if ($lastChar === self::BOOL_TRUE || $lastChar === self::BOOL_FALSE) {
+            throw new Exceptions\MissingOperatorException();
         }
 
-        $this->operatorRequired = true;
-        $this->incompleteCondition = false;
-        $this->output .= $bool ? '1' : '0';
+        $this->output .= $bool ? self::BOOL_TRUE : self::BOOL_FALSE;
     }
 
     private function numParenthesesMatch(): bool
@@ -111,24 +108,28 @@ class Compiler
 
     private function isIncompleteCondition(): bool
     {
-        return $this->incompleteCondition;
+        $lastChar = $this->getLastChar();
+
+        return (
+            $lastChar === self::LOGICAL_AND ||
+            $lastChar === self::LOGICAL_OR
+        );
     }
 
-    public function operatorRequired(bool $bool)
+    private function expectOpeningParenthesis(): bool
     {
-        $this->operatorRequired = $bool;
+        $lastChar = $this->getLastChar();
+
+        return (
+            $lastChar === '' ||
+            $lastChar === self::LOGICAL_AND ||
+            $lastChar === self::LOGICAL_OR ||
+            $lastChar === self::OPENING_PARENTHESIS
+        );
     }
 
-    public function flipOperatorRequired(BaseToken $token)
+    private function getLastChar(): string
     {
-        if ($this->operatorRequired) {
-            throw new Exceptions\ParserException(sprintf(
-                'Missing operator at position %d on line %d',
-                $token->getPosition(),
-                $token->getLine()
-            ));
-        }
-
-        $this->operatorRequired = !$this->operatorRequired;
+        return substr($this->output, -1);
     }
 }

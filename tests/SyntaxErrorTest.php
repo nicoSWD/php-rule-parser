@@ -60,7 +60,7 @@ class SyntaxErrorTest extends \AbstractTestBase
         $rule = new Rule('total == -1 total > 10', ['total' => 12]);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Missing operator at position 22 on line 1', $rule->getError());
+        $this->assertSame('Missing operator', $rule->getError());
     }
 
     public function testMissingOpeningParenthesisThrowsException()
@@ -101,7 +101,7 @@ class SyntaxErrorTest extends \AbstractTestBase
         $rule = new Rule('1 == 1 && country', ['country' => 'es']);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Incomplete and/or condition', $rule->getError());
+        $this->assertSame('Incomplete condition', $rule->getError());
     }
 
     public function testRulesEvaluatesTrueThrowsExceptionsForUndefinedVars()
@@ -117,7 +117,7 @@ class SyntaxErrorTest extends \AbstractTestBase
         $rule = new Rule('country == "MA" &&', ['country' => 'es']);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Incomplete and/or condition', $rule->getError());
+        $this->assertSame('Incomplete condition', $rule->getError());
     }
 
     public function testMultipleLogicalTokensThrowException()
