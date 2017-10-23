@@ -9,11 +9,11 @@ declare(strict_types = 1);
  */
 namespace nicoSWD\Rules\AST\Nodes;
 
-use nicoSWD\Rules\TokenStream;
 use nicoSWD\Rules\AST\TokenCollection;
-use nicoSWD\Rules\TokenType;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\TokenStream;
+use nicoSWD\Rules\TokenType;
 use nicoSWD\Rules\Tokens;
 
 abstract class BaseNode
@@ -63,29 +63,7 @@ abstract class BaseNode
 
     public function getMethod(Tokens\BaseToken $token): CallableFunction
     {
-        $methodName = $this->getMethodName();
-        $methodClass = '\nicoSWD\Rules\Core\Methods\\' . ucfirst($methodName);
-
-        if (!class_exists($methodClass)) {
-            $current = $this->getCurrentNode();
-
-            throw new ParserException(sprintf(
-                'undefined is not a function at position %d on line %d',
-                $current->getPosition(),
-                $current->getLine()
-            ));
-        }
-
-        /** @var CallableFunction $instance */
-        $instance = new $methodClass($token);
-
-        if ($instance->getName() !== $methodName) {
-            throw new ParserException(
-                'undefined is not a function'
-            );
-        }
-
-        return $instance;
+        return $this->tokenStream->getMethod($this->getMethodName(), $token);
     }
 
     private function getMethodName(): string

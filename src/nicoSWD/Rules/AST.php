@@ -32,6 +32,9 @@ class AST
     /** @var mixed[] */
     private $variables = [];
 
+    /** @var string[] */
+    private $methods = [];
+
     public function __construct(
         TokenizerInterface $tokenizer,
         TokenFactory $tokenFactory,
@@ -61,6 +64,31 @@ class AST
         }
 
         return $this->functions[$name];
+    }
+
+    public function getMethod(string $methodName, BaseToken $token): CallableUserFunction
+    {
+        if (empty($this->methods)) {
+            $this->registerMethods($this->tokenizer->getGrammar()->getInternalMethods());
+        }
+
+        if (!isset($this->methods[$methodName])) {
+            throw new Exceptions\UndefinedMethodException();
+        }
+
+        $method = new $this->methods[$methodName]($token);
+
+        if (!$method instanceof CallableUserFunction) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    "%s must be an instance of %s",
+                    $methodName,
+                    CallableUserFunction::class
+                )
+            );
+        }
+
+        return $method;
     }
 
     public function variableExists(string $name): bool
@@ -107,5 +135,10 @@ class AST
         foreach ($functions as $function) {
             $this->registerFunctionClass($function);
         }
+    }
+
+    private function registerMethods(array $methods)
+    {
+        $this->methods = $methods;
     }
 }

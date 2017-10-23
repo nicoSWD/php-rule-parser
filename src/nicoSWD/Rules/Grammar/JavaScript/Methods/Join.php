@@ -7,13 +7,13 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\Core\Methods;
+namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rules\AST\TokenCollection;
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Exceptions\ParserException;
-use nicoSWD\Rules\Tokens\{TokenArray, TokenString};
-use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\Tokens\TokenArray;
+use nicoSWD\Rules\Tokens\TokenString;
 use nicoSWD\Rules\Tokens\BaseToken;
 
 final class Join extends CallableFunction

@@ -7,7 +7,7 @@
  */
 declare(strict_types=1);
 
-namespace nicoSWD\Rules\Core\Methods;
+namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens\BaseToken;

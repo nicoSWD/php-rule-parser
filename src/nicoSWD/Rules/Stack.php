@@ -11,7 +11,7 @@ namespace nicoSWD\Rules;
 
 use SplObjectStorage;
 
-final class Stack extends SplObjectStorage
+class Stack extends SplObjectStorage
 {
     /**
      * @return \nicoSWD\Rules\Tokens\BaseToken|null

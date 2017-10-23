@@ -7,13 +7,13 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\Core\Methods;
+namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rules\Core\CallableFunction;
 use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenString;
 
-final class ToLowerCase extends CallableFunction
+final class ToUpperCase extends CallableFunction
 {
     /**
      * @param BaseToken $string
@@ -23,7 +23,7 @@ final class ToLowerCase extends CallableFunction
     public function call($string = null): BaseToken
     {
         return new TokenString(
-            strtolower((string) $this->token->getValue()),
+            strtoupper((string) $this->token->getValue()),
             $this->token->getOffset(),
             $this->token->getStack()
         );
@@ -31,6 +31,6 @@ final class ToLowerCase extends CallableFunction
 
     public function getName(): string
     {
-        return 'toLowerCase';
+        return 'toUpperCase';
     }
 }

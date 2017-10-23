@@ -11,6 +11,7 @@ namespace nicoSWD\Rules;
 
 use Closure;
 use Iterator;
+use nicoSWD\Rules\Core\CallableUserFunction;
 use nicoSWD\Rules\Tokens;
 use nicoSWD\Rules\AST\Nodes;
 
@@ -94,6 +95,19 @@ class TokenStream implements Iterator
     public function getFunction(string $functionName): Closure
     {
         return $this->ast->getFunction($functionName);
+    }
+
+    public function getMethod(string $methodName, Tokens\BaseToken $token): CallableUserFunction
+    {
+        try {
+            return $this->ast->getMethod($methodName, $token);
+        } catch (Exceptions\UndefinedMethodException $e) {
+            throw new Exceptions\ParserException(sprintf(
+                'undefined is not a function at position %d on line %d',
+                $this->stack->current()->getPosition(),
+                $this->stack->current()->getLine()
+            ));
+        }
     }
 
     public function getStack(): Stack

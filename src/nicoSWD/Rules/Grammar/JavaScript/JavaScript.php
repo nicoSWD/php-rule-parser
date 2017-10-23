@@ -10,8 +10,6 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Grammar\JavaScript;
 
 use nicoSWD\Rules\Grammar;
-use nicoSWD\Rules\Grammar\JavaScript\Functions\ParseFloat;
-use nicoSWD\Rules\Grammar\JavaScript\Functions\ParseInt;
 use nicoSWD\Rules\Token;
 
 class JavaScript implements Grammar
@@ -54,13 +52,24 @@ class JavaScript implements Grammar
     public function getInternalFunctions(): array
     {
         return [
-            ParseInt::class,
-            ParseFloat::class,
+            Functions\ParseInt::class,
+            Functions\ParseFloat::class,
         ];
     }
 
     public function getInternalMethods(): array
     {
-        return [];
+        return [
+            'charAt'      => Methods\CharAt::class,
+            'concat'      => Methods\Concat::class,
+            'indexOf'     => Methods\IndexOf::class,
+            'join'        => Methods\Join::class,
+            'replace'     => Methods\Replace::class,
+            'split'       => Methods\Split::class,
+            'substr'      => Methods\Substr::class,
+            'test'        => Methods\Test::class,
+            'toLowerCase' => Methods\ToLowerCase::class,
+            'toUpperCase' => Methods\ToUpperCase::class,
+        ];
     }
 }
