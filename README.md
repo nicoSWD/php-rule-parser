@@ -1,4 +1,4 @@
-## Rule Parser and Evaluator for PHP 7
+## PHP Rule Engine (Parser and Evaluator for PHP 7)
 
 |  | Build Status | Code Quality | Coverage |
 |:----------------:|:----------------:|:----------:|:----------:|
