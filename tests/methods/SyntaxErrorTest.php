@@ -58,7 +58,7 @@ class SyntaxErrorTest extends \AbstractTestBase
         $rule = new Rule('/^foo$/.teddst("foo") === true');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('undefined is not a function at position 7 on line 1', $rule->getError());
+        $this->assertSame('Undefined method "teddst" at position 7 on line 1', $rule->getError());
     }
 
     public function testIncorrectSpellingThrowsException()
@@ -66,7 +66,7 @@ class SyntaxErrorTest extends \AbstractTestBase
         $rule = new Rule('"foo".ChARat(1) === "o"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('undefined is not a function at position 5 on line 1', $rule->getError());
+        $this->assertSame('Undefined method "ChARat" at position 5 on line 1', $rule->getError());
     }
 
     public function testCallOnNonArray()

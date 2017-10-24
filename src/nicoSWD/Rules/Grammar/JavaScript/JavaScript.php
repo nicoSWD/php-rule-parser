@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /**
- * @license     http://opensource.org/licenses/mit-license.php MITnamespace nicoSWD\Rules\Grammar;
+ * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>use nicoSWD\Rules\Tokenizer;
+ * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\Grammar\JavaScript;
 

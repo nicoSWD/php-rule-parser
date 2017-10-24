@@ -42,4 +42,24 @@ class ParserException extends \Exception
             $token->getLine()
         ));
     }
+
+    public static function undefinedVariable(string $name, BaseToken $token): self
+    {
+        return new self(sprintf(
+            'Undefined variable "%s" at position %d on line %d',
+            $name,
+            $token->getPosition(),
+            $token->getLine()
+        ));
+    }
+
+    public static function undefinedMethod(string $name, BaseToken $token): self
+    {
+        return new self(sprintf(
+            'Undefined method "%s" at position %d on line %d',
+            $name,
+            $token->getPosition(),
+            $token->getLine()
+        ));
+    }
 }

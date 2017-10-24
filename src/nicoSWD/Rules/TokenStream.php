@@ -83,12 +83,7 @@ class TokenStream implements Iterator
         try {
             return $this->ast->getVariable($name);
         } catch (Exceptions\UndefinedVariableException $e) {
-            throw new Exceptions\ParserException(sprintf(
-                'Undefined variable "%s" at position %d on line %d',
-                $name,
-                $this->stack->current()->getPosition(),
-                $this->stack->current()->getLine()
-            ));
+            throw Exceptions\ParserException::undefinedVariable($name, $this->stack->current());
         }
     }
 
@@ -102,11 +97,7 @@ class TokenStream implements Iterator
         try {
             return $this->ast->getMethod($methodName, $token);
         } catch (Exceptions\UndefinedMethodException $e) {
-            throw new Exceptions\ParserException(sprintf(
-                'undefined is not a function at position %d on line %d',
-                $this->stack->current()->getPosition(),
-                $this->stack->current()->getLine()
-            ));
+            throw Exceptions\ParserException::undefinedMethod($methodName, $this->stack->current());
         }
     }
 
