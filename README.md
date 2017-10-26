@@ -2,9 +2,7 @@
 
 |  | Build Status | Code Quality | Coverage |
 |:----------------:|:----------------:|:----------:|:----------:|
-| [v0.3][0.3] | [![Build status][0.3 image]][0.3] | [![Code Quality][0.3 quality image]][0.3 quality] | [![Coverage Status][0.3 coverage image]][0.3 coverage] |
 | [Master][Master] | [![Build status][Master image]][Master] | [![Code Quality][Master quality image]][Master quality] | [![Build status][Master coverage image]][Master coverage] |
-| [Develop][Develop] | [![Build Status][Develop image]][Develop] | [![Code Quality][Develop quality image]][0.3 quality] | [![Coverage Status][Develop coverage image]][Develop coverage] |
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
 
@@ -27,12 +25,6 @@ Via Composer
 $ composer require nicoswd/php-rule-parser
 ```
 
-Via git
-```bash
-$ git clone git@github.com:nicoSWD/php-rule-parser.git
-```
-
-
 ## Usage
 
 ```php
@@ -40,8 +32,6 @@ use nicoSWD\Rules\Rule;
 
 // Composer install
 require '/path/to/vendor/autoload.php';
-// Non-Composer install
-require '/path/to/src/nicoSWD/Rules/Autoloader.php';
 
 $ruleStr = '
     2 < 3 && (
