@@ -11,7 +11,7 @@ use nicoSWD\Rules\Grammar\Grammar;
 
 interface TokenizerInterface
 {
-    public function tokenize(string $string): Stack;
+    public function tokenize(string $string): TokenStack;
 
     public function getGrammar(): Grammar;
 }

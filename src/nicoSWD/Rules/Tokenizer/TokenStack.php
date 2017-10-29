@@ -12,11 +12,9 @@ namespace nicoSWD\Rules\Tokenizer;
 use nicoSWD\Rules\Tokens\BaseToken;
 use SplObjectStorage;
 
-class Stack extends SplObjectStorage
+class TokenStack extends SplObjectStorage
 {
-    /**
-     * @return BaseToken|null
-     */
+    /** @return BaseToken|null */
     public function current()
     {
         return parent::current();

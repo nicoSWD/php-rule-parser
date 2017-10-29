@@ -10,21 +10,19 @@ declare(strict_types=1);
 namespace nicoSWD\Rules;
 
 use Exception;
+use nicoSWD\Rules\Evaluator\EvaluatorInterface;
 
 class Rule
 {
     /** @var string */
     private $rule;
-
     /** @var Parser\Parser */
     private $parser;
-
     /** @var string */
     private $parsedRule = '';
-
     /** @var string */
     private $error = '';
-
+    /** @var object */
     private $container;
 
     public function __construct(string $rule, array $variables = [])
@@ -36,7 +34,10 @@ class Rule
 
     public function isTrue(): bool
     {
-        return $this->container->evaluator()->evaluate(
+        /** @var EvaluatorInterface $evaluator */
+        $evaluator = $this->container->evaluator();
+
+        return $evaluator->evaluate(
             $this->parsedRule ?:
             $this->parser->parse($this->rule)
         );

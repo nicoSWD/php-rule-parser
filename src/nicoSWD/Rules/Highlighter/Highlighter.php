@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Highlighter;
 
-use nicoSWD\Rules\Tokenizer\Stack;
+use nicoSWD\Rules\Tokenizer\TokenStack;
 use nicoSWD\Rules\Tokenizer\TokenizerInterface;
 use nicoSWD\Rules\Tokens\TokenType;
 
@@ -54,7 +54,7 @@ final class Highlighter
         return $this->highlightTokens($this->tokenizer->tokenize($string));
     }
 
-    public function highlightTokens(Stack $tokens): string
+    public function highlightTokens(TokenStack $tokens): string
     {
         $string = '';
 

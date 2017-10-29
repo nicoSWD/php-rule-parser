@@ -17,7 +17,7 @@ var_dump($tokenizer->tokenize($rule));
 
 ?>
 --EXPECTF--
-object(nicoSWD\Rules\Tokenizer\Stack)#%d (1) {
+object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
   ["storage":"SplObjectStorage":private]=>
   array(35) {
     ["%s"]=>

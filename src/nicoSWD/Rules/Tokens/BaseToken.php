@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Tokens;
 
-use nicoSWD\Rules\Tokenizer\Stack;
+use nicoSWD\Rules\Tokenizer\TokenStack;
 
 abstract class BaseToken
 {
@@ -19,7 +19,7 @@ abstract class BaseToken
     /** @var int */
     protected $offset = 0;
 
-    /** @var Stack */
+    /** @var TokenStack */
     protected $stack;
 
     /** @var int */
@@ -33,9 +33,9 @@ abstract class BaseToken
     /**
      * @param mixed $value
      * @param int   $offset
-     * @param Stack $stack
+     * @param TokenStack $stack
      */
-    public function __construct($value, int $offset = 0, Stack $stack = null)
+    public function __construct($value, int $offset = 0, TokenStack $stack = null)
     {
         $this->value = $value;
         $this->offset = $offset;
@@ -66,12 +66,12 @@ abstract class BaseToken
         return $this->offset;
     }
 
-    public function getStack(): Stack
+    public function getStack(): TokenStack
     {
         return $this->stack;
     }
 
-    public function setStack(Stack $stack)
+    public function setStack(TokenStack $stack)
     {
         $this->stack = $stack;
     }

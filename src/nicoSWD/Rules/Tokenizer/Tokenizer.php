@@ -35,9 +35,9 @@ final class Tokenizer implements TokenizerInterface
         }
     }
 
-    public function tokenize(string $string): Stack
+    public function tokenize(string $string): TokenStack
     {
-        $stack = new Stack();
+        $stack = new TokenStack();
         $regex = $this->getRegex();
         $offset = 0;
 

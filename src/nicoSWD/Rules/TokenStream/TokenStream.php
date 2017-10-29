@@ -13,19 +13,19 @@ use Closure;
 use Iterator;
 use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Grammar\CallableUserFunction;
-use nicoSWD\Rules\Tokenizer\Stack;
+use nicoSWD\Rules\Tokenizer\TokenStack;
 use nicoSWD\Rules\Tokens;
 use nicoSWD\Rules\TokenStream\Nodes;
 
 class TokenStream implements Iterator
 {
-    /** @var Stack */
+    /** @var TokenStack */
     protected $stack;
 
     /** @var AST */
     private $ast;
 
-    public function create(Stack $stack, AST $ast)
+    public function create(TokenStack $stack, AST $ast)
     {
         $stream = new self();
         $stream->stack = $stack;
@@ -103,7 +103,7 @@ class TokenStream implements Iterator
         }
     }
 
-    public function getStack(): Stack
+    public function getStack(): TokenStack
     {
         return $this->stack;
     }
