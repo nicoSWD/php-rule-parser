@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\Exceptions;
+namespace nicoSWD\Rules\Parser\Exception;
 
 use nicoSWD\Rules\Tokens\BaseToken;
 

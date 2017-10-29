@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\TokenStream\Nodes;
 
 use nicoSWD\Rules\TokenStream\TokenCollection;
-use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Grammar\CallableFunction;
 use nicoSWD\Rules\TokenStream\TokenStream;
 use nicoSWD\Rules\Tokens\TokenType;

@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rules\TokenStream\TokenCollection;
-use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Grammar\CallableFunction;
 use nicoSWD\Rules\Tokens\TokenArray;
 use nicoSWD\Rules\Tokens\TokenString;

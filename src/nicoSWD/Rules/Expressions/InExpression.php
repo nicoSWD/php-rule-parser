@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Expressions;
 
 use nicoSWD\Rules\TokenStream\TokenCollection;
-use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Parser\Exception\ParserException;
 
 final class InExpression extends BaseExpression
 {

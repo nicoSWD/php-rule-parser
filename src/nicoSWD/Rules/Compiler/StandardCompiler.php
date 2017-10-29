@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Compiler;
 
 use nicoSWD\Rules\Compiler\Exception\MissingOperatorException;
-use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenAnd;
 use nicoSWD\Rules\Tokens\TokenOpeningParenthesis;

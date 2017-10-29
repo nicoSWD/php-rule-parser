@@ -7,18 +7,20 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules;
+namespace nicoSWD\Rules\Parser;
 
 use nicoSWD\Rules\Compiler\CompilerInterface;
 use nicoSWD\Rules\Compiler\CompilerFactoryInterface;
 use nicoSWD\Rules\Compiler\Exception\MissingOperatorException;
 use nicoSWD\Rules\Expressions\ExpressionFactoryInterface;
 use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\Tokens\TokenType;
+use nicoSWD\Rules\TokenStream\AST;
 use SplStack;
 
 class Parser
 {
-    /** @var TokenStream\AST */
+    /** @var AST */
     private $ast;
 
     /** @var ExpressionFactoryInterface */
@@ -31,7 +33,7 @@ class Parser
     private $operator = null;
 
     public function __construct(
-        TokenStream\AST $ast,
+        AST $ast,
         ExpressionFactoryInterface $expressionFactory,
         CompilerFactoryInterface $compilerFactory
     ) {
@@ -48,23 +50,23 @@ class Parser
 
         foreach ($this->ast->getStream($rule) as $token) {
             switch ($token->getType()) {
-                case Tokens\TokenType::VALUE:
+                case TokenType::VALUE:
                     $values->push($token->getValue());
                     break;
-                case Tokens\TokenType::LOGICAL:
+                case TokenType::LOGICAL:
                     $compiler->addLogical($token);
                     continue 2;
-                case Tokens\TokenType::PARENTHESIS:
+                case TokenType::PARENTHESIS:
                     $compiler->addParentheses($token);
                     continue 2;
-                case Tokens\TokenType::OPERATOR:
+                case TokenType::OPERATOR:
                     $this->assignOperator($token, $values);
                     continue 2;
-                case Tokens\TokenType::COMMENT:
-                case Tokens\TokenType::SPACE:
+                case TokenType::COMMENT:
+                case TokenType::SPACE:
                     continue 2;
                 default:
-                    throw Exceptions\ParserException::unknownToken($token);
+                    throw Exception\ParserException::unknownToken($token);
             }
 
             $this->evaluateExpression($values, $compiler);
@@ -76,9 +78,9 @@ class Parser
     private function assignOperator(BaseToken $token, SplStack $values)
     {
         if (isset($this->operator)) {
-            throw Exceptions\ParserException::unexpectedToken($token);
+            throw Exception\ParserException::unexpectedToken($token);
         } elseif ($values->isEmpty()) {
-            throw Exceptions\ParserException::incompleteExpression($token);
+            throw Exception\ParserException::incompleteExpression($token);
         }
 
         $this->operator = $token;
@@ -99,7 +101,7 @@ class Parser
                 $expression->evaluate($leftValue, $rightValue)
             );
         } catch (MissingOperatorException $e) {
-            throw new Exceptions\ParserException('Missing operator');
+            throw new Exception\ParserException('Missing operator');
         }
 
         do {

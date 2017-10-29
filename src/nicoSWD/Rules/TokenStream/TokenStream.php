@@ -11,7 +11,7 @@ namespace nicoSWD\Rules\TokenStream;
 
 use Closure;
 use Iterator;
-use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Grammar\CallableUserFunction;
 use nicoSWD\Rules\Tokenizer\Stack;
 use nicoSWD\Rules\Tokens;

@@ -16,7 +16,7 @@ use nicoSWD\Rules\Compiler\CompilerFactoryInterface;
 use nicoSWD\Rules\Compiler\CompilerInterface;
 use nicoSWD\Rules\Expressions\BaseExpression;
 use nicoSWD\Rules\Expressions\ExpressionFactoryInterface;
-use nicoSWD\Rules\Parser;
+use nicoSWD\Rules\Parser\Parser;
 use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenAnd;
 use nicoSWD\Rules\Tokens\TokenClosingParenthesis;

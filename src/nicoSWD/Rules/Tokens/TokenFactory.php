@@ -9,7 +9,7 @@ declare(strict_types = 1);
  */
 namespace nicoSWD\Rules\Tokens;
 
-use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\TokenStream\TokenCollection;
 
 class TokenFactory

@@ -29,9 +29,9 @@ return new class
     private static $tokenizer;
     private static $evaluator;
 
-    public function parser(array $variables): Parser
+    public function parser(array $variables): Parser\Parser
     {
-        return new Parser(
+        return new Parser\Parser(
             self::ast($variables),
             self::expressionFactory(),
             self::compiler()

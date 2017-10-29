@@ -16,7 +16,7 @@ class Rule
     /** @var string */
     private $rule;
 
-    /** @var Parser */
+    /** @var Parser\Parser */
     private $parser;
 
     /** @var string */
