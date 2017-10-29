@@ -160,7 +160,7 @@ $ruleStr = '
         bar > 6
     )';
 
-$highlighter = new Rules\Highlighter(new Rules\Tokenizer());
+$highlighter = new Rules\Highlighter\Highlighter(new Rules\Tokenizer());
 
 // Optional custom styles
 $highlighter->setStyle(

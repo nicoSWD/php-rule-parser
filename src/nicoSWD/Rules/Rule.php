@@ -10,8 +10,6 @@ declare(strict_types=1);
 namespace nicoSWD\Rules;
 
 use Exception;
-use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
-use nicoSWD\Rules\Tokens\TokenFactory;
 
 class Rule
 {
@@ -21,44 +19,24 @@ class Rule
     /** @var Parser */
     private $parser;
 
-    /** @var Evaluator */
-    private $evaluator;
-
     /** @var string */
     private $parsedRule = '';
 
     /** @var string */
     private $error = '';
 
+    private $container;
+
     public function __construct(string $rule, array $variables = [])
     {
+        $this->container = require __DIR__ . '/container.php';
+        $this->parser = $this->container->parser($variables);
         $this->rule = $rule;
-
-        $grammar = new JavaScript();
-        $tokenFactory = new TokenFactory();
-        $ruleGenerator = new Compiler();
-        $expressionFactory = new Expressions\ExpressionFactory();
-
-        $tokenizer = new Tokenizer(
-            $grammar,
-            $tokenFactory
-        );
-
-        $ast = new AST($tokenizer, $tokenFactory, new TokenStream());
-        $ast->setVariables($variables);
-
-        $this->parser = new Parser(
-            $ast,
-            $expressionFactory,
-            $ruleGenerator
-        );
-
-        $this->evaluator = new Evaluator();
     }
 
     public function isTrue(): bool
     {
-        return $this->evaluator->evaluate(
+        return $this->container->evaluator()->evaluate(
             $this->parsedRule ?:
             $this->parser->parse($this->rule)
         );

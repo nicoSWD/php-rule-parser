@@ -11,7 +11,7 @@ namespace nicoSWD\Rules\Expressions;
 
 use nicoSWD\Rules\Tokens;
 
-final class ExpressionFactory
+final class ExpressionFactory implements ExpressionFactoryInterface
 {
     private $classLookup = [
         Tokens\TokenEqual::class          => EqualExpression::class,
@@ -28,10 +28,5 @@ final class ExpressionFactory
     public function createFromOperator(Tokens\BaseToken $operator): BaseExpression
     {
          return new $this->classLookup[get_class($operator)]();
-    }
-
-    public function mapOperatorToClass(Tokens\BaseToken $operator, $class)
-    {
-        $this->classLookup[get_class($operator)] = $class;
     }
 }

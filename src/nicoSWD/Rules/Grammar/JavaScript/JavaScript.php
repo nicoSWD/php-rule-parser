@@ -9,10 +9,10 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Grammar\JavaScript;
 
-use nicoSWD\Rules\Grammar;
-use nicoSWD\Rules\Token;
+use nicoSWD\Rules\Grammar\Grammar;
+use nicoSWD\Rules\Tokens\Token;
 
-class JavaScript implements Grammar
+class JavaScript extends Grammar
 {
     public function getDefinition(): array
     {
@@ -44,7 +44,7 @@ class JavaScript implements Grammar
             [Token::COMMENT, '//[^\r\n]*|/\*.*?\*/', 25],
             [Token::NEWLINE, '\r?\n', 20],
             [Token::SPACE, '\s+', 15],
-            [Token::TOKEN_VARIABLE, '[a-zA-Z_]\w*', 10],
+            [Token::VARIABLE, '[a-zA-Z_]\w*', 10],
             [Token::UNKNOWN, '.', 5],
         ];
     }

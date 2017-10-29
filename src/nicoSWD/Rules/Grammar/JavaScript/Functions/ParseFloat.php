@@ -9,8 +9,8 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Grammar\JavaScript\Functions;
 
-use nicoSWD\Rules\Core\CallableFunction;
-use nicoSWD\Rules\Core\CallableUserFunction;
+use nicoSWD\Rules\Grammar\CallableFunction;
+use nicoSWD\Rules\Grammar\CallableUserFunction;
 use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenFloat;
 

@@ -7,8 +7,6 @@
  */
 namespace nicoSWD\Rules\Tokens;
 
-use nicoSWD\Rules\TokenType;
-
 class TokenString extends BaseToken
 {
     public function getType(): int

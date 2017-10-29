@@ -1,8 +1,18 @@
 {
   "name": "nicoswd/php-rule-parser",
   "type": "library",
-  "description": "PHP 7 Rule Parser and Evaluator",
-  "keywords": ["rule", "parser", "tokenizer", "highlighter", "evaluator", "javascript", "workflow", "dsl"],
+  "description": "PHP 7 Rule Engine - Rule Parser & Evaluator",
+  "keywords": [
+    "rule",
+    "parser",
+    "engine",
+    "tokenizer",
+    "highlighter",
+    "evaluator",
+    "javascript",
+    "workflow",
+    "dsl"
+  ],
   "homepage": "https://github.com/nicoSWD/php-rule-parser",
   "license": "MIT",
   "authors": [
@@ -26,7 +36,9 @@
     "php": "^7.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.4.0|^6.0"
+    "phpunit/phpunit": "^5.4.0|^6.0",
+    "mockery/mockery": "^1.0"
+
   },
   "scripts": {
     "test": "phpunit"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.4/phpunit.xsd"
-         bootstrap="tests/bootstrap.php"
+         bootstrap="src/nicoSWD/Rules/autoload.php"
          backupGlobals="false"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -9,8 +9,10 @@
          verbose="true">
 
     <testsuites>
-        <testsuite>
-            <directory suffix="Test.php">tests</directory>
+        <testsuite name="Unit tests">
+            <directory suffix="Test.php">tests/unit</directory>
+            <directory suffix="Test.php">tests/integration</directory>
+            <directory suffix="Test.phpt">tests/phpt</directory>
         </testsuite>
     </testsuites>
 

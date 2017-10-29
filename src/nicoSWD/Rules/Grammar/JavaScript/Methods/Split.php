@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
-use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\Grammar\CallableFunction;
 use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenArray;
 use nicoSWD\Rules\Tokens\TokenRegex;

@@ -9,12 +9,15 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Tokens;
 
-use nicoSWD\Rules\TokenType;
-
 final class TokenComment extends BaseToken
 {
     public function getType(): int
     {
         return TokenType::COMMENT;
+    }
+
+    public function isWhitespace(): bool
+    {
+        return true;
     }
 }

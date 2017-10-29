@@ -9,12 +9,15 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Tokens;
 
-use nicoSWD\Rules\TokenType;
-
 final class TokenSpace extends BaseToken
 {
     public function getType(): int
     {
         return TokenType::SPACE;
+    }
+
+    public function isWhitespace(): bool
+    {
+        return true;
     }
 }

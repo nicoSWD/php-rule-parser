@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Tokens;
 
-use nicoSWD\Rules\Stack;
+use nicoSWD\Rules\Tokenizer\Stack;
 
 abstract class BaseToken
 {
@@ -77,6 +77,11 @@ abstract class BaseToken
     }
 
     public function supportsMethodCalls(): bool
+    {
+        return false;
+    }
+
+    public function isWhitespace(): bool
     {
         return false;
     }

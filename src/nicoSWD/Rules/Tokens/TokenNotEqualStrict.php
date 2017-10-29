@@ -9,8 +9,6 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Tokens;
 
-use nicoSWD\Rules\TokenType;
-
 final class TokenNotEqualStrict extends BaseToken
 {
     public function getType(): int

@@ -9,8 +9,6 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Tokens;
 
-use nicoSWD\Rules\TokenType;
-
 final class TokenUnknown extends BaseToken
 {
     public function getType(): int

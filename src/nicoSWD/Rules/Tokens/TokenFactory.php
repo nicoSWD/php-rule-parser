@@ -10,8 +10,7 @@ declare(strict_types = 1);
 namespace nicoSWD\Rules\Tokens;
 
 use nicoSWD\Rules\Exceptions\ParserException;
-use nicoSWD\Rules\AST\TokenCollection;
-use nicoSWD\Rules\Token;
+use nicoSWD\Rules\TokenStream\TokenCollection;
 
 class TokenFactory
 {
@@ -27,7 +26,7 @@ class TokenFactory
         Token::NULL                => TokenNull::class,
         Token::METHOD              => TokenMethod::class,
         Token::FUNCTION            => TokenFunction::class,
-        Token::TOKEN_VARIABLE      => TokenVariable::class,
+        Token::VARIABLE            => TokenVariable::class,
         Token::FLOAT               => TokenFloat::class,
         Token::INTEGER             => TokenInteger::class,
         Token::ENCAPSED_STRING     => TokenEncapsedString::class,

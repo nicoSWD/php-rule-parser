@@ -9,9 +9,9 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
-use nicoSWD\Rules\AST\TokenCollection;
-use nicoSWD\Rules\Core\CallableFunction;
+use nicoSWD\Rules\TokenStream\TokenCollection;
 use nicoSWD\Rules\Exceptions\ParserException;
+use nicoSWD\Rules\Grammar\CallableFunction;
 use nicoSWD\Rules\Tokens\TokenBool;
 use nicoSWD\Rules\Tokens\TokenRegex;
 use nicoSWD\Rules\Tokens\BaseToken;
