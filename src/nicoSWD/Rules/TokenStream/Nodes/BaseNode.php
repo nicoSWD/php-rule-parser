@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\TokenStream\Nodes;
 
-use nicoSWD\Rules\TokenStream\TokenCollection;
-use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Grammar\CallableFunction;
-use nicoSWD\Rules\TokenStream\TokenStream;
-use nicoSWD\Rules\Tokens\TokenType;
+use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\Tokens\TokenType;
+use nicoSWD\Rules\TokenStream\TokenCollection;
+use nicoSWD\Rules\TokenStream\TokenStream;
 
 abstract class BaseNode
 {

@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\Tokens;
 
 use nicoSWD\Rules\Tokenizer\TokenStack;
@@ -31,8 +34,8 @@ abstract class BaseToken
     abstract public function getType(): int;
 
     /**
-     * @param mixed $value
-     * @param int   $offset
+     * @param mixed      $value
+     * @param int        $offset
      * @param TokenStack $stack
      */
     public function __construct($value, int $offset = 0, TokenStack $stack = null)

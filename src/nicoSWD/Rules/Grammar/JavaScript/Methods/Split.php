@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rules\Grammar\CallableFunction;
@@ -19,6 +22,7 @@ final class Split extends CallableFunction
     /**
      * @param BaseToken $separator
      * @param BaseToken $limit
+     *
      * @return BaseToken
      */
     public function call($separator = null, $limit = null): BaseToken

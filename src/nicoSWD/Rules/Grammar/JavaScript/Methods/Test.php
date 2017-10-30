@@ -4,24 +4,29 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
-use nicoSWD\Rules\TokenStream\TokenCollection;
-use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Grammar\CallableFunction;
+use nicoSWD\Rules\Parser\Exception\ParserException;
+use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenBool;
 use nicoSWD\Rules\Tokens\TokenRegex;
-use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\TokenStream\TokenCollection;
 
 final class Test extends CallableFunction
 {
     /**
      * @param BaseToken $string
-     * @return BaseToken
+     *
      * @throws ParserException
+     *
+     * @return BaseToken
      */
     public function call($string = null): BaseToken
     {

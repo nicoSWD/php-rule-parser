@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\Compiler;
 
 use nicoSWD\Rules\Compiler\Exception\MissingOperatorException;
@@ -108,22 +111,20 @@ class StandardCompiler implements CompilerInterface
     {
         $lastChar = $this->getLastChar();
 
-        return (
+        return
             $lastChar === self::LOGICAL_AND ||
-            $lastChar === self::LOGICAL_OR
-        );
+            $lastChar === self::LOGICAL_OR;
     }
 
     private function expectOpeningParenthesis(): bool
     {
         $lastChar = $this->getLastChar();
 
-        return (
+        return
             $lastChar === '' ||
             $lastChar === self::LOGICAL_AND ||
             $lastChar === self::LOGICAL_OR ||
-            $lastChar === self::OPENING_PARENTHESIS
-        );
+            $lastChar === self::OPENING_PARENTHESIS;
     }
 
     private function getLastChar(): string

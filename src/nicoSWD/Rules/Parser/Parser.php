@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\Parser;
 
-use nicoSWD\Rules\Compiler\CompilerInterface;
 use nicoSWD\Rules\Compiler\CompilerFactoryInterface;
+use nicoSWD\Rules\Compiler\CompilerInterface;
 use nicoSWD\Rules\Compiler\Exception\MissingOperatorException;
 use nicoSWD\Rules\Expressions\ExpressionFactoryInterface;
 use nicoSWD\Rules\Tokens\BaseToken;
@@ -92,7 +95,7 @@ class Parser
             return;
         }
 
-        list ($rightValue, $leftValue) = $values;
+        list($rightValue, $leftValue) = $values;
 
         try {
             $expression = $this->expressionFactory->createFromOperator($this->operator);

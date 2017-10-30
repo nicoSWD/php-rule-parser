@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\tests\unit;
 
-use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use nicoSWD\Rules\TokenStream\AST;
+use Mockery as m;
 use nicoSWD\Rules\Compiler\CompilerFactoryInterface;
 use nicoSWD\Rules\Compiler\CompilerInterface;
 use nicoSWD\Rules\Expressions\BaseExpression;
@@ -27,6 +29,7 @@ use nicoSWD\Rules\Tokens\TokenInteger;
 use nicoSWD\Rules\Tokens\TokenOpeningParenthesis;
 use nicoSWD\Rules\Tokens\TokenSpace;
 use nicoSWD\Rules\Tokens\TokenString;
+use nicoSWD\Rules\TokenStream\AST;
 use nicoSWD\Rules\TokenStream\TokenStream;
 use PHPUnit\Framework\TestCase;
 
@@ -67,13 +70,14 @@ class ParserTest extends TestCase
         $tokenStream->shouldReceive('next');
         $tokenStream->shouldReceive('valid')->andReturnUsing(static function () {
             static $count = 0;
+
             return ++$count < 10;
         });
         $tokenStream->shouldReceive('current')->andReturns(
             new TokenOpeningParenthesis('('),
             new TokenInteger(1),
             new TokenEqual('=='),
-            new TokenString("1"),
+            new TokenString('1'),
             new TokenClosingParenthesis(')'),
             new TokenAnd('&&'),
             new TokenInteger(2),

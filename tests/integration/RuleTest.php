@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
@@ -29,7 +29,7 @@ class RuleTest extends \PHPUnit\Framework\TestCase
 
         $vars = [
             'foo' => 5,
-            'bar' => 7
+            'bar' => 7,
         ];
 
         $rule = new Rules\Rule($string, $vars);

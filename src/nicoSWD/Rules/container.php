@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules;
 
-use nicoSWD\Rules\TokenStream\AST;
 use nicoSWD\Rules\Compiler\CompilerFactory;
 use nicoSWD\Rules\Evaluator\Evaluator;
 use nicoSWD\Rules\Evaluator\EvaluatorInterface;
@@ -17,10 +19,10 @@ use nicoSWD\Rules\Expressions\ExpressionFactory;
 use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rules\Tokenizer\Tokenizer;
 use nicoSWD\Rules\Tokens\TokenFactory;
+use nicoSWD\Rules\TokenStream\AST;
 use nicoSWD\Rules\TokenStream\TokenStream;
 
-return new class
-{
+return new class() {
     private static $tokenStream;
     private static $tokenFactory;
     private static $compiler;

@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\tests\arrays;
 
 use nicoSWD\Rules\Rule;
@@ -23,7 +26,7 @@ class ArraysTest extends AbstractTestBase
 
         $this->assertTrue($this->evaluate('[123, 12] === foo && bar === [23]', [
             'foo' => [123, 12],
-            'bar' => [23]
+            'bar' => [23],
         ]));
     }
 

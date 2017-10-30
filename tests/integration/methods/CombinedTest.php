@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\tests\methods;
 
 use nicoSWD\Rules\tests\integration\AbstractTestBase;
@@ -25,7 +28,6 @@ class CombinedTest extends AbstractTestBase
         ));
 
         $this->assertTrue($this->evaluate('"HeLLo World".charAt(3) === "l".toUpperCase()'));
-
 
         $this->assertTrue($this->evaluate(
             '// Something true
