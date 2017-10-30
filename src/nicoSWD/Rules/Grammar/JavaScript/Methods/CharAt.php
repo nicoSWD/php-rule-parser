@@ -26,8 +26,7 @@ final class CharAt extends CallableFunction
 
         if (!$offset) {
             $offset = 0;
-        }
-        elseif (!$offset instanceof TokenInteger) {
+        } elseif (!$offset instanceof TokenInteger) {
             $offset = (int) $offset->getValue();
         } else {
             $offset = $offset->getValue();

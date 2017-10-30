@@ -27,6 +27,6 @@ final class ExpressionFactory implements ExpressionFactoryInterface
 
     public function createFromOperator(Tokens\BaseToken $operator): BaseExpression
     {
-         return new $this->classLookup[get_class($operator)]();
+        return new $this->classLookup[get_class($operator)]();
     }
 }

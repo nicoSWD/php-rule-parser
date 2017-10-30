@@ -19,8 +19,7 @@ use nicoSWD\Rules\Tokenizer\Tokenizer;
 use nicoSWD\Rules\Tokens\TokenFactory;
 use nicoSWD\Rules\TokenStream\TokenStream;
 
-return new class
-{
+return new class {
     private static $tokenStream;
     private static $tokenFactory;
     private static $compiler;

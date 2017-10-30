@@ -92,7 +92,7 @@ class Parser
             return;
         }
 
-        list ($rightValue, $leftValue) = $values;
+        list($rightValue, $leftValue) = $values;
 
         try {
             $expression = $this->expressionFactory->createFromOperator($this->operator);
