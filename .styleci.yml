@@ -7,5 +7,4 @@ finder:
     - "*.php"
 enabled:
   - short_array_syntax
-  - strict
   - cast_spaces
