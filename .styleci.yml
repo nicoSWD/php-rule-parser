@@ -10,6 +10,3 @@ enabled:
   - strict
   - unalign_double_arrow
   - cast_spaces
-
-disabled:
-  - align_comments
