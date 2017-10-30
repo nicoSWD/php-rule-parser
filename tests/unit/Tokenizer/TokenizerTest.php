@@ -95,7 +95,7 @@ class TokenizerTest extends TestCase
 
     private function getTokenizer(array $definition): Tokenizer
     {
-        $grammar = new class ($definition) extends Grammar {
+        $grammar = new class($definition) extends Grammar {
             private $definition = [];
 
             public function __construct(array $definition)
