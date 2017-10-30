@@ -1,0 +1,15 @@
+---
+preset: psr2
+risky: true
+linting: true
+finder:
+  name:
+    - "*.php"
+enabled:
+  - short_array_syntax
+  - strict
+  - unalign_double_arrow
+  - cast_spaces
+
+disabled:
+  - align_comments
