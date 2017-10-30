@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\Tokenizer;
 
 use nicoSWD\Rules\Grammar\Grammar;
@@ -92,7 +95,7 @@ final class Tokenizer implements TokenizerInterface
                 $regex[] = "(?<$token->class>$token->regex)";
             }
 
-            $this->regex = '~(' . implode('|', $regex) . ')~As';
+            $this->regex = '~('.implode('|', $regex).')~As';
         }
 
         return $this->regex;

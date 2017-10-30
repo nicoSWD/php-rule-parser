@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\TokenStream;
 
 use Closure;
 use InvalidArgumentException;
-use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Grammar\CallableUserFunction;
+use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Tokenizer\TokenizerInterface;
 use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenFactory;
@@ -29,7 +32,7 @@ class AST
     /** @var TokenStream */
     private $tokenStream;
 
-    /** @var Callable[] */
+    /** @var callable[] */
     private $functions = [];
 
     /** @var mixed[] */
@@ -84,7 +87,7 @@ class AST
         if (!$method instanceof CallableUserFunction) {
             throw new InvalidArgumentException(
                 sprintf(
-                    "%s must be an instance of %s",
+                    '%s must be an instance of %s',
                     $methodName,
                     CallableUserFunction::class
                 )
@@ -122,7 +125,7 @@ class AST
             if (!$function instanceof CallableUserFunction) {
                 throw new InvalidArgumentException(
                     sprintf(
-                        "%s must be an instance of %s",
+                        '%s must be an instance of %s',
                         $className,
                         CallableUserFunction::class
                     )

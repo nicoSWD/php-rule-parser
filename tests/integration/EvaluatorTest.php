@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
@@ -30,8 +30,8 @@ class EvaluatorTest extends \PHPUnit\Framework\TestCase
             $this->evaluator,
             [
                 [
-                    1 => '0|0|0|1|0&1'
-                ]
+                    1 => '0|0|0|1|0&1',
+                ],
             ]
         );
 
@@ -41,8 +41,8 @@ class EvaluatorTest extends \PHPUnit\Framework\TestCase
             $this->evaluator,
             [
                 [
-                    1 => '0|0|0|0|0&0'
-                ]
+                    1 => '0|0|0|0|0&0',
+                ],
             ]
         );
 

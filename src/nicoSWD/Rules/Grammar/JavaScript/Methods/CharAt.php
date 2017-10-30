@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rules\Grammar\CallableFunction;
@@ -18,6 +21,7 @@ final class CharAt extends CallableFunction
 {
     /**
      * @param BaseToken $offset
+     *
      * @return BaseToken
      */
     public function call($offset = null): BaseToken
@@ -26,8 +30,7 @@ final class CharAt extends CallableFunction
 
         if (!$offset) {
             $offset = 0;
-        }
-        elseif (!$offset instanceof TokenInteger) {
+        } elseif (!$offset instanceof TokenInteger) {
             $offset = (int) $offset->getValue();
         } else {
             $offset = $offset->getValue();

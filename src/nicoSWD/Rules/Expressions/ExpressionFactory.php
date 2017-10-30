@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\Expressions;
 
 use nicoSWD\Rules\Tokens;
@@ -22,11 +25,11 @@ final class ExpressionFactory implements ExpressionFactoryInterface
         Tokens\TokenSmaller::class        => LessThanExpression::class,
         Tokens\TokenSmallerEqual::class   => LessThanEqualExpression::class,
         Tokens\TokenGreaterEqual::class   => GreaterThanEqualExpression::class,
-        Tokens\TokenIn::class             => InExpression::class
+        Tokens\TokenIn::class             => InExpression::class,
     ];
 
     public function createFromOperator(Tokens\BaseToken $operator): BaseExpression
     {
-         return new $this->classLookup[get_class($operator)]();
+        return new $this->classLookup[get_class($operator)]();
     }
 }

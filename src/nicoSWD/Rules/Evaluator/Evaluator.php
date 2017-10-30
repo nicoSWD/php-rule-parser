@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\Evaluator;
 
 class Evaluator implements EvaluatorInterface
@@ -36,7 +39,9 @@ class Evaluator implements EvaluatorInterface
 
     /**
      * @param string[] $group
+     *
      * @throws Exception\UnknownSymbolException
+     *
      * @return int|null
      */
     private function evalGroup(array $group)

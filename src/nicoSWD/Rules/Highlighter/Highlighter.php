@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\Highlighter;
 
-use nicoSWD\Rules\Tokenizer\TokenStack;
 use nicoSWD\Rules\Tokenizer\TokenizerInterface;
+use nicoSWD\Rules\Tokenizer\TokenStack;
 use nicoSWD\Rules\Tokens\TokenType;
 
 final class Highlighter
@@ -27,7 +30,7 @@ final class Highlighter
         TokenType::VARIABLE        => 'color: #007694; font-weight: 900;',
         TokenType::METHOD          => 'color: #000',
         TokenType::SQUARE_BRACKETS => '',
-        TokenType::COMMA           => ''
+        TokenType::COMMA           => '',
     ];
 
     /** @var TokenizerInterface */
@@ -61,12 +64,12 @@ final class Highlighter
         foreach ($tokens as $token) {
             if ($style = $this->styles[$token->getType()]) {
                 $value = htmlentities($token->getOriginalValue(), ENT_QUOTES, 'utf-8');
-                $string .= '<span style="' . $style . '">' . $value . '</span>';
+                $string .= '<span style="'.$style.'">'.$value.'</span>';
             } else {
                 $string .= $token->getOriginalValue();
             }
         }
 
-        return '<pre><code>' . $string . '</code></pre>';
+        return '<pre><code>'.$string.'</code></pre>';
     }
 }

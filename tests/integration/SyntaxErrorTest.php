@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\tests;
 
 use nicoSWD\Rules\Rule;
@@ -26,7 +29,7 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = '(totalamount != 3) ()';
 
         $this->evaluate($rule, [
-            'totalamount' => '-1'
+            'totalamount' => '-1',
         ]);
     }
 

@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules;
 
 use Exception;
@@ -27,7 +30,7 @@ class Rule
 
     public function __construct(string $rule, array $variables = [])
     {
-        $this->container = require __DIR__ . '/container.php';
+        $this->container = require __DIR__.'/container.php';
         $this->parser = $this->container->parser($variables);
         $this->rule = $rule;
     }
@@ -57,6 +60,7 @@ class Rule
             $this->parsedRule = $this->parser->parse($this->rule);
         } catch (Exception $e) {
             $this->error = $e->getMessage();
+
             return false;
         }
 

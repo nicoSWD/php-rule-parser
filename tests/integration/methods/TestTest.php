@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\tests\methods;
 
 use nicoSWD\Rules\tests\integration\AbstractTestBase;
@@ -29,8 +32,8 @@ class TestTest extends AbstractTestBase
     {
         $this->assertTrue($this->evaluate('/^foo$/i.test("FOO") === true'));
         $this->assertFalse($this->evaluate('/^foo$/.test("FOO") === true'));
-        $this->assertTrue($this->evaluate('/^foo$/m.test("' . "\n\n" .'foo") === true'));
-        $this->assertFalse($this->evaluate('/^foo$/.test("' . "\n\n" .'foo") === true'));
+        $this->assertTrue($this->evaluate('/^foo$/m.test("'."\n\n".'foo") === true'));
+        $this->assertFalse($this->evaluate('/^foo$/.test("'."\n\n".'foo") === true'));
     }
 
     public function testGModifierIsIgnored()

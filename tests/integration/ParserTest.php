@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\tests;
 
 use nicoSWD\Rules\tests\integration\AbstractTestBase;
@@ -20,7 +23,7 @@ class ParserTest extends AbstractTestBase
         $this->assertTrue($this->evaluate($rule, [
             'foo' => 'MA',
             'bar' => 'EGP',
-            'baz' => '50001'
+            'baz' => '50001',
         ]));
 
         $rule = 'foo == "EG" && bar=="EGP" && baz>50000';
@@ -28,7 +31,7 @@ class ParserTest extends AbstractTestBase
         $this->assertFalse($this->evaluate($rule, [
             'foo' => 'MA',
             'bar' => 'EGP',
-            'baz' => '50001'
+            'baz' => '50001',
         ]));
 
         $rule = '((foo=="EG") && (bar=="EGP") && (baz>50000))';
@@ -36,7 +39,7 @@ class ParserTest extends AbstractTestBase
         $this->assertFalse($this->evaluate($rule, [
             'foo' => 'MA',
             'bar' => 'EGP',
-            'baz' => '50001'
+            'baz' => '50001',
         ]));
     }
 
@@ -51,7 +54,7 @@ class ParserTest extends AbstractTestBase
         $this->assertTrue($this->evaluate($rule, [
             'bar' => 'MA',
             'foo' => 'EGP',
-            'baz' => '50001'
+            'baz' => '50001',
         ]));
     }
 
@@ -77,13 +80,13 @@ class ParserTest extends AbstractTestBase
         $this->assertTrue($this->evaluate($rule, [
             'bar' => 'SA',
             'qux' => '0002950751',
-            'BAR' => 1
+            'BAR' => 1,
         ]));
 
         $this->assertFalse($this->evaluate($rule, [
             'bar' => 'SA',
             'qux' => '0002950751',
-            'BAR' => '0'
+            'BAR' => '0',
         ]));
     }
 
@@ -102,7 +105,7 @@ class ParserTest extends AbstractTestBase
             'bar' => 'MA',
             'foo' => 'MAD',
             'qux' => '0002950751',
-            'baz' => '999999'
+            'baz' => '999999',
         ]));
     }
 
@@ -116,7 +119,7 @@ class ParserTest extends AbstractTestBase
             )';
 
         $this->assertTrue($this->evaluate($rule, [
-            'foo' => '-1'
+            'foo' => '-1',
         ]));
     }
 
@@ -130,7 +133,7 @@ class ParserTest extends AbstractTestBase
             ';
 
         $this->assertTrue($this->evaluate($rule, [
-            'foo' => '-1'
+            'foo' => '-1',
         ]));
     }
 }

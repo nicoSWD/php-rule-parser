@@ -4,23 +4,28 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rules\Grammar\CallableFunction;
+use nicoSWD\Rules\Tokens\BaseToken;
 use nicoSWD\Rules\Tokens\TokenRegex;
 use nicoSWD\Rules\Tokens\TokenString;
-use nicoSWD\Rules\Tokens\BaseToken;
 
 final class Replace extends CallableFunction
 {
     /**
      * @param BaseToken $search
      * @param BaseToken $replace
-     * @return BaseToken
+     *
      * @throws \Exception
+     *
+     * @return BaseToken
      */
     public function call($search = null, $replace = null): BaseToken
     {
@@ -54,13 +59,13 @@ final class Replace extends CallableFunction
 
     private function doRegexReplace($search, $replace)
     {
-        list ($expression, $modifiers) = $this->splitRegex($search);
+        list($expression, $modifiers) = $this->splitRegex($search);
 
         $modifiers = str_replace('g', '', $modifiers, $count);
         $limit = $count > 0 ? -1 : 1;
 
         return preg_replace(
-            $expression . $modifiers,
+            $expression.$modifiers,
             $replace,
             $this->token->getValue(),
             $limit

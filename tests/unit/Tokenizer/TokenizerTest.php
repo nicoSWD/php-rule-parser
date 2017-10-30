@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\tests\unit\Tokenizer;
 
 use nicoSWD\Rules\Grammar\Grammar;
-use nicoSWD\Rules\Tokens\Token;
 use nicoSWD\Rules\Tokenizer\Tokenizer;
 use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\Tokens\Token;
 use nicoSWD\Rules\Tokens\TokenBool;
 use nicoSWD\Rules\Tokens\TokenFactory;
 use nicoSWD\Rules\Tokens\TokenSpace;
@@ -95,8 +98,7 @@ class TokenizerTest extends TestCase
 
     private function getTokenizer(array $definition): Tokenizer
     {
-        $grammar = new class ($definition) extends Grammar
-        {
+        $grammar = new class($definition) extends Grammar {
             private $definition = [];
 
             public function __construct(array $definition)

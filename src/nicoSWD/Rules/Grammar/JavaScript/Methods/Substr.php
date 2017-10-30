@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rules\Grammar\CallableFunction;
@@ -18,6 +21,7 @@ final class Substr extends CallableFunction
     /**
      * @param BaseToken $start
      * @param BaseToken $offset
+     *
      * @return BaseToken
      */
     public function call($start = null, $offset = null): BaseToken

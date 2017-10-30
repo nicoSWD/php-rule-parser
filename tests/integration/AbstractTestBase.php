@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
+ *
  * @link        https://github.com/nicoSWD
+ *
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+
 namespace nicoSWD\Rules\tests\integration;
 
-use nicoSWD\Rules\TokenStream\AST;
 use nicoSWD\Rules\Compiler\CompilerFactory;
 use nicoSWD\Rules\Evaluator\Evaluator;
+use nicoSWD\Rules\Expressions\ExpressionFactory as ExpressionFactory;
 use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rules\Parser\Parser;
-use nicoSWD\Rules\Expressions\ExpressionFactory as ExpressionFactory;
 use nicoSWD\Rules\Tokenizer\Tokenizer;
 use nicoSWD\Rules\Tokens\TokenFactory;
+use nicoSWD\Rules\TokenStream\AST;
 use nicoSWD\Rules\TokenStream\TokenStream;
 use PHPUnit\Framework\TestCase;
 
