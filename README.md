@@ -1,7 +1,7 @@
 ## PHP Rule Engine (Parser and Evaluator for PHP 7)
 
 |  | Build Status | Code Quality | Coverage | Style CI |
-|:----------------:|:----------------:|:----------:|:----------:|
+|:----------------:|:----------------:|:----------:|:----------:|:----------:|
 | [Master][Master] | [![Build status][Master image]][Master] | [![Code Quality][Master quality image]][Master quality] | [![Build status][Master coverage image]][Master coverage] | [![StyleCI](https://styleci.io/repos/39503126/shield?branch=master)](https://styleci.io/repos/39503126)
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
