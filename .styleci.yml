@@ -8,5 +8,4 @@ finder:
 enabled:
   - short_array_syntax
   - strict
-  - unalign_double_arrow
   - cast_spaces
