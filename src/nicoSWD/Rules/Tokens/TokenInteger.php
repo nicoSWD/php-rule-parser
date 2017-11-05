@@ -13,7 +13,7 @@ final class TokenInteger extends BaseToken
 {
     public function getType(): int
     {
-        return TokenType::VALUE;
+        return TokenType::INT_VALUE;
     }
 
     public function getValue(): int

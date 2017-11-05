@@ -17,7 +17,7 @@ final class NodeString extends BaseNode
     {
         $current = $this->getCurrentNode();
 
-        while ($current->supportsMethodCalls() && $this->hasMethodCall()) {
+        while ($this->hasMethodCall()) {
             $current = $this->getMethod($current)->call(...$this->getArguments());
         }
 

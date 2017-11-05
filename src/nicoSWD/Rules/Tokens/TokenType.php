@@ -9,15 +9,17 @@ namespace nicoSWD\Rules\Tokens;
 
 class TokenType
 {
-    const VALUE = 1;
-    const OPERATOR = 2;
-    const LOGICAL = 3;
-    const VARIABLE = 4;
-    const COMMENT = 5;
-    const SPACE = 6;
-    const UNKNOWN = 7;
-    const PARENTHESIS = 8;
-    const SQUARE_BRACKETS = 9;
-    const COMMA = 10;
-    const METHOD = 11;
+    const INT_VALUE = 2;
+    const VALUE = 4;
+    const LOGICAL = 8;
+    const VARIABLE = 16;
+    const COMMENT = 32;
+    const SPACE = 64;
+    const UNKNOWN = 128;
+    const PARENTHESIS = 256;
+    const SQUARE_BRACKET = 512;
+    const COMMA = 1024;
+    const METHOD = 2048;
+    const FUNCTION = 8096;
+    const OPERATOR = 16192;
 }

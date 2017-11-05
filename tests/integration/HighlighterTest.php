@@ -27,7 +27,7 @@ class HighlighterTest extends TestCase
     public function testGivenAStyleForATokenGroupItShouldBeUsed()
     {
         $this->highlighter->setStyle(
-            Rules\Tokens\TokenType::SQUARE_BRACKETS,
+            Rules\Tokens\TokenType::SQUARE_BRACKET,
             'color: gray;'
         );
 

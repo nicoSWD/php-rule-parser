@@ -62,4 +62,12 @@ class ParserException extends \Exception
             $token->getLine()
         ));
     }
+
+    public static function undefinedFunction(string $name): self
+    {
+        return new self(sprintf(
+            '%s is not defined',
+            $name
+        ));
+    }
 }

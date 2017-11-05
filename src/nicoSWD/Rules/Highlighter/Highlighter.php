@@ -17,17 +17,19 @@ final class Highlighter
 {
     /** @var string[] */
     private $styles = [
-        TokenType::COMMENT         => 'color: #948a8a; font-style: italic;',
-        TokenType::LOGICAL         => 'color: #c72d2d;',
-        TokenType::OPERATOR        => 'color: #000;',
-        TokenType::PARENTHESIS     => 'color: #000;',
-        TokenType::SPACE           => '',
-        TokenType::UNKNOWN         => '',
-        TokenType::VALUE           => 'color: #e36700; font-style: italic;',
-        TokenType::VARIABLE        => 'color: #007694; font-weight: 900;',
-        TokenType::METHOD          => 'color: #000',
-        TokenType::SQUARE_BRACKETS => '',
-        TokenType::COMMA           => ''
+        TokenType::COMMENT        => 'color: #948a8a; font-style: italic;',
+        TokenType::LOGICAL        => 'color: #c72d2d;',
+        TokenType::OPERATOR       => 'color: #000;',
+        TokenType::PARENTHESIS    => 'color: #000;',
+        TokenType::SPACE          => '',
+        TokenType::UNKNOWN        => '',
+        TokenType::VALUE          => 'color: #e36700; font-style: italic;',
+        TokenType::VARIABLE       => 'color: #007694; font-weight: 900;',
+        TokenType::METHOD         => 'color: #000',
+        TokenType::SQUARE_BRACKET => '',
+        TokenType::COMMA          => '',
+        TokenType::FUNCTION       => '',
+        TokenType::INT_VALUE      => '',
     ];
 
     /** @var TokenizerInterface */

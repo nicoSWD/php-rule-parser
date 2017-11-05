@@ -9,6 +9,9 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Tokens;
 
+use nicoSWD\Rules\TokenStream\Nodes\NodeString;
+use nicoSWD\Rules\TokenStream\TokenStream;
+
 final class TokenRegex extends BaseToken
 {
     public function getType(): int
@@ -16,8 +19,8 @@ final class TokenRegex extends BaseToken
         return TokenType::VALUE;
     }
 
-    public function supportsMethodCalls(): bool
+    public function createNode(TokenStream $tokenStream): BaseToken
     {
-        return true;
+        return (new NodeString($tokenStream))->getNode();
     }
 }

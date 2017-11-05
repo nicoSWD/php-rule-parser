@@ -15,13 +15,11 @@ use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Grammar\CallableUserFunction;
 use nicoSWD\Rules\Tokenizer\TokenStack;
 use nicoSWD\Rules\Tokens;
-use nicoSWD\Rules\TokenStream\Nodes;
 
 class TokenStream implements Iterator
 {
     /** @var TokenStack */
     protected $stack;
-
     /** @var AST */
     private $ast;
 
@@ -46,28 +44,11 @@ class TokenStream implements Iterator
 
     public function current()
     {
-        $current = $this->stack->current();
-
-        switch (get_class($current)) {
-            default:
-                return $current;
-            case Tokens\TokenString::class:
-            case Tokens\TokenEncapsedString::class:
-            case Tokens\TokenRegex::class:
-                $current = new Nodes\NodeString($this);
-                break;
-            case Tokens\TokenOpeningArray::class:
-                $current = new Nodes\NodeArray($this);
-                break;
-            case Tokens\TokenVariable::class:
-                $current = new Nodes\NodeVariable($this);
-                break;
-            case Tokens\TokenFunction::class:
-                $current = new Nodes\NodeFunction($this);
-                break;
+        if ($this->stack->valid()) {
+            return $this->stack->current()->createNode($this);
         }
 
-        return $current->getNode();
+        return null;
     }
 
     public function key(): int

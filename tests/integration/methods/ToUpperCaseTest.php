@@ -35,12 +35,11 @@ class ToUpperCaseTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('foo.toUpperCase() === "1"', ['foo' => 1]));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unknown token ".toUpperCase(" at position 1 on line 1
-     */
     public function testCallOnIntegersThrowsException()
     {
-        $this->assertTrue($this->evaluate('1.toUpperCase() === "1"', ['foo' => 1]));
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Unknown token ".toUpperCase(" at position 1 on line 1');
+
+        $this->evaluate('1.toUpperCase() === "1"', ['foo' => 1]);
     }
 }

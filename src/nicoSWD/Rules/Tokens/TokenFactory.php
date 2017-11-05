@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
@@ -10,7 +10,7 @@ declare(strict_types = 1);
 namespace nicoSWD\Rules\Tokens;
 
 use nicoSWD\Rules\Parser\Exception\ParserException;
-use nicoSWD\Rules\TokenStream\TokenCollection;
+use nicoSWD\Rules\TokenStream;
 
 class TokenFactory
 {
@@ -60,7 +60,7 @@ class TokenFactory
             case 'double':
                 return new TokenFloat($value);
             case 'array':
-                $params = new TokenCollection();
+                $params = new TokenStream\TokenCollection();
 
                 foreach ($value as $item) {
                     $params->attach($this->createFromPHPType($item));

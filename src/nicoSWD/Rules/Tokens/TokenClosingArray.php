@@ -13,6 +13,6 @@ final class TokenClosingArray extends BaseToken
 {
     public function getType() : int
     {
-        return TokenType::SQUARE_BRACKETS;
+        return TokenType::SQUARE_BRACKET;
     }
 }

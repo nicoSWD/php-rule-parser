@@ -9,10 +9,18 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Tokens;
 
+use nicoSWD\Rules\TokenStream\Nodes\NodeArray;
+use nicoSWD\Rules\TokenStream\TokenStream;
+
 final class TokenOpeningArray extends BaseToken
 {
     public function getType(): int
     {
-        return TokenType::SQUARE_BRACKETS;
+        return TokenType::SQUARE_BRACKET;
+    }
+
+    public function createNode(TokenStream $tokenStream): BaseToken
+    {
+        return (new NodeArray($tokenStream))->getNode();
     }
 }

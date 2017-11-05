@@ -9,6 +9,7 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\TokenStream\Nodes;
 
+use Closure;
 use nicoSWD\Rules\TokenStream\TokenCollection;
 use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Grammar\CallableFunction;
@@ -20,10 +21,8 @@ abstract class BaseNode
 {
     /** @var TokenStream */
     protected $tokenStream;
-
     /** @var string */
     protected $methodName = '';
-
     /** @var int */
     protected $methodOffset = 0;
 
@@ -48,7 +47,7 @@ abstract class BaseNode
                 break;
             } elseif ($token->isWhitespace()) {
                 continue;
-            } elseif ($token instanceof Tokens\TokenMethod) {
+            } elseif ($token->isOfType(TokenType::METHOD)) {
                 $this->methodName = $token->getValue();
                 $this->methodOffset = $token->getOffset();
 
@@ -75,7 +74,7 @@ abstract class BaseNode
         return trim(ltrim(rtrim($this->methodName, "\r\n("), '.'));
     }
 
-    public function getFunction(): \Closure
+    public function getFunction(): Closure
     {
         return $this->tokenStream->getFunction($this->getFunctionName());
     }
@@ -87,7 +86,7 @@ abstract class BaseNode
 
     public function getArrayItems(): TokenCollection
     {
-        return $this->getCommaSeparatedValues(TokenType::SQUARE_BRACKETS);
+        return $this->getCommaSeparatedValues(TokenType::SQUARE_BRACKET);
     }
 
     public function getArguments(): TokenCollection
@@ -108,35 +107,35 @@ abstract class BaseNode
         do {
             $this->tokenStream->next();
 
-            if (!$current = $this->tokenStream->current()) {
+            if (!$token = $this->tokenStream->current()) {
                 throw new ParserException('Unexpected end of string');
             }
 
-            if ($current->getType() === TokenType::VALUE) {
+            if ($token->getType() & (TokenType::VALUE | TokenType::INT_VALUE)) {
                 if ($commaExpected) {
-                    throw ParserException::unexpectedToken($current);
+                    throw ParserException::unexpectedToken($token);
                 }
 
                 $commaExpected = true;
-                $items->attach($current);
-            } elseif ($current instanceof Tokens\TokenComma) {
+                $items->attach($token);
+            } elseif ($token->isOfType(TokenType::COMMA)) {
                 if (!$commaExpected) {
-                    throw ParserException::unexpectedToken($current);
+                    throw ParserException::unexpectedToken($token);
                 }
 
                 $commaExpected = false;
-            } elseif ($current->getType() === $stopAt) {
+            } elseif ($token->getType() === $stopAt) {
                 break;
-            } elseif (!$current->isWhitespace()) {
-                throw ParserException::unexpectedToken($current);
+            } elseif (!$token->isWhitespace()) {
+                throw ParserException::unexpectedToken($token);
             }
         } while ($this->tokenStream->valid());
 
         if (!$commaExpected && $items->count() > 0) {
             throw new ParserException(sprintf(
                 'Unexpected "," at position %d on line %d',
-                $current->getPosition(),
-                $current->getLine()
+                $token->getPosition(),
+                $token->getLine()
             ));
         }
 

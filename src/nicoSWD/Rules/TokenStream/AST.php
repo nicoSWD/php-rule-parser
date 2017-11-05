@@ -22,19 +22,14 @@ class AST
 {
     /** @var TokenizerInterface */
     private $tokenizer;
-
     /** @var TokenFactory */
-    private $tokenFactory;
-
+    public $tokenFactory;
     /** @var TokenStream */
     private $tokenStream;
-
-    /** @var Callable[] */
+    /** @var Closure[] */
     private $functions = [];
-
     /** @var mixed[] */
     private $variables = [];
-
     /** @var string[] */
     private $methods = [];
 
@@ -56,14 +51,11 @@ class AST
     public function getFunction(string $name): Closure
     {
         if (empty($this->functions)) {
-            $this->registerFunctions($this->tokenizer->getGrammar()->getInternalFunctions());
+            $this->registerFunctions();
         }
 
         if (!isset($this->functions[$name])) {
-            throw new ParserException(sprintf(
-                '%s is not defined',
-                $name
-            ));
+            throw ParserException::undefinedFunction($name);
         }
 
         return $this->functions[$name];
@@ -72,31 +64,14 @@ class AST
     public function getMethod(string $methodName, BaseToken $token): CallableUserFunction
     {
         if (empty($this->methods)) {
-            $this->registerMethods($this->tokenizer->getGrammar()->getInternalMethods());
+            $this->registerMethods();
         }
 
         if (!isset($this->methods[$methodName])) {
             throw new Exception\UndefinedMethodException();
         }
 
-        $method = new $this->methods[$methodName]($token);
-
-        if (!$method instanceof CallableUserFunction) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    "%s must be an instance of %s",
-                    $methodName,
-                    CallableUserFunction::class
-                )
-            );
-        }
-
-        return $method;
-    }
-
-    public function variableExists(string $name): bool
-    {
-        return array_key_exists($name, $this->variables);
+        return new $this->methods[$methodName]($token);
     }
 
     public function setVariables(array $variables)
@@ -113,10 +88,14 @@ class AST
         return $this->tokenFactory->createFromPHPType($this->variables[$name]);
     }
 
+    public function variableExists(string $name): bool
+    {
+        return array_key_exists($name, $this->variables);
+    }
+
     private function registerFunctionClass(string $functionName, string $className)
     {
         $this->functions[$functionName] = function (...$args) use ($className): BaseToken {
-            /** @var CallableUserFunction $function */
             $function = new $className();
 
             if (!$function instanceof CallableUserFunction) {
@@ -133,15 +112,15 @@ class AST
         };
     }
 
-    private function registerFunctions(array $functions)
+    private function registerFunctions()
     {
-        foreach ($functions as $functionName => $function) {
-            $this->registerFunctionClass($functionName, $function);
+        foreach ($this->tokenizer->getGrammar()->getInternalFunctions() as $functionName => $className) {
+            $this->registerFunctionClass($functionName, $className);
         }
     }
 
-    private function registerMethods(array $methods)
+    private function registerMethods()
     {
-        $this->methods = $methods;
+        $this->methods = $this->tokenizer->getGrammar()->getInternalMethods();
     }
 }

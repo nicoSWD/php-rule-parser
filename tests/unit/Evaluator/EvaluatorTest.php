@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\tests\unit\Evaluator;
 
 use nicoSWD\Rules\Evaluator\Evaluator;
+use nicoSWD\Rules\Evaluator\Exception\UnknownSymbolException;
 use PHPUnit\Framework\TestCase;
 
 class EvaluatorTest extends TestCase
@@ -48,5 +49,14 @@ class EvaluatorTest extends TestCase
         $this->assertTrue($this->evaluator->evaluate('0|(0|(0|1))'));
         $this->assertFalse($this->evaluator->evaluate('0|(0|(0|0))'));
         $this->assertFalse($this->evaluator->evaluate('0|(0|(1&0))'));
+    }
+
+    /** @test */
+    public function givenACharacterWhenUnknownItShouldThrowAnException()
+    {
+        $this->expectException(UnknownSymbolException::class);
+        $this->expectExceptionMessage('Unexpected "3"');
+
+        $this->evaluator->evaluate('3|1');
     }
 }

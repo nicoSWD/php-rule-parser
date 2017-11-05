@@ -23,19 +23,19 @@ class Rule
     /** @var string */
     private $error = '';
     /** @var object */
-    private $container;
+    private static $container;
 
     public function __construct(string $rule, array $variables = [])
     {
-        $this->container = require __DIR__ . '/container.php';
-        $this->parser = $this->container->parser($variables);
+        self::$container = require __DIR__ . '/container.php';
+        $this->parser = self::$container->parser($variables);
         $this->rule = $rule;
     }
 
     public function isTrue(): bool
     {
         /** @var EvaluatorInterface $evaluator */
-        $evaluator = $this->container->evaluator();
+        $evaluator = self::$container->evaluator();
 
         return $evaluator->evaluate(
             $this->parsedRule ?:

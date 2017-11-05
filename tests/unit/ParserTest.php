@@ -55,6 +55,20 @@ class ParserTest extends TestCase
     /** @test */
     public function givenARuleStringWhenValidItShouldReturnTheCompiledRule()
     {
+        $tokens = [
+            new TokenOpeningParenthesis('('),
+            new TokenInteger(1),
+            new TokenEqual('=='),
+            new TokenString('1'),
+            new TokenClosingParenthesis(')'),
+            new TokenAnd('&&'),
+            new TokenInteger(2),
+            new TokenGreater('>'),
+            new TokenInteger(1),
+            new TokenSpace(' '),
+            new TokenComment('// true dat!')
+        ];
+
         $compiler = m::mock(CompilerInterface::class);
         $compiler->shouldReceive('addLogical')->once();
         $compiler->shouldReceive('addParentheses')->twice();
@@ -65,42 +79,19 @@ class ParserTest extends TestCase
         $tokenStream = \Mockery::mock(TokenStream::class);
         $tokenStream->shouldReceive('rewind')->once();
         $tokenStream->shouldReceive('next');
-        $tokenStream->shouldReceive('valid')->andReturnUsing(static function () {
-            static $count = 0;
-            return ++$count < 10;
+        $tokenStream->shouldReceive('current')->andReturn(...$tokens);
+        $tokenStream->shouldReceive('valid')->andReturnUsing(function () use (&$tokens) {
+            return !!next($tokens);
         });
-        $tokenStream->shouldReceive('current')->andReturns(
-            new TokenOpeningParenthesis('('),
-            new TokenInteger(1),
-            new TokenEqual('=='),
-            new TokenString("1"),
-            new TokenClosingParenthesis(')'),
-            new TokenAnd('&&'),
-            new TokenInteger(2),
-            new TokenGreater('>'),
-            new TokenInteger(1),
-            new TokenSpace(' '),
-            new TokenComment('// true dat!')
-        );
 
         $this->compilerFactory->shouldReceive('create')->once()->andReturn($compiler);
         $this->ast->shouldReceive('getStream')->once()->andReturn($tokenStream);
 
         $equalExpression = m::mock(BaseExpression::class);
-        $equalExpression->shouldReceive('evaluate')->once()->withArgs(function ($leftValue, $rightValue) {
-            $this->assertSame(1, $leftValue);
-            $this->assertSame('1', $rightValue);
-
-            return true;
-        });
+        $equalExpression->shouldReceive('evaluate')->once()->with(1, '1');
 
         $greaterExpression = m::mock(BaseExpression::class);
-        $greaterExpression->shouldReceive('evaluate')->once()->withArgs(function ($leftValue, $rightValue) {
-            $this->assertSame(2, $leftValue);
-            $this->assertSame(1, $rightValue);
-
-            return true;
-        });
+        $greaterExpression->shouldReceive('evaluate')->once()->with(2, 1);
 
         $this->expressionFactory
             ->shouldReceive('createFromOperator')

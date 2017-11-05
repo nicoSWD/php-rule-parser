@@ -22,13 +22,10 @@ class Parser
 {
     /** @var AST */
     private $ast;
-
     /** @var ExpressionFactoryInterface */
     private $expressionFactory;
-
     /** @var CompilerFactoryInterface */
     private $compilerFactory;
-
     /** @var null|BaseToken */
     private $operator = null;
 
@@ -51,6 +48,7 @@ class Parser
         foreach ($this->ast->getStream($rule) as $token) {
             switch ($token->getType()) {
                 case TokenType::VALUE:
+                case TokenType::INT_VALUE:
                     $values->push($token->getValue());
                     break;
                 case TokenType::LOGICAL:

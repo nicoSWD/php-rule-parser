@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 namespace nicoSWD\Rules\Tokens;
+
+use nicoSWD\Rules\TokenStream\Nodes\NodeString;
+use nicoSWD\Rules\TokenStream\TokenStream;
 
 class TokenString extends BaseToken
 {
@@ -14,8 +19,8 @@ class TokenString extends BaseToken
         return TokenType::VALUE;
     }
 
-    public function supportsMethodCalls() : bool
+    public function createNode(TokenStream $tokenStream): BaseToken
     {
-        return true;
+        return (new NodeString($tokenStream))->getNode();
     }
 }

@@ -9,10 +9,18 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Tokens;
 
+use nicoSWD\Rules\TokenStream\Nodes\NodeVariable;
+use nicoSWD\Rules\TokenStream\TokenStream;
+
 final class TokenVariable extends BaseToken
 {
     public function getType(): int
     {
         return TokenType::VARIABLE;
+    }
+
+    public function createNode(TokenStream $tokenStream): BaseToken
+    {
+        return (new NodeVariable($tokenStream))->getNode();
     }
 }

@@ -16,11 +16,6 @@ final class TokenArray extends BaseToken
         return TokenType::VALUE;
     }
 
-    public function supportsMethodCalls(): bool
-    {
-        return true;
-    }
-
     public function toArray(): array
     {
         $items = [];

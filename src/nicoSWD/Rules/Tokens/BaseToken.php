@@ -10,21 +10,18 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Tokens;
 
 use nicoSWD\Rules\Tokenizer\TokenStack;
+use nicoSWD\Rules\TokenStream\TokenStream;
 
 abstract class BaseToken
 {
     /** @var mixed */
     protected $value;
-
     /** @var int */
     protected $offset = 0;
-
     /** @var TokenStack */
     protected $stack;
-
     /** @var int */
     protected $position = null;
-
     /** @var int */
     protected $line = null;
 
@@ -76,14 +73,19 @@ abstract class BaseToken
         $this->stack = $stack;
     }
 
-    public function supportsMethodCalls(): bool
+    public function isWhitespace(): bool
     {
         return false;
     }
 
-    public function isWhitespace(): bool
+    public function isOfType(int $type): bool
     {
-        return false;
+        return $this->getType() === $type;
+    }
+
+    public function createNode(TokenStream $tokenStream): self
+    {
+        return $this;
     }
 
     public function getPosition(): int
