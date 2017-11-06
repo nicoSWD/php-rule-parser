@@ -29,9 +29,9 @@ $ composer require nicoswd/php-rule-parser
 
 This library works best with one of these bundles below, but they're not required
 
-| Framework     | Packagist     |
-| ------------- |:-------------:|
-| [Symfony](https://github.com/nicoSWD/rule-engine-bundle) | [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/symfony-rule-engine-bundle.svg)](https://packagist.org/packages/nicoswd/symfony-rule-engine-bundle) |
+| Bundle   | Framework      | Packagist     |
+| -------- |  ------------- | ------------- |
+| [nicoSWD/rule-engine-bundle](https://github.com/nicoSWD/rule-engine-bundle) | Symfony | [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/symfony-rule-engine-bundle.svg)](https://packagist.org/packages/nicoswd/symfony-rule-engine-bundle) |
 
 ## Usage
 
