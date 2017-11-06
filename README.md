@@ -8,7 +8,7 @@
 
 If you're using PHP 5, you might want to look at [version 0.4.0](https://github.com/nicoSWD/php-rule-parser/tree/0.4.0).
 
-You're looking at a PHP library to parse and evaluate text based rules with a Javascript-like syntax. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
+You're looking at a standalone PHP library to parse and evaluate text based rules with a Javascript-like syntax. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
 
 This library has initially been used to change and configure the behavior of certain "Workflows" (without changing actual code) in an intranet application, but it may serve a purpose elsewhere.
 
@@ -24,6 +24,14 @@ Via Composer
 ```bash
 $ composer require nicoswd/php-rule-parser
 ```
+
+If you're using one of these frameworks, take a look at the bundle
+
+## Bundles
+
+| Framework     | Packagist     |
+| ------------- |:-------------:|
+| [Symfony](https://github.com/nicoSWD/rule-engine-bundle) | [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/symfony-rule-engine-bundle.svg)](https://packagist.org/packages/nicoswd/symfony-rule-engine-bundle) |
 
 ## Usage
 
