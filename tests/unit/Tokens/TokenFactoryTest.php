@@ -10,26 +10,20 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\tests\unit\Tokens;
 
 use nicoSWD\Rules\tests\integration\AbstractTestBase;
-use nicoSWD\Rules\Tokens\TokenArray;
-use nicoSWD\Rules\Tokens\TokenBool;
-use nicoSWD\Rules\Tokens\TokenFactory;
-use nicoSWD\Rules\Tokens\TokenFloat;
-use nicoSWD\Rules\Tokens\TokenInteger;
-use nicoSWD\Rules\Tokens\TokenNull;
-use nicoSWD\Rules\Tokens\TokenString;
+use nicoSWD\Rules\TokenStream\Token;
 
 class TokenFactoryTest extends AbstractTestBase
 {
     public function testSimpleTypeReturnsCorrectInstance()
     {
-        $tokenFactory = new TokenFactory();
+        $tokenFactory = new Token\TokenFactory();
 
-        $this->assertInstanceOf(TokenNull::class, $tokenFactory->createFromPHPType(null));
-        $this->assertInstanceOf(TokenString::class, $tokenFactory->createFromPHPType('string sample'));
-        $this->assertInstanceOf(TokenFloat::class, $tokenFactory->createFromPHPType(0.3));
-        $this->assertInstanceOf(TokenInteger::class, $tokenFactory->createFromPHPType(4));
-        $this->assertInstanceOf(TokenBool::class, $tokenFactory->createFromPHPType(true));
-        $this->assertInstanceOf(TokenArray::class, $tokenFactory->createFromPHPType([1, 2]));
+        $this->assertInstanceOf(Token\TokenNull::class, $tokenFactory->createFromPHPType(null));
+        $this->assertInstanceOf(Token\TokenString::class, $tokenFactory->createFromPHPType('string sample'));
+        $this->assertInstanceOf(Token\TokenFloat::class, $tokenFactory->createFromPHPType(0.3));
+        $this->assertInstanceOf(Token\TokenInteger::class, $tokenFactory->createFromPHPType(4));
+        $this->assertInstanceOf(Token\TokenBool::class, $tokenFactory->createFromPHPType(true));
+        $this->assertInstanceOf(Token\TokenArray::class, $tokenFactory->createFromPHPType([1, 2]));
     }
 
     /**
@@ -38,7 +32,7 @@ class TokenFactoryTest extends AbstractTestBase
      */
     public function testUnsupportedTypeThrowsException()
     {
-        $tokenFactory = new TokenFactory();
+        $tokenFactory = new Token\TokenFactory();
         $tokenFactory->createFromPHPType(new \stdClass());
     }
 }

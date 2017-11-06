@@ -11,7 +11,7 @@ namespace nicoSWD\Rules\Highlighter;
 
 use nicoSWD\Rules\Tokenizer\TokenStack;
 use nicoSWD\Rules\Tokenizer\TokenizerInterface;
-use nicoSWD\Rules\Tokens\TokenType;
+use nicoSWD\Rules\TokenStream\Token\TokenType;
 
 final class Highlighter
 {

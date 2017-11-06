@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Tokenizer;
 
 use nicoSWD\Rules\Grammar\Grammar;
-use nicoSWD\Rules\Tokens\TokenFactory;
+use nicoSWD\Rules\TokenStream\Token\TokenFactory;
 use SplPriorityQueue;
 use stdClass;
 

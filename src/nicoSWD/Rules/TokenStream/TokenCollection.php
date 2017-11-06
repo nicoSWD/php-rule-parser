@@ -9,13 +9,12 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\TokenStream;
 
-use nicoSWD\Rules\Tokens\BaseToken;
 use SplObjectStorage;
 
 final class TokenCollection extends SplObjectStorage
 {
     /**
-     * @return BaseToken|null
+     * @return Token\BaseToken|null
      */
     public function current()
     {

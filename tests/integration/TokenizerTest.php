@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rules\Tokenizer\Tokenizer;
-use nicoSWD\Rules\Tokens\TokenFactory;
+use nicoSWD\Rules\TokenStream\Token\TokenFactory;
 use PHPUnit\Framework\TestCase;
 
 class TokenizerTest extends TestCase

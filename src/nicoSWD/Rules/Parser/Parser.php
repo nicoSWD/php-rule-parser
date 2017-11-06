@@ -13,9 +13,9 @@ use nicoSWD\Rules\Compiler\CompilerInterface;
 use nicoSWD\Rules\Compiler\CompilerFactoryInterface;
 use nicoSWD\Rules\Compiler\Exception\MissingOperatorException;
 use nicoSWD\Rules\Expressions\ExpressionFactoryInterface;
-use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenType;
 use nicoSWD\Rules\TokenStream\AST;
+use nicoSWD\Rules\TokenStream\Token\BaseToken;
+use nicoSWD\Rules\TokenStream\Token\TokenType;
 use SplStack;
 
 class Parser

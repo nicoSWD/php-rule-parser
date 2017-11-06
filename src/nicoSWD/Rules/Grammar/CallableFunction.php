@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Grammar;
 
-use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\TokenStream\Token\BaseToken;
 
 abstract class CallableFunction implements CallableUserFunction
 {

@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rules\Grammar\CallableFunction;
-use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenInteger;
+use nicoSWD\Rules\TokenStream\Token\BaseToken;
+use nicoSWD\Rules\TokenStream\Token\TokenInteger;
 
 final class IndexOf extends CallableFunction
 {

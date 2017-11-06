@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rules\Grammar\CallableFunction;
-use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenArray;
-use nicoSWD\Rules\Tokens\TokenString;
+use nicoSWD\Rules\TokenStream\Token\BaseToken;
+use nicoSWD\Rules\TokenStream\Token\TokenArray;
+use nicoSWD\Rules\TokenStream\Token\TokenString;
 
 final class Concat extends CallableFunction
 {

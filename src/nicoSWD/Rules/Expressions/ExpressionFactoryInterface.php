@@ -7,9 +7,9 @@
  */
 namespace nicoSWD\Rules\Expressions;
 
-use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\TokenStream\Token\BaseToken;
 
 interface ExpressionFactoryInterface
 {
-    public function createFromOperator(Tokens\BaseToken $operator): BaseExpression;
+    public function createFromOperator(BaseToken $operator): BaseExpression;
 }

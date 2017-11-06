@@ -11,8 +11,8 @@ namespace nicoSWD\Rules\Grammar\JavaScript\Functions;
 
 use nicoSWD\Rules\Grammar\CallableFunction;
 use nicoSWD\Rules\Grammar\CallableUserFunction;
-use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenInteger;
+use nicoSWD\Rules\TokenStream\Token\BaseToken;
+use nicoSWD\Rules\TokenStream\Token\TokenInteger;
 
 final class ParseInt extends CallableFunction implements CallableUserFunction
 {

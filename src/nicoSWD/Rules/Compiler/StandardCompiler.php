@@ -11,9 +11,9 @@ namespace nicoSWD\Rules\Compiler;
 
 use nicoSWD\Rules\Compiler\Exception\MissingOperatorException;
 use nicoSWD\Rules\Parser\Exception\ParserException;
-use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenAnd;
-use nicoSWD\Rules\Tokens\TokenOpeningParenthesis;
+use nicoSWD\Rules\TokenStream\Token\BaseToken;
+use nicoSWD\Rules\TokenStream\Token\TokenAnd;
+use nicoSWD\Rules\TokenStream\Token\TokenOpeningParenthesis;
 
 class StandardCompiler implements CompilerInterface
 {

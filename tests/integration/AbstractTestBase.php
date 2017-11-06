@@ -14,9 +14,9 @@ use nicoSWD\Rules\Compiler\CompilerFactory;
 use nicoSWD\Rules\Evaluator\Evaluator;
 use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rules\Parser\Parser;
-use nicoSWD\Rules\Expressions\ExpressionFactory as ExpressionFactory;
+use nicoSWD\Rules\Expressions\ExpressionFactory;
 use nicoSWD\Rules\Tokenizer\Tokenizer;
-use nicoSWD\Rules\Tokens\TokenFactory;
+use nicoSWD\Rules\TokenStream\Token\TokenFactory;
 use nicoSWD\Rules\TokenStream\TokenStream;
 use PHPUnit\Framework\TestCase;
 

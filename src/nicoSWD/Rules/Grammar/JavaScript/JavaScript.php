@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace nicoSWD\Rules\Grammar\JavaScript;
 
 use nicoSWD\Rules\Grammar\Grammar;
-use nicoSWD\Rules\Tokens\Token;
+use nicoSWD\Rules\TokenStream\Token\Token;
 
 class JavaScript extends Grammar
 {

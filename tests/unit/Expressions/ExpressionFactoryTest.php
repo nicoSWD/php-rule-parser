@@ -11,8 +11,7 @@ namespace nicoSWD\Rules\tests\unit\Expressions;
 
 use nicoSWD\Rules\Expressions;
 use nicoSWD\Rules\Expressions\ExpressionFactory;
-use nicoSWD\Rules\Tokens;
-use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\TokenStream\Token;
 use PHPUnit\Framework\TestCase;
 
 class ExpressionFactoryTest extends TestCase
@@ -29,7 +28,7 @@ class ExpressionFactoryTest extends TestCase
      * @test
      * @dataProvider expressionProvider
      */
-    public function givenAnEqualOperatorItShouldCreateAnEqualExpression(string $expressionClass, BaseToken $token)
+    public function givenAnEqualOperatorItShouldCreateAnEqualExpression(string $expressionClass, Token\BaseToken $token)
     {
         $this->assertInstanceOf(
             $expressionClass,
@@ -40,15 +39,15 @@ class ExpressionFactoryTest extends TestCase
     public function expressionProvider(): array
     {
         return [
-            [Expressions\EqualExpression::class, new Tokens\TokenEqual('==')],
-            [Expressions\EqualStrictExpression::class, new Tokens\TokenEqualStrict('===')],
-            [Expressions\NotEqualExpression::class, new Tokens\TokenNotEqual('!=')],
-            [Expressions\NotEqualStrictExpression::class, new Tokens\TokenNotEqualStrict('!==')],
-            [Expressions\GreaterThanExpression::class, new Tokens\TokenGreater('>')],
-            [Expressions\LessThanExpression::class, new Tokens\TokenSmaller('<')],
-            [Expressions\LessThanEqualExpression::class, new Tokens\TokenSmallerEqual('<=')],
-            [Expressions\GreaterThanEqualExpression::class, new Tokens\TokenGreaterEqual('>=')],
-            [Expressions\InExpression::class, new Tokens\TokenIn('in')],
+            [Expressions\EqualExpression::class, new Token\TokenEqual('==')],
+            [Expressions\EqualStrictExpression::class, new Token\TokenEqualStrict('===')],
+            [Expressions\NotEqualExpression::class, new Token\TokenNotEqual('!=')],
+            [Expressions\NotEqualStrictExpression::class, new Token\TokenNotEqualStrict('!==')],
+            [Expressions\GreaterThanExpression::class, new Token\TokenGreater('>')],
+            [Expressions\LessThanExpression::class, new Token\TokenSmaller('<')],
+            [Expressions\LessThanEqualExpression::class, new Token\TokenSmallerEqual('<=')],
+            [Expressions\GreaterThanEqualExpression::class, new Token\TokenGreaterEqual('>=')],
+            [Expressions\InExpression::class, new Token\TokenIn('in')],
         ];
     }
 }

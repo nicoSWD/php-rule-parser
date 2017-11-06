@@ -7,7 +7,7 @@
  */
 namespace nicoSWD\Rules\Compiler;
 
-use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\TokenStream\Token\BaseToken;
 
 interface CompilerInterface
 {

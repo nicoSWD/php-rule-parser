@@ -14,7 +14,7 @@ use Iterator;
 use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Grammar\CallableUserFunction;
 use nicoSWD\Rules\Tokenizer\TokenStack;
-use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\TokenStream\Token;
 
 class TokenStream implements Iterator
 {
@@ -61,7 +61,7 @@ class TokenStream implements Iterator
         $this->stack->rewind();
     }
 
-    public function getVariable(string $name): Tokens\BaseToken
+    public function getVariable(string $name): Token\BaseToken
     {
         try {
             return $this->ast->getVariable($name);
@@ -75,7 +75,7 @@ class TokenStream implements Iterator
         return $this->ast->getFunction($functionName);
     }
 
-    public function getMethod(string $methodName, Tokens\BaseToken $token): CallableUserFunction
+    public function getMethod(string $methodName, Token\BaseToken $token): CallableUserFunction
     {
         try {
             return $this->ast->getMethod($methodName, $token);

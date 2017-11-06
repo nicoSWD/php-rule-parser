@@ -14,8 +14,8 @@ use nicoSWD\Rules\TokenStream\TokenCollection;
 use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Grammar\CallableFunction;
 use nicoSWD\Rules\TokenStream\TokenStream;
-use nicoSWD\Rules\Tokens\TokenType;
-use nicoSWD\Rules\Tokens;
+use nicoSWD\Rules\TokenStream\Token\TokenType;
+use nicoSWD\Rules\TokenStream\Token;
 
 abstract class BaseNode
 {
@@ -31,7 +31,7 @@ abstract class BaseNode
         $this->tokenStream = $tokenStream;
     }
 
-    abstract public function getNode(): Tokens\BaseToken;
+    abstract public function getNode(): Token\BaseToken;
 
     /**
      * Looks ahead, but does not move the pointer.
@@ -60,7 +60,7 @@ abstract class BaseNode
         return false;
     }
 
-    public function getMethod(Tokens\BaseToken $token): CallableFunction
+    public function getMethod(Token\BaseToken $token): CallableFunction
     {
         return $this->tokenStream->getMethod($this->getMethodName(), $token);
     }

@@ -5,7 +5,7 @@ Tokenizer stack generation with JavaScript grammar
 
 use nicoSWD\Rules\Tokenizer\Tokenizer;
 use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
-use nicoSWD\Rules\Tokens\TokenFactory;
+use nicoSWD\Rules\TokenStream\Token\TokenFactory;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -23,7 +23,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenFunction)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenFunction)#%d (5) {
         ["value":protected]=>
         string(9) "parseInt("
         ["offset":protected]=>
@@ -41,7 +41,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenEncapsedString)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenEncapsedString)#%d (5) {
         ["value":protected]=>
         string(3) ""2""
         ["offset":protected]=>
@@ -59,7 +59,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenClosingParenthesis)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenClosingParenthesis)#%d (5) {
         ["value":protected]=>
         string(1) ")"
         ["offset":protected]=>
@@ -77,7 +77,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenSpace)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenSpace)#%d (5) {
         ["value":protected]=>
         string(1) " "
         ["offset":protected]=>
@@ -95,7 +95,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenEqual)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenEqual)#%d (5) {
         ["value":protected]=>
         string(2) "=="
         ["offset":protected]=>
@@ -113,7 +113,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenSpace)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenSpace)#%d (5) {
         ["value":protected]=>
         string(1) " "
         ["offset":protected]=>
@@ -131,7 +131,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenVariable)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenVariable)#%d (5) {
         ["value":protected]=>
         string(7) "var_two"
         ["offset":protected]=>
@@ -149,7 +149,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenSpace)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenSpace)#%d (5) {
         ["value":protected]=>
         string(1) " "
         ["offset":protected]=>
@@ -167,7 +167,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenAnd)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenAnd)#%d (5) {
         ["value":protected]=>
         string(2) "&&"
         ["offset":protected]=>
@@ -185,7 +185,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenSpace)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenSpace)#%d (5) {
         ["value":protected]=>
         string(1) " "
         ["offset":protected]=>
@@ -203,7 +203,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenOpeningParenthesis)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenOpeningParenthesis)#%d (5) {
         ["value":protected]=>
         string(1) "("
         ["offset":protected]=>
@@ -221,7 +221,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenEncapsedString)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenEncapsedString)#%d (5) {
         ["value":protected]=>
         string(5) ""foo""
         ["offset":protected]=>
@@ -239,7 +239,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenMethod)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenMethod)#%d (5) {
         ["value":protected]=>
         string(13) ".toUpperCase("
         ["offset":protected]=>
@@ -257,7 +257,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenClosingParenthesis)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenClosingParenthesis)#%d (5) {
         ["value":protected]=>
         string(1) ")"
         ["offset":protected]=>
@@ -275,7 +275,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenSpace)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenSpace)#%d (5) {
         ["value":protected]=>
         string(1) " "
         ["offset":protected]=>
@@ -293,7 +293,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenEqualStrict)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenEqualStrict)#%d (5) {
         ["value":protected]=>
         string(3) "==="
         ["offset":protected]=>
@@ -311,7 +311,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenSpace)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenSpace)#%d (5) {
         ["value":protected]=>
         string(1) " "
         ["offset":protected]=>
@@ -329,7 +329,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenEncapsedString)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenEncapsedString)#%d (5) {
         ["value":protected]=>
         string(5) ""FOO""
         ["offset":protected]=>
@@ -347,7 +347,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenClosingParenthesis)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenClosingParenthesis)#%d (5) {
         ["value":protected]=>
         string(1) ")"
         ["offset":protected]=>
@@ -365,7 +365,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenSpace)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenSpace)#%d (5) {
         ["value":protected]=>
         string(1) " "
         ["offset":protected]=>
@@ -383,7 +383,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenOr)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenOr)#%d (5) {
         ["value":protected]=>
         string(2) "||"
         ["offset":protected]=>
@@ -401,7 +401,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenSpace)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenSpace)#%d (5) {
         ["value":protected]=>
         string(1) " "
         ["offset":protected]=>
@@ -419,7 +419,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenInteger)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenInteger)#%d (5) {
         ["value":protected]=>
         string(1) "1"
         ["offset":protected]=>
@@ -437,7 +437,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenSpace)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenSpace)#%d (5) {
         ["value":protected]=>
         string(1) " "
         ["offset":protected]=>
@@ -455,7 +455,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenIn)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenIn)#%d (5) {
         ["value":protected]=>
         string(2) "in"
         ["offset":protected]=>
@@ -473,7 +473,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenSpace)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenSpace)#%d (5) {
         ["value":protected]=>
         string(1) " "
         ["offset":protected]=>
@@ -491,7 +491,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenOpeningArray)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenOpeningArray)#%d (5) {
         ["value":protected]=>
         string(1) "["
         ["offset":protected]=>
@@ -509,7 +509,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenEncapsedString)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenEncapsedString)#%d (5) {
         ["value":protected]=>
         string(3) ""1""
         ["offset":protected]=>
@@ -527,7 +527,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenComma)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenComma)#%d (5) {
         ["value":protected]=>
         string(1) ","
         ["offset":protected]=>
@@ -545,7 +545,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenSpace)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenSpace)#%d (5) {
         ["value":protected]=>
         string(1) " "
         ["offset":protected]=>
@@ -563,7 +563,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenInteger)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenInteger)#%d (5) {
         ["value":protected]=>
         string(1) "2"
         ["offset":protected]=>
@@ -581,7 +581,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenComma)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenComma)#%d (5) {
         ["value":protected]=>
         string(1) ","
         ["offset":protected]=>
@@ -599,7 +599,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenSpace)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenSpace)#%d (5) {
         ["value":protected]=>
         string(1) " "
         ["offset":protected]=>
@@ -617,7 +617,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenVariable)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenVariable)#%d (5) {
         ["value":protected]=>
         string(7) "var_one"
         ["offset":protected]=>
@@ -635,7 +635,7 @@ object(nicoSWD\Rules\Tokenizer\TokenStack)#%d (1) {
     ["%s"]=>
     array(2) {
       ["obj"]=>
-      object(nicoSWD\Rules\Tokens\TokenClosingArray)#%d (5) {
+      object(nicoSWD\Rules\TokenStream\Token\TokenClosingArray)#%d (5) {
         ["value":protected]=>
         string(1) "]"
         ["offset":protected]=>

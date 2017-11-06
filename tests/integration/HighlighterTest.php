@@ -11,7 +11,7 @@ use nicoSWD\Rules;
 use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rules\Highlighter\Highlighter;
 use nicoSWD\Rules\Tokenizer\Tokenizer;
-use nicoSWD\Rules\Tokens\TokenFactory;
+use nicoSWD\Rules\TokenStream\Token\TokenFactory;
 use PHPUnit\Framework\TestCase;
 
 class HighlighterTest extends TestCase
@@ -27,7 +27,7 @@ class HighlighterTest extends TestCase
     public function testGivenAStyleForATokenGroupItShouldBeUsed()
     {
         $this->highlighter->setStyle(
-            Rules\Tokens\TokenType::SQUARE_BRACKET,
+            Rules\TokenStream\Token\TokenType::SQUARE_BRACKET,
             'color: gray;'
         );
 

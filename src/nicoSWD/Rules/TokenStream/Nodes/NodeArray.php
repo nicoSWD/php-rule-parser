@@ -9,8 +9,8 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\TokenStream\Nodes;
 
-use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenArray;
+use nicoSWD\Rules\TokenStream\Token\BaseToken;
+use nicoSWD\Rules\TokenStream\Token\TokenArray;
 
 final class NodeArray extends BaseNode
 {

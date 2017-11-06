@@ -14,9 +14,9 @@ use InvalidArgumentException;
 use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Grammar\CallableUserFunction;
 use nicoSWD\Rules\Tokenizer\TokenizerInterface;
-use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenFactory;
 use nicoSWD\Rules\TokenStream\Exception\UndefinedVariableException;
+use nicoSWD\Rules\TokenStream\Token\BaseToken;
+use nicoSWD\Rules\TokenStream\Token\TokenFactory;
 
 class AST
 {

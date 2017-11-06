@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Tokenizer;
 
-use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\TokenStream\Token\BaseToken;
 use SplObjectStorage;
 
 class TokenStack extends SplObjectStorage

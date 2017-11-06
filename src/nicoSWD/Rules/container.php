@@ -16,7 +16,7 @@ use nicoSWD\Rules\Evaluator\EvaluatorInterface;
 use nicoSWD\Rules\Expressions\ExpressionFactory;
 use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rules\Tokenizer\Tokenizer;
-use nicoSWD\Rules\Tokens\TokenFactory;
+use nicoSWD\Rules\TokenStream\Token\TokenFactory;
 use nicoSWD\Rules\TokenStream\TokenStream;
 
 return new class {

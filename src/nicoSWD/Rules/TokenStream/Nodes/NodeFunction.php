@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\TokenStream\Nodes;
 
-use nicoSWD\Rules\Tokens\BaseToken;
+use nicoSWD\Rules\TokenStream\Token\BaseToken;
 
 final class NodeFunction extends BaseNode
 {

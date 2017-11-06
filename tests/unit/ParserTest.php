@@ -17,16 +17,7 @@ use nicoSWD\Rules\Compiler\CompilerInterface;
 use nicoSWD\Rules\Expressions\BaseExpression;
 use nicoSWD\Rules\Expressions\ExpressionFactoryInterface;
 use nicoSWD\Rules\Parser\Parser;
-use nicoSWD\Rules\Tokens\BaseToken;
-use nicoSWD\Rules\Tokens\TokenAnd;
-use nicoSWD\Rules\Tokens\TokenClosingParenthesis;
-use nicoSWD\Rules\Tokens\TokenComment;
-use nicoSWD\Rules\Tokens\TokenEqual;
-use nicoSWD\Rules\Tokens\TokenGreater;
-use nicoSWD\Rules\Tokens\TokenInteger;
-use nicoSWD\Rules\Tokens\TokenOpeningParenthesis;
-use nicoSWD\Rules\Tokens\TokenSpace;
-use nicoSWD\Rules\Tokens\TokenString;
+use nicoSWD\Rules\TokenStream\Token;
 use nicoSWD\Rules\TokenStream\TokenStream;
 use PHPUnit\Framework\TestCase;
 
@@ -56,17 +47,17 @@ class ParserTest extends TestCase
     public function givenARuleStringWhenValidItShouldReturnTheCompiledRule()
     {
         $tokens = [
-            new TokenOpeningParenthesis('('),
-            new TokenInteger(1),
-            new TokenEqual('=='),
-            new TokenString('1'),
-            new TokenClosingParenthesis(')'),
-            new TokenAnd('&&'),
-            new TokenInteger(2),
-            new TokenGreater('>'),
-            new TokenInteger(1),
-            new TokenSpace(' '),
-            new TokenComment('// true dat!')
+            new Token\TokenOpeningParenthesis('('),
+            new Token\TokenInteger(1),
+            new Token\TokenEqual('=='),
+            new Token\TokenString('1'),
+            new Token\TokenClosingParenthesis(')'),
+            new Token\TokenAnd('&&'),
+            new Token\TokenInteger(2),
+            new Token\TokenGreater('>'),
+            new Token\TokenInteger(1),
+            new Token\TokenSpace(' '),
+            new Token\TokenComment('// true dat!')
         ];
 
         $compiler = m::mock(CompilerInterface::class);
@@ -96,7 +87,7 @@ class ParserTest extends TestCase
         $this->expressionFactory
             ->shouldReceive('createFromOperator')
             ->twice()
-            ->with(m::type(BaseToken::class))
+            ->with(m::type(Token\BaseToken::class))
             ->andReturns(
                 $equalExpression,
                 $greaterExpression

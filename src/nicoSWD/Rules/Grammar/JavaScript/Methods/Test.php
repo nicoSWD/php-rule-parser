@@ -9,12 +9,12 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\Grammar\JavaScript\Methods;
 
+use nicoSWD\Rules\TokenStream\Token\BaseToken;
+use nicoSWD\Rules\TokenStream\Token\TokenBool;
+use nicoSWD\Rules\TokenStream\Token\TokenRegex;
 use nicoSWD\Rules\TokenStream\TokenCollection;
 use nicoSWD\Rules\Parser\Exception\ParserException;
 use nicoSWD\Rules\Grammar\CallableFunction;
-use nicoSWD\Rules\Tokens\TokenBool;
-use nicoSWD\Rules\Tokens\TokenRegex;
-use nicoSWD\Rules\Tokens\BaseToken;
 
 final class Test extends CallableFunction
 {
