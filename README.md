@@ -27,7 +27,7 @@ $ composer require nicoswd/php-rule-parser
 
 ## Bundles
 
-If you're using one of these frameworks, take a look at the bundle
+This library works best with one of these bundles below, but they're not required
 
 | Framework     | Packagist     |
 | ------------- |:-------------:|
@@ -184,17 +184,24 @@ Outputs:
 ![Syntax preview](https://s3.amazonaws.com/f.cl.ly/items/0y1b0s0J2v2v1u3O1F3M/Screen%20Shot%202015-08-05%20at%2012.15.21.png)
 
 ## Supported Operators
-- Equal: `==`, `===` (strict)
-- Not equal: `!=`, `!==` (strict)
-- Greater than: `>`
-- Less than: `<`
-- Greater than/equal: `>=`
-- Less than/equal: `<=`
-- In: `in`
+
+Type        | Description              | Operator
+----------- | ------------------------ | ----------
+Comparison  | greater than             | >
+Comparison  | greater than or equal to | >=
+Comparison  | less than                | <
+Comparison  | less or equal to         | <=
+Comparison  | equal to                 | ==
+Comparison  | not equal to             | !=
+Comparison  | identical                | ===
+Comparison  | not identical            | !==
+Containment | contains                 | in 
+Logical     | and                      | &&
+Logical     | or                       | \|\|
 
 ## Notes
 - Parentheses can be nested, and will be evaluated from right to left.
-- Only value/variable comparison expressions with optional logical ANDs/ORs, are supported. This is not a full JavaScript emulator.
+- Only value/variable comparison expressions with optional logical ANDs/ORs, are supported.
 
 ## Security
 
@@ -202,8 +209,23 @@ If you discover any security related issues, please email security@nic0.me inste
 
 ## Testing
 
-```bash
-$ composer test
+```shell
+$ vendor/bin/phpunit
+```
+
+```
+PHPUnit 6.4.1 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 7.0.6
+Configuration: [...]/phpunit.xml.dist
+
+...............................................................  63 / 133 ( 47%)
+............................................................... 126 / 133 ( 94%)
+.......                                                         133 / 133 (100%)
+
+Time: 309 ms, Memory: 8.00MB
+
+OK (133 tests, 310 assertions)
 ```
 
 ## Contributing
