@@ -8,7 +8,7 @@ declare(strict_types=1);
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
 
-use nicoSWD\Rules;
+use nicoSWD\Rule;
 
 class RuleTest extends \PHPUnit\Framework\TestCase
 {
@@ -32,7 +32,7 @@ class RuleTest extends \PHPUnit\Framework\TestCase
             'bar' => 7
         ];
 
-        $rule = new Rules\Rule($string, $vars);
+        $rule = new Rule\Rule($string, $vars);
 
         $this->assertTrue($rule->isTrue());
         $this->assertTrue(!$rule->isFalse());
@@ -42,7 +42,7 @@ class RuleTest extends \PHPUnit\Framework\TestCase
     {
         $ruleStr = '(2 == 2) && (1 < 3 && 3 > 2 (1 == 1))';
 
-        $rule = new Rules\Rule($ruleStr);
+        $rule = new Rule\Rule($ruleStr);
 
         $this->assertFalse($rule->isValid());
         $this->assertSame('Unexpected "(" at position 28 on line 1', $rule->getError());
@@ -52,7 +52,7 @@ class RuleTest extends \PHPUnit\Framework\TestCase
     {
         $ruleStr = '(2 == 2) && (1 < 3 && 3 > 2 || (1 == 1))';
 
-        $rule = new Rules\Rule($ruleStr);
+        $rule = new Rule\Rule($ruleStr);
 
         $this->assertTrue($rule->isValid());
         $this->assertEmpty($rule->getError());

@@ -7,11 +7,11 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\tests\unit\Tokenizer;
+namespace nicoSWD\Rule\tests\unit\Tokenizer;
 
-use nicoSWD\Rules\Grammar\Grammar;
-use nicoSWD\Rules\TokenStream\Token;
-use nicoSWD\Rules\Tokenizer\Tokenizer;
+use nicoSWD\Rule\Grammar\Grammar;
+use nicoSWD\Rule\TokenStream\Token;
+use nicoSWD\Rule\Tokenizer\Tokenizer;
 use PHPUnit\Framework\TestCase;
 
 class TokenizerTest extends TestCase

@@ -7,11 +7,11 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\tests\unit\Expressions;
+namespace nicoSWD\Rule\tests\unit\Expressions;
 
-use nicoSWD\Rules\Expression;
-use nicoSWD\Rules\Expression\ExpressionFactory;
-use nicoSWD\Rules\TokenStream\Token;
+use nicoSWD\Rule\Expression;
+use nicoSWD\Rule\Expression\ExpressionFactory;
+use nicoSWD\Rule\TokenStream\Token;
 use PHPUnit\Framework\TestCase;
 
 class ExpressionFactoryTest extends TestCase

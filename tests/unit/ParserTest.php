@@ -7,18 +7,18 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\tests\unit;
+namespace nicoSWD\Rule\tests\unit;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use nicoSWD\Rules\TokenStream\AST;
-use nicoSWD\Rules\Compiler\CompilerFactoryInterface;
-use nicoSWD\Rules\Compiler\CompilerInterface;
-use nicoSWD\Rules\Expression\BaseExpression;
-use nicoSWD\Rules\Expression\ExpressionFactoryInterface;
-use nicoSWD\Rules\Parser\Parser;
-use nicoSWD\Rules\TokenStream\Token;
-use nicoSWD\Rules\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\AST;
+use nicoSWD\Rule\Compiler\CompilerFactoryInterface;
+use nicoSWD\Rule\Compiler\CompilerInterface;
+use nicoSWD\Rule\Expression\BaseExpression;
+use nicoSWD\Rule\Expression\ExpressionFactoryInterface;
+use nicoSWD\Rule\Parser\Parser;
+use nicoSWD\Rule\TokenStream\Token;
+use nicoSWD\Rule\TokenStream\TokenStream;
 use PHPUnit\Framework\TestCase;
 
 class ParserTest extends TestCase

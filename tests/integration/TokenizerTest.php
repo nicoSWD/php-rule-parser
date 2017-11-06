@@ -7,9 +7,9 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
-use nicoSWD\Rules\Tokenizer\Tokenizer;
-use nicoSWD\Rules\TokenStream\Token\TokenFactory;
+use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
+use nicoSWD\Rule\Tokenizer\Tokenizer;
+use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use PHPUnit\Framework\TestCase;
 
 class TokenizerTest extends TestCase

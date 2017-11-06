@@ -7,10 +7,10 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\tests\operators;
+namespace nicoSWD\Rule\tests\operators;
 
-use nicoSWD\Rules\Rule;
-use nicoSWD\Rules\tests\integration\AbstractTestBase;
+use nicoSWD\Rule\Rule;
+use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
 class OperatorsTest extends AbstractTestBase
 {

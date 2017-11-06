@@ -24,12 +24,12 @@
   ],
   "autoload": {
     "psr-4": {
-      "nicoSWD\\Rules\\": "src/nicoSWD/Rules"
+      "nicoSWD\\Rule\\": "src/nicoSWD/Rule"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "nicoSWD\\Rules\\tests\\": "tests"
+      "nicoSWD\\Rule\\tests\\": "tests"
     }
   },
   "require": {

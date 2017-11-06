@@ -7,10 +7,10 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\tests\unit\Evaluator;
+namespace nicoSWD\Rule\tests\unit\Evaluator;
 
-use nicoSWD\Rules\Evaluator\Evaluator;
-use nicoSWD\Rules\Evaluator\Exception\UnknownSymbolException;
+use nicoSWD\Rule\Evaluator\Evaluator;
+use nicoSWD\Rule\Evaluator\Exception\UnknownSymbolException;
 use PHPUnit\Framework\TestCase;
 
 class EvaluatorTest extends TestCase

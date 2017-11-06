@@ -7,37 +7,33 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\tests\integration;
+namespace nicoSWD\Rule\tests\integration;
 
-use nicoSWD\Rules\TokenStream\AST;
-use nicoSWD\Rules\Compiler\CompilerFactory;
-use nicoSWD\Rules\Evaluator\Evaluator;
-use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
-use nicoSWD\Rules\Parser\Parser;
-use nicoSWD\Rules\Expression\ExpressionFactory;
-use nicoSWD\Rules\Tokenizer\Tokenizer;
-use nicoSWD\Rules\TokenStream\Token\TokenFactory;
-use nicoSWD\Rules\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\AST;
+use nicoSWD\Rule\Compiler\CompilerFactory;
+use nicoSWD\Rule\Evaluator\Evaluator;
+use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
+use nicoSWD\Rule\Parser\Parser;
+use nicoSWD\Rule\Expression\ExpressionFactory;
+use nicoSWD\Rule\Tokenizer\Tokenizer;
+use nicoSWD\Rule\TokenStream\Token\TokenFactory;
+use nicoSWD\Rule\TokenStream\TokenStream;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractTestBase extends TestCase
 {
     /** @var Parser */
     protected $parser;
-
     /** @var Evaluator */
     protected $evaluator;
-
     /** @var AST */
     protected $ast;
 
-    /** @return void */
     final protected function setUp()
     {
         $tokenFactory = new TokenFactory();
-        $tokenStream = new TokenStream();
 
-        $this->ast = new AST(new Tokenizer(new JavaScript(), $tokenFactory), $tokenFactory, $tokenStream);
+        $this->ast = new AST(new Tokenizer(new JavaScript(), $tokenFactory), $tokenFactory, new TokenStream());
         $this->parser = new Parser($this->ast, new ExpressionFactory(), new CompilerFactory());
         $this->evaluator = new Evaluator();
     }
