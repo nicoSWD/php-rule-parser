@@ -28,7 +28,7 @@ $ composer require nicoswd/php-rule-parser
 ## Usage
 
 ```php
-use nicoSWD\Rules\Rule;
+use nicoSWD\Rule\Rule;
 
 // Composer install
 require '/path/to/vendor/autoload.php';
@@ -144,7 +144,7 @@ Both will output: `Unexpected token "(" at position 25 on line 3`
 A custom syntax highlighter is also provided.
 
 ```php
-use nicoSWD\Rules;
+use nicoSWD\Rule;
 
 $ruleStr = '
     // This is true
@@ -160,11 +160,11 @@ $ruleStr = '
         bar > 6
     )';
 
-$highlighter = new Rules\Highlighter\Highlighter(new Rules\Tokenizer());
+$highlighter = new Rule\Highlighter\Highlighter(new Rule\Tokenizer());
 
 // Optional custom styles
 $highlighter->setStyle(
-    Rules\Constants::GROUP_VARIABLE,
+    Rule\Constants::GROUP_VARIABLE,
     'color: #007694; font-weight: 900;'
 );
 
