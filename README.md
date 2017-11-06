@@ -25,9 +25,9 @@ Via Composer
 $ composer require nicoswd/php-rule-parser
 ```
 
-If you're using one of these frameworks, take a look at the bundle
-
 ## Bundles
+
+If you're using one of these frameworks, take a look at the bundle
 
 | Framework     | Packagist     |
 | ------------- |:-------------:|
