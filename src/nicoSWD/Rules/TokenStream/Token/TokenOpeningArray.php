@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\TokenStream\Token;
 
-use nicoSWD\Rules\TokenStream\Nodes\NodeArray;
+use nicoSWD\Rules\TokenStream\Node\NodeArray;
 use nicoSWD\Rules\TokenStream\TokenStream;
 
 final class TokenOpeningArray extends BaseToken

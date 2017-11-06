@@ -7,20 +7,14 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\TokenStream\Nodes;
+namespace nicoSWD\Rules\TokenStream\Node;
 
 use nicoSWD\Rules\TokenStream\Token\BaseToken;
 
-final class NodeString extends BaseNode
+final class NodeFunction extends BaseNode
 {
     public function getNode(): BaseToken
     {
-        $current = $this->getCurrentNode();
-
-        while ($this->hasMethodCall()) {
-            $current = $this->getMethod($current)->call(...$this->getArguments());
-        }
-
-        return $current;
+        return $this->getFunction()->call($this, ...$this->getArguments());
     }
 }

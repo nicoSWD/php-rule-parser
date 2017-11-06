@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\TokenStream\Nodes;
+namespace nicoSWD\Rules\TokenStream\Node;
 
 use Closure;
 use nicoSWD\Rules\TokenStream\TokenCollection;
