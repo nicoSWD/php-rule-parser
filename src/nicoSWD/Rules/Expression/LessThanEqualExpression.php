@@ -7,12 +7,12 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\Expressions;
+namespace nicoSWD\Rules\Expression;
 
-final class EqualExpression extends BaseExpression
+final class LessThanEqualExpression extends BaseExpression
 {
     public function evaluate($leftValue, $rightValue): bool
     {
-        return $leftValue == $rightValue;
+        return $leftValue <= $rightValue;
     }
 }

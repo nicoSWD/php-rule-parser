@@ -9,8 +9,8 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rules\tests\unit\Expressions;
 
-use nicoSWD\Rules\Expressions;
-use nicoSWD\Rules\Expressions\ExpressionFactory;
+use nicoSWD\Rules\Expression;
+use nicoSWD\Rules\Expression\ExpressionFactory;
 use nicoSWD\Rules\TokenStream\Token;
 use PHPUnit\Framework\TestCase;
 
@@ -39,15 +39,15 @@ class ExpressionFactoryTest extends TestCase
     public function expressionProvider(): array
     {
         return [
-            [Expressions\EqualExpression::class, new Token\TokenEqual('==')],
-            [Expressions\EqualStrictExpression::class, new Token\TokenEqualStrict('===')],
-            [Expressions\NotEqualExpression::class, new Token\TokenNotEqual('!=')],
-            [Expressions\NotEqualStrictExpression::class, new Token\TokenNotEqualStrict('!==')],
-            [Expressions\GreaterThanExpression::class, new Token\TokenGreater('>')],
-            [Expressions\LessThanExpression::class, new Token\TokenSmaller('<')],
-            [Expressions\LessThanEqualExpression::class, new Token\TokenSmallerEqual('<=')],
-            [Expressions\GreaterThanEqualExpression::class, new Token\TokenGreaterEqual('>=')],
-            [Expressions\InExpression::class, new Token\TokenIn('in')],
+            [Expression\EqualExpression::class, new Token\TokenEqual('==')],
+            [Expression\EqualStrictExpression::class, new Token\TokenEqualStrict('===')],
+            [Expression\NotEqualExpression::class, new Token\TokenNotEqual('!=')],
+            [Expression\NotEqualStrictExpression::class, new Token\TokenNotEqualStrict('!==')],
+            [Expression\GreaterThanExpression::class, new Token\TokenGreater('>')],
+            [Expression\LessThanExpression::class, new Token\TokenSmaller('<')],
+            [Expression\LessThanEqualExpression::class, new Token\TokenSmallerEqual('<=')],
+            [Expression\GreaterThanEqualExpression::class, new Token\TokenGreaterEqual('>=')],
+            [Expression\InExpression::class, new Token\TokenIn('in')],
         ];
     }
 }

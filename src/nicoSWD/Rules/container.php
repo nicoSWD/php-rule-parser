@@ -13,7 +13,7 @@ use nicoSWD\Rules\TokenStream\AST;
 use nicoSWD\Rules\Compiler\CompilerFactory;
 use nicoSWD\Rules\Evaluator\Evaluator;
 use nicoSWD\Rules\Evaluator\EvaluatorInterface;
-use nicoSWD\Rules\Expressions\ExpressionFactory;
+use nicoSWD\Rules\Expression\ExpressionFactory;
 use nicoSWD\Rules\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rules\Tokenizer\Tokenizer;
 use nicoSWD\Rules\TokenStream\Token\TokenFactory;

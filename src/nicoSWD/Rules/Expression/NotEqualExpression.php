@@ -7,12 +7,12 @@
  */
 declare(strict_types=1);
 
-namespace nicoSWD\Rules\Expressions;
+namespace nicoSWD\Rules\Expression;
 
-final class NotEqualStrictExpression extends BaseExpression
+final class NotEqualExpression extends BaseExpression
 {
     public function evaluate($leftValue, $rightValue) : bool
     {
-        return $leftValue !== $rightValue;
+        return $leftValue != $rightValue;
     }
 }

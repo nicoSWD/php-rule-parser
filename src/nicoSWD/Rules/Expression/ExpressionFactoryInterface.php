@@ -5,7 +5,7 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rules\Expressions;
+namespace nicoSWD\Rules\Expression;
 
 use nicoSWD\Rules\TokenStream\Token\BaseToken;
 

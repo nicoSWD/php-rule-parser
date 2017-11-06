@@ -7,7 +7,7 @@
  */
 declare(strict_types=1);
 
-namespace nicoSWD\Rules\Expressions;
+namespace nicoSWD\Rules\Expression;
 
 final class LessThanExpression extends BaseExpression
 {
