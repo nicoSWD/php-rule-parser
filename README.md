@@ -210,22 +210,7 @@ If you discover any security related issues, please email security@nic0.me inste
 ## Testing
 
 ```shell
-$ vendor/bin/phpunit
-```
-
-```
-PHPUnit 6.4.1 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 7.0.6
-Configuration: [...]/phpunit.xml.dist
-
-...............................................................  63 / 133 ( 47%)
-............................................................... 126 / 133 ( 94%)
-.......                                                         133 / 133 (100%)
-
-Time: 309 ms, Memory: 8.00MB
-
-OK (133 tests, 310 assertions)
+$ composer test
 ```
 
 ## Contributing
