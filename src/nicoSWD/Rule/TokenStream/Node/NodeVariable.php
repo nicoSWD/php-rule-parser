@@ -15,15 +15,17 @@ final class NodeVariable extends BaseNode
 {
     public function getNode(): BaseToken
     {
-        $current = $this->tokenStream->getVariable(
-            $this->getCurrentNode()->getOriginalValue()
-        );
-        $current->setStack($this->tokenStream->getStack());
+        $current = $this->tokenStream->getVariable($this->getVariableName());
 
         while ($this->hasMethodCall()) {
             $current = $this->getMethod($current)->call(...$this->getArguments());
         }
 
         return $current;
+    }
+
+    private function getVariableName()
+    {
+        return $this->getCurrentNode()->getOriginalValue();
     }
 }

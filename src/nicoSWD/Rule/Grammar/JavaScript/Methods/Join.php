@@ -26,12 +26,7 @@ final class Join extends CallableFunction
     public function call($glue = null): BaseToken
     {
         if (!$this->token instanceof TokenArray) {
-            throw new ParserException(sprintf(
-                '%s.join is not a function at position %d on line %d',
-                $this->token->getValue(),
-                $this->token->getPosition(),
-                $this->token->getLine()
-            ));
+            throw new ParserException(sprintf('%s.join is not a function', $this->token->getValue()));
         }
 
         if ($glue) {
@@ -46,10 +41,6 @@ final class Join extends CallableFunction
             $array = $array->toArray();
         }
 
-        return new TokenString(
-            implode($glue, $array),
-            $this->token->getOffset(),
-            $this->token->getStack()
-        );
+        return new TokenString(implode($glue, $array));
     }
 }

@@ -17,43 +17,32 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
  */
 class SyntaxErrorTest extends AbstractTestBase
 {
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected "(" at position 19 on line 1
-     */
     public function testEmptyParenthesisThrowException()
     {
-        $rule = '(totalamount != 3) ()';
-
-        $this->evaluate($rule, [
+        $rule = new Rule('(totalamount != 3) ()', [
             'totalamount' => '-1'
         ]);
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected "(" at position 19', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected "==" at position 11 on line 1
-     */
     public function testDoubleOperatorThrowsException()
     {
-        $rule = 'country == == "EMD"';
+        $rule = new Rule('country == == "venezuela"', ['country' => 'spain']);
 
-        $this->evaluate($rule, [
-            'country' => 'GLF',
-        ]);
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unexpected "==" at position 11', $rule->getError());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Incomplete expression for token "==" at position 0 on line 1
-     */
     public function testMissingLeftValueThrowsException()
     {
-        $rule = '== "EMD"';
-
-        $this->evaluate($rule, [
-            'country' => 'GLF',
+        $rule = new Rule('== "venezuela"', [
+            'country' => 'spain',
         ]);
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Incomplete expression for token "=="', $rule->getError());
     }
 
     public function testMissingOperatorThrowsException()
@@ -69,7 +58,7 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('1 == 1)');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Missing opening parenthesis at position 6 on line 1', $rule->getError());
+        $this->assertSame('Missing opening parenthesis', $rule->getError());
     }
 
     public function testMissingClosingParenthesisThrowsException()
@@ -85,7 +74,7 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('1 == 1 && -foo == 1', ['foo' => 1]);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unknown token "-" at position 10 on line 1', $rule->getError());
+        $this->assertSame('Unknown token "-" at position 10', $rule->getError());
     }
 
     public function testUndefinedVariableThrowsException()
@@ -94,7 +83,7 @@ class SyntaxErrorTest extends AbstractTestBase
             foo == "MA"', ['country' => 'es']);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Undefined variable "foo" at position 12 on line 2', $rule->getError());
+        $this->assertSame('Undefined variable "foo" at position 36', $rule->getError());
     }
 
     public function testIncompleteExpressionExceptionIsThrownCorrectly()
@@ -110,7 +99,7 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('nonono=="MA"', ['country' => 'es']);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Undefined variable "nonono" at position 0 on line 1', $rule->getError());
+        $this->assertSame('Undefined variable "nonono" at position 0', $rule->getError());
     }
 
     public function testRulesEvaluatesTrueThrowsExceptionsOnSyntaxErrors()
@@ -126,7 +115,7 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('country == "MA" && &&', ['country' => 'es']);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "&&" at position 19 on line 1', $rule->getError());
+        $this->assertSame('Unexpected "&&" at position 19', $rule->getError());
     }
 
     public function testUnknownTokenExceptionIsThrown()
@@ -134,6 +123,6 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('country == "MA" ^', ['country' => 'es']);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unknown token "^" at position 16 on line 1', $rule->getError());
+        $this->assertSame('Unknown token "^" at position 16', $rule->getError());
     }
 }

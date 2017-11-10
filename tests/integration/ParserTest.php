@@ -115,9 +115,7 @@ class ParserTest extends AbstractTestBase
                 foo
             )';
 
-        $this->assertTrue($this->evaluate($rule, [
-            'foo' => '-1'
-        ]));
+        $this->assertTrue($this->evaluate($rule, ['foo' => '-1']));
     }
 
     public function testSingleLineCommentDoesNotKillTheRest()
@@ -129,8 +127,6 @@ class ParserTest extends AbstractTestBase
                 || foo == -1
             ';
 
-        $this->assertTrue($this->evaluate($rule, [
-            'foo' => '-1'
-        ]));
+        $this->assertTrue($this->evaluate($rule, ['foo' => '-1']));
     }
 }

@@ -9,6 +9,7 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rule\tests\methods;
 
+use nicoSWD\Rule\Rule;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
 class ToUpperCaseTest extends AbstractTestBase
@@ -37,9 +38,9 @@ class ToUpperCaseTest extends AbstractTestBase
 
     public function testCallOnIntegersThrowsException()
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Unknown token ".toUpperCase(" at position 1 on line 1');
+        $rule = new Rule('1.toUpperCase() === "1"', ['foo' => 1]);
 
-        $this->evaluate('1.toUpperCase() === "1"', ['foo' => 1]);
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Unknown token ".toUpperCase(" at position 1', $rule->getError());
     }
 }

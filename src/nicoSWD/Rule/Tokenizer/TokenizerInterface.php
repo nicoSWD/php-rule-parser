@@ -7,11 +7,12 @@
  */
 namespace nicoSWD\Rule\Tokenizer;
 
+use ArrayIterator;
 use nicoSWD\Rule\Grammar\Grammar;
 
 interface TokenizerInterface
 {
-    public function tokenize(string $string): TokenStack;
+    public function tokenize(string $string): ArrayIterator;
 
     public function getGrammar(): Grammar;
 }

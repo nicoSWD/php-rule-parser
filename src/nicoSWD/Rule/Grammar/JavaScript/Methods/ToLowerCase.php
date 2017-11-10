@@ -22,10 +22,6 @@ final class ToLowerCase extends CallableFunction
      */
     public function call($string = null): BaseToken
     {
-        return new TokenString(
-            strtolower((string) $this->token->getValue()),
-            $this->token->getOffset(),
-            $this->token->getStack()
-        );
+        return new TokenString(strtolower((string) $this->token->getValue()));
     }
 }

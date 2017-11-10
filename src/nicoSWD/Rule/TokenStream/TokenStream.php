@@ -9,21 +9,21 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rule\TokenStream;
 
+use ArrayIterator;
 use Closure;
 use Iterator;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Grammar\CallableUserFunction;
-use nicoSWD\Rule\Tokenizer\TokenStack;
 use nicoSWD\Rule\TokenStream\Token;
 
 class TokenStream implements Iterator
 {
-    /** @var TokenStack */
+    /** @var ArrayIterator */
     protected $stack;
     /** @var AST */
     private $ast;
 
-    public function create(TokenStack $stack, AST $ast)
+    public function create(ArrayIterator $stack, AST $ast)
     {
         $stream = new self();
         $stream->stack = $stack;
@@ -45,7 +45,10 @@ class TokenStream implements Iterator
     public function current()
     {
         if ($this->stack->valid()) {
-            return $this->stack->current()->createNode($this);
+            /** @var Token\BaseToken $token */
+            $token = $this->stack->current();
+
+            return $token->createNode($this);
         }
 
         return null;
@@ -84,7 +87,7 @@ class TokenStream implements Iterator
         }
     }
 
-    public function getStack(): TokenStack
+    public function getStack(): ArrayIterator
     {
         return $this->stack;
     }

@@ -38,10 +38,6 @@ final class CharAt extends CallableFunction
             $char = $tokenValue[$offset];
         }
 
-        return new TokenString(
-            $char,
-            $this->token->getOffset(),
-            $this->token->getStack()
-        );
+        return new TokenString($char);
     }
 }

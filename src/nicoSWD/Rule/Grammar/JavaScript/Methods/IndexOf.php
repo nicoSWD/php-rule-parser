@@ -31,10 +31,6 @@ final class IndexOf extends CallableFunction
             }
         }
 
-        return new TokenInteger(
-            $value,
-            $this->token->getOffset(),
-            $this->token->getStack()
-        );
+        return new TokenInteger($value);
     }
 }

@@ -45,7 +45,7 @@ class RuleTest extends \PHPUnit\Framework\TestCase
         $rule = new Rule\Rule($ruleStr);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "(" at position 28 on line 1', $rule->getError());
+        $this->assertSame('Unexpected "(" at position 28', $rule->getError());
     }
 
     public function testIsValidReturnsTrueOnValidSyntax()

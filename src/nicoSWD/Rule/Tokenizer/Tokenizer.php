@@ -9,6 +9,7 @@ declare(strict_types=1);
  */
 namespace nicoSWD\Rule\Tokenizer;
 
+use ArrayIterator;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use SplPriorityQueue;
@@ -35,26 +36,21 @@ final class Tokenizer implements TokenizerInterface
         }
     }
 
-    public function tokenize(string $string): TokenStack
+    public function tokenize(string $string): ArrayIterator
     {
-        $stack = new TokenStack();
         $regex = $this->getRegex();
+        $stack = [];
         $offset = 0;
 
         while (preg_match($regex, $string, $matches, 0, $offset)) {
             $token = $this->getMatchedToken($matches);
             $className = $this->tokenFactory->createFromTokenName($token);
 
-            $stack->attach(new $className(
-                $matches[$token],
-                $offset,
-                $stack
-            ));
-
+            $stack[] = new $className($matches[$token], $offset);
             $offset += strlen($matches[0]);
         }
 
-        return $stack;
+        return new ArrayIterator($stack);
     }
 
     public function getGrammar(): Grammar

@@ -22,10 +22,6 @@ final class ToUpperCase extends CallableFunction
      */
     public function call($string = null): BaseToken
     {
-        return new TokenString(
-            strtoupper((string) $this->token->getValue()),
-            $this->token->getOffset(),
-            $this->token->getStack()
-        );
+        return new TokenString(strtoupper((string) $this->token->getValue()));
     }
 }

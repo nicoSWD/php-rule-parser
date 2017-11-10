@@ -47,14 +47,10 @@ class StandardCompiler implements CompilerInterface
         $this->output .= self::OPENING_PARENTHESIS;
     }
 
-    private function closeParenthesis(BaseToken $token)
+    private function closeParenthesis()
     {
         if ($this->openParenthesis < 1) {
-            throw new ParserException(sprintf(
-                'Missing opening parenthesis at position %d on line %d',
-                $token->getPosition(),
-                $token->getLine()
-            ));
+            throw new ParserException('Missing opening parenthesis');
         }
 
         $this->closedParenthesis++;
@@ -69,7 +65,7 @@ class StandardCompiler implements CompilerInterface
             }
             $this->openParenthesis();
         } else {
-            $this->closeParenthesis($token);
+            $this->closeParenthesis();
         }
     }
 

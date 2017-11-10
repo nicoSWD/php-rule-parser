@@ -36,7 +36,6 @@ class TokenizerTest extends TestCase
         $tokens = $this->tokenizer->tokenize('1');
         $tokens->rewind();
 
-        $this->assertEquals(1, $tokens->current()->getLine());
-        $this->assertEquals(0, $tokens->current()->getPosition());
+        $this->assertEquals(0, $tokens->current()->getOffset());
     }
 }

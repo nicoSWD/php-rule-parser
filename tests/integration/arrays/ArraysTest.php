@@ -55,22 +55,7 @@ class ArraysTest extends AbstractTestBase
         $rule = new Rule('["foo", "bar", ] === ["foo", "bar"]');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "," at position 15 on line 1', $rule->getError());
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unexpected "," at position 12 on line 5
-     */
-    public function testLineIsReportedCorrectlyOnSyntaxError()
-    {
-        $this->evaluate(
-            '[
-                "foo",
-                "bar",
-                // Missing value after comma
-            ] === ["foo", "bar"]'
-        );
+        $this->assertSame('Unexpected "," at position 15', $rule->getError());
     }
 
     public function testLineIsReportedCorrectlyOnSyntaxError2()
@@ -78,7 +63,7 @@ class ArraysTest extends AbstractTestBase
         $rule = new Rule('["foo", "bar", ,] === ["foo", "bar"]');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "," at position 15 on line 1', $rule->getError());
+        $this->assertSame('Unexpected "," at position 15', $rule->getError());
     }
 
     public function testMissingCommaThrowsException()
@@ -86,7 +71,7 @@ class ArraysTest extends AbstractTestBase
         $rule = new Rule('["foo"  "bar"] === ["foo", "bar"]');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "bar" at position 8 on line 1', $rule->getError());
+        $this->assertSame('Unexpected "bar" at position 8', $rule->getError());
     }
 
     public function testUnexpectedTokenThrowsException()
@@ -94,7 +79,7 @@ class ArraysTest extends AbstractTestBase
         $rule = new Rule('["foo", ===] === ["foo", "bar"]');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "===" at position 8 on line 1', $rule->getError());
+        $this->assertSame('Unexpected "===" at position 8', $rule->getError());
     }
 
     public function testUnexpectedEndOfStringThrowsException()

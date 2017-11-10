@@ -36,10 +36,6 @@ final class Concat extends CallableFunction
             }
         }
 
-        return new TokenString(
-            $value,
-            $this->token->getOffset(),
-            $this->token->getStack()
-        );
+        return new TokenString($value);
     }
 }

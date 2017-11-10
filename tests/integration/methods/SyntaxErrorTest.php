@@ -19,7 +19,7 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".charAt(1 2 ) === "b"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "2" at position 15 on line 1', $rule->getError());
+        $this->assertSame('Unexpected "2" at position 15', $rule->getError());
     }
 
     public function testMissingValueInArgumentsThrowsException()
@@ -27,7 +27,7 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".charAt(1 , ) === "b"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "," at position 17 on line 1', $rule->getError());
+        $this->assertSame('Unexpected "," at position 17', $rule->getError());
     }
 
     public function testMissingValueBetweenCommasInArgumentsThrowsException()
@@ -35,7 +35,7 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".charAt(1 , , ) === "b"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "," at position 17 on line 1', $rule->getError());
+        $this->assertSame('Unexpected "," at position 17', $rule->getError());
     }
 
     public function testUnexpectedTokenInArgumentsThrowsException()
@@ -43,7 +43,7 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".charAt(1 , < , ) === "b"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "<" at position 17 on line 1', $rule->getError());
+        $this->assertSame('Unexpected "<" at position 17', $rule->getError());
     }
 
     public function testUnexpectedEndOfStringThrowsException()
@@ -59,7 +59,7 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('/^foo$/.teddst("foo") === true');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Undefined method "teddst" at position 7 on line 1', $rule->getError());
+        $this->assertSame('Undefined method "teddst" at position 7', $rule->getError());
     }
 
     public function testIncorrectSpellingThrowsException()
@@ -67,7 +67,7 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".ChARat(1) === "o"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Undefined method "ChARat" at position 5 on line 1', $rule->getError());
+        $this->assertSame('Undefined method "ChARat" at position 5', $rule->getError());
     }
 
     public function testCallOnNonArray()
@@ -75,7 +75,7 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".join("|") === ""');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('foo.join is not a function at position 0 on line 1', $rule->getError());
+        $this->assertSame('foo.join is not a function', $rule->getError());
     }
 
     public function testExceptionIsThrownOnTypeError()
@@ -83,6 +83,6 @@ class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".test("foo") === false');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('undefined is not a function at position 0 on line 1', $rule->getError());
+        $this->assertSame('undefined is not a function', $rule->getError());
     }
 }

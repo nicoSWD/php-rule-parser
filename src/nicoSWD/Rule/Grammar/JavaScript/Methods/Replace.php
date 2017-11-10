@@ -45,11 +45,7 @@ final class Replace extends CallableFunction
             $value = str_replace($search, $replace, $this->token->getValue());
         }
 
-        return new TokenString(
-            $value,
-            $this->token->getOffset(),
-            $this->token->getStack()
-        );
+        return new TokenString($value);
     }
 
     private function doRegexReplace($search, $replace)

@@ -68,7 +68,7 @@ class AST
         }
 
         if (!isset($this->methods[$methodName])) {
-            throw new Exception\UndefinedMethodException();
+            throw new Exception\UndefinedMethodException($methodName);
         }
 
         return new $this->methods[$methodName]($token);
@@ -82,7 +82,7 @@ class AST
     public function getVariable(string $name): BaseToken
     {
         if (!$this->variableExists($name)) {
-            throw new UndefinedVariableException();
+            throw new UndefinedVariableException($name);
         }
 
         return $this->tokenFactory->createFromPHPType($this->variables[$name]);
@@ -95,7 +95,7 @@ class AST
 
     private function registerFunctionClass(string $functionName, string $className)
     {
-        $this->functions[$functionName] = function (...$args) use ($className): BaseToken {
+        $this->functions[$functionName] = function (BaseToken ...$args) use ($className): BaseToken {
             $function = new $className();
 
             if (!$function instanceof CallableUserFunction) {

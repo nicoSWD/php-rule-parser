@@ -15,59 +15,31 @@ class ParserException extends \Exception
 {
     public static function unexpectedToken(BaseToken $token): self
     {
-        return new self(sprintf(
-            'Unexpected "%s" at position %d on line %d',
-            $token->getValue(),
-            $token->getPosition(),
-            $token->getLine()
-        ));
+        return new self(sprintf('Unexpected "%s" at position %d', $token->getValue(), $token->getOffset()));
     }
 
     public static function unknownToken(BaseToken $token): self
     {
-        return new self(sprintf(
-            'Unknown token "%s" at position %d on line %d',
-            $token->getValue(),
-            $token->getPosition(),
-            $token->getLine()
-        ));
+        return new self(sprintf('Unknown token "%s" at position %d', $token->getValue(), $token->getOffset()));
     }
 
     public static function incompleteExpression(BaseToken $token): self
     {
-        return new self(sprintf(
-            'Incomplete expression for token "%s" at position %d on line %d',
-            $token->getValue(),
-            $token->getPosition(),
-            $token->getLine()
-        ));
+        return new self(sprintf('Incomplete expression for token "%s"', $token->getValue()));
     }
 
     public static function undefinedVariable(string $name, BaseToken $token): self
     {
-        return new self(sprintf(
-            'Undefined variable "%s" at position %d on line %d',
-            $name,
-            $token->getPosition(),
-            $token->getLine()
-        ));
+        return new self(sprintf('Undefined variable "%s" at position %d', $name, $token->getOffset()));
     }
 
     public static function undefinedMethod(string $name, BaseToken $token): self
     {
-        return new self(sprintf(
-            'Undefined method "%s" at position %d on line %d',
-            $name,
-            $token->getPosition(),
-            $token->getLine()
-        ));
+        return new self(sprintf('Undefined method "%s" at position %d', $name, $token->getOffset()));
     }
 
     public static function undefinedFunction(string $name): self
     {
-        return new self(sprintf(
-            '%s is not defined',
-            $name
-        ));
+        return new self(sprintf('%s is not defined', $name));
     }
 }

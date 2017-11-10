@@ -41,10 +41,6 @@ final class Split extends CallableFunction
             $newValue = $func(...$params);
         }
 
-        return new TokenArray(
-            $newValue,
-            $this->token->getOffset(),
-            $this->token->getStack()
-        );
+        return new TokenArray($newValue);
     }
 }

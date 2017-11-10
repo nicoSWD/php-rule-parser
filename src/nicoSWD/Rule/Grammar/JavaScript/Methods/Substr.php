@@ -36,10 +36,6 @@ final class Substr extends CallableFunction
 
         $value = substr($this->token->getValue(), ...$params);
 
-        return new TokenString(
-            (string) $value,
-            $this->token->getOffset(),
-            $this->token->getStack()
-        );
+        return new TokenString((string) $value);
     }
 }

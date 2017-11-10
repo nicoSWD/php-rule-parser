@@ -33,31 +33,32 @@ abstract class BaseNode
 
     abstract public function getNode(): Token\BaseToken;
 
-    /**
-     * Looks ahead, but does not move the pointer.
-     */
     protected function hasMethodCall(): bool
     {
-        $stackClone = $this->tokenStream->getStack()->getClone();
+        $stack = $this->tokenStream->getStack();
+        $position = $stack->key();
+        $hasMethod = false;
 
-        while ($stackClone->valid()) {
-            $stackClone->next();
+        while ($stack->valid()) {
+            $stack->next();
 
-            if (!$token = $stackClone->current()) {
+            /** @var Token\BaseToken $token */
+            if (!$token = $stack->current()) {
                 break;
             } elseif ($token->isWhitespace()) {
                 continue;
             } elseif ($token->isOfType(TokenType::METHOD)) {
                 $this->methodName = $token->getValue();
                 $this->methodOffset = $token->getOffset();
-
-                return true;
+                $hasMethod = true;
             } else {
                 break;
             }
         }
 
-        return false;
+        $stack->seek($position);
+
+        return $hasMethod;
     }
 
     public function getMethod(Token\BaseToken $token): CallableFunction
@@ -111,7 +112,7 @@ abstract class BaseNode
                 throw new ParserException('Unexpected end of string');
             }
 
-            if ($token->getType() & (TokenType::VALUE | TokenType::INT_VALUE)) {
+            if ($token->isOfType(TokenType::VALUE | TokenType::INT_VALUE)) {
                 if ($commaExpected) {
                     throw ParserException::unexpectedToken($token);
                 }
@@ -120,23 +121,23 @@ abstract class BaseNode
                 $items->attach($token);
             } elseif ($token->isOfType(TokenType::COMMA)) {
                 if (!$commaExpected) {
-                    throw ParserException::unexpectedToken($token);
+                    throw new ParserException(sprintf('Unexpected "," at position %d', $token->getOffset()));
                 }
 
                 $commaExpected = false;
             } elseif ($token->getType() === $stopAt) {
                 break;
             } elseif (!$token->isWhitespace()) {
-                throw ParserException::unexpectedToken($token);
+                throw new ParserException(sprintf(
+                    'Unexpected "%s" at position %d',
+                    $token->getOriginalValue(),
+                    $token->getOffset()
+                ));
             }
         } while ($this->tokenStream->valid());
 
         if (!$commaExpected && $items->count() > 0) {
-            throw new ParserException(sprintf(
-                'Unexpected "," at position %d on line %d',
-                $token->getPosition(),
-                $token->getLine()
-            ));
+            throw new ParserException(sprintf('Unexpected "," at position %d', $token->getOffset()));
         }
 
         $items->rewind();

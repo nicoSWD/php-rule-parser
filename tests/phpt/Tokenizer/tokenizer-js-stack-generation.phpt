@@ -17,638 +17,253 @@ var_dump($tokenizer->tokenize($rule));
 
 ?>
 --EXPECTF--
-object(nicoSWD\Rule\Tokenizer\TokenStack)#%d (1) {
-  ["storage":"SplObjectStorage":private]=>
+object(ArrayIterator)#69 (1) {
+  ["storage":"ArrayIterator":private]=>
   array(35) {
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenFunction)#%d (5) {
-        ["value":protected]=>
-        string(9) "parseInt("
-        ["offset":protected]=>
-        int(0)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [0]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenFunction)#35 (2) {
+      ["value":protected]=>
+      string(9) "parseInt("
+      ["offset":protected]=>
+      int(0)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenEncapsedString)#%d (5) {
-        ["value":protected]=>
-        string(3) ""2""
-        ["offset":protected]=>
-        int(9)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [1]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenEncapsedString)#34 (2) {
+      ["value":protected]=>
+      string(3) ""2""
+      ["offset":protected]=>
+      int(9)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenClosingParenthesis)#%d (5) {
-        ["value":protected]=>
-        string(1) ")"
-        ["offset":protected]=>
-        int(12)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [2]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenClosingParenthesis)#36 (2) {
+      ["value":protected]=>
+      string(1) ")"
+      ["offset":protected]=>
+      int(12)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#%d (5) {
-        ["value":protected]=>
-        string(1) " "
-        ["offset":protected]=>
-        int(13)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [3]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#37 (2) {
+      ["value":protected]=>
+      string(1) " "
+      ["offset":protected]=>
+      int(13)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenEqual)#%d (5) {
-        ["value":protected]=>
-        string(2) "=="
-        ["offset":protected]=>
-        int(14)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [4]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenEqual)#38 (2) {
+      ["value":protected]=>
+      string(2) "=="
+      ["offset":protected]=>
+      int(14)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#%d (5) {
-        ["value":protected]=>
-        string(1) " "
-        ["offset":protected]=>
-        int(16)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [5]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#39 (2) {
+      ["value":protected]=>
+      string(1) " "
+      ["offset":protected]=>
+      int(16)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenVariable)#%d (5) {
-        ["value":protected]=>
-        string(7) "var_two"
-        ["offset":protected]=>
-        int(17)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [6]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenVariable)#40 (2) {
+      ["value":protected]=>
+      string(7) "var_two"
+      ["offset":protected]=>
+      int(17)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#%d (5) {
-        ["value":protected]=>
-        string(1) " "
-        ["offset":protected]=>
-        int(24)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [7]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#41 (2) {
+      ["value":protected]=>
+      string(1) " "
+      ["offset":protected]=>
+      int(24)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenAnd)#%d (5) {
-        ["value":protected]=>
-        string(2) "&&"
-        ["offset":protected]=>
-        int(25)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [8]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenAnd)#42 (2) {
+      ["value":protected]=>
+      string(2) "&&"
+      ["offset":protected]=>
+      int(25)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#%d (5) {
-        ["value":protected]=>
-        string(1) " "
-        ["offset":protected]=>
-        int(27)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [9]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#43 (2) {
+      ["value":protected]=>
+      string(1) " "
+      ["offset":protected]=>
+      int(27)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenOpeningParenthesis)#%d (5) {
-        ["value":protected]=>
-        string(1) "("
-        ["offset":protected]=>
-        int(28)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [10]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenOpeningParenthesis)#44 (2) {
+      ["value":protected]=>
+      string(1) "("
+      ["offset":protected]=>
+      int(28)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenEncapsedString)#%d (5) {
-        ["value":protected]=>
-        string(5) ""foo""
-        ["offset":protected]=>
-        int(29)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [11]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenEncapsedString)#45 (2) {
+      ["value":protected]=>
+      string(5) ""foo""
+      ["offset":protected]=>
+      int(29)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenMethod)#%d (5) {
-        ["value":protected]=>
-        string(13) ".toUpperCase("
-        ["offset":protected]=>
-        int(34)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [12]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenMethod)#46 (2) {
+      ["value":protected]=>
+      string(13) ".toUpperCase("
+      ["offset":protected]=>
+      int(34)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenClosingParenthesis)#%d (5) {
-        ["value":protected]=>
-        string(1) ")"
-        ["offset":protected]=>
-        int(47)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [13]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenClosingParenthesis)#47 (2) {
+      ["value":protected]=>
+      string(1) ")"
+      ["offset":protected]=>
+      int(47)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#%d (5) {
-        ["value":protected]=>
-        string(1) " "
-        ["offset":protected]=>
-        int(48)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [14]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#48 (2) {
+      ["value":protected]=>
+      string(1) " "
+      ["offset":protected]=>
+      int(48)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenEqualStrict)#%d (5) {
-        ["value":protected]=>
-        string(3) "==="
-        ["offset":protected]=>
-        int(49)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [15]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenEqualStrict)#49 (2) {
+      ["value":protected]=>
+      string(3) "==="
+      ["offset":protected]=>
+      int(49)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#%d (5) {
-        ["value":protected]=>
-        string(1) " "
-        ["offset":protected]=>
-        int(52)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [16]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#50 (2) {
+      ["value":protected]=>
+      string(1) " "
+      ["offset":protected]=>
+      int(52)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenEncapsedString)#%d (5) {
-        ["value":protected]=>
-        string(5) ""FOO""
-        ["offset":protected]=>
-        int(53)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [17]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenEncapsedString)#51 (2) {
+      ["value":protected]=>
+      string(5) ""FOO""
+      ["offset":protected]=>
+      int(53)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenClosingParenthesis)#%d (5) {
-        ["value":protected]=>
-        string(1) ")"
-        ["offset":protected]=>
-        int(58)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [18]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenClosingParenthesis)#52 (2) {
+      ["value":protected]=>
+      string(1) ")"
+      ["offset":protected]=>
+      int(58)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#%d (5) {
-        ["value":protected]=>
-        string(1) " "
-        ["offset":protected]=>
-        int(59)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [19]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#53 (2) {
+      ["value":protected]=>
+      string(1) " "
+      ["offset":protected]=>
+      int(59)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenOr)#%d (5) {
-        ["value":protected]=>
-        string(2) "||"
-        ["offset":protected]=>
-        int(60)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [20]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenOr)#54 (2) {
+      ["value":protected]=>
+      string(2) "||"
+      ["offset":protected]=>
+      int(60)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#%d (5) {
-        ["value":protected]=>
-        string(1) " "
-        ["offset":protected]=>
-        int(62)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [21]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#55 (2) {
+      ["value":protected]=>
+      string(1) " "
+      ["offset":protected]=>
+      int(62)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenInteger)#%d (5) {
-        ["value":protected]=>
-        string(1) "1"
-        ["offset":protected]=>
-        int(63)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [22]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenInteger)#56 (2) {
+      ["value":protected]=>
+      string(1) "1"
+      ["offset":protected]=>
+      int(63)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#%d (5) {
-        ["value":protected]=>
-        string(1) " "
-        ["offset":protected]=>
-        int(64)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [23]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#57 (2) {
+      ["value":protected]=>
+      string(1) " "
+      ["offset":protected]=>
+      int(64)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenIn)#%d (5) {
-        ["value":protected]=>
-        string(2) "in"
-        ["offset":protected]=>
-        int(65)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [24]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenIn)#58 (2) {
+      ["value":protected]=>
+      string(2) "in"
+      ["offset":protected]=>
+      int(65)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#%d (5) {
-        ["value":protected]=>
-        string(1) " "
-        ["offset":protected]=>
-        int(67)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [25]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#59 (2) {
+      ["value":protected]=>
+      string(1) " "
+      ["offset":protected]=>
+      int(67)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenOpeningArray)#%d (5) {
-        ["value":protected]=>
-        string(1) "["
-        ["offset":protected]=>
-        int(68)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [26]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenOpeningArray)#60 (2) {
+      ["value":protected]=>
+      string(1) "["
+      ["offset":protected]=>
+      int(68)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenEncapsedString)#%d (5) {
-        ["value":protected]=>
-        string(3) ""1""
-        ["offset":protected]=>
-        int(69)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [27]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenEncapsedString)#61 (2) {
+      ["value":protected]=>
+      string(3) ""1""
+      ["offset":protected]=>
+      int(69)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenComma)#%d (5) {
-        ["value":protected]=>
-        string(1) ","
-        ["offset":protected]=>
-        int(72)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [28]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenComma)#62 (2) {
+      ["value":protected]=>
+      string(1) ","
+      ["offset":protected]=>
+      int(72)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#%d (5) {
-        ["value":protected]=>
-        string(1) " "
-        ["offset":protected]=>
-        int(73)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [29]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#63 (2) {
+      ["value":protected]=>
+      string(1) " "
+      ["offset":protected]=>
+      int(73)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenInteger)#%d (5) {
-        ["value":protected]=>
-        string(1) "2"
-        ["offset":protected]=>
-        int(74)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [30]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenInteger)#64 (2) {
+      ["value":protected]=>
+      string(1) "2"
+      ["offset":protected]=>
+      int(74)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenComma)#%d (5) {
-        ["value":protected]=>
-        string(1) ","
-        ["offset":protected]=>
-        int(75)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [31]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenComma)#65 (2) {
+      ["value":protected]=>
+      string(1) ","
+      ["offset":protected]=>
+      int(75)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#%d (5) {
-        ["value":protected]=>
-        string(1) " "
-        ["offset":protected]=>
-        int(76)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [32]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#66 (2) {
+      ["value":protected]=>
+      string(1) " "
+      ["offset":protected]=>
+      int(76)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenVariable)#%d (5) {
-        ["value":protected]=>
-        string(7) "var_one"
-        ["offset":protected]=>
-        int(77)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [33]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenVariable)#67 (2) {
+      ["value":protected]=>
+      string(7) "var_one"
+      ["offset":protected]=>
+      int(77)
     }
-    ["%s"]=>
-    array(2) {
-      ["obj"]=>
-      object(nicoSWD\Rule\TokenStream\Token\TokenClosingArray)#%d (5) {
-        ["value":protected]=>
-        string(1) "]"
-        ["offset":protected]=>
-        int(84)
-        ["stack":protected]=>
-        *RECURSION*
-        ["position":protected]=>
-        NULL
-        ["line":protected]=>
-        NULL
-      }
-      ["inf"]=>
-      NULL
+    [34]=>
+    object(nicoSWD\Rule\TokenStream\Token\TokenClosingArray)#68 (2) {
+      ["value":protected]=>
+      string(1) "]"
+      ["offset":protected]=>
+      int(84)
     }
   }
 }

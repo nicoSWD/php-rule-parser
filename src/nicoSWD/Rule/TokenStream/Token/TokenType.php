@@ -9,6 +9,7 @@ namespace nicoSWD\Rule\TokenStream\Token;
 
 class TokenType
 {
+    const OPERATOR = 1;
     const INT_VALUE = 2;
     const VALUE = 4;
     const LOGICAL = 8;
@@ -20,6 +21,5 @@ class TokenType
     const SQUARE_BRACKET = 512;
     const COMMA = 1024;
     const METHOD = 2048;
-    const FUNCTION = 8096;
-    const OPERATOR = 16192;
+    const FUNCTION = 4098;
 }

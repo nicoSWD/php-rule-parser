@@ -82,7 +82,7 @@ $variables = [
 
 $rule = new Rule($ruleStr, $variables);
 
-$rule->registerFunction('double', function (BaseToken $multiplier) : BaseToken {
+$rule->registerFunction('double', function (BaseToken $multiplier): BaseToken {
     if (!$multiplier instanceof TokenInteger) {
         throw new \Exception;
     }

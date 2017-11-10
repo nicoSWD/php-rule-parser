@@ -26,11 +26,7 @@ final class Test extends CallableFunction
     public function call($string = null): BaseToken
     {
         if (!$this->token instanceof TokenRegex) {
-            throw new ParserException(sprintf(
-                'undefined is not a function at position %d on line %d',
-                $this->token->getPosition(),
-                $this->token->getLine()
-            ));
+            throw new ParserException('undefined is not a function');
         }
 
         if (!$string) {
@@ -55,10 +51,6 @@ final class Test extends CallableFunction
             $bool = (bool) preg_match($pattern, (string) $subject);
         }
 
-        return new TokenBool(
-            $bool,
-            $this->token->getOffset(),
-            $this->token->getStack()
-        );
+        return new TokenBool($bool);
     }
 }
