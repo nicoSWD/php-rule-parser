@@ -12,10 +12,10 @@ namespace nicoSWD\Rule\TokenStream;
 use Closure;
 use InvalidArgumentException;
 use nicoSWD\Rule\Grammar\CallableUserFunction;
-use nicoSWD\Rule\Tokenizer\TokenizerInterface;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedVariableException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
+use nicoSWD\Rule\Tokenizer\TokenizerInterface;
 
 class AST
 {
