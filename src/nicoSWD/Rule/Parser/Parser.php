@@ -15,7 +15,6 @@ use nicoSWD\Rule\Compiler\Exception\MissingOperatorException;
 use nicoSWD\Rule\Expression\ExpressionFactoryInterface;
 use nicoSWD\Rule\TokenStream\AST;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenType;
 use SplStack;
 
 class Parser
@@ -46,25 +45,18 @@ class Parser
         $values = new SplStack();
 
         foreach ($this->ast->getStream($rule) as $token) {
-            switch ($token->getType()) {
-                case TokenType::VALUE:
-                case TokenType::INT_VALUE:
-                    $values->push($token->getValue());
-                    break;
-                case TokenType::LOGICAL:
-                    $compiler->addLogical($token);
-                    continue 2;
-                case TokenType::PARENTHESIS:
-                    $compiler->addParentheses($token);
-                    continue 2;
-                case TokenType::OPERATOR:
-                    $this->assignOperator($token, $values);
-                    continue 2;
-                case TokenType::COMMENT:
-                case TokenType::SPACE:
-                    continue 2;
-                default:
-                    throw Exception\ParserException::unknownToken($token);
+            if ($token->isValue()) {
+                $values->push($token->getValue());
+            } elseif ($token->isWhitespace()) {
+                continue;
+            } elseif ($token->isOperator()) {
+                $this->assignOperator($token, $values);
+            } elseif ($token->isLogical()) {
+                $compiler->addLogical($token);
+            } elseif ($token->isParenthesis()) {
+                $compiler->addParentheses($token);
+            } else {
+                throw Exception\ParserException::unknownToken($token);
             }
 
             $this->evaluateExpression($values, $compiler);

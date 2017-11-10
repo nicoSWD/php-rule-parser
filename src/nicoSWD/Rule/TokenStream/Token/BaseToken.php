@@ -66,6 +66,21 @@ abstract class BaseToken
         return $this->isOfType(TokenType::COMMA);
     }
 
+    public function isOperator(): bool
+    {
+        return $this->isOfType(TokenType::OPERATOR);
+    }
+
+    public function isLogical(): bool
+    {
+        return $this->isOfType(TokenType::LOGICAL);
+    }
+
+    public function isParenthesis(): bool
+    {
+        return $this->isOfType(TokenType::PARENTHESIS);
+    }
+
     public function isWhitespace(): bool
     {
         return false;
