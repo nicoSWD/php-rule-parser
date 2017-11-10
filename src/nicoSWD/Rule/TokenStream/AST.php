@@ -28,10 +28,10 @@ class AST
     private $tokenStream;
     /** @var Closure[] */
     private $functions = [];
-    /** @var mixed[] */
-    private $variables = [];
     /** @var string[] */
     private $methods = [];
+    /** @var mixed[] */
+    private $variables = [];
 
     public function __construct(
         TokenizerInterface $tokenizer,
@@ -48,17 +48,17 @@ class AST
         return $this->tokenStream->create($this->tokenizer->tokenize($rule), $this);
     }
 
-    public function getFunction(string $name): Closure
+    public function getFunction(string $functionName): Closure
     {
         if (empty($this->functions)) {
             $this->registerFunctions();
         }
 
-        if (!isset($this->functions[$name])) {
-            throw ParserException::undefinedFunction($name);
+        if (!isset($this->functions[$functionName])) {
+            throw new Exception\UndefinedFunctionException($functionName);
         }
 
-        return $this->functions[$name];
+        return $this->functions[$functionName];
     }
 
     public function getMethod(string $methodName, BaseToken $token): CallableUserFunction
@@ -68,7 +68,7 @@ class AST
         }
 
         if (!isset($this->methods[$methodName])) {
-            throw new Exception\UndefinedMethodException($methodName);
+            throw new Exception\UndefinedMethodException(sprintf($methodName));
         }
 
         return new $this->methods[$methodName]($token);
@@ -79,18 +79,18 @@ class AST
         $this->variables = $variables;
     }
 
-    public function getVariable(string $name): BaseToken
+    public function getVariable(string $variableName): BaseToken
     {
-        if (!$this->variableExists($name)) {
-            throw new UndefinedVariableException($name);
+        if (!$this->variableExists($variableName)) {
+            throw new UndefinedVariableException($variableName);
         }
 
-        return $this->tokenFactory->createFromPHPType($this->variables[$name]);
+        return $this->tokenFactory->createFromPHPType($this->variables[$variableName]);
     }
 
-    public function variableExists(string $name): bool
+    public function variableExists(string $variableName): bool
     {
-        return array_key_exists($name, $this->variables);
+        return array_key_exists($variableName, $this->variables);
     }
 
     private function registerFunctionClass(string $functionName, string $className)

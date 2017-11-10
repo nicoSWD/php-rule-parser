@@ -41,9 +41,9 @@ abstract class BaseToken
         return $this->offset;
     }
 
-    public function isWhitespace(): bool
+    public function createNode(TokenStream $tokenStream): self
     {
-        return false;
+        return $this;
     }
 
     public function isOfType(int $type): bool
@@ -51,8 +51,23 @@ abstract class BaseToken
         return ($this->getType() | $type) === $type;
     }
 
-    public function createNode(TokenStream $tokenStream): self
+    public function isValue(): bool
     {
-        return $this;
+        return $this->isOfType(TokenType::VALUE | TokenType::INT_VALUE);
+    }
+
+    public function isMethod(): bool
+    {
+        return $this->isOfType(TokenType::METHOD);
+    }
+
+    public function isComma(): bool
+    {
+        return $this->isOfType(TokenType::COMMA);
+    }
+
+    public function isWhitespace(): bool
+    {
+        return false;
     }
 }

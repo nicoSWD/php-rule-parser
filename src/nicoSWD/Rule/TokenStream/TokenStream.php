@@ -14,7 +14,7 @@ use Closure;
 use Iterator;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Grammar\CallableUserFunction;
-use nicoSWD\Rule\TokenStream\Token;
+use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 class TokenStream implements Iterator
 {
@@ -42,16 +42,9 @@ class TokenStream implements Iterator
         return $this->stack->valid();
     }
 
-    public function current()
+    public function current(): BaseToken
     {
-        if ($this->stack->valid()) {
-            /** @var Token\BaseToken $token */
-            $token = $this->stack->current();
-
-            return $token->createNode($this);
-        }
-
-        return null;
+        return $this->getCurrentToken()->createNode($this);
     }
 
     public function key(): int
@@ -64,31 +57,40 @@ class TokenStream implements Iterator
         $this->stack->rewind();
     }
 
-    public function getVariable(string $name): Token\BaseToken
+    public function getStack(): ArrayIterator
+    {
+        return $this->stack;
+    }
+
+    private function getCurrentToken(): BaseToken
+    {
+        return $this->stack->current();
+    }
+
+    public function getVariable(string $variableName): BaseToken
     {
         try {
-            return $this->ast->getVariable($name);
+            return $this->ast->getVariable($variableName);
         } catch (Exception\UndefinedVariableException $e) {
-            throw ParserException::undefinedVariable($name, $this->stack->current());
+            throw ParserException::undefinedVariable($variableName, $this->getCurrentToken());
         }
     }
 
     public function getFunction(string $functionName): Closure
     {
-        return $this->ast->getFunction($functionName);
+        try {
+            return $this->ast->getFunction($functionName);
+        } catch (Exception\UndefinedFunctionException $e) {
+            throw ParserException::undefinedFunction($functionName, $this->getCurrentToken());
+        }
     }
 
-    public function getMethod(string $methodName, Token\BaseToken $token): CallableUserFunction
+    public function getMethod(string $methodName, BaseToken $token): CallableUserFunction
     {
         try {
             return $this->ast->getMethod($methodName, $token);
         } catch (Exception\UndefinedMethodException $e) {
-            throw ParserException::undefinedMethod($methodName, $this->stack->current());
+            throw ParserException::undefinedMethod($methodName, $this->getCurrentToken());
         }
-    }
-
-    public function getStack(): ArrayIterator
-    {
-        return $this->stack;
     }
 }

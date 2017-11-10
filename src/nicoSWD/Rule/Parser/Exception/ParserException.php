@@ -38,8 +38,13 @@ class ParserException extends \Exception
         return new self(sprintf('Undefined method "%s" at position %d', $name, $token->getOffset()));
     }
 
-    public static function undefinedFunction(string $name): self
+    public static function undefinedFunction(string $name, BaseToken $token): self
     {
-        return new self(sprintf('%s is not defined', $name));
+        return new self(sprintf('%s is not defined at position %d', $name, $token->getOffset()));
+    }
+
+    public static function unexpectedComma(BaseToken $token): self
+    {
+        return new self(sprintf('Unexpected "," at position %d', $token->getOffset()));
     }
 }

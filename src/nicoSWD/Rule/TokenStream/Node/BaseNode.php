@@ -47,7 +47,7 @@ abstract class BaseNode
                 break;
             } elseif ($token->isWhitespace()) {
                 continue;
-            } elseif ($token->isOfType(TokenType::METHOD)) {
+            } elseif ($token->isMethod()) {
                 $this->methodName = $token->getValue();
                 $this->methodOffset = $token->getOffset();
                 $hasMethod = true;
@@ -102,46 +102,53 @@ abstract class BaseNode
 
     private function getCommaSeparatedValues(int $stopAt): TokenCollection
     {
-        $commaExpected = false;
         $items = new TokenCollection();
+        $commaExpected = false;
 
         do {
-            $this->tokenStream->next();
+            $token = $this->getNextToken();
 
-            if (!$token = $this->tokenStream->current()) {
-                throw new ParserException('Unexpected end of string');
-            }
-
-            if ($token->isOfType(TokenType::VALUE | TokenType::INT_VALUE)) {
+            if ($token->isValue()) {
                 if ($commaExpected) {
                     throw ParserException::unexpectedToken($token);
                 }
 
                 $commaExpected = true;
                 $items->attach($token);
-            } elseif ($token->isOfType(TokenType::COMMA)) {
+            } elseif ($token->isComma()) {
                 if (!$commaExpected) {
-                    throw new ParserException(sprintf('Unexpected "," at position %d', $token->getOffset()));
+                    throw ParserException::unexpectedComma($token);
                 }
 
                 $commaExpected = false;
             } elseif ($token->getType() === $stopAt) {
                 break;
             } elseif (!$token->isWhitespace()) {
-                throw new ParserException(sprintf(
-                    'Unexpected "%s" at position %d',
-                    $token->getOriginalValue(),
-                    $token->getOffset()
-                ));
+                throw ParserException::unexpectedToken($token);
             }
-        } while ($this->tokenStream->valid());
+        } while (true);
 
-        if (!$commaExpected && $items->count() > 0) {
-            throw new ParserException(sprintf('Unexpected "," at position %d', $token->getOffset()));
-        }
-
+        $this->assertNoTrailingComma($commaExpected, $items, $token);
         $items->rewind();
 
         return $items;
+    }
+
+    private function getNextToken(): Token\BaseToken
+    {
+        $this->tokenStream->next();
+
+        if (!$this->tokenStream->valid()) {
+            throw new ParserException('Unexpected end of string');
+        }
+
+        return $this->tokenStream->current();
+    }
+
+    private function assertNoTrailingComma(bool $commaExpected, TokenCollection $items, Token\BaseToken $token)
+    {
+        if (!$commaExpected && $items->count() > 0) {
+            throw ParserException::unexpectedComma($token);
+        }
     }
 }
