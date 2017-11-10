@@ -15,9 +15,4 @@ final class TokenNewline extends BaseToken
     {
         return TokenType::SPACE;
     }
-
-    public function isWhitespace(): bool
-    {
-        return true;
-    }
 }

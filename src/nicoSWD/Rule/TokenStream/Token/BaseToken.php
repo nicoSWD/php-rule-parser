@@ -83,6 +83,6 @@ abstract class BaseToken
 
     public function isWhitespace(): bool
     {
-        return false;
+        return $this->isOfType(TokenType::SPACE | TokenType::COMMENT);
     }
 }

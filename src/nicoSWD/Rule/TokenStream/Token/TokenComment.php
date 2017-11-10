@@ -15,9 +15,4 @@ final class TokenComment extends BaseToken
     {
         return TokenType::COMMENT;
     }
-
-    public function isWhitespace(): bool
-    {
-        return true;
-    }
 }
