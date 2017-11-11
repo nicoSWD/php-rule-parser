@@ -18,7 +18,7 @@ final class Concat extends CallableFunction
 {
     /**
      * @param BaseToken $parameters
-     * @param BaseToken $parameters...
+     * @param BaseToken $parameters ...
      * @return BaseToken
      */
     public function call($parameters = null): BaseToken
