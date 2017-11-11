@@ -16,7 +16,7 @@ final class NodeArray extends BaseNode
 {
     public function getNode(): BaseToken
     {
-        $token = new TokenArray($this->getArrayItems(), $this->getCurrentNode()->getOffset());
+        $token = new TokenArray($this->getArrayItems());
 
         while ($this->hasMethodCall()) {
             $token = $this->getMethod($token)->call(...$this->getArguments());

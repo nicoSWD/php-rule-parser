@@ -10,28 +10,28 @@ declare(strict_types=1);
 namespace nicoSWD\Rule\TokenStream\Node;
 
 use Closure;
+use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\TokenCollection;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\TokenStream\TokenStream;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
-use nicoSWD\Rule\TokenStream\Token;
 
 abstract class BaseNode
 {
     /** @var TokenStream */
     protected $tokenStream;
     /** @var string */
-    protected $methodName = '';
+    private $methodName = '';
     /** @var int */
-    protected $methodOffset = 0;
+    private $methodOffset = 0;
 
     public function __construct(TokenStream $tokenStream)
     {
         $this->tokenStream = $tokenStream;
     }
 
-    abstract public function getNode(): Token\BaseToken;
+    abstract public function getNode(): BaseToken;
 
     protected function hasMethodCall(): bool
     {
@@ -42,7 +42,7 @@ abstract class BaseNode
         while ($stack->valid()) {
             $stack->next();
 
-            /** @var Token\BaseToken $token */
+            /** @var BaseToken $token */
             if (!$token = $stack->current()) {
                 break;
             } elseif ($token->isWhitespace()) {
@@ -61,7 +61,7 @@ abstract class BaseNode
         return $hasMethod;
     }
 
-    public function getMethod(Token\BaseToken $token): CallableFunction
+    public function getMethod(BaseToken $token): CallableFunction
     {
         return $this->tokenStream->getMethod($this->getMethodName(), $token);
     }
@@ -134,7 +134,7 @@ abstract class BaseNode
         return $items;
     }
 
-    private function getNextToken(): Token\BaseToken
+    private function getNextToken(): BaseToken
     {
         $this->tokenStream->next();
 
@@ -145,7 +145,7 @@ abstract class BaseNode
         return $this->tokenStream->current();
     }
 
-    private function assertNoTrailingComma(bool $commaExpected, TokenCollection $items, Token\BaseToken $token)
+    private function assertNoTrailingComma(bool $commaExpected, TokenCollection $items, BaseToken $token)
     {
         if (!$commaExpected && $items->count() > 0) {
             throw ParserException::unexpectedComma($token);

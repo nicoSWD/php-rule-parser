@@ -19,7 +19,7 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 class TokenStream implements Iterator
 {
     /** @var ArrayIterator */
-    protected $stack;
+    private $stack;
     /** @var AST */
     private $ast;
 

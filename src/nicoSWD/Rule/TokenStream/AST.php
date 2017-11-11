@@ -22,7 +22,7 @@ class AST
     /** @var TokenizerInterface */
     private $tokenizer;
     /** @var TokenFactory */
-    public $tokenFactory;
+    private $tokenFactory;
     /** @var TokenStream */
     private $tokenStream;
     /** @var Closure[] */
