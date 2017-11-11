@@ -16,12 +16,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenString;
 
 final class Concat extends CallableFunction
 {
-    /**
-     * @param BaseToken $parameters
-     * @param BaseToken $parameters ...
-     * @return BaseToken
-     */
-    public function call($parameters = null): BaseToken
+    public function call(BaseToken $parameters = null): BaseToken
     {
         $value = $this->token->getValue();
 

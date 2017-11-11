@@ -15,11 +15,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenInteger;
 
 final class IndexOf extends CallableFunction
 {
-    /**
-     * @param BaseToken $needle
-     * @return BaseToken
-     */
-    public function call($needle = null): BaseToken
+    public function call(BaseToken $needle = null): BaseToken
     {
         if (!$needle) {
             $value = -1;

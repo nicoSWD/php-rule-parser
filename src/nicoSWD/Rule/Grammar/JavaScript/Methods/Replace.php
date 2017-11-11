@@ -16,13 +16,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenString;
 
 final class Replace extends CallableFunction
 {
-    /**
-     * @param BaseToken $search
-     * @param BaseToken $replace
-     * @return BaseToken
-     * @throws \Exception
-     */
-    public function call($search = null, $replace = null): BaseToken
+    public function call(BaseToken $search = null, BaseToken $replace = null): BaseToken
     {
         $isRegExpr = false;
 

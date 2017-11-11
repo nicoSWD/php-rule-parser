@@ -18,12 +18,7 @@ use nicoSWD\Rule\Grammar\CallableFunction;
 
 final class Join extends CallableFunction
 {
-    /**
-     * @param BaseToken $glue
-     * @return BaseToken
-     * @throws ParserException
-     */
-    public function call($glue = null): BaseToken
+    public function call(BaseToken $glue = null): BaseToken
     {
         if (!$this->token instanceof TokenArray) {
             throw new ParserException(sprintf('%s.join is not a function', $this->token->getValue()));

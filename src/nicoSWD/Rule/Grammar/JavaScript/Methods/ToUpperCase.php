@@ -15,12 +15,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenString;
 
 final class ToUpperCase extends CallableFunction
 {
-    /**
-     * @param BaseToken $string
-     * @return BaseToken
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public function call($string = null): BaseToken
+    public function call(BaseToken $string = null): BaseToken
     {
         return new TokenString(strtoupper((string) $this->token->getValue()));
     }

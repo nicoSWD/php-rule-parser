@@ -16,12 +16,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenRegex;
 
 final class Split extends CallableFunction
 {
-    /**
-     * @param BaseToken $separator
-     * @param BaseToken $limit
-     * @return BaseToken
-     */
-    public function call($separator = null, $limit = null): BaseToken
+    public function call(BaseToken $separator = null, BaseToken $limit = null): BaseToken
     {
         if (!$separator || !is_string($separator->getValue())) {
             $newValue = [$this->token->getValue()];

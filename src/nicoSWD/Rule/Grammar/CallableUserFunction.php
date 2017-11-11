@@ -11,10 +11,5 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 interface CallableUserFunction
 {
-    /**
-     * @param BaseToken $param
-     * @param BaseToken $param ...
-     * @return BaseToken
-     */
-    public function call($param = null): BaseToken;
+    public function call(BaseToken $param = null): BaseToken;
 }

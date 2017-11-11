@@ -18,12 +18,7 @@ use nicoSWD\Rule\Grammar\CallableFunction;
 
 final class Test extends CallableFunction
 {
-    /**
-     * @param BaseToken $string
-     * @return BaseToken
-     * @throws ParserException
-     */
-    public function call($string = null): BaseToken
+    public function call(BaseToken $string = null): BaseToken
     {
         if (!$this->token instanceof TokenRegex) {
             throw new ParserException('undefined is not a function');

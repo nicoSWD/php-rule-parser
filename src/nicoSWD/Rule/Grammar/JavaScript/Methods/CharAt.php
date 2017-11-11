@@ -16,11 +16,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenString;
 
 final class CharAt extends CallableFunction
 {
-    /**
-     * @param BaseToken $offset
-     * @return BaseToken
-     */
-    public function call($offset = null): BaseToken
+    public function call(BaseToken $offset = null): BaseToken
     {
         $tokenValue = $this->token->getValue();
 

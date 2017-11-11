@@ -11,9 +11,9 @@ namespace nicoSWD\Rule\Expression;
 
 use nicoSWD\Rule\TokenStream\Token;
 
-final class ExpressionFactory implements ExpressionFactoryInterface
+class ExpressionFactory implements ExpressionFactoryInterface
 {
-    private $classLookup = [
+    protected $classLookup = [
         Token\TokenEqual::class          => EqualExpression::class,
         Token\TokenEqualStrict::class    => EqualStrictExpression::class,
         Token\TokenNotEqual::class       => NotEqualExpression::class,

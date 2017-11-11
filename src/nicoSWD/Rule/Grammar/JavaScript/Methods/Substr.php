@@ -15,12 +15,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenString;
 
 final class Substr extends CallableFunction
 {
-    /**
-     * @param BaseToken $start
-     * @param BaseToken $offset
-     * @return BaseToken
-     */
-    public function call($start = null, $offset = null): BaseToken
+    public function call(BaseToken $start = null, BaseToken $offset = null): BaseToken
     {
         $params = [];
 
