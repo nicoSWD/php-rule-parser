@@ -28,7 +28,7 @@ class Parser
     /** @var CompilerFactoryInterface */
     private $compilerFactory;
     /** @var null|BaseToken */
-    private $operator = null;
+    private $operator;
     /** @var SplStack */
     private $values;
 
@@ -71,7 +71,7 @@ class Parser
             ];
 
             $handler = $handlers[$token->getType()] ?? $handlers[TokenType::UNKNOWN];
-            $handler($compiler, $token);
+            $handler($token, $compiler);
 
             $this->evaluateExpression($compiler);
         };
@@ -104,14 +104,14 @@ class Parser
 
     private function valueHandler(): Closure
     {
-        return function (CompilerInterface $compiler, BaseToken $token) {
+        return function (BaseToken $token) {
             $this->values->push($token->getValue());
         };
     }
 
     private function operatorHandler(): Closure
     {
-        return function (CompilerInterface $compiler, BaseToken $token) {
+        return function (BaseToken $token) {
             if (isset($this->operator)) {
                 throw Exception\ParserException::unexpectedToken($token);
             } elseif ($this->values->isEmpty()) {
@@ -124,21 +124,21 @@ class Parser
 
     private function logicalHandler(): Closure
     {
-        return function (CompilerInterface $compiler, BaseToken $token) {
+        return function (BaseToken $token, CompilerInterface $compiler) {
             $compiler->addLogical($token);
         };
     }
 
     private function parenthesisHandler(): Closure
     {
-        return function (CompilerInterface $compiler, BaseToken $token) {
+        return function (BaseToken $token, CompilerInterface $compiler) {
             $compiler->addParentheses($token);
         };
     }
 
     private function unknownHandler(): Closure
     {
-        return function (CompilerInterface $compiler, BaseToken $token) {
+        return function (BaseToken $token) {
             throw Exception\ParserException::unknownToken($token);
         };
     }
