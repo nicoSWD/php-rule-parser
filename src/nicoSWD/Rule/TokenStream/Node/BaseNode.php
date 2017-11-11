@@ -121,7 +121,7 @@ abstract class BaseNode
                 }
 
                 $commaExpected = false;
-            } elseif ($token->getType() === $stopAt) {
+            } elseif ($token->isOfType($stopAt)) {
                 break;
             } elseif (!$token->isWhitespace()) {
                 throw ParserException::unexpectedToken($token);
