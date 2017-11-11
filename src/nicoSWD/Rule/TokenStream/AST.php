@@ -67,7 +67,7 @@ class AST
         }
 
         if (!isset($this->methods[$methodName])) {
-            throw new Exception\UndefinedMethodException(sprintf($methodName));
+            throw new Exception\UndefinedMethodException($methodName);
         }
 
         return new $this->methods[$methodName]($token);
