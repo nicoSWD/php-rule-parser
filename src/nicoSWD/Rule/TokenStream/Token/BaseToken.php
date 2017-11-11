@@ -14,9 +14,9 @@ use nicoSWD\Rule\TokenStream\TokenStream;
 abstract class BaseToken
 {
     /** @var mixed */
-    protected $value;
+    private $value;
     /** @var int */
-    protected $offset = 0;
+    private $offset = 0;
 
     abstract public function getType(): int;
 
@@ -56,6 +56,11 @@ abstract class BaseToken
         return $this->isOfType(TokenType::VALUE | TokenType::INT_VALUE);
     }
 
+    public function isWhitespace(): bool
+    {
+        return $this->isOfType(TokenType::SPACE | TokenType::COMMENT);
+    }
+
     public function isMethod(): bool
     {
         return $this->isOfType(TokenType::METHOD);
@@ -79,10 +84,5 @@ abstract class BaseToken
     public function isParenthesis(): bool
     {
         return $this->isOfType(TokenType::PARENTHESIS);
-    }
-
-    public function isWhitespace(): bool
-    {
-        return $this->isOfType(TokenType::SPACE | TokenType::COMMENT);
     }
 }

@@ -22,6 +22,8 @@ final class TokenBool extends BaseToken
      */
     public function getValue()
     {
-        return $this->value === true || strtolower((string) $this->value) === 'true';
+        $value = parent::getValue();
+
+        return $value === true || strtolower((string) $value) === 'true';
     }
 }

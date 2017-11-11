@@ -18,6 +18,6 @@ final class TokenFloat extends BaseToken
 
     public function getValue()
     {
-        return (float) $this->value;
+        return (float) parent::getValue();
     }
 }

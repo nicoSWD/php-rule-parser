@@ -18,6 +18,6 @@ final class TokenInteger extends BaseToken
 
     public function getValue(): int
     {
-        return (int) $this->value;
+        return (int) parent::getValue();
     }
 }

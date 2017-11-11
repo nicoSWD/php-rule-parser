@@ -22,247 +22,247 @@ object(ArrayIterator)#69 (1) {
   array(35) {
     [0]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenFunction)#35 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(9) "parseInt("
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(0)
     }
     [1]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenEncapsedString)#34 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(3) ""2""
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(9)
     }
     [2]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenClosingParenthesis)#36 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) ")"
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(12)
     }
     [3]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#37 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) " "
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(13)
     }
     [4]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenEqual)#38 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(2) "=="
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(14)
     }
     [5]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#39 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) " "
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(16)
     }
     [6]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenVariable)#40 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(7) "var_two"
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(17)
     }
     [7]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#41 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) " "
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(24)
     }
     [8]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenAnd)#42 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(2) "&&"
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(25)
     }
     [9]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#43 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) " "
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(27)
     }
     [10]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenOpeningParenthesis)#44 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) "("
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(28)
     }
     [11]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenEncapsedString)#45 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(5) ""foo""
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(29)
     }
     [12]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenMethod)#46 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(13) ".toUpperCase("
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(34)
     }
     [13]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenClosingParenthesis)#47 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) ")"
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(47)
     }
     [14]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#48 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) " "
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(48)
     }
     [15]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenEqualStrict)#49 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(3) "==="
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(49)
     }
     [16]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#50 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) " "
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(52)
     }
     [17]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenEncapsedString)#51 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(5) ""FOO""
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(53)
     }
     [18]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenClosingParenthesis)#52 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) ")"
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(58)
     }
     [19]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#53 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) " "
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(59)
     }
     [20]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenOr)#54 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(2) "||"
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(60)
     }
     [21]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#55 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) " "
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(62)
     }
     [22]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenInteger)#56 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) "1"
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(63)
     }
     [23]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#57 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) " "
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(64)
     }
     [24]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenIn)#58 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(2) "in"
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(65)
     }
     [25]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#59 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) " "
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(67)
     }
     [26]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenOpeningArray)#60 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) "["
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(68)
     }
     [27]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenEncapsedString)#61 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(3) ""1""
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(69)
     }
     [28]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenComma)#62 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) ","
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(72)
     }
     [29]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#63 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) " "
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(73)
     }
     [30]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenInteger)#64 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) "2"
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(74)
     }
     [31]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenComma)#65 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) ","
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(75)
     }
     [32]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenSpace)#66 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) " "
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(76)
     }
     [33]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenVariable)#67 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(7) "var_one"
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(77)
     }
     [34]=>
     object(nicoSWD\Rule\TokenStream\Token\TokenClosingArray)#68 (2) {
-      ["value":protected]=>
+      ["value":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       string(1) "]"
-      ["offset":protected]=>
+      ["offset":"nicoSWD\Rule\TokenStream\Token\BaseToken":private]=>
       int(84)
     }
   }

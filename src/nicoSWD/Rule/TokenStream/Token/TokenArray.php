@@ -20,7 +20,7 @@ final class TokenArray extends BaseToken
     {
         $items = [];
 
-        foreach ($this->value as $value) {
+        foreach ($this->getValue() as $value) {
             /** @var self $value */
             $items[] = $value->getValue();
         }
