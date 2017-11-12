@@ -27,7 +27,7 @@ class Parser
     private $expressionFactory;
     /** @var CompilerFactoryInterface */
     private $compilerFactory;
-    /** @var null|BaseToken */
+    /** @var BaseToken|null */
     private $operator;
     /** @var SplStack */
     private $values;
@@ -60,14 +60,14 @@ class Parser
     {
         return function (CompilerInterface $compiler) use ($token) {
             $handlers = [
-                TokenType::VALUE       => $this->valueHandler(),
-                TokenType::INT_VALUE   => $this->valueHandler(),
-                TokenType::OPERATOR    => $this->operatorHandler(),
-                TokenType::LOGICAL     => $this->logicalHandler(),
-                TokenType::PARENTHESIS => $this->parenthesisHandler(),
-                TokenType::SPACE       => $this->dummyHandler(),
-                TokenType::COMMENT     => $this->dummyHandler(),
-                TokenType::UNKNOWN     => $this->unknownHandler(),
+                TokenType::VALUE       => $this->handleValueToken(),
+                TokenType::INT_VALUE   => $this->handleValueToken(),
+                TokenType::OPERATOR    => $this->handleOperatorToken(),
+                TokenType::LOGICAL     => $this->handleLogicalToken(),
+                TokenType::PARENTHESIS => $this->handleParenthesisToken(),
+                TokenType::SPACE       => $this->handleDummyToken(),
+                TokenType::COMMENT     => $this->handleDummyToken(),
+                TokenType::UNKNOWN     => $this->handleUnknownToken(),
             ];
 
             $handler = $handlers[$token->getType()] ?? $handlers[TokenType::UNKNOWN];
@@ -102,14 +102,14 @@ class Parser
         unset($this->operator);
     }
 
-    private function valueHandler(): Closure
+    private function handleValueToken(): Closure
     {
         return function (BaseToken $token) {
             $this->values->push($token->getValue());
         };
     }
 
-    private function operatorHandler(): Closure
+    private function handleOperatorToken(): Closure
     {
         return function (BaseToken $token) {
             if (isset($this->operator)) {
@@ -122,30 +122,31 @@ class Parser
         };
     }
 
-    private function logicalHandler(): Closure
+    private function handleLogicalToken(): Closure
     {
         return function (BaseToken $token, CompilerInterface $compiler) {
             $compiler->addLogical($token);
         };
     }
 
-    private function parenthesisHandler(): Closure
+    private function handleParenthesisToken(): Closure
     {
         return function (BaseToken $token, CompilerInterface $compiler) {
             $compiler->addParentheses($token);
         };
     }
 
-    private function unknownHandler(): Closure
+    private function handleUnknownToken(): Closure
     {
         return function (BaseToken $token) {
             throw Exception\ParserException::unknownToken($token);
         };
     }
 
-    private function dummyHandler(): Closure
+    private function handleDummyToken(): Closure
     {
         return function () {
+            // Do nothing
         };
     }
 }
