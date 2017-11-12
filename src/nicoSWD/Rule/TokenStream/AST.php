@@ -23,8 +23,8 @@ class AST
     private $tokenizer;
     /** @var TokenFactory */
     private $tokenFactory;
-    /** @var TokenStream */
-    private $tokenStream;
+    /** @var TokenStreamFactory */
+    private $tokenStreamFactory;
     /** @var Closure[] */
     private $functions = [];
     /** @var string[] */
@@ -35,16 +35,16 @@ class AST
     public function __construct(
         TokenizerInterface $tokenizer,
         TokenFactory $tokenFactory,
-        TokenStreamFactory $tokenStream
+        TokenStreamFactory $tokenStreamFactory
     ) {
         $this->tokenizer = $tokenizer;
         $this->tokenFactory = $tokenFactory;
-        $this->tokenStream = $tokenStream;
+        $this->tokenStreamFactory = $tokenStreamFactory;
     }
 
     public function getStream(string $rule): TokenStream
     {
-        return $this->tokenStream->create($this->tokenizer->tokenize($rule), $this);
+        return $this->tokenStreamFactory->create($this->tokenizer->tokenize($rule), $this);
     }
 
     public function getFunction(string $functionName): Closure
