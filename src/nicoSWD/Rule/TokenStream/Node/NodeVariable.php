@@ -24,7 +24,7 @@ final class NodeVariable extends BaseNode
         return $current;
     }
 
-    private function getVariableName()
+    private function getVariableName(): string
     {
         return $this->getCurrentNode()->getOriginalValue();
     }

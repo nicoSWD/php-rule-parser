@@ -22,7 +22,7 @@ final class Tokenizer implements TokenizerInterface
     /** @var Grammar */
     private $grammar;
     /** @var stdClass[] */
-    private $internalTokens = [];
+    private $tokens = [];
     /** @var string */
     private $regex = '';
 
@@ -65,7 +65,7 @@ final class Tokenizer implements TokenizerInterface
         $token->regex = $regex;
         $token->priority = $priority;
 
-        $this->internalTokens[$class] = $token;
+        $this->tokens[$class] = $token;
     }
 
     private function getMatchedToken(array $matches): string
@@ -98,7 +98,7 @@ final class Tokenizer implements TokenizerInterface
     {
         $queue = new SplPriorityQueue();
 
-        foreach ($this->internalTokens as $class) {
+        foreach ($this->tokens as $class) {
             $queue->insert($class, $class->priority);
         }
 
