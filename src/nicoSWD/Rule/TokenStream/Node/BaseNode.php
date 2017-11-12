@@ -49,7 +49,7 @@ abstract class BaseNode
                 continue;
             } elseif ($token->isMethod()) {
                 $this->methodName = $token->getValue();
-                $this->methodOffset = $token->getOffset();
+                $this->methodOffset = $stack->key();
                 $hasMethod = true;
             } else {
                 break;
@@ -61,41 +61,39 @@ abstract class BaseNode
         return $hasMethod;
     }
 
-    public function getMethod(BaseToken $token): CallableFunction
+    protected function getMethod(BaseToken $token): CallableFunction
     {
         return $this->tokenStream->getMethod($this->getMethodName(), $token);
     }
 
     private function getMethodName(): string
     {
-        do {
-            $this->tokenStream->next();
-        } while ($this->getCurrentNode()->getOffset() < $this->methodOffset);
+        $this->tokenStream->getStack()->seek($this->methodOffset);
 
-        return trim(ltrim(rtrim($this->methodName, "\r\n("), '.'));
+        return preg_replace('~\W~', '', $this->methodName);
     }
 
-    public function getFunction(): Closure
+    protected function getFunction(): Closure
     {
         return $this->tokenStream->getFunction($this->getFunctionName());
     }
 
     private function getFunctionName(): string
     {
-        return rtrim($this->getCurrentNode()->getValue(), " \r\n(");
+        return preg_replace('~\W~', '', $this->getCurrentNode()->getValue());
     }
 
-    public function getArrayItems(): TokenCollection
+    protected function getArrayItems(): TokenCollection
     {
         return $this->getCommaSeparatedValues(TokenType::SQUARE_BRACKET);
     }
 
-    public function getArguments(): TokenCollection
+    protected function getArguments(): TokenCollection
     {
         return $this->getCommaSeparatedValues(TokenType::PARENTHESIS);
     }
 
-    public function getCurrentNode()
+    protected function getCurrentNode(): BaseToken
     {
         return $this->tokenStream->getStack()->current();
     }
