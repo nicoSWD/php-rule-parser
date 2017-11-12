@@ -35,7 +35,7 @@ class AST
     public function __construct(
         TokenizerInterface $tokenizer,
         TokenFactory $tokenFactory,
-        TokenStream $tokenStream
+        TokenStreamFactory $tokenStream
     ) {
         $this->tokenizer = $tokenizer;
         $this->tokenFactory = $tokenFactory;

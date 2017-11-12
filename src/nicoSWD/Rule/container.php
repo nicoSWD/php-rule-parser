@@ -17,10 +17,10 @@ use nicoSWD\Rule\Expression\ExpressionFactory;
 use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rule\Tokenizer\Tokenizer;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
-use nicoSWD\Rule\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\TokenStreamFactory;
 
 return new class {
-    private static $tokenStream;
+    private static $tokenStreamFactory;
     private static $tokenFactory;
     private static $compiler;
     private static $javaScript;
@@ -66,7 +66,7 @@ return new class {
 
     private static function ast(array $variables): AST
     {
-        $ast = new AST(self::tokenizer(), self::tokenFactory(), self::tokenStream());
+        $ast = new AST(self::tokenizer(), self::tokenFactory(), self::tokenStreamFactory());
         $ast->setVariables($variables);
 
         return $ast;
@@ -90,13 +90,13 @@ return new class {
         return self::$javaScript;
     }
 
-    private static function tokenStream(): TokenStream
+    private static function tokenStreamFactory(): TokenStreamFactory
     {
-        if (!isset(self::$tokenStream)) {
-            self::$tokenStream = new TokenStream();
+        if (!isset(self::$tokenStreamFactory)) {
+            self::$tokenStreamFactory = new TokenStreamFactory();
         }
 
-        return self::$tokenStream;
+        return self::$tokenStreamFactory;
     }
 
     private static function expressionFactory(): ExpressionFactory

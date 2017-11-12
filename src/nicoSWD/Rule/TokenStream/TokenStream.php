@@ -11,25 +11,21 @@ namespace nicoSWD\Rule\TokenStream;
 
 use ArrayIterator;
 use Closure;
-use Iterator;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Grammar\CallableUserFunction;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
-class TokenStream implements Iterator
+class TokenStream extends ArrayIterator
 {
     /** @var ArrayIterator */
     private $stack;
     /** @var AST */
     private $ast;
 
-    public function create(ArrayIterator $stack, AST $ast)
+    public function __construct(ArrayIterator $stack, AST $ast)
     {
-        $stream = new self();
-        $stream->stack = $stack;
-        $stream->ast = $ast;
-
-        return $stream;
+        $this->stack = $stack;
+        $this->ast = $ast;
     }
 
     public function next()
