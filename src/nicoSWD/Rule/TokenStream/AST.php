@@ -47,19 +47,6 @@ class AST
         return $this->tokenStreamFactory->create($this->tokenizer->tokenize($rule), $this);
     }
 
-    public function getFunction(string $functionName): Closure
-    {
-        if (empty($this->functions)) {
-            $this->registerFunctions();
-        }
-
-        if (!isset($this->functions[$functionName])) {
-            throw new Exception\UndefinedFunctionException($functionName);
-        }
-
-        return $this->functions[$functionName];
-    }
-
     public function getMethod(string $methodName, BaseToken $token): CallableUserFunction
     {
         if (empty($this->methods)) {
@@ -71,6 +58,11 @@ class AST
         }
 
         return new $this->methods[$methodName]($token);
+    }
+
+    private function registerMethods()
+    {
+        $this->methods = $this->tokenizer->getGrammar()->getInternalMethods();
     }
 
     public function setVariables(array $variables)
@@ -90,6 +82,19 @@ class AST
     public function variableExists(string $variableName): bool
     {
         return array_key_exists($variableName, $this->variables);
+    }
+
+    public function getFunction(string $functionName): Closure
+    {
+        if (empty($this->functions)) {
+            $this->registerFunctions();
+        }
+
+        if (!isset($this->functions[$functionName])) {
+            throw new Exception\UndefinedFunctionException($functionName);
+        }
+
+        return $this->functions[$functionName];
     }
 
     private function registerFunctionClass(string $functionName, string $className)
@@ -116,10 +121,5 @@ class AST
         foreach ($this->tokenizer->getGrammar()->getInternalFunctions() as $functionName => $className) {
             $this->registerFunctionClass($functionName, $className);
         }
-    }
-
-    private function registerMethods()
-    {
-        $this->methods = $this->tokenizer->getGrammar()->getInternalMethods();
     }
 }

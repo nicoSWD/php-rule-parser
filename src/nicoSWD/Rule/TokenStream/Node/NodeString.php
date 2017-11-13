@@ -15,12 +15,12 @@ final class NodeString extends BaseNode
 {
     public function getNode(): BaseToken
     {
-        $current = $this->getCurrentNode();
+        $token = $this->getCurrentNode();
 
         while ($this->hasMethodCall()) {
-            $current = $this->getMethod($current)->call(...$this->getArguments());
+            $token = $this->getMethod($token)->call(...$this->getArguments());
         }
 
-        return $current;
+        return $token;
     }
 }

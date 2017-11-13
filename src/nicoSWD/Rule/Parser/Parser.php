@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace nicoSWD\Rule\Parser;
 
 use Closure;
-use nicoSWD\Rule\Compiler\CompilerInterface;
 use nicoSWD\Rule\Compiler\CompilerFactoryInterface;
+use nicoSWD\Rule\Compiler\CompilerInterface;
 use nicoSWD\Rule\Expression\ExpressionFactoryInterface;
 use nicoSWD\Rule\TokenStream\AST;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
@@ -29,6 +29,8 @@ class Parser
     private $operator;
     /** @var mixed[] */
     private $values = [];
+    /** @var Closure[] */
+    private $handlers;
 
     public function __construct(
         AST $ast,
@@ -59,18 +61,20 @@ class Parser
 
     private function getHandlerForType(int $tokenType): Closure
     {
-        $handlers = [
-            TokenType::VALUE       => $this->handleValueToken(),
-            TokenType::INT_VALUE   => $this->handleValueToken(),
-            TokenType::OPERATOR    => $this->handleOperatorToken(),
-            TokenType::LOGICAL     => $this->handleLogicalToken(),
-            TokenType::PARENTHESIS => $this->handleParenthesisToken(),
-            TokenType::SPACE       => $this->handleDummyToken(),
-            TokenType::COMMENT     => $this->handleDummyToken(),
-            TokenType::UNKNOWN     => $this->handleUnknownToken(),
-        ];
+        if (!isset($this->handlers)) {
+            $this->handlers = [
+                TokenType::VALUE       => $this->handleValueToken(),
+                TokenType::INT_VALUE   => $this->handleValueToken(),
+                TokenType::OPERATOR    => $this->handleOperatorToken(),
+                TokenType::LOGICAL     => $this->handleLogicalToken(),
+                TokenType::PARENTHESIS => $this->handleParenthesisToken(),
+                TokenType::SPACE       => $this->handleDummyToken(),
+                TokenType::COMMENT     => $this->handleDummyToken(),
+                TokenType::UNKNOWN     => $this->handleUnknownToken(),
+            ];
+        }
 
-        return $handlers[$tokenType] ?? $handlers[TokenType::UNKNOWN];
+        return $this->handlers[$tokenType] ?? $this->handlers[TokenType::UNKNOWN];
     }
 
     private function evaluateExpression(CompilerInterface $compiler)

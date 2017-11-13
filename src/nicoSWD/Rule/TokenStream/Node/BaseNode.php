@@ -45,12 +45,12 @@ abstract class BaseNode
             /** @var BaseToken $token */
             if (!$token = $stack->current()) {
                 break;
-            } elseif ($token->isWhitespace()) {
-                continue;
             } elseif ($token->isMethod()) {
                 $this->methodName = $token->getValue();
                 $this->methodOffset = $stack->key();
                 $hasMethod = true;
+            } elseif ($token->isWhitespace()) {
+                continue;
             } else {
                 break;
             }
@@ -63,13 +63,13 @@ abstract class BaseNode
 
     protected function getMethod(BaseToken $token): CallableFunction
     {
+        $this->tokenStream->getStack()->seek($this->methodOffset);
+
         return $this->tokenStream->getMethod($this->getMethodName(), $token);
     }
 
     private function getMethodName(): string
     {
-        $this->tokenStream->getStack()->seek($this->methodOffset);
-
         return preg_replace('~\W~', '', $this->methodName);
     }
 
