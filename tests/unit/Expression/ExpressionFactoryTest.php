@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\unit\Expressions;
+namespace nicoSWD\Rule\tests\unit\Expression;
 
 use nicoSWD\Rule\Expression;
 use nicoSWD\Rule\Expression\ExpressionFactory;

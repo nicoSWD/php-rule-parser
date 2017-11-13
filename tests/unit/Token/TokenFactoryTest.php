@@ -7,12 +7,12 @@ declare(strict_types=1);
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\unit\Tokens;
+namespace nicoSWD\Rule\tests\unit\Token;
 
-use nicoSWD\Rule\tests\integration\AbstractTestBase;
 use nicoSWD\Rule\TokenStream\Token;
+use PHPUnit\Framework\TestCase;
 
-class TokenFactoryTest extends AbstractTestBase
+class TokenFactoryTest extends TestCase
 {
     public function testSimpleTypeReturnsCorrectInstance()
     {
