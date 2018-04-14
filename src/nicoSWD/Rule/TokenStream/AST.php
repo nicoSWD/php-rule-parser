@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\TokenStream;
 
 use Closure;
 use InvalidArgumentException;
-use nicoSWD\Rule\Grammar\CallableUserFunction;
+use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedVariableException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
@@ -45,7 +45,7 @@ class AST
         return $this->tokenStreamFactory->create($this->tokenizer->tokenize($rule), $this);
     }
 
-    public function getMethod(string $methodName, BaseToken $token): CallableUserFunction
+    public function getMethod(string $methodName, BaseToken $token): CallableUserFunctionInterface
     {
         if (empty($this->methods)) {
             $this->registerMethods();
@@ -100,12 +100,12 @@ class AST
         $this->functions[$functionName] = function (BaseToken ...$args) use ($className): BaseToken {
             $function = new $className();
 
-            if (!$function instanceof CallableUserFunction) {
+            if (!$function instanceof CallableUserFunctionInterface) {
                 throw new InvalidArgumentException(
                     sprintf(
                         "%s must be an instance of %s",
                         $className,
-                        CallableUserFunction::class
+                        CallableUserFunctionInterface::class
                     )
                 );
             }

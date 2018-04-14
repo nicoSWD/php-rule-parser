@@ -12,7 +12,7 @@ namespace nicoSWD\Rule\TokenStream;
 use ArrayIterator;
 use Closure;
 use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\Grammar\CallableUserFunction;
+use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 class TokenStream extends ArrayIterator
@@ -81,7 +81,7 @@ class TokenStream extends ArrayIterator
         }
     }
 
-    public function getMethod(string $methodName, BaseToken $token): CallableUserFunction
+    public function getMethod(string $methodName, BaseToken $token): CallableUserFunctionInterface
     {
         try {
             return $this->ast->getMethod($methodName, $token);

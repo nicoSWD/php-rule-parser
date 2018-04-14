@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\Grammar;
 
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
-interface CallableUserFunction
+interface CallableUserFunctionInterface
 {
     public function call(BaseToken $param = null): BaseToken;
 }

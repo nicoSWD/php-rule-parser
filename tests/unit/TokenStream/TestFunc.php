@@ -7,11 +7,11 @@
  */
 namespace nicoSWD\Rule\tests\unit\TokenStream;
 
-use nicoSWD\Rule\Grammar\CallableUserFunction;
+use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenInteger;
 
-class TestFunc implements CallableUserFunction
+class TestFunc implements CallableUserFunctionInterface
 {
     public function call(BaseToken $param = null): BaseToken
     {

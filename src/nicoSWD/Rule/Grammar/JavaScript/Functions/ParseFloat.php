@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
@@ -10,11 +8,11 @@ declare(strict_types=1);
 namespace nicoSWD\Rule\Grammar\JavaScript\Functions;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
-use nicoSWD\Rule\Grammar\CallableUserFunction;
+use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFloat;
 
-final class ParseFloat extends CallableFunction implements CallableUserFunction
+final class ParseFloat extends CallableFunction implements CallableUserFunctionInterface
 {
     public function call(BaseToken $value = null): BaseToken
     {

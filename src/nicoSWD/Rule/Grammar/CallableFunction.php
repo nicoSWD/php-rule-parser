@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
@@ -11,7 +9,7 @@ namespace nicoSWD\Rule\Grammar;
 
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
-abstract class CallableFunction implements CallableUserFunction
+abstract class CallableFunction implements CallableUserFunctionInterface
 {
     /** @var BaseToken|null */
     protected $token;

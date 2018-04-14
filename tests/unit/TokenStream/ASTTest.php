@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\tests\unit\TokenStream;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
-use nicoSWD\Rule\Grammar\CallableUserFunction;
+use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\Tokenizer\TokenizerInterface;
 use nicoSWD\Rule\TokenStream\AST;
@@ -55,7 +55,10 @@ class ASTTest extends TestCase
 
     public function testGivenAFunctionNameWhenItDoesNotImplementTheInterfaceItShouldThrowAnException()
     {
-        $this->expectExceptionMessage(sprintf('stdClass must be an instance of %s', CallableUserFunction::class));
+        $this->expectExceptionMessage(sprintf(
+            'stdClass must be an instance of %s',
+            CallableUserFunctionInterface::class
+        ));
 
         $grammar = \Mockery::mock(Grammar::class);
         $grammar->shouldReceive('getInternalFunctions')->once()->andReturn(['test' => \stdClass::class]);
