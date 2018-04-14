@@ -66,7 +66,7 @@ class ParserTest extends TestCase
         $compiler->shouldReceive('addBoolean')->twice();
         $compiler->shouldReceive('getCompiledRule')->once()->andReturn('(1)&1');
 
-        /** @var m\Mock $tokenStream */
+        /** @var m\MockInterface $tokenStream */
         $tokenStream = \Mockery::mock(TokenStream::class);
         $tokenStream->shouldReceive('rewind')->once();
         $tokenStream->shouldReceive('next');
@@ -88,7 +88,7 @@ class ParserTest extends TestCase
             ->shouldReceive('createFromOperator')
             ->twice()
             ->with(m::type(Token\BaseToken::class))
-            ->andReturns(
+            ->andReturn(
                 $equalExpression,
                 $greaterExpression
             );
