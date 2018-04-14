@@ -20,8 +20,7 @@ class BaseTokenTest extends TestCase
 
     protected function setUp()
     {
-        $this->token = new class ('&&', 1337) extends BaseToken
-        {
+        $this->token = new class ('&&', 1337) extends BaseToken {
             public function getType(): int
             {
                 return TokenType::LOGICAL;
@@ -59,8 +58,7 @@ class BaseTokenTest extends TestCase
 
     public function testIsValue()
     {
-        $token = new class ('123', 1337) extends BaseToken
-        {
+        $token = new class ('123', 1337) extends BaseToken {
             public function getType(): int
             {
                 return TokenType::VALUE;
@@ -72,8 +70,7 @@ class BaseTokenTest extends TestCase
 
     public function testIsWhitespace()
     {
-        $token = new class (' ', 1337) extends BaseToken
-        {
+        $token = new class (' ', 1337) extends BaseToken {
             public function getType(): int
             {
                 return TokenType::SPACE;
@@ -85,8 +82,7 @@ class BaseTokenTest extends TestCase
 
     public function testIsMethod()
     {
-        $token = new class ('.derp(', 1337) extends BaseToken
-        {
+        $token = new class ('.derp(', 1337) extends BaseToken {
             public function getType(): int
             {
                 return TokenType::METHOD;
@@ -98,8 +94,7 @@ class BaseTokenTest extends TestCase
 
     public function testIsComma()
     {
-        $token = new class (',', 1337) extends BaseToken
-        {
+        $token = new class (',', 1337) extends BaseToken {
             public function getType(): int
             {
                 return TokenType::COMMA;
@@ -111,8 +106,7 @@ class BaseTokenTest extends TestCase
 
     public function testIsOperator()
     {
-        $token = new class ('>', 1337) extends BaseToken
-        {
+        $token = new class ('>', 1337) extends BaseToken {
             public function getType(): int
             {
                 return TokenType::OPERATOR;
@@ -124,8 +118,7 @@ class BaseTokenTest extends TestCase
 
     public function testIsLogical()
     {
-        $token = new class ('&&', 1337) extends BaseToken
-        {
+        $token = new class ('&&', 1337) extends BaseToken {
             public function getType(): int
             {
                 return TokenType::LOGICAL;
@@ -137,8 +130,7 @@ class BaseTokenTest extends TestCase
 
     public function testIsParenthesis()
     {
-        $token = new class ('(', 1337) extends BaseToken
-        {
+        $token = new class ('(', 1337) extends BaseToken {
             public function getType(): int
             {
                 return TokenType::PARENTHESIS;
