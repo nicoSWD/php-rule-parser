@@ -41,31 +41,26 @@ use nicoSWD\Rule\Rule;
 // Composer install
 require '/path/to/vendor/autoload.php';
 
-$ruleStr = '
-    2 < 3 && (
-        // False
-        foo in [4, 6, 7] ||
-        // True
-        [1, 4, 3].join("") === "143" &&
-        // True
-        "bar" in "foo bar".split(" ") &&
-        // True
-        "foo bar".substr(4) === "bar"
-    ) && (
-        // True
-        "foo|bar|baz".split("|") === ["foo", /* what */ "bar", "baz"] &&
-        // True
-        bar > 6
-    )';
+$variables = ['foo' => 6];
 
-$variables = [
-    'foo' => 'abc',
-    'bar' => 321,
-    'baz' => 123
-];
+$rule = new Rule('foo in [4, 6, 7]', $variables);
+var_dump($rule->isTrue()); // bool(true)
+```
 
-$rule = new Rule($ruleStr, $variables);
+```php
+$rule = new Rule('bar in "foo|bar|baz".split("|")');
+var_dump($rule->isTrue()); // bool(true)
+```
 
+```php
+$rule = new Rule('[1, 4, 3].join("") === "143"');
+var_dump($rule->isTrue()); // bool(true)
+```
+
+```php
+$variables = ['threshold' => 80];
+
+$rule = new Rule('threshold >= 50 && threshold <= 100', $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
