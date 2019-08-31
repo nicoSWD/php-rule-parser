@@ -9,7 +9,9 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: Download PHPUnit
-      run: wget -O phpunit https://phar.phpunit.de/phpunit-7.phar && chmod +x phpunit
+    - name: Download composer
+      run: wget -o composer https://getcomposer.org/installer && chmod +x composer
+    - name: Install dependencies
+      run: ./composer install --dev
     - name: Run PHPUnit
-      run: ./phpunit -c phpunit.xml.dist
+      run: vendor/bin/phpunit/phpunit -c phpunit.xml.dist
