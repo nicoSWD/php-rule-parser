@@ -1,0 +1,15 @@
+name: phpunit
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Download PHPUnit
+      run: wget -O phpunit https://phar.phpunit.de/phpunit-8.phar && chmod +x phpunit
+    - name: Run PHPUnit
+      run: ./phpunit -c phpunit.xml.dist
