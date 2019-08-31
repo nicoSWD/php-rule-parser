@@ -1,6 +1,6 @@
 workflow "Main" {
   on = "push"
-  resolves = ["PHPQA"]
+  resolves = ["composer install", "PHPQA"]
 }
 
 action "PHPQA" {
