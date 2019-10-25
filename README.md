@@ -1,10 +1,13 @@
 ## PHP Rule Engine for PHP 7
 
-|  | Build Status | Code Quality | Coverage | Style CI |
-|:----------------:|:----------------:|:----------:|:----------:|:----------:|
-| [Master][Master] | [![Build status][Master image]][Master] | [![Code Quality][Master quality image]][Master quality] | [![Build status][Master coverage image]][Master coverage] | [![StyleCI](https://styleci.io/repos/39503126/shield?branch=master)](https://styleci.io/repos/39503126)
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser) [![Total Downloads](https://img.shields.io/packagist/dt/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
+[![Build status][Master image]][Master] 
+[![Code Quality][Master quality image]][Master quality] 
+[![Build status][Master coverage image]][Master coverage] 
+[![StyleCI](https://styleci.io/repos/39503126/shield?branch=master)](https://styleci.io/repos/39503126)
+
+[![Total Downloads](https://img.shields.io/packagist/dt/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser) 
+[![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
 
 If you're using PHP 5, you might want to look at [version 0.4.0](https://github.com/nicoSWD/php-rule-parser/tree/0.4.0).
 
