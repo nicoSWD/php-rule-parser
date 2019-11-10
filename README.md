@@ -1,7 +1,7 @@
 ## PHP Rule Engine for PHP 7
 
 
-[![Build status][Master image]][Master] 
+[![Latest Stable Version](https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=master)](https://travis-ci.org/nicoSWD/php-rule-parser)
 [![Code Quality][Master quality image]][Master quality] 
 [![Build status][Master coverage image]][Master coverage] 
 [![StyleCI](https://styleci.io/repos/39503126/shield?branch=master)](https://styleci.io/repos/39503126)
@@ -236,21 +236,8 @@ Pull requests are very welcome! If they include tests, even better. This project
 
 [![License](https://img.shields.io/packagist/l/nicoSWD/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rules-parser)
 
-  [Master image]: https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=master
   [Master]: https://github.com/nicoSWD/php-rule-parser/tree/master
   [Master coverage image]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=master
   [Master coverage]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master
   [Master quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=master
   [Master quality]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master
-  [0.3 image]: https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=v0.3
-  [0.3]: https://github.com/nicoSWD/php-rule-parser/tree/v0.3
-  [0.3 coverage image]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=v0.3
-  [0.3 coverage]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=v0.3
-  [0.3 quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=v0.3
-  [0.3 quality]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=v0.3
-  [Develop image]: https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=develop
-  [Develop]: https://github.com/nicoSWD/php-rule-parser/tree/develop
-  [Develop coverage image]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=develop
-  [Develop coverage]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=develop
-  [Develop quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=develop
-  [Develop quality]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=develop
