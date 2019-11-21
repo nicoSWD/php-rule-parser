@@ -42,7 +42,7 @@ final class JavaScript extends Grammar
             [Token::COMMENT, '//[^\r\n]*|/\*.*?\*/', 25],
             [Token::NEWLINE, '\r?\n', 20],
             [Token::SPACE, '\s+', 15],
-            [Token::VARIABLE, '[a-zA-Z_]\w*', 10],
+            [Token::VARIABLE, '\b[a-zA-Z0-9_]*[a-zA-Z0-9_\.]*[a-zA-Z0-9_]+(?!\()\b', 10],
             [Token::UNKNOWN, '.', 5],
         ];
     }

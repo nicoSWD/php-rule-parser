@@ -23,13 +23,13 @@ class Rule
     /** @var object */
     private static $container;
 
-    public function __construct(string $rule, array $variables = [])
+    public function __construct(string $rule, array $variables = [], callable $variableCallback = null)
     {
         if (!isset(self::$container)) {
             self::$container = require __DIR__ . '/container.php';
         }
 
-        $this->parser = self::$container->parser($variables);
+        $this->parser = self::$container->parser($variables, $variableCallback);
         $this->rule = $rule;
     }
 

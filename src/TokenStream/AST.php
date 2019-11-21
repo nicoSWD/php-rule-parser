@@ -33,6 +33,8 @@ class AST
     private $methods = [];
     /** @var mixed[] */
     private $variables = [];
+    /** @var callable|null */
+    private $variableCallback;
 
     public function __construct(
         TokenizerInterface $tokenizer,
@@ -77,17 +79,29 @@ class AST
         $this->variables = $variables;
     }
 
+    public function registerVariableCallback(callable $callback = null)
+    {
+        $this->variableCallback = $callback;
+    }
+
     /**
      * @throws UndefinedVariableException
      * @throws ParserException
      */
     public function getVariable(string $variableName): BaseToken
     {
-        if (!$this->variableExists($variableName)) {
-            throw new UndefinedVariableException($variableName);
+        if ($this->variableExists($variableName)) {
+            return $this->tokenFactory->createFromPHPType($this->variables[$variableName]);
         }
-
-        return $this->tokenFactory->createFromPHPType($this->variables[$variableName]);
+        if (is_callable($this->variableCallback)) {
+            try {
+                $value = call_user_func($this->variableCallback, $variableName);
+                return $this->tokenFactory->createFromPHPType($value);
+            } catch (\Throwable $e) {
+                throw new UndefinedVariableException($variableName, $e->getCode(), $e);
+            }
+        }
+        throw new UndefinedVariableException($variableName);
     }
 
     public function variableExists(string $variableName): bool
