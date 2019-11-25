@@ -14,6 +14,7 @@ use nicoSWD\Rule\TokenStream\Exception\UndefinedVariableException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\Tokenizer\TokenizerInterface;
+use nicoSWD\Rule\TokenStream\Token\TokenObject;
 
 class AST
 {
@@ -47,6 +48,10 @@ class AST
 
     public function getMethod(string $methodName, BaseToken $token): CallableUserFunctionInterface
     {
+        if ($token instanceof TokenObject) {
+            return $this->getUserObjectCallable($token, $methodName);
+        }
+
         if (empty($this->methods)) {
             $this->registerMethods();
         }
@@ -119,5 +124,36 @@ class AST
         foreach ($this->tokenizer->getGrammar()->getInternalFunctions() as $functionName => $className) {
             $this->registerFunctionClass($functionName, $className);
         }
+    }
+
+    private function getUserObjectCallable(BaseToken $token, string $methodName): CallableUserFunctionInterface
+    {
+        return new class ($token, $this->tokenFactory, $methodName) implements CallableUserFunctionInterface
+        {
+            /** @var BaseToken */
+            private $token;
+            /** @var TokenFactory */
+            private $tokenFactory;
+            /** @var string */
+            private $methodName;
+
+            public function __construct(BaseToken $token, TokenFactory $tokenFactory, string $methodName)
+            {
+                $this->token = $token;
+                $this->tokenFactory = $tokenFactory;
+                $this->methodName = $methodName;
+            }
+
+            public function call(BaseToken $param = null): BaseToken
+            {
+                $object = [$this->token->getValue(), $this->methodName];
+
+                if (!is_callable($object)) {
+                    throw new \Exception();
+                }
+
+                return $this->tokenFactory->createFromPHPType($object());
+            }
+        };
     }
 }

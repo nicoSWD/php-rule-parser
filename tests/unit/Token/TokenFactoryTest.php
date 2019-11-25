@@ -38,9 +38,9 @@ class TokenFactoryTest extends TestCase
     public function testUnsupportedTypeThrowsException()
     {
         $this->expectException(ParserException::class);
-        $this->expectExceptionMessage('Unsupported PHP type: "object"');
+        $this->expectExceptionMessage('Unsupported PHP type: "resource"');
 
-        $this->tokenFactory->createFromPHPType(new \stdClass());
+        $this->tokenFactory->createFromPHPType(tmpfile());
     }
 
     public function testGivenAnInvalidTokenNameItShouldThrowAnException()

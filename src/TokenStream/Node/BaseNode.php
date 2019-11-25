@@ -8,10 +8,10 @@
 namespace nicoSWD\Rule\TokenStream\Node;
 
 use Closure;
+use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\TokenCollection;
 use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\TokenStream\TokenStream;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
 
@@ -59,7 +59,7 @@ abstract class BaseNode
         return $hasMethod;
     }
 
-    protected function getMethod(BaseToken $token): CallableFunction
+    protected function getMethod(BaseToken $token): CallableUserFunctionInterface
     {
         $this->tokenStream->getStack()->seek($this->methodOffset);
 

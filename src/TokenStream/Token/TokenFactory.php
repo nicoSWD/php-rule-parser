@@ -58,13 +58,9 @@ class TokenFactory
             case 'double':
                 return new TokenFloat($value);
             case 'array':
-                $params = new TokenCollection();
-
-                foreach ($value as $item) {
-                    $params->attach($this->createFromPHPType($item));
-                }
-
-                return new TokenArray($params);
+                return $this->buildTokenCollection($value);
+            case 'object':
+                return new TokenObject($value);
             default:
                 throw new ParserException(sprintf(
                     'Unsupported PHP type: "%s"',
@@ -80,5 +76,16 @@ class TokenFactory
         }
 
         return $this->tokenMap[$tokenName];
+    }
+
+    private function buildTokenCollection($value): TokenArray
+    {
+        $params = new TokenCollection();
+
+        foreach ($value as $item) {
+            $params->attach($this->createFromPHPType($item));
+        }
+
+        return new TokenArray($params);
     }
 }
