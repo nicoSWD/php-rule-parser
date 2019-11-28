@@ -10,6 +10,7 @@ namespace nicoSWD\Rule\TokenStream;
 use Closure;
 use InvalidArgumentException;
 use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
+use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedVariableException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
@@ -49,7 +50,7 @@ class AST
     public function getMethod(string $methodName, BaseToken $token): CallableUserFunctionInterface
     {
         if ($token instanceof TokenObject) {
-            return $this->getUserObjectCallable($token, $methodName);
+            return $this->getCallableUserObject($token, $methodName);
         }
 
         if (empty($this->methods)) {
@@ -126,33 +127,55 @@ class AST
         }
     }
 
-    private function getUserObjectCallable(BaseToken $token, string $methodName): CallableUserFunctionInterface
+    private function getCallableUserObject(BaseToken $token, string $methodName): CallableUserFunctionInterface
     {
-        return new class ($token, $this->tokenFactory, $methodName) implements CallableUserFunctionInterface
-        {
-            /** @var BaseToken */
-            private $token;
+        return new class ($token, $this->tokenFactory, $methodName) implements CallableUserFunctionInterface {
             /** @var TokenFactory */
             private $tokenFactory;
-            /** @var string */
-            private $methodName;
+            /** @var Closure */
+            private $callable;
+            /** @var array */
+            private $variations = ['get', 'is', ''];
 
             public function __construct(BaseToken $token, TokenFactory $tokenFactory, string $methodName)
             {
-                $this->token = $token;
                 $this->tokenFactory = $tokenFactory;
-                $this->methodName = $methodName;
+                $this->callable = $this->getCallable($token, $methodName);
+            }
+
+            private function getCallable(BaseToken $token, string $methodName): Closure
+            {
+                $object = $token->getValue();
+
+                if (property_exists($object, $methodName)) {
+                    return function () use ($object, $methodName) {
+                        return $object->{$methodName};
+                    };
+                }
+
+                $method[0] = $object;
+                $index = 0;
+
+                do {
+                    if (!isset($this->variations[$index])) {
+                        throw ParserException::undefinedMethod($methodName, $token);
+                    }
+
+                    $method[1] = $this->variations[$index] . $methodName;
+                } while (!is_callable($method) && isset($this->variations[$index++]));
+
+                return function (BaseToken $param = null) use ($method) {
+                    return $method($param ? $param->getValue() : null);
+                };
             }
 
             public function call(BaseToken $param = null): BaseToken
             {
-                $object = [$this->token->getValue(), $this->methodName];
+                $callable = $this->callable;
 
-                if (!is_callable($object)) {
-                    throw new \Exception();
-                }
-
-                return $this->tokenFactory->createFromPHPType($object());
+                return $this->tokenFactory->createFromPHPType(
+                    $callable($param)
+                );
             }
         };
     }

@@ -9,8 +9,8 @@ namespace nicoSWD\Rule\TokenStream\Token;
 
 final class TokenObject extends BaseToken
 {
-    public function getType() : int
+    public function getType(): int
     {
-        return TokenType::OBJECT;
+        return TokenType::VALUE;
     }
 }
