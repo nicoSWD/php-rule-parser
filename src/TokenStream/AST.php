@@ -161,8 +161,8 @@ class AST
                         throw ParserException::undefinedMethod($methodName, $token);
                     }
 
-                    $method[1] = $this->variations[$index] . $methodName;
-                } while (!is_callable($method) && isset($this->variations[$index++]));
+                    $method[1] = $this->variations[$index++] . $methodName;
+                } while (!is_callable($method));
 
                 return function (BaseToken $param = null) use ($method) {
                     return $method($param ? $param->getValue() : null);
