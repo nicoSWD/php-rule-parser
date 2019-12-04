@@ -1,30 +1,31 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\methods;
+namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
-class IndexOfTest extends AbstractTestBase
+final class IndexOfTest extends AbstractTestBase
 {
-    public function testValidNeedleReturnsCorrectPosition()
+    /** @test */
+    public function validNeedleReturnsCorrectPosition()
     {
         $this->assertTrue($this->evaluate('foo.indexOf("a") === 1', ['foo' => 'bar']));
         $this->assertTrue($this->evaluate('"bar".indexOf("b") === 0'));
     }
 
-    public function testOmittedParameterReturnsNegativeOne()
+    /** @test */
+    public function omittedParameterReturnsNegativeOne()
     {
         $this->assertTrue($this->evaluate('"bar".indexOf() === -1'));
     }
 
-    public function testNegativeOneIsReturnedIfNeedleNotFound()
+    /** @test */
+    public function negativeOneIsReturnedIfNeedleNotFound()
     {
         $this->assertTrue($this->evaluate('"bar".indexOf("foo") === -1'));
     }

@@ -1,35 +1,37 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\methods;
+namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
-class SubstrTest extends AbstractTestBase
+final class SubstrTest extends AbstractTestBase
 {
-    public function testSubstrReturnsCorrectPartOfString()
+    /** @test */
+    public function substrReturnsCorrectPartOfString()
     {
         $this->assertTrue($this->evaluate('foo.substr(1, 2) === "ar"', ['foo' => 'bar']));
         $this->assertTrue($this->evaluate('"bar".substr(0, 1) === "b"'));
     }
 
-    public function testOutOfBoundsOffsetReturnsEmptyString()
+    /** @test */
+    public function outOfBoundsOffsetReturnsEmptyString()
     {
         $this->assertTrue($this->evaluate('"bar".substr(100) === ""'));
     }
 
-    public function testOmittedParametersReturnsSameString()
+    /** @test */
+    public function omittedParametersReturnsSameString()
     {
         $this->assertTrue($this->evaluate('"bar".substr() === "bar"'));
     }
 
-    public function testNegativeOffsetReturnsEndOfString()
+    /** @test */
+    public function negativeOffsetReturnsEndOfString()
     {
         $this->assertTrue($this->evaluate('"bar".substr(-1) === "r"'));
         $this->assertTrue($this->evaluate('"bar".substr(-1, 2) === "r"'));

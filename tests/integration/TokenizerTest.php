@@ -1,18 +1,18 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+namespace nicoSWD\Rule\tests\integration;
+
 use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rule\Tokenizer\Tokenizer;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use PHPUnit\Framework\TestCase;
 
-class TokenizerTest extends TestCase
+final class TokenizerTest extends TestCase
 {
     /** @var Tokenizer */
     private $tokenizer;
@@ -22,7 +22,8 @@ class TokenizerTest extends TestCase
         $this->tokenizer = new Tokenizer(new JavaScript(), new TokenFactory());
     }
 
-    public function testGetMatchedTokenReturnsFalseOnFailure()
+    /** @test */
+    public function getMatchedTokenReturnsFalseOnFailure()
     {
         $reflection = new \ReflectionMethod($this->tokenizer, 'getMatchedToken');
         $reflection->setAccessible(true);
@@ -31,7 +32,8 @@ class TokenizerTest extends TestCase
         $this->assertSame('Unknown', $result);
     }
 
-    public function testTokenPositionAndLineAreCorrect()
+    /** @test */
+    public function tokenPositionAndLineAreCorrect()
     {
         $tokens = $this->tokenizer->tokenize('1');
         $tokens->rewind();

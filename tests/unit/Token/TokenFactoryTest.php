@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
@@ -15,7 +13,7 @@ use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\Token\TokenEqualStrict;
 use PHPUnit\Framework\TestCase;
 
-class TokenFactoryTest extends TestCase
+final class TokenFactoryTest extends TestCase
 {
     /** @var Token\TokenFactory */
     private $tokenFactory;

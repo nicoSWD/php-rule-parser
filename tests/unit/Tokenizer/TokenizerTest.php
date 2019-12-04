@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
@@ -14,7 +12,7 @@ use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\Tokenizer\Tokenizer;
 use PHPUnit\Framework\TestCase;
 
-class TokenizerTest extends TestCase
+final class TokenizerTest extends TestCase
 {
     /** @test */
     public function givenAGrammarWithCollidingRegexItShouldTakeThePriorityIntoAccount()

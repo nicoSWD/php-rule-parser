@@ -18,9 +18,10 @@ use nicoSWD\Rule\TokenStream\Node\BaseNode;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\TokenStreamFactory;
+use nicoSWD\Rule\TokenStream\CallableUserMethodFactory;
 use PHPUnit\Framework\TestCase;
 
-class ASTTest extends TestCase
+final class ASTTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
@@ -32,13 +33,22 @@ class ASTTest extends TestCase
     private $tokenStreamFactory;
     /** @var AST */
     private $ast;
+    /** @var CallableUserMethodFactory */
+    private $userMethodFactory;
 
     protected function setUp()
     {
         $this->tokenizer = \Mockery::mock(TokenizerInterface::class);
         $this->tokenFactory = \Mockery::mock(TokenFactory::class);
         $this->tokenStreamFactory = \Mockery::mock(TokenStreamFactory::class);
-        $this->ast = new AST($this->tokenizer, $this->tokenFactory, $this->tokenStreamFactory);
+        $this->userMethodFactory = new CallableUserMethodFactory();
+
+        $this->ast = new AST(
+            $this->tokenizer,
+            $this->tokenFactory,
+            $this->tokenStreamFactory,
+            $this->userMethodFactory
+        );
     }
 
     public function testGivenAFunctionNameWhenValidItShouldReturnTheCorrespondingFunction()

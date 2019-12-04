@@ -1,40 +1,43 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\functions;
+namespace nicoSWD\Rule\tests\integration\functions;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
-class ParseIntTest extends AbstractTestBase
+final class ParseIntTest extends AbstractTestBase
 {
-    public function testOnStringLiteral()
+    /** @test */
+    public function onStringLiteral()
     {
         $this->assertTrue($this->evaluate('parseInt("3") === 3'));
     }
 
-    public function testOnStringLiteralWithSpaces()
+    /** @test */
+    public function onStringLiteralWithSpaces()
     {
         $this->assertTrue($this->evaluate('parseInt(" 3 ") === 3'));
     }
 
-    public function testOnStringLiteralWithNonNumericChars()
+    /** @test */
+    public function onStringLiteralWithNonNumericChars()
     {
         $this->assertTrue($this->evaluate('parseInt("3aaa") === 3'));
     }
 
-    public function testOnUserDefinedVariable()
+    /** @test */
+    public function onUserDefinedVariable()
     {
         $this->assertTrue($this->evaluate('parseInt(foo) === 3', ['foo' => '3']));
         $this->assertFalse($this->evaluate('parseInt(foo) === "3"', ['foo' => 3]));
     }
 
-    public function testCallWithoutArgsShouldReturnNan()
+    /** @test */
+    public function callWithoutArgsShouldReturnNan()
     {
         $this->assertFalse($this->evaluate('parseInt() === 1'));
     }

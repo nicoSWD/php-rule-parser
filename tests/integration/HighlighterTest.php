@@ -1,12 +1,12 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+namespace nicoSWD\Rule\tests\integration;
+
 use nicoSWD\Rule;
 use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rule\Highlighter\Highlighter;
@@ -14,7 +14,7 @@ use nicoSWD\Rule\Tokenizer\Tokenizer;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use PHPUnit\Framework\TestCase;
 
-class HighlighterTest extends TestCase
+final class HighlighterTest extends TestCase
 {
     /** @var Highlighter */
     private $highlighter;
@@ -24,7 +24,8 @@ class HighlighterTest extends TestCase
         $this->highlighter = new Highlighter(new Tokenizer(new JavaScript(), new TokenFactory()));
     }
 
-    public function testGivenAStyleForATokenGroupItShouldBeUsed()
+    /** @test */
+    public function givenAStyleForATokenGroupItShouldBeUsed()
     {
         $this->highlighter->setStyle(
             Rule\TokenStream\Token\TokenType::SQUARE_BRACKET,
@@ -37,10 +38,11 @@ class HighlighterTest extends TestCase
     }
 
     /**
-     * @expectedException \Exception
+     * @test
+     * @expectedException Exception
      * @expectedExceptionMessage Invalid group
      */
-    public function testInvalidGroupThrowsException()
+    public function invalidGroupThrowsException()
     {
         $this->highlighter->setStyle(
             99,

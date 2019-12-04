@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
@@ -13,7 +11,7 @@ use nicoSWD\Rule\Evaluator\Evaluator;
 use nicoSWD\Rule\Evaluator\Exception\UnknownSymbolException;
 use PHPUnit\Framework\TestCase;
 
-class EvaluatorTest extends TestCase
+final class EvaluatorTest extends TestCase
 {
     /** @var Evaluator */
     private $evaluator;

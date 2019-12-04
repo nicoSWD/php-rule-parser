@@ -1,20 +1,19 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\methods;
+namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\Rule;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
-class SyntaxErrorTest extends AbstractTestBase
+final class SyntaxErrorTest extends AbstractTestBase
 {
-    public function testMissingCommaInArgumentsThrowsException()
+    /** @test */
+    public function missingCommaInArgumentsThrowsException()
     {
         $rule = new Rule('"foo".charAt(1 2 ) === "b"');
 
@@ -22,7 +21,8 @@ class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Unexpected "2" at position 15', $rule->getError());
     }
 
-    public function testMissingValueInArgumentsThrowsException()
+    /** @test */
+    public function missingValueInArgumentsThrowsException()
     {
         $rule = new Rule('"foo".charAt(1 , ) === "b"');
 
@@ -30,7 +30,8 @@ class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Unexpected "," at position 17', $rule->getError());
     }
 
-    public function testMissingValueBetweenCommasInArgumentsThrowsException()
+    /** @test */
+    public function missingValueBetweenCommasInArgumentsThrowsException()
     {
         $rule = new Rule('"foo".charAt(1 , , ) === "b"');
 
@@ -38,7 +39,8 @@ class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Unexpected "," at position 17', $rule->getError());
     }
 
-    public function testUnexpectedTokenInArgumentsThrowsException()
+    /** @test */
+    public function unexpectedTokenInArgumentsThrowsException()
     {
         $rule = new Rule('"foo".charAt(1 , < , ) === "b"');
 
@@ -46,7 +48,8 @@ class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Unexpected "<" at position 17', $rule->getError());
     }
 
-    public function testUnexpectedEndOfStringThrowsException()
+    /** @test */
+    public function unexpectedEndOfStringThrowsException()
     {
         $rule = new Rule('"foo".charAt(1 , ');
 
@@ -54,7 +57,8 @@ class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Unexpected end of string', $rule->getError());
     }
 
-    public function testUndefinedMethodThrowsException()
+    /** @test */
+    public function undefinedMethodThrowsException()
     {
         $rule = new Rule('/^foo$/.teddst("foo") === true');
 
@@ -62,7 +66,8 @@ class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Undefined method "teddst" at position 7', $rule->getError());
     }
 
-    public function testIncorrectSpellingThrowsException()
+    /** @test */
+    public function incorrectSpellingThrowsException()
     {
         $rule = new Rule('"foo".ChARat(1) === "o"');
 
@@ -70,7 +75,8 @@ class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Undefined method "ChARat" at position 5', $rule->getError());
     }
 
-    public function testCallOnNonArray()
+    /** @test */
+    public function callOnNonArray()
     {
         $rule = new Rule('"foo".join("|") === ""');
 
@@ -78,7 +84,8 @@ class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('foo.join is not a function', $rule->getError());
     }
 
-    public function testExceptionIsThrownOnTypeError()
+    /** @test */
+    public function exceptionIsThrownOnTypeError()
     {
         $rule = new Rule('"foo".test("foo") === false');
 

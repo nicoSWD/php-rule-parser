@@ -1,20 +1,19 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\methods;
+namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\Rule;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
-class ToUpperCaseTest extends AbstractTestBase
+final class ToUpperCaseTest extends AbstractTestBase
 {
-    public function testSpacesBetweenVariableAndMethodWork()
+    /** @test */
+    public function spacesBetweenVariableAndMethodWork()
     {
         $this->assertTrue($this->evaluate('foo . toUpperCase() === "BAR"', ['foo' => 'bar']));
         $this->assertTrue($this->evaluate(
@@ -25,18 +24,21 @@ class ToUpperCaseTest extends AbstractTestBase
         ));
     }
 
-    public function testIfCallOnStringLiteralsWorks()
+    /** @test */
+    public function ifCallOnStringLiteralsWorks()
     {
         $this->assertTrue($this->evaluate('"bar".toUpperCase() === "BAR"'));
         $this->assertTrue($this->evaluate('"bar" . toUpperCase() === "BAR"'));
     }
 
-    public function testIfMethodCanBeCalledOnVariablesHoldingIntegers()
+    /** @test */
+    public function ifMethodCanBeCalledOnVariablesHoldingIntegers()
     {
         $this->assertTrue($this->evaluate('foo.toUpperCase() === "1"', ['foo' => 1]));
     }
 
-    public function testCallOnIntegersThrowsException()
+    /** @test */
+    public function callOnIntegersThrowsException()
     {
         $rule = new Rule('1.toUpperCase() === "1"', ['foo' => 1]);
 

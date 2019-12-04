@@ -1,19 +1,18 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\scalars;
+namespace nicoSWD\Rule\tests\integration\scalars;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
-class ScalarTest extends AbstractTestBase
+final class ScalarTest extends AbstractTestBase
 {
-    public function testBooleans()
+    /** @test */
+    public function booleans()
     {
         $this->assertTrue($this->evaluate('"0" == false'));
         $this->assertFalse($this->evaluate('"0" === false'));
@@ -26,7 +25,8 @@ class ScalarTest extends AbstractTestBase
         $this->assertFalse($this->evaluate('foo !== true', ['foo' => true]));
     }
 
-    public function testNullValues()
+    /** @test */
+    public function nullValues()
     {
         $this->assertTrue($this->evaluate('foo === null', ['foo' => null]));
         $this->assertTrue($this->evaluate('foo !== null', ['foo' => 0]));
@@ -36,7 +36,8 @@ class ScalarTest extends AbstractTestBase
         $this->assertFalse($this->evaluate('"" === null', ['foo' => null]));
     }
 
-    public function testFloatPrecision()
+    /** @test */
+    public function floatPrecision()
     {
         $this->assertFalse($this->evaluate('foo === "1.0000034"', ['foo' => 1.0000034]));
         $this->assertFalse($this->evaluate('foo === 1.0000034', ['foo' => '1.0000034']));
@@ -46,7 +47,8 @@ class ScalarTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('2 > 1.0000034'));
     }
 
-    public function testNegativeNumbers()
+    /** @test */
+    public function negativeNumbers()
     {
         $rule = 'foo > -1 && foo < 1';
 

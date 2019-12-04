@@ -1,40 +1,43 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\methods;
+namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
-class ReplaceTest extends AbstractTestBase
+final class ReplaceTest extends AbstractTestBase
 {
-    public function testValidNeedleReturnsCorrectPosition()
+    /** @test */
+    public function validNeedleReturnsCorrectPosition()
     {
         $this->assertTrue($this->evaluate('foo.replace("a", "A") === "bAr"', ['foo' => 'bar']));
         $this->assertTrue($this->evaluate('"bar".replace("r", "R") === "baR"'));
     }
 
-    public function testOmittedParametersDoNotReplaceAnything()
+    /** @test */
+    public function omittedParametersDoNotReplaceAnything()
     {
         $this->assertTrue($this->evaluate('"bar".replace() === "bar"'));
     }
 
-    public function testOmittedSecondParameterReplacesWithUndefined()
+    /** @test */
+    public function omittedSecondParameterReplacesWithUndefined()
     {
         $this->assertTrue($this->evaluate('"bar".replace("r") === "baundefined"'));
     }
 
-    public function testReplaceWithRegularExpression()
+    /** @test */
+    public function replaceWithRegularExpression()
     {
         $this->assertTrue($this->evaluate('"arbar".replace(/ar$/, "") === "arb"'));
     }
 
-    public function testRegularExpressionWithGModifier()
+    /** @test */
+    public function regularExpressionWithGModifier()
     {
         $this->assertTrue($this->evaluate('"foofoo".replace(/foo/, "") === "foo"'));
         $this->assertTrue($this->evaluate('"foofoo".replace(/foo/g, "") === ""'));

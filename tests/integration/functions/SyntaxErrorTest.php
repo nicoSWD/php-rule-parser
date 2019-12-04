@@ -1,20 +1,19 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\functions;
+namespace nicoSWD\Rule\tests\integration\functions;
 
 use nicoSWD\Rule\Rule;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
-class SyntaxErrorTest extends AbstractTestBase
+final class SyntaxErrorTest extends AbstractTestBase
 {
-    public function testUndefinedFunctionThrowsException()
+    /** @test */
+    public function undefinedFunctionThrowsException()
     {
         $rule = new Rule('nope() === true');
 
@@ -22,7 +21,8 @@ class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('nope is not defined at position 0', $rule->getError());
     }
 
-    public function testIncorrectSpellingThrowsException()
+    /** @test */
+    public function incorrectSpellingThrowsException()
     {
         $rule = new Rule('/* fail */ paRSeInt("2") === 2');
 

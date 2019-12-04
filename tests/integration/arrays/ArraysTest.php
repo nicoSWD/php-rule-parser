@@ -1,20 +1,19 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\arrays;
+namespace nicoSWD\Rule\tests\integration\arrays;
 
 use nicoSWD\Rule\Rule;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
-class ArraysTest extends AbstractTestBase
+final class ArraysTest extends AbstractTestBase
 {
-    public function testArraysEqualUserSuppliedArrays()
+    /** @test */
+    public function arraysEqualUserSuppliedArrays()
     {
         $this->assertTrue($this->evaluate(
             'foo === ["foo1", "bar", 2, true]',
@@ -27,19 +26,21 @@ class ArraysTest extends AbstractTestBase
         ]));
     }
 
-    public function testEmptyArrayDoesParseCorrectly()
+    /** @test */
+    public function emptyArrayDoesParseCorrectly()
     {
         $this->assertTrue($this->evaluate('[] === []'));
     }
 
-    public function testLiteralArrayComparison()
+    /** @test */
+    public function literalArrayComparison()
     {
         $this->assertTrue($this->evaluate('[123, 12] === [123, 12]'));
         $this->assertFalse($this->evaluate('[123, 12] === [123, 12, 1]'));
-        // $this->assertTrue($this->evaluate('[123, [12, 1]] === [123, [12, 1]]'));
     }
 
-    public function testCommentsAreIgnoredInArray()
+    /** @test */
+    public function commentsAreIgnoredInArray()
     {
         $this->assertTrue($this->evaluate(
             'foo === [
@@ -50,7 +51,8 @@ class ArraysTest extends AbstractTestBase
         ));
     }
 
-    public function testTrailingCommaThrowsException()
+    /** @test */
+    public function trailingCommaThrowsException()
     {
         $rule = new Rule('["foo", "bar", ] === ["foo", "bar"]');
 
@@ -58,7 +60,8 @@ class ArraysTest extends AbstractTestBase
         $this->assertSame('Unexpected "," at position 15', $rule->getError());
     }
 
-    public function testLineIsReportedCorrectlyOnSyntaxError2()
+    /** @test */
+    public function lineIsReportedCorrectlyOnSyntaxError2()
     {
         $rule = new Rule('["foo", "bar", ,] === ["foo", "bar"]');
 
@@ -66,7 +69,8 @@ class ArraysTest extends AbstractTestBase
         $this->assertSame('Unexpected "," at position 15', $rule->getError());
     }
 
-    public function testMissingCommaThrowsException()
+    /** @test */
+    public function missingCommaThrowsException()
     {
         $rule = new Rule('["foo"  "bar"] === ["foo", "bar"]');
 
@@ -74,7 +78,8 @@ class ArraysTest extends AbstractTestBase
         $this->assertSame('Unexpected "bar" at position 8', $rule->getError());
     }
 
-    public function testUnexpectedTokenThrowsException()
+    /** @test */
+    public function unexpectedTokenThrowsException()
     {
         $rule = new Rule('["foo", ===] === ["foo", "bar"]');
 
@@ -82,7 +87,8 @@ class ArraysTest extends AbstractTestBase
         $this->assertSame('Unexpected "===" at position 8', $rule->getError());
     }
 
-    public function testUnexpectedEndOfStringThrowsException()
+    /** @test */
+    public function unexpectedEndOfStringThrowsException()
     {
         $rule = new Rule('["foo", "bar"');
 

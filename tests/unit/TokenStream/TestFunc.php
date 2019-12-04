@@ -11,7 +11,7 @@ use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenInteger;
 
-class TestFunc implements CallableUserFunctionInterface
+final class TestFunc implements CallableUserFunctionInterface
 {
     public function call(BaseToken $param = null): BaseToken
     {

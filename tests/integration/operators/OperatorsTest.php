@@ -1,20 +1,19 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\operators;
+namespace nicoSWD\Rule\tests\integration\operators;
 
 use nicoSWD\Rule\Rule;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
-class OperatorsTest extends AbstractTestBase
+final class OperatorsTest extends AbstractTestBase
 {
-    public function testAllAvailableOperators()
+    /** @test */
+    public function allAvailableOperators()
     {
         $this->assertTrue($this->evaluate('3 == 3'), 'Equal operator failed on two integers');
         $this->assertTrue($this->evaluate('4 === 4'));
@@ -31,7 +30,8 @@ class OperatorsTest extends AbstractTestBase
         $this->assertFalse($this->evaluate('2 !== 2'));
     }
 
-    public function testStrictOperators()
+    /** @test */
+    public function strictOperators()
     {
         $this->assertFalse($this->evaluate('"4" === 4'));
         $this->assertTrue($this->evaluate('4 === 4'));
@@ -40,7 +40,8 @@ class OperatorsTest extends AbstractTestBase
         $this->assertFalse($this->evaluate('4 !== 4'));
     }
 
-    public function testInOperator()
+    /** @test */
+    public function inOperator()
     {
         $this->assertTrue($this->evaluate('123 in foo', ['foo' => [123, 12]]));
         $this->assertFalse($this->evaluate('"123" in foo', ['foo' => [123, 12]]));
@@ -48,12 +49,14 @@ class OperatorsTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('123 in [123, 12]'));
     }
 
-    public function testInOperatorOnReturnedValueByMethodCall()
+    /** @test */
+    public function inOperatorOnReturnedValueByMethodCall()
     {
         $this->assertTrue($this->evaluate('"123" in "321,123".split(",")'));
     }
 
-    public function testInOperatorWithNonArrayRightValueThrowsException()
+    /** @test */
+    public function inOperatorWithNonArrayRightValueThrowsException()
     {
         $rule = new Rule('"123" in "foo"');
 
@@ -61,7 +64,8 @@ class OperatorsTest extends AbstractTestBase
         $this->assertSame('Expected array, got "string"', $rule->getError());
     }
 
-    public function testCommentsAreIgnoredCorrectly()
+    /** @test */
+    public function commentsAreIgnoredCorrectly()
     {
         $this->assertFalse($this->evaluate('1 == 2 // || 1 == 1'));
         $this->assertTrue($this->evaluate('1 == 1 // && 2 == 1'));
@@ -72,7 +76,8 @@ class OperatorsTest extends AbstractTestBase
         ));
     }
 
-    public function testEqualOperator()
+    /** @test */
+    public function equalOperator()
     {
         $this->assertTrue($this->evaluate('foo == -1', ['foo' => -1]));
         $this->assertFalse($this->evaluate('foo == 3', ['foo' => -1]));

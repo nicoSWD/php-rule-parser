@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
@@ -26,7 +24,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenVariable;
 use nicoSWD\Rule\TokenStream\TokenStream;
 use PHPUnit\Framework\TestCase;
 
-class TokenStreamTest extends TestCase
+final class TokenStreamTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
     
@@ -45,7 +43,8 @@ class TokenStreamTest extends TestCase
         $this->tokenStream = new TokenStream($this->stack, $this->ast);
     }
 
-    public function testGivenAStackWhenNotEmptyItShouldBeIterable()
+    /** @test */
+    public function givenAStackWhenNotEmptyItShouldBeIterable()
     {
         $this->stack->shouldReceive('rewind');
         $this->stack->shouldReceive('valid')->andReturn(true, true, true, false);
@@ -63,12 +62,14 @@ class TokenStreamTest extends TestCase
         }
     }
 
-    public function testGivenATokenStackItShouldBeAccessibleViaGetter()
+    /** @test */
+    public function givenATokenStackItShouldBeAccessibleViaGetter()
     {
         $this->assertInstanceOf(ArrayIterator::class, $this->tokenStream->getStack());
     }
 
-    public function testGivenAVariableNameWhenFoundItShouldReturnItsValue()
+    /** @test */
+    public function givenAVariableNameWhenFoundItShouldReturnItsValue()
     {
         $this->ast->shouldReceive('getVariable')->once()->with('foo')->andReturn(new TokenVariable('bar'));
 
@@ -76,7 +77,8 @@ class TokenStreamTest extends TestCase
         $this->assertInstanceOf(TokenVariable::class, $token);
     }
 
-    public function testGivenAVariableNameWhenNotFoundItShouldThrowAnException()
+    /** @test */
+    public function givenAVariableNameWhenNotFoundItShouldThrowAnException()
     {
         $this->expectException(ParserException::class);
 
@@ -86,7 +88,8 @@ class TokenStreamTest extends TestCase
         $this->tokenStream->getVariable('foo');
     }
 
-    public function testGivenAFunctionNameWhenFoundItShouldACallableClosure()
+    /** @test */
+    public function givenAFunctionNameWhenFoundItShouldACallableClosure()
     {
         $this->ast->shouldReceive('getFunction')->once()->with('foo')->andReturn(function (): int {
             return 42;
@@ -96,7 +99,8 @@ class TokenStreamTest extends TestCase
         $this->assertSame(42, $function());
     }
 
-    public function testGivenAFunctionNameWhenNotFoundItShouldThrowAnException()
+    /** @test */
+    public function givenAFunctionNameWhenNotFoundItShouldThrowAnException()
     {
         $this->expectException(ParserException::class);
 
@@ -106,7 +110,8 @@ class TokenStreamTest extends TestCase
         $this->tokenStream->getFunction('foo');
     }
 
-    public function testGivenAMethodNameWhenFoundItShouldReturnAnInstanceOfCallableFunction()
+    /** @test */
+    public function givenAMethodNameWhenFoundItShouldReturnAnInstanceOfCallableFunction()
     {
         $token = new TokenString('bar');
         $callableFunction = \Mockery::mock(CallableFunction::class);
@@ -118,7 +123,8 @@ class TokenStreamTest extends TestCase
         $this->assertInstanceOf(CallableFunction::class, $method);
     }
 
-    public function testGivenAMethodNameWhenNotFoundItShouldThrowAnException()
+    /** @test */
+    public function givenAMethodNameWhenNotFoundItShouldThrowAnException()
     {
         $this->expectException(ParserException::class);
 

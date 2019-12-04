@@ -1,19 +1,18 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\methods;
+namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
-class CombinedTest extends AbstractTestBase
+final class CombinedTest extends AbstractTestBase
 {
-    public function testMixedMethodCalls()
+    /** @test */
+    public function mixedMethodCalls()
     {
         $this->assertTrue($this->evaluate(
             '1 === 2 || ("foo|bar|baz".split("|") === ["foo", "bar", "baz"] && 2 < 3)'
@@ -42,7 +41,8 @@ class CombinedTest extends AbstractTestBase
         ));
     }
 
-    public function testChainedMethodCalls()
+    /** @test */
+    public function chainedMethodCalls()
     {
         $this->assertTrue($this->evaluate(
             '"bar".toUpperCase().split("A") === ["B", "R"]'
@@ -69,7 +69,8 @@ class CombinedTest extends AbstractTestBase
         ));
     }
 
-    public function testFunctionCallInsideMethod()
+    /** @test */
+    public function functionCallInsideMethod()
     {
         $this->assertTrue($this->evaluate('"abc".substr(parseInt(" 2 ")) === "c"'));
         $this->assertTrue($this->evaluate('parseInt("ab3".substr(parseInt(" 2 "))) === 3'));

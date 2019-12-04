@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
@@ -14,7 +12,7 @@ use nicoSWD\Rule\Expression\ExpressionFactory;
 use nicoSWD\Rule\TokenStream\Token;
 use PHPUnit\Framework\TestCase;
 
-class ExpressionFactoryTest extends TestCase
+final class ExpressionFactoryTest extends TestCase
 {
     /** @var ExpressionFactory */
     private $factory;

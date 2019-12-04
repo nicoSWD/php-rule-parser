@@ -1,40 +1,43 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\functions;
+namespace nicoSWD\Rule\tests\integration\functions;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
-class ParseFloatTest extends AbstractTestBase
+final class ParseFloatTest extends AbstractTestBase
 {
-    public function testOnStringLiteral()
+    /** @test */
+    public function onStringLiteral()
     {
         $this->assertTrue($this->evaluate('parseFloat("3.1337") === 3.1337'));
     }
 
-    public function testOnStringLiteralWithSpaces()
+    /** @test */
+    public function onStringLiteralWithSpaces()
     {
         $this->assertTrue($this->evaluate('parseFloat(" 3.1 ") === 3.1'));
     }
 
-    public function testOnStringLiteralWithNonNumericChars()
+    /** @test */
+    public function onStringLiteralWithNonNumericChars()
     {
         $this->assertTrue($this->evaluate('parseFloat("3.12aaa") === 3.12'));
     }
 
-    public function testOnUserDefinedVariable()
+    /** @test */
+    public function onUserDefinedVariable()
     {
         $this->assertTrue($this->evaluate('parseFloat(foo) === 3.4', ['foo' => '3.4']));
         $this->assertFalse($this->evaluate('parseFloat(foo) === "3.5"', ['foo' => 3.5]));
     }
 
-    public function testCallWithoutArgsShouldReturnNaN()
+    /** @test */
+    public function callWithoutArgsShouldReturnNaN()
     {
         $this->assertFalse($this->evaluate('parseFloat() === 1'));
     }

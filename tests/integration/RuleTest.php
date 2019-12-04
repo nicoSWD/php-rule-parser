@@ -1,18 +1,19 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+namespace nicoSWD\Rule\tests\integration;
 
 use nicoSWD\Rule;
+use PHPUnit\Framework\TestCase;
 
-class RuleTest extends \PHPUnit\Framework\TestCase
+final class RuleTest extends TestCase
 {
-    public function testBasicRuleWithCommentsEvaluatesCorrectly()
+    /** @test */
+    public function basicRuleWithCommentsEvaluatesCorrectly()
     {
         $string = '
             /**
@@ -38,7 +39,8 @@ class RuleTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(!$rule->isFalse());
     }
 
-    public function testIsValidReturnsFalseOnInvalidSyntax()
+    /** @test */
+    public function isValidReturnsFalseOnInvalidSyntax()
     {
         $ruleStr = '(2 == 2) && (1 < 3 && 3 > 2 (1 == 1))';
 
@@ -48,7 +50,8 @@ class RuleTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('Unexpected "(" at position 28', $rule->getError());
     }
 
-    public function testIsValidReturnsTrueOnValidSyntax()
+    /** @test */
+    public function isValidReturnsTrueOnValidSyntax()
     {
         $ruleStr = '(2 == 2) && (1 < 3 && 3 > 2 || (1 == 1))';
 

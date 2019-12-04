@@ -1,17 +1,13 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests;
+namespace nicoSWD\Rule\tests\integration;
 
-use nicoSWD\Rule\tests\integration\AbstractTestBase;
-
-class ParserTest extends AbstractTestBase
+final class ParserTest extends AbstractTestBase
 {
     public function testMultipleAnds()
     {

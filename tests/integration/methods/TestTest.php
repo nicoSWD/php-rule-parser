@@ -1,31 +1,32 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\methods;
+namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
-class TestTest extends AbstractTestBase
+final class TestTest extends AbstractTestBase
 {
-    public function testBasicRegularExpression()
+    /** @test */
+    public function basicRegularExpression()
     {
         $this->assertTrue($this->evaluate('/^foo$/.test("foo") === true'));
         $this->assertTrue($this->evaluate('/^foo$/.test(foo) === true', ['foo' => 'foo']));
     }
 
-    public function testArrayIsConvertedToString()
+    /** @test */
+    public function arrayIsConvertedToString()
     {
         $this->assertTrue($this->evaluate('/^foo$/.test(["foo"]) === true'));
         $this->assertTrue($this->evaluate('/1/.test([[[1]]]) === true'));
     }
 
-    public function testModifiers()
+    /** @test */
+    public function modifiers()
     {
         $this->assertTrue($this->evaluate('/^foo$/i.test("FOO") === true'));
         $this->assertFalse($this->evaluate('/^foo$/.test("FOO") === true'));
@@ -33,14 +34,16 @@ class TestTest extends AbstractTestBase
         $this->assertFalse($this->evaluate('/^foo$/.test("' . "\n\n" .'foo") === true'));
     }
 
-    public function testGModifierIsIgnored()
+    /** @test */
+    public function gModifierIsIgnored()
     {
         $this->assertTrue($this->evaluate('/^foo$/gi.test("foo") === true'), 'gi');
         $this->assertTrue($this->evaluate('/^foo$/ig.test("foo") === true'), 'ig');
         $this->assertTrue($this->evaluate('/^foo$/g.test("foo") === true'), '"g" modifier alone');
     }
 
-    public function testBooleansAndNullsAsSubject()
+    /** @test */
+    public function booleansAndNullsAsSubject()
     {
         $this->assertTrue($this->evaluate('/^foo$/.test(true) === false'));
         $this->assertTrue($this->evaluate('/^foo$/.test(false) === false'));
@@ -48,7 +51,8 @@ class TestTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('/^true/.test(true) === false'));
     }
 
-    public function testWithOmittedParameters()
+    /** @test */
+    public function withOmittedParameters()
     {
         $this->assertTrue($this->evaluate('/^foo$/.test() === false'));
     }

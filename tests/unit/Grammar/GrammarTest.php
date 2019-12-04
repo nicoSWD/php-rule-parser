@@ -10,7 +10,7 @@ namespace nicoSWD\Rule\tests\unit\Parser;
 use nicoSWD\Rule\Grammar\Grammar;
 use PHPUnit\Framework\TestCase;
 
-class GrammarTest extends TestCase
+final class GrammarTest extends TestCase
 {
     public function testDefaultValues()
     {
