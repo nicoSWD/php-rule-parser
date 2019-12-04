@@ -7,7 +7,6 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          verbose="true">
-
     <testsuites>
         <testsuite name="Unit tests">
             <directory suffix="Test.php">tests/unit</directory>
@@ -20,19 +19,5 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
         </whitelist>
-        <blacklist>
-            <file>src/nicoSWD/Rule/autoload.php</file>
-        </blacklist>
     </filter>
-
-    <!--<logging>
-        <log type="coverage-html"
-             target="tests/log/report"
-             charset="UTF-8"
-             yui="true"
-             highlight="true"
-             lowUpperBound="40"
-             highLowerBound="70" />
-        <log type="testdox-html" target="tests/log/testdox.html" />
-    </logging>-->
 </phpunit>
