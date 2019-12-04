@@ -35,22 +35,12 @@ This library works best with one of these bundles below, but they're not require
 | -------- |  ------------- | ------------- |
 | [nicoSWD/rule-engine-bundle](https://github.com/nicoSWD/rule-engine-bundle) | Symfony | [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/symfony-rule-engine-bundle.svg)](https://packagist.org/packages/nicoswd/symfony-rule-engine-bundle) |
 
-## Usage
+## Usage Examples
 
 ```php
-use nicoSWD\Rule\Rule;
-
-// Composer install
-require '/path/to/vendor/autoload.php';
-
 $variables = ['foo' => 6];
 
 $rule = new Rule('foo in [4, 6, 7]', $variables);
-var_dump($rule->isTrue()); // bool(true)
-```
-
-```php
-$rule = new Rule('bar in "foo|bar|baz".split("|")');
 var_dump($rule->isTrue()); // bool(true)
 ```
 
@@ -66,6 +56,16 @@ $rule = new Rule('threshold >= 50 && threshold <= 100', $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
+Call methods on objects from within rules
+```php
+$user = new User();
+$variables = [
+    'user' => $user,
+];
+
+$rule = new Rule('user.points() > 300', $variables);
+var_dump($rule->isTrue()); // bool(true)
+```
 
 ## Custom Functions
 
@@ -217,12 +217,12 @@ Pull requests are very welcome! If they include tests, even better. This project
 - Support for object properties (foo.length)
 - Support for returning actual results, other than true or false
 - Support for array / string dereferencing: "foo"[1]
+- Don't force boolean comparison for tokens that are already booleans. `my_func() && 2 > 1` should work
 - Change regex and implementation for method calls. ".split(" should not be the token
 - Add / implement missing methods
 - Add "typeof" construct
 - Do math (?)
 - Allow string concatenating with "+"
-- Support for objects {} (?)
 - Invalid regex modifiers should not result in an unknown token
 - Duplicate regex modifiers should throw an error
 - ~~Add support for function calls~~
