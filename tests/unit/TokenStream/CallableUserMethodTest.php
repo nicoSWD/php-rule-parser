@@ -1,0 +1,80 @@
+<?php declare(strict_types=1);
+
+/**
+ * @license     http://opensource.org/licenses/mit-license.php MIT
+ * @link        https://github.com/nicoSWD
+ * @author      Nicolas Oelgart <nico@oelgart.com>
+ */
+namespace nicoSWD\Rule\tests\unit\TokenStream;
+
+use nicoSWD\Rule\TokenStream\CallableUserMethod;
+use nicoSWD\Rule\TokenStream\Token\BaseToken;
+use nicoSWD\Rule\TokenStream\Token\TokenFactory;
+use nicoSWD\Rule\TokenStream\Token\TokenObject;
+use PHPUnit\Framework\TestCase;
+use stdClass;
+
+final class CallableUserMethodTest extends TestCase
+{
+    /** @test */
+    public function givenAnObjectWithAPublicPropertyItShouldBeAccessible()
+    {
+        $object = new stdClass();
+        $object->my_test = 123;
+
+        $this->assertSame(123, $this->callMethod($object, 'my_test')->getOriginalValue());
+    }
+
+    /** @test */
+    public function givenAnObjectWithAPublicWhenMethodMatchingItShouldBeUsed()
+    {
+        $object = new class {
+            function my_test() {
+                return 123;
+            }
+        };
+
+        $this->assertSame(123, $this->callMethod($object, 'my_test')->getOriginalValue());
+    }
+
+    /** @test */
+    public function givenAnObjectWithAPublicWhenMethodNameWithIsPrefixMatchesItShouldBeUsed()
+    {
+        $object = new class {
+            function is_my_test() {
+                return 123;
+            }
+
+            function isMyTest() {
+                return 456;
+            }
+        };
+
+        $this->assertSame(123, $this->callMethod($object, 'my_test')->getOriginalValue());
+        $this->assertSame(456, $this->callMethod($object, 'myTest')->getOriginalValue());
+    }
+
+    /** @test */
+    public function givenAnObjectWithAPublicWhenMethodNameWithGetPrefixMatchesItShouldBeUsed()
+    {
+        $object = new class {
+            function get_my_test() {
+                return 123;
+            }
+
+            function getMyTest() {
+                return 456;
+            }
+        };
+
+        $this->assertSame(123, $this->callMethod($object, 'my_test')->getOriginalValue());
+        $this->assertSame(456, $this->callMethod($object, 'myTest')->getOriginalValue());
+    }
+
+    private function callMethod($object, string $methodName): BaseToken
+    {
+        $callable = new CallableUserMethod(new TokenObject($object), new TokenFactory(), $methodName);
+
+        return $callable->call();
+    }
+}

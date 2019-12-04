@@ -5,24 +5,25 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
+namespace nicoSWD\Rule\tests\integration;
 
 use nicoSWD\Rule\Rule;
-use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
 final class ObjectTest extends AbstractTestBase
 {
-    public function testObjects()
+    /** @test */
+    public function givenAnObjectHasMethodsWhenPublicTheyShouldBeAccessible()
     {
         $myObj = new class {
-            function test() {
+            public function test() {
                 return 'test one two';
             }
 
             function test2() {
                 return new class ()
                 {
-                    function miau() {
-                        return 'miau';
+                    public function cat() {
+                        return 'meow';
                     }
                 };
             }
@@ -33,10 +34,11 @@ final class ObjectTest extends AbstractTestBase
         ];
 
         $this->assertTrue($this->evaluate('my_obj.test() === "test one two"', $variables));
-        $this->assertTrue($this->evaluate('my_obj.test2().miau() === "miau"', $variables));
+        $this->assertTrue($this->evaluate('my_obj.test2().cat() === "meow"', $variables));
     }
 
-    public function testPublicPropertyShouldBeAccessible()
+    /** @test */
+    public function givenAnObjectHasPropertiesWhenPublicTheyShouldBeAccessible()
     {
         $myObj = new class {
             public $test = 'my string';
@@ -49,7 +51,8 @@ final class ObjectTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('my_obj.test() === "my string"', $variables));
     }
 
-    public function testPublicMethodsShouldBeAccessibleMagicallyViaGet()
+    /** @test */
+    public function publicMethodsShouldBeAccessibleMagicallyViaGet()
     {
         $myObj = new class {
             public function getString()
@@ -65,7 +68,8 @@ final class ObjectTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('my_obj.string() === "some string"', $variables));
     }
 
-    public function testPublicMethodsShouldBeAccessibleMagicallyViaIs()
+    /** @test */
+    public function publicMethodsShouldBeAccessibleMagicallyViaIs()
     {
         $myObj = new class {
             public function isString($string)
@@ -86,7 +90,8 @@ final class ObjectTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('my_obj.string(my_obj.yes()) === "yes"', $variables));
     }
 
-    public function testUndefinedMethodsShouldThrowAnError()
+    /** @test */
+    public function undefinedMethodsShouldThrowAnError()
     {
         $myObj = new class {};
 
@@ -97,6 +102,6 @@ final class ObjectTest extends AbstractTestBase
         $rule = new Rule('my_obj.nope() === false', $variables);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Undefined method "nope" at position 0', $rule->getError());
+        $this->assertSame('Undefined method "nope" at position 6', $rule->getError());
     }
 }

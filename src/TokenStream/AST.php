@@ -10,7 +10,6 @@ namespace nicoSWD\Rule\TokenStream;
 use Closure;
 use InvalidArgumentException;
 use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
-use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedVariableException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
@@ -25,6 +24,8 @@ class AST
     private $tokenFactory;
     /** @var TokenStreamFactory */
     private $tokenStreamFactory;
+    /** @var CallableUserMethodFactoryInterface */
+    private $userMethodFactory;
     /** @var Closure[] */
     private $functions = [];
     /** @var string[] */
@@ -35,11 +36,13 @@ class AST
     public function __construct(
         TokenizerInterface $tokenizer,
         TokenFactory $tokenFactory,
-        TokenStreamFactory $tokenStreamFactory
+        TokenStreamFactory $tokenStreamFactory,
+        CallableUserMethodFactoryInterface $userMethodFactory
     ) {
         $this->tokenizer = $tokenizer;
         $this->tokenFactory = $tokenFactory;
         $this->tokenStreamFactory = $tokenStreamFactory;
+        $this->userMethodFactory = $userMethodFactory;
     }
 
     public function getStream(string $rule): TokenStream
@@ -50,7 +53,7 @@ class AST
     public function getMethod(string $methodName, BaseToken $token): CallableUserFunctionInterface
     {
         if ($token instanceof TokenObject) {
-            return $this->getCallableUserObject($token, $methodName);
+            return $this->getCallableUserMethod($token, $methodName);
         }
 
         if (empty($this->methods)) {
@@ -58,7 +61,7 @@ class AST
         }
 
         if (!isset($this->methods[$methodName])) {
-            throw new Exception\UndefinedMethodException($methodName);
+            throw new Exception\UndefinedMethodException();
         }
 
         return new $this->methods[$methodName]($token);
@@ -127,56 +130,8 @@ class AST
         }
     }
 
-    private function getCallableUserObject(BaseToken $token, string $methodName): CallableUserFunctionInterface
+    private function getCallableUserMethod(BaseToken $token, string $methodName): CallableUserFunctionInterface
     {
-        return new class ($token, $this->tokenFactory, $methodName) implements CallableUserFunctionInterface {
-            /** @var TokenFactory */
-            private $tokenFactory;
-            /** @var Closure */
-            private $callable;
-            /** @var array */
-            private $variations = ['get', 'is', ''];
-
-            public function __construct(BaseToken $token, TokenFactory $tokenFactory, string $methodName)
-            {
-                $this->tokenFactory = $tokenFactory;
-                $this->callable = $this->getCallable($token, $methodName);
-            }
-
-            private function getCallable(BaseToken $token, string $methodName): Closure
-            {
-                $object = $token->getValue();
-
-                if (property_exists($object, $methodName)) {
-                    return function () use ($object, $methodName) {
-                        return $object->{$methodName};
-                    };
-                }
-
-                $method[0] = $object;
-                $index = 0;
-
-                do {
-                    if (!isset($this->variations[$index])) {
-                        throw ParserException::undefinedMethod($methodName, $token);
-                    }
-
-                    $method[1] = $this->variations[$index++] . $methodName;
-                } while (!is_callable($method));
-
-                return function (BaseToken $param = null) use ($method) {
-                    return $method($param ? $param->getValue() : null);
-                };
-            }
-
-            public function call(BaseToken $param = null): BaseToken
-            {
-                $callable = $this->callable;
-
-                return $this->tokenFactory->createFromPHPType(
-                    $callable($param)
-                );
-            }
-        };
+        return $this->userMethodFactory->create($token, $this->tokenFactory, $methodName);
     }
 }

@@ -16,6 +16,7 @@ use nicoSWD\Rule\Expression\ExpressionFactory;
 use nicoSWD\Rule\Tokenizer\Tokenizer;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\TokenStreamFactory;
+use nicoSWD\Rule\TokenStream\CallableUserMethodFactory;
 
 return new class {
     private static $tokenStreamFactory;
@@ -23,6 +24,7 @@ return new class {
     private static $compiler;
     private static $javaScript;
     private static $expressionFactory;
+    private static $userMethodFactory;
     private static $tokenizer;
     private static $evaluator;
 
@@ -64,7 +66,7 @@ return new class {
 
     private static function ast(array $variables): AST
     {
-        $ast = new AST(self::tokenizer(), self::tokenFactory(), self::tokenStreamFactory());
+        $ast = new AST(self::tokenizer(), self::tokenFactory(), self::tokenStreamFactory(), self::userMethodFactory());
         $ast->setVariables($variables);
 
         return $ast;
@@ -104,5 +106,14 @@ return new class {
         }
 
         return self::$expressionFactory;
+    }
+
+    private static function userMethodFactory(): CallableUserMethodFactory
+    {
+        if (!isset(self::$userMethodFactory)) {
+            self::$userMethodFactory = new CallableUserMethodFactory();
+        }
+
+        return self::$userMethodFactory;
     }
 };

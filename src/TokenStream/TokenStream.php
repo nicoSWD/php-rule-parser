@@ -9,7 +9,6 @@ namespace nicoSWD\Rule\TokenStream;
 
 use ArrayIterator;
 use Closure;
-use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
