@@ -16,11 +16,13 @@ use nicoSWD\Rule\Grammar\CallableFunction;
 
 final class Join extends CallableFunction
 {
-    public function call(BaseToken $glue = null): BaseToken
+    public function call(?BaseToken ...$parameters): BaseToken
     {
         if (!$this->token instanceof TokenArray) {
             throw new ParserException(sprintf('%s.join is not a function', $this->token->getValue()));
         }
+
+        $glue = $this->parseParameter($parameters, 0);
 
         if ($glue) {
             $glue = $glue->getValue();

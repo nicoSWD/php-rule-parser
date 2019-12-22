@@ -9,7 +9,8 @@ namespace nicoSWD\Rule\tests\integration;
 
 final class ParserTest extends AbstractTestBase
 {
-    public function testMultipleAnds()
+    /** @test */
+    public function multipleAnds(): void
     {
         $rule = 'foo=="MA" && bar=="EGP" && baz>50000';
 
@@ -36,7 +37,8 @@ final class ParserTest extends AbstractTestBase
         ]));
     }
 
-    public function testMixedOrsAndAnds()
+    /** @test */
+    public function mixedOrsAndAnds(): void
     {
         $rule = '
             bar=="MA" &&
@@ -51,13 +53,15 @@ final class ParserTest extends AbstractTestBase
         ]));
     }
 
-    public function testEmptyOrIncompleteRuleReturnsFalse()
+    /** @test */
+    public function emptyOrIncompleteRuleReturnsFalse(): void
     {
         $rule = '';
         $this->assertFalse($this->evaluate($rule));
     }
 
-    public function testFreakingLongRule()
+    /** @test */
+    public function freakingLongRule(): void
     {
         $rule = '
             bar=="SA" && (qux=="0002950182" ||
@@ -83,7 +87,8 @@ final class ParserTest extends AbstractTestBase
         ]));
     }
 
-    public function testNegativeComparison()
+    /** @test */
+    public function negativeComparison(): void
     {
         $rule = '
             bar !== "EG" &&
@@ -102,7 +107,8 @@ final class ParserTest extends AbstractTestBase
         ]));
     }
 
-    public function testSpacesBetweenStuff()
+    /** @test */
+    public function spacesBetweenStuff(): void
     {
         $rule = 'foo   !=   3
                 &&    3        !=   foo
@@ -114,7 +120,8 @@ final class ParserTest extends AbstractTestBase
         $this->assertTrue($this->evaluate($rule, ['foo' => '-1']));
     }
 
-    public function testSingleLineCommentDoesNotKillTheRest()
+    /** @test */
+    public function singleLineCommentDoesNotKillTheRest(): void
     {
         $rule = ' 2 > 3
 

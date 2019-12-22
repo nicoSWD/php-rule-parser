@@ -12,26 +12,26 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 final class SubstrTest extends AbstractTestBase
 {
     /** @test */
-    public function substrReturnsCorrectPartOfString()
+    public function substrReturnsCorrectPartOfString(): void
     {
         $this->assertTrue($this->evaluate('foo.substr(1, 2) === "ar"', ['foo' => 'bar']));
         $this->assertTrue($this->evaluate('"bar".substr(0, 1) === "b"'));
     }
 
     /** @test */
-    public function outOfBoundsOffsetReturnsEmptyString()
+    public function outOfBoundsOffsetReturnsEmptyString(): void
     {
         $this->assertTrue($this->evaluate('"bar".substr(100) === ""'));
     }
 
     /** @test */
-    public function omittedParametersReturnsSameString()
+    public function omittedParametersReturnsSameString(): void
     {
         $this->assertTrue($this->evaluate('"bar".substr() === "bar"'));
     }
 
     /** @test */
-    public function negativeOffsetReturnsEndOfString()
+    public function negativeOffsetReturnsEndOfString(): void
     {
         $this->assertTrue($this->evaluate('"bar".substr(-1) === "r"'));
         $this->assertTrue($this->evaluate('"bar".substr(-1, 2) === "r"'));

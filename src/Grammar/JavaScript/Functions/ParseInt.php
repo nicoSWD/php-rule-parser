@@ -14,9 +14,11 @@ use nicoSWD\Rule\TokenStream\Token\TokenInteger;
 
 final class ParseInt extends CallableFunction implements CallableUserFunctionInterface
 {
-    public function call(BaseToken $value = null): BaseToken
+    public function call(?BaseToken ...$parameters): BaseToken
     {
-        if ($value === null) {
+        $value = $this->parseParameter($parameters, 0);
+
+        if (!isset($value)) {
             return new TokenInteger(NAN);
         }
 

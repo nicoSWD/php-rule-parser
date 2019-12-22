@@ -26,7 +26,7 @@ final class HighlighterTest extends TestCase
     }
 
     /** @test */
-    public function givenAStyleForATokenGroupItShouldBeUsed()
+    public function givenAStyleForATokenGroupItShouldBeUsed(): void
     {
         $this->highlighter->setStyle(
             Rule\TokenStream\Token\TokenType::SQUARE_BRACKET,
@@ -38,10 +38,8 @@ final class HighlighterTest extends TestCase
         $this->assertStringContainsString('<span style="color: gray;">[</span>', $code);
     }
 
-    /**
-     * @test
-     */
-    public function invalidGroupThrowsException()
+    /** @test */
+    public function invalidGroupThrowsException(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid group');

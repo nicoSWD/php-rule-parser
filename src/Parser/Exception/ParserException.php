@@ -36,6 +36,11 @@ class ParserException extends \Exception
         return new self(sprintf('Undefined method "%s" at position %d', $name, $token->getOffset()));
     }
 
+    public static function forbiddenMethod(string $name, BaseToken $token): self
+    {
+        return new self(sprintf('Forbidden method "%s" at position %d', $name, $token->getOffset()));
+    }
+
     public static function undefinedFunction(string $name, BaseToken $token): self
     {
         return new self(sprintf('%s is not defined at position %d', $name, $token->getOffset()));

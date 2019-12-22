@@ -13,7 +13,7 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 final class ToUpperCaseTest extends AbstractTestBase
 {
     /** @test */
-    public function spacesBetweenVariableAndMethodWork()
+    public function spacesBetweenVariableAndMethodWork(): void
     {
         $this->assertTrue($this->evaluate('foo . toUpperCase() === "BAR"', ['foo' => 'bar']));
         $this->assertTrue($this->evaluate(
@@ -25,20 +25,20 @@ final class ToUpperCaseTest extends AbstractTestBase
     }
 
     /** @test */
-    public function ifCallOnStringLiteralsWorks()
+    public function ifCallOnStringLiteralsWorks(): void
     {
         $this->assertTrue($this->evaluate('"bar".toUpperCase() === "BAR"'));
         $this->assertTrue($this->evaluate('"bar" . toUpperCase() === "BAR"'));
     }
 
     /** @test */
-    public function ifMethodCanBeCalledOnVariablesHoldingIntegers()
+    public function ifMethodCanBeCalledOnVariablesHoldingIntegers(): void
     {
         $this->assertTrue($this->evaluate('foo.toUpperCase() === "1"', ['foo' => 1]));
     }
 
     /** @test */
-    public function callOnIntegersThrowsException()
+    public function callOnIntegersThrowsException(): void
     {
         $rule = new Rule('1.toUpperCase() === "1"', ['foo' => 1]);
 

@@ -13,7 +13,7 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 final class ArraysTest extends AbstractTestBase
 {
     /** @test */
-    public function arraysEqualUserSuppliedArrays()
+    public function arraysEqualUserSuppliedArrays(): void
     {
         $this->assertTrue($this->evaluate(
             'foo === ["foo1", "bar", 2, true]',
@@ -27,20 +27,20 @@ final class ArraysTest extends AbstractTestBase
     }
 
     /** @test */
-    public function emptyArrayDoesParseCorrectly()
+    public function emptyArrayDoesParseCorrectly(): void
     {
         $this->assertTrue($this->evaluate('[] === []'));
     }
 
     /** @test */
-    public function literalArrayComparison()
+    public function literalArrayComparison(): void
     {
         $this->assertTrue($this->evaluate('[123, 12] === [123, 12]'));
         $this->assertFalse($this->evaluate('[123, 12] === [123, 12, 1]'));
     }
 
     /** @test */
-    public function commentsAreIgnoredInArray()
+    public function commentsAreIgnoredInArray(): void
     {
         $this->assertTrue($this->evaluate(
             'foo === [
@@ -52,7 +52,7 @@ final class ArraysTest extends AbstractTestBase
     }
 
     /** @test */
-    public function trailingCommaThrowsException()
+    public function trailingCommaThrowsException(): void
     {
         $rule = new Rule('["foo", "bar", ] === ["foo", "bar"]');
 
@@ -61,7 +61,7 @@ final class ArraysTest extends AbstractTestBase
     }
 
     /** @test */
-    public function lineIsReportedCorrectlyOnSyntaxError2()
+    public function lineIsReportedCorrectlyOnSyntaxError2(): void
     {
         $rule = new Rule('["foo", "bar", ,] === ["foo", "bar"]');
 
@@ -70,7 +70,7 @@ final class ArraysTest extends AbstractTestBase
     }
 
     /** @test */
-    public function missingCommaThrowsException()
+    public function missingCommaThrowsException(): void
     {
         $rule = new Rule('["foo"  "bar"] === ["foo", "bar"]');
 
@@ -79,7 +79,7 @@ final class ArraysTest extends AbstractTestBase
     }
 
     /** @test */
-    public function unexpectedTokenThrowsException()
+    public function unexpectedTokenThrowsException(): void
     {
         $rule = new Rule('["foo", ===] === ["foo", "bar"]');
 
@@ -88,7 +88,7 @@ final class ArraysTest extends AbstractTestBase
     }
 
     /** @test */
-    public function unexpectedEndOfStringThrowsException()
+    public function unexpectedEndOfStringThrowsException(): void
     {
         $rule = new Rule('["foo", "bar"');
 

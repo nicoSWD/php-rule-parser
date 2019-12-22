@@ -14,9 +14,10 @@ use nicoSWD\Rule\TokenStream\Token\TokenString;
 
 final class CharAt extends CallableFunction
 {
-    public function call(BaseToken $offset = null): BaseToken
+    public function call(?BaseToken ...$parameters): BaseToken
     {
         $tokenValue = $this->token->getValue();
+        $offset = $this->parseParameter($parameters, 0);
 
         if (!$offset) {
             $offset = 0;

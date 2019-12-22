@@ -12,32 +12,32 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 final class ReplaceTest extends AbstractTestBase
 {
     /** @test */
-    public function validNeedleReturnsCorrectPosition()
+    public function validNeedleReturnsCorrectPosition(): void
     {
         $this->assertTrue($this->evaluate('foo.replace("a", "A") === "bAr"', ['foo' => 'bar']));
         $this->assertTrue($this->evaluate('"bar".replace("r", "R") === "baR"'));
     }
 
     /** @test */
-    public function omittedParametersDoNotReplaceAnything()
+    public function omittedParametersDoNotReplaceAnything(): void
     {
         $this->assertTrue($this->evaluate('"bar".replace() === "bar"'));
     }
 
     /** @test */
-    public function omittedSecondParameterReplacesWithUndefined()
+    public function omittedSecondParameterReplacesWithUndefined(): void
     {
         $this->assertTrue($this->evaluate('"bar".replace("r") === "baundefined"'));
     }
 
     /** @test */
-    public function replaceWithRegularExpression()
+    public function replaceWithRegularExpression(): void
     {
         $this->assertTrue($this->evaluate('"arbar".replace(/ar$/, "") === "arb"'));
     }
 
     /** @test */
-    public function regularExpressionWithGModifier()
+    public function regularExpressionWithGModifier(): void
     {
         $this->assertTrue($this->evaluate('"foofoo".replace(/foo/, "") === "foo"'));
         $this->assertTrue($this->evaluate('"foofoo".replace(/foo/g, "") === ""'));

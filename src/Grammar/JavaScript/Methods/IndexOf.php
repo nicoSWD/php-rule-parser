@@ -13,8 +13,10 @@ use nicoSWD\Rule\TokenStream\Token\TokenInteger;
 
 final class IndexOf extends CallableFunction
 {
-    public function call(BaseToken $needle = null): BaseToken
+    public function call(?BaseToken ...$parameters): BaseToken
     {
+        $needle = $this->parseParameter($parameters, 0);
+
         if (!$needle) {
             $value = -1;
         } else {

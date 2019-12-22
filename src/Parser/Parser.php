@@ -23,7 +23,7 @@ class Parser
     private $expressionFactory;
     /** @var CompilerFactoryInterface */
     private $compilerFactory;
-    /** @var BaseToken|null */
+    /** @var ?BaseToken */
     private $operator;
     /** @var mixed[] */
     private $values = [];

@@ -12,7 +12,7 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 final class ConcatTest extends AbstractTestBase
 {
     /** @test */
-    public function allParametersAreConcatenated()
+    public function allParametersAreConcatenated(): void
     {
         $this->assertTrue($this->evaluate('foo.concat("bar", "baz") === "foobarbaz"', ['foo' => 'foo']));
         $this->assertTrue($this->evaluate('"foo".concat("bar", "baz") === "foobarbaz"'));
@@ -21,7 +21,7 @@ final class ConcatTest extends AbstractTestBase
     }
 
     /** @test */
-    public function arraysAreImplodedByCommaBeforeConcatenating()
+    public function arraysAreImplodedByCommaBeforeConcatenating(): void
     {
         $this->assertTrue($this->evaluate('"foo".concat("bar", [1, 2]) === "foobar1,2"'));
     }

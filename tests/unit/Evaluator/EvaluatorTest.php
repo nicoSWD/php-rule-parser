@@ -22,7 +22,7 @@ final class EvaluatorTest extends TestCase
     }
 
     /** @test */
-    public function givenACompiledRuleWithAnLogicalAndItShouldEvaluateBothOperandsAndReturnTheResult()
+    public function givenACompiledRuleWithAnLogicalAndItShouldEvaluateBothOperandsAndReturnTheResult(): void
     {
         $this->assertTrue($this->evaluator->evaluate('1&1'));
         $this->assertFalse($this->evaluator->evaluate('1&0'));
@@ -31,7 +31,7 @@ final class EvaluatorTest extends TestCase
     }
 
     /** @test */
-    public function givenACompiledRuleWithAnLogicalOrItShouldEvaluateBothOperandsAndReturnTheResult()
+    public function givenACompiledRuleWithAnLogicalOrItShouldEvaluateBothOperandsAndReturnTheResult(): void
     {
         $this->assertTrue($this->evaluator->evaluate('1|1'));
         $this->assertTrue($this->evaluator->evaluate('1|0'));
@@ -40,7 +40,7 @@ final class EvaluatorTest extends TestCase
     }
 
     /** @test */
-    public function givenACompiledRuleWithGroupsTheyShouldBeEvaluatedFirst()
+    public function givenACompiledRuleWithGroupsTheyShouldBeEvaluatedFirst(): void
     {
         $this->assertTrue($this->evaluator->evaluate('0|(1|0)'));
         $this->assertTrue($this->evaluator->evaluate('1|(0|0)'));
@@ -50,7 +50,7 @@ final class EvaluatorTest extends TestCase
     }
 
     /** @test */
-    public function givenACharacterWhenUnknownItShouldThrowAnException()
+    public function givenACharacterWhenUnknownItShouldThrowAnException(): void
     {
         $this->expectException(UnknownSymbolException::class);
         $this->expectExceptionMessage('Unexpected "3"');

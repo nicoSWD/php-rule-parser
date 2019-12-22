@@ -13,7 +13,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenString;
 
 final class ToLowerCase extends CallableFunction
 {
-    public function call(BaseToken $string = null): BaseToken
+    public function call(?BaseToken ...$parameters): BaseToken
     {
         return new TokenString(strtolower((string) $this->token->getValue()));
     }

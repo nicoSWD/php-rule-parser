@@ -12,7 +12,7 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 final class ScalarTest extends AbstractTestBase
 {
     /** @test */
-    public function booleans()
+    public function booleans(): void
     {
         $this->assertTrue($this->evaluate('"0" == false'));
         $this->assertFalse($this->evaluate('"0" === false'));
@@ -26,7 +26,7 @@ final class ScalarTest extends AbstractTestBase
     }
 
     /** @test */
-    public function nullValues()
+    public function nullValues(): void
     {
         $this->assertTrue($this->evaluate('foo === null', ['foo' => null]));
         $this->assertTrue($this->evaluate('foo !== null', ['foo' => 0]));
@@ -37,7 +37,7 @@ final class ScalarTest extends AbstractTestBase
     }
 
     /** @test */
-    public function floatPrecision()
+    public function floatPrecision(): void
     {
         $this->assertFalse($this->evaluate('foo === "1.0000034"', ['foo' => 1.0000034]));
         $this->assertFalse($this->evaluate('foo === 1.0000034', ['foo' => '1.0000034']));
@@ -48,7 +48,7 @@ final class ScalarTest extends AbstractTestBase
     }
 
     /** @test */
-    public function negativeNumbers()
+    public function negativeNumbers(): void
     {
         $rule = 'foo > -1 && foo < 1';
 

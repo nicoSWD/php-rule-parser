@@ -13,7 +13,7 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 final class SyntaxErrorTest extends AbstractTestBase
 {
     /** @test */
-    public function missingCommaInArgumentsThrowsException()
+    public function missingCommaInArgumentsThrowsException(): void
     {
         $rule = new Rule('"foo".charAt(1 2 ) === "b"');
 
@@ -22,7 +22,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function missingValueInArgumentsThrowsException()
+    public function missingValueInArgumentsThrowsException(): void
     {
         $rule = new Rule('"foo".charAt(1 , ) === "b"');
 
@@ -31,7 +31,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function missingValueBetweenCommasInArgumentsThrowsException()
+    public function missingValueBetweenCommasInArgumentsThrowsException(): void
     {
         $rule = new Rule('"foo".charAt(1 , , ) === "b"');
 
@@ -40,7 +40,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function unexpectedTokenInArgumentsThrowsException()
+    public function unexpectedTokenInArgumentsThrowsException(): void
     {
         $rule = new Rule('"foo".charAt(1 , < , ) === "b"');
 
@@ -49,7 +49,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function unexpectedEndOfStringThrowsException()
+    public function unexpectedEndOfStringThrowsException(): void
     {
         $rule = new Rule('"foo".charAt(1 , ');
 
@@ -58,7 +58,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function undefinedMethodThrowsException()
+    public function undefinedMethodThrowsException(): void
     {
         $rule = new Rule('/^foo$/.teddst("foo") === true');
 
@@ -67,7 +67,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function incorrectSpellingThrowsException()
+    public function incorrectSpellingThrowsException(): void
     {
         $rule = new Rule('"foo".ChARat(1) === "o"');
 
@@ -76,7 +76,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function callOnNonArray()
+    public function callOnNonArray(): void
     {
         $rule = new Rule('"foo".join("|") === ""');
 
@@ -85,7 +85,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function exceptionIsThrownOnTypeError()
+    public function exceptionIsThrownOnTypeError(): void
     {
         $rule = new Rule('"foo".test("foo") === false');
 

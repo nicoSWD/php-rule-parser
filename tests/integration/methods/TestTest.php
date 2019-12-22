@@ -12,21 +12,21 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 final class TestTest extends AbstractTestBase
 {
     /** @test */
-    public function basicRegularExpression()
+    public function basicRegularExpression(): void
     {
         $this->assertTrue($this->evaluate('/^foo$/.test("foo") === true'));
         $this->assertTrue($this->evaluate('/^foo$/.test(foo) === true', ['foo' => 'foo']));
     }
 
     /** @test */
-    public function arrayIsConvertedToString()
+    public function arrayIsConvertedToString(): void
     {
         $this->assertTrue($this->evaluate('/^foo$/.test(["foo"]) === true'));
         $this->assertTrue($this->evaluate('/1/.test([[[1]]]) === true'));
     }
 
     /** @test */
-    public function modifiers()
+    public function modifiers(): void
     {
         $this->assertTrue($this->evaluate('/^foo$/i.test("FOO") === true'));
         $this->assertFalse($this->evaluate('/^foo$/.test("FOO") === true'));
@@ -35,7 +35,7 @@ final class TestTest extends AbstractTestBase
     }
 
     /** @test */
-    public function gModifierIsIgnored()
+    public function gModifierIsIgnored(): void
     {
         $this->assertTrue($this->evaluate('/^foo$/gi.test("foo") === true'), 'gi');
         $this->assertTrue($this->evaluate('/^foo$/ig.test("foo") === true'), 'ig');
@@ -43,7 +43,7 @@ final class TestTest extends AbstractTestBase
     }
 
     /** @test */
-    public function booleansAndNullsAsSubject()
+    public function booleansAndNullsAsSubject(): void
     {
         $this->assertTrue($this->evaluate('/^foo$/.test(true) === false'));
         $this->assertTrue($this->evaluate('/^foo$/.test(false) === false'));
@@ -52,7 +52,7 @@ final class TestTest extends AbstractTestBase
     }
 
     /** @test */
-    public function withOmittedParameters()
+    public function withOmittedParameters(): void
     {
         $this->assertTrue($this->evaluate('/^foo$/.test() === false'));
     }

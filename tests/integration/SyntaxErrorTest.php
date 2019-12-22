@@ -15,7 +15,7 @@ use nicoSWD\Rule\Rule;
 final class SyntaxErrorTest extends AbstractTestBase
 {
     /** @test */
-    public function emptyParenthesisThrowException()
+    public function emptyParenthesisThrowException(): void
     {
         $rule = new Rule('(totalamount != 3) ()', [
             'totalamount' => '-1'
@@ -26,7 +26,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function doubleOperatorThrowsException()
+    public function doubleOperatorThrowsException(): void
     {
         $rule = new Rule('country == == "venezuela"', ['country' => 'spain']);
 
@@ -35,7 +35,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function missingLeftValueThrowsException()
+    public function missingLeftValueThrowsException(): void
     {
         $rule = new Rule('== "venezuela"');
 
@@ -44,7 +44,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function missingOperatorThrowsException()
+    public function missingOperatorThrowsException(): void
     {
         $rule = new Rule('total == -1 total > 10', ['total' => 12]);
 
@@ -53,7 +53,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function missingOpeningParenthesisThrowsException()
+    public function missingOpeningParenthesisThrowsException(): void
     {
         $rule = new Rule('1 == 1)');
 
@@ -62,7 +62,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function missingClosingParenthesisThrowsException()
+    public function missingClosingParenthesisThrowsException(): void
     {
         $rule = new Rule('(1 == 1');
 
@@ -71,7 +71,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function misplacedMinusThrowsException()
+    public function misplacedMinusThrowsException(): void
     {
         $rule = new Rule('1 == 1 && -foo == 1', ['foo' => 1]);
 
@@ -80,7 +80,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function undefinedVariableThrowsException()
+    public function undefinedVariableThrowsException(): void
     {
         $rule = new Rule(' // new line on purpose
             foo == "MA"');
@@ -90,7 +90,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function incompleteExpressionExceptionIsThrownCorrectly()
+    public function incompleteExpressionExceptionIsThrownCorrectly(): void
     {
         $rule = new Rule('1 == 1 && country', ['country' => 'es']);
 
@@ -99,7 +99,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function rulesEvaluatesTrueThrowsExceptionsForUndefinedVars()
+    public function rulesEvaluatesTrueThrowsExceptionsForUndefinedVars(): void
     {
         $rule = new Rule('nonono=="MA"');
 
@@ -108,7 +108,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function rulesEvaluatesTrueThrowsExceptionsOnSyntaxErrors()
+    public function rulesEvaluatesTrueThrowsExceptionsOnSyntaxErrors(): void
     {
         $rule = new Rule('country == "MA" &&', ['country' => 'es']);
 
@@ -117,7 +117,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function multipleLogicalTokensThrowException()
+    public function multipleLogicalTokensThrowException(): void
     {
         $rule = new Rule('country == "MA" && &&', ['country' => 'es']);
 
@@ -126,7 +126,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function unknownTokenExceptionIsThrown()
+    public function unknownTokenExceptionIsThrown(): void
     {
         $rule = new Rule('country == "MA" ^', ['country' => 'es']);
 

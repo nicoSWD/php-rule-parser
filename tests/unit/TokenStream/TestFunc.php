@@ -13,7 +13,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenInteger;
 
 final class TestFunc implements CallableUserFunctionInterface
 {
-    public function call(BaseToken $param = null): BaseToken
+    public function call(?BaseToken ...$parameters): BaseToken
     {
         return new TokenInteger(234);
     }

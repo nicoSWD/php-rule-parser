@@ -23,7 +23,8 @@ final class TokenFactoryTest extends TestCase
         $this->tokenFactory = new Token\TokenFactory();
     }
 
-    public function testSimpleTypeReturnsCorrectInstance()
+    /** @test */
+    public function simpleTypeReturnsCorrectInstance(): void
     {
         $this->assertInstanceOf(Token\TokenNull::class, $this->tokenFactory->createFromPHPType(null));
         $this->assertInstanceOf(Token\TokenString::class, $this->tokenFactory->createFromPHPType('string sample'));
@@ -33,7 +34,8 @@ final class TokenFactoryTest extends TestCase
         $this->assertInstanceOf(Token\TokenArray::class, $this->tokenFactory->createFromPHPType([1, 2]));
     }
 
-    public function testUnsupportedTypeThrowsException()
+    /** @test */
+    public function unsupportedTypeThrowsException(): void
     {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('Unsupported PHP type: "resource"');
@@ -41,14 +43,16 @@ final class TokenFactoryTest extends TestCase
         $this->tokenFactory->createFromPHPType(tmpfile());
     }
 
-    public function testGivenAnInvalidTokenNameItShouldThrowAnException()
+    /** @test */
+    public function givenAnInvalidTokenNameItShouldThrowAnException(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         $this->tokenFactory->createFromTokenName('betrunken');
     }
 
-    public function testGivenAValidTokenNameItShouldReturnItsCorrespondingClassName()
+    /** @test */
+    public function givenAValidTokenNameItShouldReturnItsCorrespondingClassName(): void
     {
         $this->assertSame(TokenEqualStrict::class, $this->tokenFactory->createFromTokenName(Token\Token::EQUAL_STRICT));
     }

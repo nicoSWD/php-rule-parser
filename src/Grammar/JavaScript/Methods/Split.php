@@ -14,14 +14,17 @@ use nicoSWD\Rule\TokenStream\Token\TokenRegex;
 
 final class Split extends CallableFunction
 {
-    public function call(BaseToken $separator = null, BaseToken $limit = null): BaseToken
+    public function call(?BaseToken ...$parameters): BaseToken
     {
+        $separator = $this->parseParameter($parameters, 0);
+
         if (!$separator || !is_string($separator->getValue())) {
             $newValue = [$this->token->getValue()];
         } else {
             $params = [$separator->getValue(), $this->token->getValue()];
+            $limit = $this->parseParameter($parameters, 1);
 
-            if ($limit) {
+            if ($limit !== null) {
                 $params[] = (int) $limit->getValue();
             }
 

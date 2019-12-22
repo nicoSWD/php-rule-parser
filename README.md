@@ -2,13 +2,12 @@
 
 
 [![Latest Stable Version](https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=master)](https://travis-ci.org/nicoSWD/php-rule-parser)
-[![Code Quality][Master quality image]][Master quality] 
 [![Build status][Master coverage image]][Master coverage] 
+[![Code Quality][Master quality image]][Master quality] 
 [![StyleCI](https://styleci.io/repos/39503126/shield?branch=master&style=flat)](https://styleci.io/repos/39503126)
+
 [![Total Downloads](https://img.shields.io/packagist/dt/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser) 
 [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
-
-If you're using PHP 5, you might want to look at [version 0.4.0](https://github.com/nicoSWD/php-rule-parser/tree/0.4.0).
 
 You're looking at a standalone PHP library to parse and evaluate text based rules with a Javascript-like syntax. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
 
@@ -16,6 +15,8 @@ This library has initially been used to change and configure the behavior of cer
 
 
 Find me on Twitter: @[nicoSWD](https://twitter.com/nicoSWD)
+
+(If you're using PHP 5, you might want to look at [version 0.4.0](https://github.com/nicoSWD/php-rule-parser/tree/0.4.0))
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/67203389-970c-419c-9430-a7f9a005bd94/big.png)](https://insight.sensiolabs.com/projects/67203389-970c-419c-9430-a7f9a005bd94)
 
@@ -58,61 +59,26 @@ var_dump($rule->isTrue()); // bool(true)
 
 Call methods on objects from within rules
 ```php
-$user = new User();
+class User
+{
+    // ...
+
+    public function points(): int
+    {
+        return 1337;    
+    }
+}
+
 $variables = [
-    'user' => $user,
+    'user' => new User(),
 ];
 
 $rule = new Rule('user.points() > 300', $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
-
-## Custom Functions
-
-```php
-$ruleStr = 'double(value) === result';
-
-$variables = [
-    'value'  => 2,
-    'result' => 4
-];
-
-$rule = new Rule($ruleStr, $variables);
-
-$rule->registerFunction('double', function (BaseToken $multiplier): BaseToken {
-    if (!$multiplier instanceof TokenInteger) {
-        throw new \Exception;
-    }
-
-    return new TokenInteger($multiplier->getValue() * 2);
-});
-
-var_dump($rule->isTrue()); // bool(true)
-```
-
-## Redefine Tokens
-Tokens can be customized, if desired. Note that it's very easy to break stuff by doing that, if you have colliding regular expressions.
-You may want to set a different `$priority` when registering a token: `::registerToken($type, $regex, $priority)`
-(take a look at `Tokenizer::__construct()` for more info).
-
-```php
-$ruleStr = ':this is greater than :that';
-
-$variables = [
-    ':this' => 8,
-    ':that' => 7
-];
-
-$rule = new Rule($ruleStr, $variables);
-
-$rule->registerToken(Tokenizer::TOKEN_GREATER, '\bis\s+greater\s+than\b');
-$rule->registerToken(Tokenizer::TOKEN_VARIABLE, ':[a-zA-Z_][\w-]*');
-
-var_dump($rule->isTrue()); // bool(true)
-```
-
-Also note that the original tokens will no longer be recognized after overwriting them. Thus, if you want to implement aliases
-for custom tokens, you have to group them into one regular expression: `(?:\b(?:is\s+)?greater\s+than\b|>)`
+For security reasons, PHP's magic methods like `__construct` and `__destruct` cannot be 
+called from within rules. However, `__call` will be invoked automatically if available,
+unless the called method is defined. 
 
 ## Error Handling
 Both, `$rule->isTrue()` and `$rule->isFalse()` will throw an exception if the syntax is invalid. These calls can either be placed inside a `try` / `catch` block, or it can be checked prior using `$rule->isValid()`.

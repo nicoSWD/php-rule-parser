@@ -12,28 +12,28 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 final class CharAtTest extends AbstractTestBase
 {
     /** @test */
-    public function ifOmittedPositionFallsBackToZero()
+    public function ifOmittedPositionFallsBackToZero(): void
     {
         $this->assertTrue($this->evaluate('foo.charAt() === "b"', ['foo' => 'bar']));
         $this->assertTrue($this->evaluate('"bar".charAt() === "b"'));
     }
 
     /** @test */
-    public function callWithValidPosition()
+    public function callWithValidPosition(): void
     {
         $this->assertTrue($this->evaluate('foo.charAt(1) === "a"', ['foo' => 'bar']));
         $this->assertTrue($this->evaluate('"bar".charAt(2) === "r"'));
     }
 
     /** @test */
-    public function invalidOffsetReturnsEmptyString()
+    public function invalidOffsetReturnsEmptyString(): void
     {
         $this->assertTrue($this->evaluate('foo.charAt(99) === ""', ['foo' => 'bar']));
         $this->assertTrue($this->evaluate('"foo".charAt(99) === ""'));
     }
 
     /** @test */
-    public function ifBooleansAndNullAreCastedToOneAndZero()
+    public function ifBooleansAndNullAreCastedToOneAndZero(): void
     {
         $this->assertTrue($this->evaluate('"foo".charAt(true) === "o"'));
         $this->assertTrue($this->evaluate('"foo".charAt(false) === "f"'));

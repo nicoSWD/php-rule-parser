@@ -13,15 +13,18 @@ use nicoSWD\Rule\TokenStream\Token\TokenString;
 
 final class Substr extends CallableFunction
 {
-    public function call(BaseToken $start = null, BaseToken $offset = null): BaseToken
+    public function call(?BaseToken ...$parameters): BaseToken
     {
         $params = [];
+        $start = $this->parseParameter($parameters, 0);
 
         if (!$start) {
             $params[] = 0;
         } else {
             $params[] = (int) $start->getValue();
         }
+
+        $offset = $this->parseParameter($parameters, 1);
 
         if ($offset) {
             $params[] = (int) $offset->getValue();

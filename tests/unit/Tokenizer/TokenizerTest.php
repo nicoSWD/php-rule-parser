@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 final class TokenizerTest extends TestCase
 {
     /** @test */
-    public function givenAGrammarWithCollidingRegexItShouldTakeThePriorityIntoAccount()
+    public function givenAGrammarWithCollidingRegexItShouldTakeThePriorityIntoAccount(): void
     {
         $tokens = $this->tokenizeWithGrammar('yes   somevar', [
             [Token\Token::BOOL, '\b(?:yes|no)\b', 20],
@@ -39,7 +39,7 @@ final class TokenizerTest extends TestCase
     }
 
     /** @test */
-    public function givenAGrammarWithCollidingRegexWhenPriorityIsWrongItShouldNeverMatchTheOneWithLowerPriority()
+    public function givenAGrammarWithCollidingRegexWhenPriorityIsWrongItShouldNeverMatchTheOneWithLowerPriority(): void
     {
         $tokens = $this->tokenizeWithGrammar('somevar   yes', [
             [Token\Token::VARIABLE, '\b[a-z]+\b', 20],
@@ -63,7 +63,7 @@ final class TokenizerTest extends TestCase
     }
 
     /** @test */
-    public function givenAGrammarItShouldBeAvailableThroughGetter()
+    public function givenAGrammarItShouldBeAvailableThroughGetter(): void
     {
         $grammar = $this->getTokenizer([[Token\Token::BOOL, '\b(?:yes|no)\b', 10]])->getGrammar();
 
@@ -89,6 +89,7 @@ final class TokenizerTest extends TestCase
     private function getTokenizer(array $definition): Tokenizer
     {
         $grammar = new class($definition) extends Grammar {
+            /** @var array */
             private $definition = [];
 
             public function __construct(array $definition)

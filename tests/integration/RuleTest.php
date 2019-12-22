@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 final class RuleTest extends TestCase
 {
     /** @test */
-    public function basicRuleWithCommentsEvaluatesCorrectly()
+    public function basicRuleWithCommentsEvaluatesCorrectly(): void
     {
         $string = '
             /**
@@ -40,7 +40,7 @@ final class RuleTest extends TestCase
     }
 
     /** @test */
-    public function isValidReturnsFalseOnInvalidSyntax()
+    public function isValidReturnsFalseOnInvalidSyntax(): void
     {
         $ruleStr = '(2 == 2) && (1 < 3 && 3 > 2 (1 == 1))';
 
@@ -51,7 +51,7 @@ final class RuleTest extends TestCase
     }
 
     /** @test */
-    public function isValidReturnsTrueOnValidSyntax()
+    public function isValidReturnsTrueOnValidSyntax(): void
     {
         $ruleStr = '(2 == 2) && (1 < 3 && 3 > 2 || (1 == 1))';
 

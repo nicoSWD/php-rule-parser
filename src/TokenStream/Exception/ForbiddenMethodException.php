@@ -7,6 +7,6 @@
  */
 namespace nicoSWD\Rule\TokenStream\Exception;
 
-final class UndefinedVariableException extends \Exception
+final class ForbiddenMethodException extends \Exception
 {
 }

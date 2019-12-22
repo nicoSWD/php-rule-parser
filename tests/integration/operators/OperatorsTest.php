@@ -13,7 +13,7 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 final class OperatorsTest extends AbstractTestBase
 {
     /** @test */
-    public function allAvailableOperators()
+    public function allAvailableOperators(): void
     {
         $this->assertTrue($this->evaluate('3 == 3'), 'Equal operator failed on two integers');
         $this->assertTrue($this->evaluate('4 === 4'));
@@ -31,7 +31,7 @@ final class OperatorsTest extends AbstractTestBase
     }
 
     /** @test */
-    public function strictOperators()
+    public function strictOperators(): void
     {
         $this->assertFalse($this->evaluate('"4" === 4'));
         $this->assertTrue($this->evaluate('4 === 4'));
@@ -41,7 +41,7 @@ final class OperatorsTest extends AbstractTestBase
     }
 
     /** @test */
-    public function inOperator()
+    public function inOperator(): void
     {
         $this->assertTrue($this->evaluate('123 in foo', ['foo' => [123, 12]]));
         $this->assertFalse($this->evaluate('"123" in foo', ['foo' => [123, 12]]));
@@ -50,13 +50,13 @@ final class OperatorsTest extends AbstractTestBase
     }
 
     /** @test */
-    public function inOperatorOnReturnedValueByMethodCall()
+    public function inOperatorOnReturnedValueByMethodCall(): void
     {
         $this->assertTrue($this->evaluate('"123" in "321,123".split(",")'));
     }
 
     /** @test */
-    public function inOperatorWithNonArrayRightValueThrowsException()
+    public function inOperatorWithNonArrayRightValueThrowsException(): void
     {
         $rule = new Rule('"123" in "foo"');
 
@@ -65,7 +65,7 @@ final class OperatorsTest extends AbstractTestBase
     }
 
     /** @test */
-    public function commentsAreIgnoredCorrectly()
+    public function commentsAreIgnoredCorrectly(): void
     {
         $this->assertFalse($this->evaluate('1 == 2 // || 1 == 1'));
         $this->assertTrue($this->evaluate('1 == 1 // && 2 == 1'));
@@ -77,7 +77,7 @@ final class OperatorsTest extends AbstractTestBase
     }
 
     /** @test */
-    public function equalOperator()
+    public function equalOperator(): void
     {
         $this->assertTrue($this->evaluate('foo == -1', ['foo' => -1]));
         $this->assertFalse($this->evaluate('foo == 3', ['foo' => -1]));

@@ -16,11 +16,13 @@ use nicoSWD\Rule\Grammar\CallableFunction;
 
 final class Test extends CallableFunction
 {
-    public function call(BaseToken $string = null): BaseToken
+    public function call(?BaseToken ...$parameters): BaseToken
     {
         if (!$this->token instanceof TokenRegex) {
             throw new ParserException('undefined is not a function');
         }
+
+        $string = $this->parseParameter($parameters, 0);
 
         if (!$string) {
             $bool = false;

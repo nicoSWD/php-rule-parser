@@ -19,7 +19,7 @@ use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\TokenStream;
 use PHPUnit\Framework\TestCase;
 
-class ParserTest extends TestCase
+final class ParserTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
@@ -42,7 +42,7 @@ class ParserTest extends TestCase
     }
 
     /** @test */
-    public function givenARuleStringWhenValidItShouldReturnTheCompiledRule()
+    public function givenARuleStringWhenValidItShouldReturnTheCompiledRule(): void
     {
         $tokens = [
             new Token\TokenOpeningParenthesis('('),

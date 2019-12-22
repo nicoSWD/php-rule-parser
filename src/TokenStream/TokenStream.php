@@ -86,6 +86,8 @@ class TokenStream extends ArrayIterator
             return $this->ast->getMethod($methodName, $token);
         } catch (Exception\UndefinedMethodException $e) {
             throw ParserException::undefinedMethod($methodName, $this->getCurrentToken());
+        } catch (Exception\ForbiddenMethodException $e) {
+            throw ParserException::forbiddenMethod($methodName, $this->getCurrentToken());
         }
     }
 }

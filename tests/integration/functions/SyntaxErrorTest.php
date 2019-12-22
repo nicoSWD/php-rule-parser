@@ -13,7 +13,7 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 final class SyntaxErrorTest extends AbstractTestBase
 {
     /** @test */
-    public function undefinedFunctionThrowsException()
+    public function undefinedFunctionThrowsException(): void
     {
         $rule = new Rule('nope() === true');
 
@@ -22,7 +22,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     /** @test */
-    public function incorrectSpellingThrowsException()
+    public function incorrectSpellingThrowsException(): void
     {
         $rule = new Rule('/* fail */ paRSeInt("2") === 2');
 

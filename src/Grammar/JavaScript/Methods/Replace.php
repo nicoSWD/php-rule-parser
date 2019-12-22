@@ -14,9 +14,10 @@ use nicoSWD\Rule\TokenStream\Token\TokenString;
 
 final class Replace extends CallableFunction
 {
-    public function call(BaseToken $search = null, BaseToken $replace = null): BaseToken
+    public function call(?BaseToken ...$parameters): BaseToken
     {
         $isRegExpr = false;
+        $search = $this->parseParameter($parameters, 0);
 
         if (!$search) {
             $search = '';
@@ -24,6 +25,8 @@ final class Replace extends CallableFunction
             $isRegExpr = ($search instanceof TokenRegex);
             $search = $search->getValue();
         }
+
+        $replace = $this->parseParameter($parameters, 1);
 
         if (!$replace) {
             $replace = 'undefined';
@@ -57,8 +60,8 @@ final class Replace extends CallableFunction
 
     private function splitRegex(string $regExpr): array
     {
-        preg_match('~(.*?/)([img]{0,3})?$~', $regExpr, $match);
+        preg_match('~(?<regex>.*?/)(?<modifiers>[img]{0,3})?$~', $regExpr, $match);
 
-        return [$match[1], $match[2]];
+        return [$match['regex'], $match['modifiers']];
     }
 }

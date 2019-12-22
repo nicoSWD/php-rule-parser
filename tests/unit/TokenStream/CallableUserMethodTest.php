@@ -17,7 +17,7 @@ use stdClass;
 final class CallableUserMethodTest extends TestCase
 {
     /** @test */
-    public function givenAnObjectWithAPublicPropertyItShouldBeAccessible()
+    public function givenAnObjectWithAPublicPropertyItShouldBeAccessible(): void
     {
         $object = new stdClass();
         $object->my_test = 123;
@@ -26,7 +26,7 @@ final class CallableUserMethodTest extends TestCase
     }
 
     /** @test */
-    public function givenAnObjectWithAPublicWhenMethodMatchingItShouldBeUsed()
+    public function givenAnObjectWithAPublicWhenMethodMatchingItShouldBeUsed(): void
     {
         $object = new class {
             public function my_test()
@@ -39,7 +39,7 @@ final class CallableUserMethodTest extends TestCase
     }
 
     /** @test */
-    public function givenAnObjectWithAPublicWhenMethodNameWithIsPrefixMatchesItShouldBeUsed()
+    public function givenAnObjectWithAPublicWhenMethodNameWithIsPrefixMatchesItShouldBeUsed(): void
     {
         $object = new class {
             public function is_my_test()
@@ -58,7 +58,7 @@ final class CallableUserMethodTest extends TestCase
     }
 
     /** @test */
-    public function givenAnObjectWithAPublicWhenMethodNameWithGetPrefixMatchesItShouldBeUsed()
+    public function givenAnObjectWithAPublicWhenMethodNameWithGetPrefixMatchesItShouldBeUsed(): void
     {
         $object = new class {
             public function get_my_test()

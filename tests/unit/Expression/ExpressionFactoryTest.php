@@ -26,8 +26,10 @@ final class ExpressionFactoryTest extends TestCase
      * @test
      * @dataProvider expressionProvider
      */
-    public function givenAnEqualOperatorItShouldCreateAnEqualExpression(string $expressionClass, Token\BaseToken $token)
-    {
+    public function givenAnEqualOperatorItShouldCreateAnEqualExpression(
+        string $expressionClass,
+        Token\BaseToken $token
+    ): void {
         $this->assertInstanceOf(
             $expressionClass,
             $this->factory->createFromOperator($token)

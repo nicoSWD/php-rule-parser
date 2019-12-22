@@ -51,7 +51,8 @@ final class ASTTest extends TestCase
         );
     }
 
-    public function testGivenAFunctionNameWhenValidItShouldReturnTheCorrespondingFunction()
+    /** @test */
+    public function givenAFunctionNameWhenValidItShouldReturnTheCorrespondingFunction(): void
     {
         $grammar = \Mockery::mock(Grammar::class);
         $grammar->shouldReceive('getInternalFunctions')->once()->andReturn(['test' => TestFunc::class]);
@@ -63,7 +64,8 @@ final class ASTTest extends TestCase
         $this->assertSame(234, $result->getValue());
     }
 
-    public function testGivenAFunctionNameWhenItDoesNotImplementTheInterfaceItShouldThrowAnException()
+    /** @test */
+    public function givenAFunctionNameWhenItDoesNotImplementTheInterfaceItShouldThrowAnException(): void
     {
         $this->expectExceptionMessage(sprintf(
             'stdClass must be an instance of %s',
@@ -77,7 +79,8 @@ final class ASTTest extends TestCase
         $this->ast->getFunction('test')->call(\Mockery::mock(BaseNode::class));
     }
 
-    public function testGivenAFunctionNameNotDefinedItShouldThrowAnException()
+    /** @test */
+    public function givenAFunctionNameNotDefinedItShouldThrowAnException(): void
     {
         $this->expectException(UndefinedFunctionException::class);
         $this->expectExceptionMessage('pineapple_pizza');

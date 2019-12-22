@@ -12,7 +12,7 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 final class CombinedTest extends AbstractTestBase
 {
     /** @test */
-    public function mixedMethodCalls()
+    public function mixedMethodCalls(): void
     {
         $this->assertTrue($this->evaluate(
             '1 === 2 || ("foo|bar|baz".split("|") === ["foo", "bar", "baz"] && 2 < 3)'
@@ -42,7 +42,7 @@ final class CombinedTest extends AbstractTestBase
     }
 
     /** @test */
-    public function chainedMethodCalls()
+    public function chainedMethodCalls(): void
     {
         $this->assertTrue($this->evaluate(
             '"bar".toUpperCase().split("A") === ["B", "R"]'
@@ -70,7 +70,7 @@ final class CombinedTest extends AbstractTestBase
     }
 
     /** @test */
-    public function functionCallInsideMethod()
+    public function functionCallInsideMethod(): void
     {
         $this->assertTrue($this->evaluate('"abc".substr(parseInt(" 2 ")) === "c"'));
         $this->assertTrue($this->evaluate('parseInt("ab3".substr(parseInt(" 2 "))) === 3'));

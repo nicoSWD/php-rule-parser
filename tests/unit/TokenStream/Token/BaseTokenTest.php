@@ -29,25 +29,25 @@ final class BaseTokenTest extends TestCase
     }
 
     /** @test */
-    public function offset()
+    public function offset(): void
     {
         $this->assertSame(1337, $this->token->getOffset());
     }
 
     /** @test */
-    public function getValue()
+    public function getValue(): void
     {
         $this->assertSame('&&', $this->token->getValue());
     }
 
     /** @test */
-    public function getOriginalValue()
+    public function getOriginalValue(): void
     {
         $this->assertSame('&&', $this->token->getOriginalValue());
     }
 
     /** @test */
-    public function createNode()
+    public function createNode(): void
     {
         /** @var TokenStream|MockInterface $tokenStream */
         $tokenStream = \Mockery::mock(TokenStream::class);
@@ -55,14 +55,14 @@ final class BaseTokenTest extends TestCase
     }
 
     /** @test */
-    public function isOfType()
+    public function isOfType(): void
     {
         $this->assertTrue($this->token->isOfType(TokenType::LOGICAL));
         $this->assertFalse($this->token->isOfType(TokenType::COMMA));
     }
 
     /** @test */
-    public function isValue()
+    public function isValue(): void
     {
         $token = new class('123', 1337) extends BaseToken {
             public function getType(): int
@@ -75,7 +75,7 @@ final class BaseTokenTest extends TestCase
     }
 
     /** @test */
-    public function isWhitespace()
+    public function isWhitespace(): void
     {
         $token = new class(' ', 1337) extends BaseToken {
             public function getType(): int
@@ -88,7 +88,7 @@ final class BaseTokenTest extends TestCase
     }
 
     /** @test */
-    public function isMethod()
+    public function isMethod(): void
     {
         $token = new class('.derp(', 1337) extends BaseToken {
             public function getType(): int
@@ -101,7 +101,7 @@ final class BaseTokenTest extends TestCase
     }
 
     /** @test */
-    public function isComma()
+    public function isComma(): void
     {
         $token = new class(',', 1337) extends BaseToken {
             public function getType(): int
@@ -114,7 +114,7 @@ final class BaseTokenTest extends TestCase
     }
 
     /** @test */
-    public function isOperator()
+    public function isOperator(): void
     {
         $token = new class('>', 1337) extends BaseToken {
             public function getType(): int
@@ -127,7 +127,7 @@ final class BaseTokenTest extends TestCase
     }
 
     /** @test */
-    public function isLogical()
+    public function isLogical(): void
     {
         $token = new class('&&', 1337) extends BaseToken {
             public function getType(): int
@@ -140,7 +140,7 @@ final class BaseTokenTest extends TestCase
     }
 
     /** @test */
-    public function isParenthesis()
+    public function isParenthesis(): void
     {
         $token = new class('(', 1337) extends BaseToken {
             public function getType(): int

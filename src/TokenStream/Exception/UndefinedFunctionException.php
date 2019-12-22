@@ -7,6 +7,6 @@
  */
 namespace nicoSWD\Rule\TokenStream\Exception;
 
-class UndefinedFunctionException extends \Exception
+final class UndefinedFunctionException extends \Exception
 {
 }

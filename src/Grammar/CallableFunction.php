@@ -11,11 +11,16 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 abstract class CallableFunction implements CallableUserFunctionInterface
 {
-    /** @var BaseToken|null */
+    /** @var ?BaseToken */
     protected $token;
 
     public function __construct(BaseToken $token = null)
     {
         $this->token = $token;
+    }
+
+    protected function parseParameter(array $parameters, int $numParam): ?BaseToken
+    {
+        return $parameters[$numParam] ?? null;
     }
 }

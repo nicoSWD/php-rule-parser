@@ -7,13 +7,14 @@
  */
 namespace nicoSWD\Rule\tests\integration;
 
+use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Rule;
 use stdClass;
 
 final class ObjectTest extends AbstractTestBase
 {
     /** @test */
-    public function givenAnObjectHasMethodsWhenPublicTheyShouldBeAccessible()
+    public function givenAnObjectHasMethodsWhenPublicTheyShouldBeAccessible(): void
     {
         $myObj = new class {
             public function test()
@@ -41,9 +42,10 @@ final class ObjectTest extends AbstractTestBase
     }
 
     /** @test */
-    public function givenAnObjectHasPropertiesWhenPublicTheyShouldBeAccessible()
+    public function givenAnObjectHasPropertiesWhenPublicTheyShouldBeAccessible(): void
     {
         $myObj = new class {
+            /** @var string */
             public $test = 'my string';
         };
 
@@ -55,7 +57,7 @@ final class ObjectTest extends AbstractTestBase
     }
 
     /** @test */
-    public function publicMethodsShouldBeAccessibleMagicallyViaGet()
+    public function publicMethodsShouldBeAccessibleMagicallyViaGet(): void
     {
         $myObj = new class {
             public function getString()
@@ -72,7 +74,7 @@ final class ObjectTest extends AbstractTestBase
     }
 
     /** @test */
-    public function publicMethodsShouldBeAccessibleMagicallyViaIs()
+    public function publicMethodsShouldBeAccessibleMagicallyViaIs(): void
     {
         $myObj = new class {
             public function isString($string)
@@ -94,7 +96,42 @@ final class ObjectTest extends AbstractTestBase
     }
 
     /** @test */
-    public function undefinedMethodsShouldThrowAnError()
+    public function givenAnObjectWhenMagicMethodCallIsAvailableItShouldBeAccessible(): void
+    {
+        $myObj = new class {
+            public function __call(string $name, array $args): array
+            {
+                return [$name, $args[0], $args[1]];
+            }
+        };
+
+        $variables = [
+            'my_obj' => $myObj,
+        ];
+
+        $this->assertTrue($this->evaluate('my_obj.my_method("my_arg", 2) === ["my_method", "my_arg", 2]', $variables));
+    }
+
+    /**
+     * @test
+     * @dataProvider phpMagicMethods
+     */
+    public function givenAnObjectWhenMagicMethodsAreCalledDirectlyItShouldThrowAnException(string $magicMethod): void
+    {
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage("Forbidden method \"{$magicMethod}\" at position 6");
+
+        $myObj = new stdClass();
+
+        $variables = [
+            'my_obj' => $myObj,
+        ];
+
+        $this->evaluate("my_obj.{$magicMethod}()", $variables);
+    }
+
+    /** @test */
+    public function undefinedMethodsShouldThrowAnError(): void
     {
         $myObj = new stdClass();
 
@@ -106,5 +143,46 @@ final class ObjectTest extends AbstractTestBase
 
         $this->assertFalse($rule->isValid());
         $this->assertSame('Undefined method "nope" at position 6', $rule->getError());
+    }
+
+    /** @test */
+    public function givenAnObjectWithMagicMethodGetWhenPropertyDoesNotExistItShouldNotBeCalled(): void
+    {
+        $myObj = new class {
+            public function __get(string $name)
+            {
+                return 'I should not be called';
+            }
+        };
+
+        $variables = [
+            'my_obj' => $myObj,
+        ];
+
+        $rule = new Rule('my_obj.nope() === "nope"', $variables);
+
+        $this->assertFalse($rule->isValid());
+        $this->assertSame('Undefined method "nope" at position 6', $rule->getError());
+    }
+
+    public function phpMagicMethods(): array
+    {
+        return [
+            ['__construct'],
+            ['__destruct'],
+            ['__call'],
+            ['__callStatic'],
+            ['__get'],
+            ['__set'],
+            ['__isset'],
+            ['__unset'],
+            ['__sleep'],
+            ['__wakeup'],
+            ['__toString'],
+            ['__invoke'],
+            ['__set_state'],
+            ['__clone'],
+            ['__debugInfo'],
+        ];
     }
 }

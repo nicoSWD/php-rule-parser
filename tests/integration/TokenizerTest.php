@@ -23,7 +23,7 @@ final class TokenizerTest extends TestCase
     }
 
     /** @test */
-    public function getMatchedTokenReturnsFalseOnFailure()
+    public function getMatchedTokenReturnsFalseOnFailure(): void
     {
         $reflection = new \ReflectionMethod($this->tokenizer, 'getMatchedToken');
         $reflection->setAccessible(true);
@@ -33,7 +33,7 @@ final class TokenizerTest extends TestCase
     }
 
     /** @test */
-    public function tokenPositionAndLineAreCorrect()
+    public function tokenPositionAndLineAreCorrect(): void
     {
         $tokens = $this->tokenizer->tokenize('1');
         $tokens->rewind();

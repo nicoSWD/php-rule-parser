@@ -12,20 +12,20 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 final class IndexOfTest extends AbstractTestBase
 {
     /** @test */
-    public function validNeedleReturnsCorrectPosition()
+    public function validNeedleReturnsCorrectPosition(): void
     {
         $this->assertTrue($this->evaluate('foo.indexOf("a") === 1', ['foo' => 'bar']));
         $this->assertTrue($this->evaluate('"bar".indexOf("b") === 0'));
     }
 
     /** @test */
-    public function omittedParameterReturnsNegativeOne()
+    public function omittedParameterReturnsNegativeOne(): void
     {
         $this->assertTrue($this->evaluate('"bar".indexOf() === -1'));
     }
 
     /** @test */
-    public function negativeOneIsReturnedIfNeedleNotFound()
+    public function negativeOneIsReturnedIfNeedleNotFound(): void
     {
         $this->assertTrue($this->evaluate('"bar".indexOf("foo") === -1'));
     }
