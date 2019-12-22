@@ -68,6 +68,8 @@ final class JavaScript extends Grammar
             'test'        => Methods\Test::class,
             'toLowerCase' => Methods\ToLowerCase::class,
             'toUpperCase' => Methods\ToUpperCase::class,
+            'startsWith'  => Methods\StartsWith::class,
+            'endsWith'    => Methods\EndsWith::class,
         ];
     }
 }

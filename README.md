@@ -80,7 +80,48 @@ For security reasons, PHP's magic methods like `__construct` and `__destruct` ca
 called from within rules. However, `__call` will be invoked automatically if available,
 unless the called method is defined. 
 
+## Built-in Methods
+
+Name        | Example             
+----------- | ------------------------
+charAt      | `"foo".charAt(2) === "a"`            
+concat      | `"foo".concat("bar", "baz") === "foobarbaz"`
+endsWith    | `"foo".endsWith("oo") === true`               
+startsWith  | `"foo".startsWith("fo") === true`        
+indexOf     | `"foo".indexOf("oo") === 1`                
+join        | `["foo", "bar"].join(",") === "foo,bar"`            
+replace     | `"foo".replace("oo", "aa") === "faa"`               
+split       | `"foo-bar".split("-") === ["foo", "bar"]`           
+substr      | `"foo".substr(1) === "oo"`                 
+test        | `"foo".test(/oo$/) === true`                     
+toLowerCase | `"FOO".toLowerCase() === "foo"`                      
+toUpperCase | `"foo".toUpperCase() === "FOO"`                      
+
+## Built-in Functions
+
+Name        | Example             
+----------- | ------------------------
+parseInt    | `parseInt("22aa") === 22`            
+parseFloat  | `parseFloat("3.1") === 3.1`
+
+## Supported Operators
+
+Type        | Description              | Operator
+----------- | ------------------------ | ----------
+Comparison  | greater than             | >
+Comparison  | greater than or equal to | >=
+Comparison  | less than                | <
+Comparison  | less or equal to         | <=
+Comparison  | equal to                 | ==
+Comparison  | not equal to             | !=
+Comparison  | identical                | ===
+Comparison  | not identical            | !==
+Containment | contains                 | in 
+Logical     | and                      | &&
+Logical     | or                       | \|\|
+
 ## Error Handling
+
 Both, `$rule->isTrue()` and `$rule->isFalse()` will throw an exception if the syntax is invalid. These calls can either be placed inside a `try` / `catch` block, or it can be checked prior using `$rule->isValid()`.
 
 ```php
@@ -146,23 +187,8 @@ Outputs:
 
 ![Syntax preview](https://s3.amazonaws.com/f.cl.ly/items/0y1b0s0J2v2v1u3O1F3M/Screen%20Shot%202015-08-05%20at%2012.15.21.png)
 
-## Supported Operators
-
-Type        | Description              | Operator
------------ | ------------------------ | ----------
-Comparison  | greater than             | >
-Comparison  | greater than or equal to | >=
-Comparison  | less than                | <
-Comparison  | less or equal to         | <=
-Comparison  | equal to                 | ==
-Comparison  | not equal to             | !=
-Comparison  | identical                | ===
-Comparison  | not identical            | !==
-Containment | contains                 | in 
-Logical     | and                      | &&
-Logical     | or                       | \|\|
-
 ## Notes
+
 - Parentheses can be nested, and will be evaluated from right to left.
 - Only value/variable comparison expressions with optional logical ANDs/ORs, are supported.
 
@@ -177,9 +203,11 @@ $ composer test
 ```
 
 ## Contributing
+
 Pull requests are very welcome! If they include tests, even better. This project follows PSR-2 coding standards, please make sure your pull requests do too.
 
 ## To Do
+
 - Support for object properties (foo.length)
 - Support for returning actual results, other than true or false
 - Support for array / string dereferencing: "foo"[1]
