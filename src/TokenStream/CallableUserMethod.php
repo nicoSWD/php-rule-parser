@@ -74,7 +74,11 @@ final class CallableUserMethod implements CallableUserFunctionInterface
 
     private function getTokenValues(array $params): array
     {
-        return array_map(function (BaseToken $token) { return $token->getValue(); }, $params);
+        $callback = function (BaseToken $token) {
+            return $token->getValue();
+        };
+
+        return array_map($callback, $params);
     }
 
     private function assertNonMagicMethod(string $methodName): void
