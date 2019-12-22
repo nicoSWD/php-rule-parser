@@ -84,7 +84,7 @@ unless the called method is defined.
 
 Name        | Example             
 ----------- | ------------------------
-charAt      | `"foo".charAt(2) === "a"`            
+charAt      | `"foo".charAt(2) === "o"`            
 concat      | `"foo".concat("bar", "baz") === "foobarbaz"`
 endsWith    | `"foo".endsWith("oo") === true`               
 startsWith  | `"foo".startsWith("fo") === true`        
