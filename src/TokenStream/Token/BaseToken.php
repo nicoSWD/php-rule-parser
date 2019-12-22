@@ -7,6 +7,7 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
+use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\TokenStream;
 
 abstract class BaseToken
@@ -39,6 +40,7 @@ abstract class BaseToken
         return $this->offset;
     }
 
+    /** @throws ParserException */
     public function createNode(TokenStream $tokenStream): self
     {
         return $this;

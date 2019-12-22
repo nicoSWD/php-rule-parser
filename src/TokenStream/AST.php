@@ -10,6 +10,7 @@ namespace nicoSWD\Rule\TokenStream;
 use Closure;
 use InvalidArgumentException;
 use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
+use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedVariableException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
@@ -50,6 +51,10 @@ class AST
         return $this->tokenStreamFactory->create($this->tokenizer->tokenize($rule), $this);
     }
 
+    /**
+     * @throws Exception\UndefinedMethodException
+     * @throws Exception\ForbiddenMethodException
+     */
     public function getMethod(string $methodName, BaseToken $token): CallableUserFunctionInterface
     {
         if ($token instanceof TokenObject) {
@@ -72,6 +77,10 @@ class AST
         $this->variables = $variables;
     }
 
+    /**
+     * @throws UndefinedVariableException
+     * @throws ParserException
+     */
     public function getVariable(string $variableName): BaseToken
     {
         if (!$this->variableExists($variableName)) {
@@ -86,6 +95,7 @@ class AST
         return array_key_exists($variableName, $this->variables);
     }
 
+    /** @throws Exception\UndefinedFunctionException */
     public function getFunction(string $functionName): Closure
     {
         if (empty($this->functions)) {

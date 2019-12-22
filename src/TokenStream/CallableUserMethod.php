@@ -22,6 +22,10 @@ final class CallableUserMethod implements CallableUserFunctionInterface
     /** @var string[] */
     private $methodPrefixes = ['', 'get', 'is', 'get_', 'is_'];
 
+    /**
+     * @throws Exception\UndefinedMethodException
+     * @throws Exception\ForbiddenMethodException
+     */
     public function __construct(BaseToken $token, TokenFactory $tokenFactory, string $methodName)
     {
         $this->tokenFactory = $tokenFactory;
@@ -37,6 +41,10 @@ final class CallableUserMethod implements CallableUserFunctionInterface
         );
     }
 
+    /**
+     * @throws Exception\UndefinedMethodException
+     * @throws Exception\ForbiddenMethodException
+     */
     private function getCallable(BaseToken $token, string $methodName): callable
     {
         $object = $token->getValue();
@@ -54,6 +62,10 @@ final class CallableUserMethod implements CallableUserFunctionInterface
         };
     }
 
+    /**
+     * @throws Exception\UndefinedMethodException
+     * @throws Exception\ForbiddenMethodException
+     */
     private function findCallableMethod($object, string $methodName): callable
     {
         $this->assertNonMagicMethod($methodName);
@@ -74,13 +86,16 @@ final class CallableUserMethod implements CallableUserFunctionInterface
 
     private function getTokenValues(array $params): array
     {
-        $callback = function (BaseToken $token) {
-            return $token->getValue();
-        };
+        $values = [];
 
-        return array_map($callback, $params);
+        foreach ($params as $token) {
+            $values[] = $token->getValue();
+        }
+
+        return $values;
     }
 
+    /** @throws Exception\ForbiddenMethodException */
     private function assertNonMagicMethod(string $methodName): void
     {
         if (substr($methodName, 0, 2) === self::MAGIC_METHOD_PREFIX) {

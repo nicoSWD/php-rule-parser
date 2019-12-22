@@ -7,6 +7,7 @@
  */
 namespace nicoSWD\Rule\tests\integration\methods;
 
+use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
 final class StartsWithTest extends AbstractTestBase
@@ -23,5 +24,14 @@ final class StartsWithTest extends AbstractTestBase
     {
         $this->assertTrue($this->evaluate('"bar".startsWith("a") === false'));
         $this->assertTrue($this->evaluate('foo.startsWith("x") === false', ['foo' => 'bar']));
+    }
+
+    /** @test */
+    public function givenAStringWhenTestedOnNonStringValuesItShouldThrowAnException(): void
+    {
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('Call to undefined method "startsWith" on non-string');
+
+        $this->evaluate('["hello"].startsWith() === false');
     }
 }

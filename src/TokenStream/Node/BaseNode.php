@@ -29,6 +29,7 @@ abstract class BaseNode
         $this->tokenStream = $tokenStream;
     }
 
+    /** @throws ParserException */
     abstract public function getNode(): BaseToken;
 
     protected function hasMethodCall(): bool
@@ -61,6 +62,7 @@ abstract class BaseNode
         return $hasMethod;
     }
 
+    /** @throws ParserException */
     protected function getMethod(BaseToken $token): CallableUserFunctionInterface
     {
         $this->tokenStream->getStack()->seek($this->methodOffset);
@@ -73,6 +75,7 @@ abstract class BaseNode
         return (string) preg_replace('~\W~', '', $this->methodName);
     }
 
+    /** @throws ParserException */
     protected function getFunction(): Closure
     {
         return $this->tokenStream->getFunction($this->getFunctionName());
@@ -80,14 +83,16 @@ abstract class BaseNode
 
     private function getFunctionName(): string
     {
-        return preg_replace('~\W~', '', $this->getCurrentNode()->getValue());
+        return (string) preg_replace('~\W~', '', $this->getCurrentNode()->getValue());
     }
 
+    /** @throws ParserException */
     protected function getArrayItems(): TokenCollection
     {
         return $this->getCommaSeparatedValues(TokenType::SQUARE_BRACKET);
     }
 
+    /** @throws ParserException */
     protected function getArguments(): TokenCollection
     {
         return $this->getCommaSeparatedValues(TokenType::PARENTHESIS);
@@ -98,6 +103,7 @@ abstract class BaseNode
         return $this->tokenStream->getStack()->current();
     }
 
+    /** @throws ParserException */
     private function getCommaSeparatedValues(int $stopAt): TokenCollection
     {
         $items = new TokenCollection();
@@ -132,17 +138,19 @@ abstract class BaseNode
         return $items;
     }
 
+    /** @throws ParserException */
     private function getNextToken(): BaseToken
     {
         $this->tokenStream->next();
 
         if (!$this->tokenStream->valid()) {
-            throw new ParserException('Unexpected end of string');
+            throw ParserException::unexpectedEndOfString();
         }
 
         return $this->tokenStream->current();
     }
 
+    /** @throws ParserException */
     private function assertNoTrailingComma(bool $commaExpected, TokenCollection $items, BaseToken $token): void
     {
         if (!$commaExpected && $items->count() > 0) {

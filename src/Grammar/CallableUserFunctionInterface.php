@@ -7,9 +7,11 @@
  */
 namespace nicoSWD\Rule\Grammar;
 
+use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 interface CallableUserFunctionInterface
 {
+    /** @throws ParserException */
     public function call(?BaseToken ...$param): BaseToken;
 }

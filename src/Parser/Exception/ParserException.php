@@ -50,4 +50,9 @@ class ParserException extends \Exception
     {
         return new self(sprintf('Unexpected "," at position %d', $token->getOffset()));
     }
+
+    public static function unexpectedEndOfString(): self
+    {
+        return new self('Unexpected end of string');
+    }
 }

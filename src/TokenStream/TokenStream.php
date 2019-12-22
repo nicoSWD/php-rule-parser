@@ -36,6 +36,7 @@ class TokenStream extends ArrayIterator
         return $this->stack->valid();
     }
 
+    /** @throws ParserException */
     public function current(): BaseToken
     {
         return $this->getCurrentToken()->createNode($this);
@@ -62,6 +63,7 @@ class TokenStream extends ArrayIterator
         return $this->stack->current();
     }
 
+    /** @throws ParserException */
     public function getVariable(string $variableName): BaseToken
     {
         try {
@@ -71,6 +73,7 @@ class TokenStream extends ArrayIterator
         }
     }
 
+    /** @throws ParserException */
     public function getFunction(string $functionName): Closure
     {
         try {
@@ -80,6 +83,7 @@ class TokenStream extends ArrayIterator
         }
     }
 
+    /** @throws ParserException */
     public function getMethod(string $methodName, BaseToken $token): CallableUserFunctionInterface
     {
         try {

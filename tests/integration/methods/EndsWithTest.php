@@ -7,6 +7,7 @@
  */
 namespace nicoSWD\Rule\tests\integration\methods;
 
+use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
 final class EndsWithTest extends AbstractTestBase
@@ -22,5 +23,20 @@ final class EndsWithTest extends AbstractTestBase
     public function givenAStringWhenNotEndsWithNeedleItShouldReturnFalse(): void
     {
         $this->assertTrue($this->evaluate('"hello".endsWith("ell") === false'));
+    }
+
+    /** @test */
+    public function givenAStringWhenTestedWithEndsWithWithoutArgsItShouldReturnFalse(): void
+    {
+        $this->assertTrue($this->evaluate('"hello".endsWith() === false'));
+    }
+
+    /** @test */
+    public function givenAStringWhenTestedOnNonStringValuesItShouldThrowAnException(): void
+    {
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('Call to undefined method "endsWith" on non-string');
+
+        $this->evaluate('["hello"].endsWith() === false');
     }
 }
