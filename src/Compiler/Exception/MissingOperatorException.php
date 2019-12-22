@@ -7,7 +7,8 @@
  */
 namespace nicoSWD\Rule\Compiler\Exception;
 
-class MissingOperatorException extends \Exception
+final class MissingOperatorException extends \Exception
 {
+    /** @var string */
     protected $message = 'Missing operator';
 }

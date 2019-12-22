@@ -8,6 +8,7 @@
 namespace nicoSWD\Rule\tests\integration;
 
 use nicoSWD\Rule\Rule;
+use stdClass;
 
 final class ObjectTest extends AbstractTestBase
 {
@@ -15,14 +16,15 @@ final class ObjectTest extends AbstractTestBase
     public function givenAnObjectHasMethodsWhenPublicTheyShouldBeAccessible()
     {
         $myObj = new class {
-            public function test() {
+            public function test()
+            {
                 return 'test one two';
             }
 
             function test2() {
-                return new class ()
-                {
-                    public function cat() {
+                return new class () {
+                    public function cat()
+                    {
                         return 'meow';
                     }
                 };
@@ -93,7 +95,7 @@ final class ObjectTest extends AbstractTestBase
     /** @test */
     public function undefinedMethodsShouldThrowAnError()
     {
-        $myObj = new class {};
+        $myObj = new stdClass();
 
         $variables = [
             'my_obj' => $myObj,

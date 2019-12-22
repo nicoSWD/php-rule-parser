@@ -7,7 +7,7 @@
  */
 namespace nicoSWD\Rule\Evaluator;
 
-class Evaluator implements EvaluatorInterface
+final class Evaluator implements EvaluatorInterface
 {
     const LOGICAL_AND = '&';
     const LOGICAL_OR = '|';
@@ -17,50 +17,49 @@ class Evaluator implements EvaluatorInterface
 
     public function evaluate(string $group): bool
     {
+        $evalGroup = $this->evalGroup();
         $count = 0;
 
         do {
             $group = preg_replace_callback(
-                '~\(([^\(\)]+)\)~',
-                [$this, 'evalGroup'],
+                '~\(([^()]+)\)~',
+                $evalGroup,
                 $group,
                 -1,
                 $count
             );
         } while ($count > 0);
 
-        return (bool) $this->evalGroup([1 => $group]);
+        return (bool) $evalGroup([1 => $group]);
     }
 
-    /**
-     * @param string[] $group
-     * @throws Exception\UnknownSymbolException
-     * @return int|null
-     */
-    private function evalGroup(array $group)
+    private function evalGroup(): callable
     {
-        $result = null;
-        $operator = null;
+        return function (array $group): ?int {
+            $result = null;
+            $operator = null;
+            $offset = 0;
 
-        for ($offset = 0; isset($group[1][$offset]); $offset++) {
-            $value = $group[1][$offset];
+            while (isset($group[1][$offset])) {
+                $value = $group[1][$offset++];
 
-            if ($this->isLogical($value)) {
-                $operator = $value;
-            } elseif ($this->isBoolean($value)) {
-                $result = $this->setResult($result, $value, $operator);
-            } else {
-                throw new Exception\UnknownSymbolException(sprintf('Unexpected "%s"', $value));
+                if ($this->isLogical($value)) {
+                    $operator = $value;
+                } elseif ($this->isBoolean($value)) {
+                    $result = $this->setResult($result, (int) $value, $operator);
+                } else {
+                    throw new Exception\UnknownSymbolException(sprintf('Unexpected "%s"', $value));
+                }
             }
-        }
 
-        return $result;
+            return $result;
+        };
     }
 
-    private function setResult($result, string $value, $operator): int
+    private function setResult(?int $result, int $value, ?string $operator): int
     {
         if (!isset($result)) {
-            $result = (int) $value;
+            $result = $value;
         } elseif ($operator === self::LOGICAL_AND) {
             $result &= $value;
         } elseif ($operator === self::LOGICAL_OR) {
@@ -70,12 +69,12 @@ class Evaluator implements EvaluatorInterface
         return $result;
     }
 
-    private function isLogical($value): bool
+    private function isLogical(string $value): bool
     {
         return $value === self::LOGICAL_AND || $value === self::LOGICAL_OR;
     }
 
-    private function isBoolean($value): bool
+    private function isBoolean(string $value): bool
     {
         return $value === self::BOOL_TRUE || $value === self::BOOL_FALSE;
     }

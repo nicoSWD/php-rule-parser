@@ -12,6 +12,7 @@ use nicoSWD\Rule\TokenStream\TokenCollection;
 
 class TokenFactory
 {
+    /** @var array<string, string> */
     private $tokenMap = [
         Token::AND                 => TokenAnd::class,
         Token::OR                  => TokenOr::class,

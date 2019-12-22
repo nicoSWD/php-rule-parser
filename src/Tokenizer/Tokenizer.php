@@ -56,7 +56,7 @@ final class Tokenizer implements TokenizerInterface
         return $this->grammar;
     }
 
-    private function registerToken(string $class, string $regex, int $priority)
+    private function registerToken(string $class, string $regex, int $priority): void
     {
         $token = new stdClass();
         $token->class = $class;

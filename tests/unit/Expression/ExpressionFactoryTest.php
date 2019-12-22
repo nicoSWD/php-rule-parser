@@ -17,7 +17,7 @@ final class ExpressionFactoryTest extends TestCase
     /** @var ExpressionFactory */
     private $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = new ExpressionFactory();
     }

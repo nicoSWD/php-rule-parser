@@ -7,7 +7,6 @@
  */
 namespace nicoSWD\Rule\TokenStream;
 
-use Closure;
 use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
@@ -16,7 +15,7 @@ final class CallableUserMethod implements CallableUserFunctionInterface
 {
     /** @var TokenFactory */
     private $tokenFactory;
-    /** @var Closure */
+    /** @var callable */
     private $callable;
     /** @var string[] */
     private $methodPrefixes = ['get', 'is', '', 'get_', 'is_'];
@@ -27,7 +26,16 @@ final class CallableUserMethod implements CallableUserFunctionInterface
         $this->callable = $this->getCallable($token, $methodName);
     }
 
-    private function getCallable(BaseToken $token, string $methodName): Closure
+    public function call(BaseToken $param = null): BaseToken
+    {
+        $callable = $this->callable;
+
+        return $this->tokenFactory->createFromPHPType(
+            $callable($param)
+        );
+    }
+
+    private function getCallable(BaseToken $token, string $methodName): callable
     {
         $object = $token->getValue();
 
@@ -37,7 +45,20 @@ final class CallableUserMethod implements CallableUserFunctionInterface
             };
         }
 
-        $method = [$object];
+        $method = $this->findCallableMethod($object, $methodName);
+
+        return function (BaseToken $param = null) use ($method) {
+            if ($param !== null) {
+                return $method($param->getValue());
+            }
+
+            return $method();
+        };
+    }
+
+    private function findCallableMethod($object, string $methodName): callable
+    {
+        $callable = [$object, $methodName];
         $index = 0;
 
         do {
@@ -45,20 +66,9 @@ final class CallableUserMethod implements CallableUserFunctionInterface
                 throw new Exception\UndefinedMethodException();
             }
 
-            $method[1] = $this->methodPrefixes[$index++] . $methodName;
-        } while (!is_callable($method));
+            $callable[1] = $this->methodPrefixes[$index++] . $methodName;
+        } while (!is_callable($callable));
 
-        return function (BaseToken $param = null) use ($method) {
-            return $method($param ? $param->getValue() : null);
-        };
-    }
-
-    public function call(BaseToken $param = null): BaseToken
-    {
-        $callable = $this->callable;
-
-        return $this->tokenFactory->createFromPHPType(
-            $callable($param)
-        );
+        return $callable;
     }
 }

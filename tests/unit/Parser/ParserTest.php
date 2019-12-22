@@ -32,7 +32,7 @@ class ParserTest extends TestCase
     /** @var Parser */
     private $parser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->ast = m::mock(AST::class);
         $this->expressionFactory = m::mock(ExpressionFactoryInterface::class);

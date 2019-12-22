@@ -38,7 +38,7 @@ final class Highlighter
         $this->tokenizer = $tokenizer;
     }
 
-    public function setStyle(int $group, string $style)
+    public function setStyle(int $group, string $style): void
     {
         if (!isset($this->styles[$group])) {
             throw new Exception\InvalidGroupException(

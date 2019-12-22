@@ -36,7 +36,7 @@ final class ASTTest extends TestCase
     /** @var CallableUserMethodFactory */
     private $userMethodFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tokenizer = \Mockery::mock(TokenizerInterface::class);
         $this->tokenFactory = \Mockery::mock(TokenFactory::class);

@@ -18,7 +18,7 @@ final class BaseTokenTest extends TestCase
     /** @var BaseToken */
     private $token;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->token = new class('&&', 1337) extends BaseToken {
             public function getType(): int

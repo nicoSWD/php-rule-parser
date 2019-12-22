@@ -19,13 +19,21 @@ use nicoSWD\Rule\TokenStream\TokenStreamFactory;
 use nicoSWD\Rule\TokenStream\CallableUserMethodFactory;
 
 return new class {
+    /** @var TokenStreamFactory */
     private static $tokenStreamFactory;
+    /** @var TokenFactory */
     private static $tokenFactory;
+    /** @var CompilerFactory */
     private static $compiler;
+    /** @var JavaScript */
     private static $javaScript;
+    /** @var ExpressionFactory */
     private static $expressionFactory;
+    /** @var CallableUserMethodFactory */
     private static $userMethodFactory;
+    /** @var Tokenizer */
     private static $tokenizer;
+    /** @var Evaluator */
     private static $evaluator;
 
     public function parser(array $variables): Parser\Parser

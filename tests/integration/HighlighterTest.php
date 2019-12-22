@@ -7,6 +7,7 @@
  */
 namespace nicoSWD\Rule\tests\integration;
 
+use Exception;
 use nicoSWD\Rule;
 use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rule\Highlighter\Highlighter;
@@ -19,7 +20,7 @@ final class HighlighterTest extends TestCase
     /** @var Highlighter */
     private $highlighter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->highlighter = new Highlighter(new Tokenizer(new JavaScript(), new TokenFactory()));
     }
@@ -34,16 +35,17 @@ final class HighlighterTest extends TestCase
 
         $code = $this->highlighter->highlightString('[1, 2] == "1,2".split(",") && parseInt(foo) === 12');
 
-        $this->assertContains('<span style="color: gray;">[</span>', $code);
+        $this->assertStringContainsString('<span style="color: gray;">[</span>', $code);
     }
 
     /**
      * @test
-     * @expectedException Exception
-     * @expectedExceptionMessage Invalid group
      */
     public function invalidGroupThrowsException()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Invalid group');
+
         $this->highlighter->setStyle(
             99,
             'color: test-color;'

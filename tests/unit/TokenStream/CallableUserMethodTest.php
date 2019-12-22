@@ -29,7 +29,8 @@ final class CallableUserMethodTest extends TestCase
     public function givenAnObjectWithAPublicWhenMethodMatchingItShouldBeUsed()
     {
         $object = new class {
-            function my_test() {
+            public function my_test()
+            {
                 return 123;
             }
         };
@@ -41,11 +42,13 @@ final class CallableUserMethodTest extends TestCase
     public function givenAnObjectWithAPublicWhenMethodNameWithIsPrefixMatchesItShouldBeUsed()
     {
         $object = new class {
-            function is_my_test() {
+            public function is_my_test()
+            {
                 return 123;
             }
 
-            function isMyTest() {
+            public function isMyTest()
+            {
                 return 456;
             }
         };
@@ -58,11 +61,13 @@ final class CallableUserMethodTest extends TestCase
     public function givenAnObjectWithAPublicWhenMethodNameWithGetPrefixMatchesItShouldBeUsed()
     {
         $object = new class {
-            function get_my_test() {
+            public function get_my_test()
+            {
                 return 123;
             }
 
-            function getMyTest() {
+            public function getMyTest()
+            {
                 return 456;
             }
         };

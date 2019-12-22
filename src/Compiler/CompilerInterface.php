@@ -13,9 +13,9 @@ interface CompilerInterface
 {
     public function getCompiledRule(): string;
 
-    public function addParentheses(BaseToken $token);
+    public function addParentheses(BaseToken $token): void;
 
-    public function addLogical(BaseToken $token);
+    public function addLogical(BaseToken $token): void;
 
-    public function addBoolean(bool $bool);
+    public function addBoolean(bool $bool): void;
 }

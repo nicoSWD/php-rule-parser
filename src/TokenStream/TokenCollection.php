@@ -7,16 +7,17 @@
  */
 namespace nicoSWD\Rule\TokenStream;
 
+use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use SplObjectStorage;
 
 final class TokenCollection extends SplObjectStorage
 {
-    /**
-     * @return Token\BaseToken|null
-     */
-    public function current()
+    public function current(): BaseToken
     {
-        return parent::current();
+        /** @var BaseToken $token */
+        $token = parent::current();
+
+        return $token;
     }
 
     public function toArray(): array

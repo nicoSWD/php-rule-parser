@@ -40,7 +40,7 @@ final class Replace extends CallableFunction
         return new TokenString($value);
     }
 
-    private function doRegexReplace($search, $replace)
+    private function doRegexReplace(string $search, string $replace): string
     {
         list($expression, $modifiers) = $this->splitRegex($search);
 

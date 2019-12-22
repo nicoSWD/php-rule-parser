@@ -67,12 +67,7 @@ class AST
         return new $this->methods[$methodName]($token);
     }
 
-    private function registerMethods()
-    {
-        $this->methods = $this->tokenizer->getGrammar()->getInternalMethods();
-    }
-
-    public function setVariables(array $variables)
+    public function setVariables(array $variables): void
     {
         $this->variables = $variables;
     }
@@ -104,9 +99,14 @@ class AST
         return $this->functions[$functionName];
     }
 
-    private function registerFunctionClass(string $functionName, string $className)
+    private function registerMethods(): void
     {
-        $this->functions[$functionName] = function (BaseToken ...$args) use ($className): BaseToken {
+        $this->methods = $this->tokenizer->getGrammar()->getInternalMethods();
+    }
+
+    private function registerFunctionClass(string $functionName, string $className): void
+    {
+        $this->functions[$functionName] = function (...$args) use ($className) {
             $function = new $className();
 
             if (!$function instanceof CallableUserFunctionInterface) {
@@ -123,7 +123,7 @@ class AST
         };
     }
 
-    private function registerFunctions()
+    private function registerFunctions(): void
     {
         foreach ($this->tokenizer->getGrammar()->getInternalFunctions() as $functionName => $className) {
             $this->registerFunctionClass($functionName, $className);

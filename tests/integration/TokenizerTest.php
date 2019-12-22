@@ -17,7 +17,7 @@ final class TokenizerTest extends TestCase
     /** @var Tokenizer */
     private $tokenizer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tokenizer = new Tokenizer(new JavaScript(), new TokenFactory());
     }

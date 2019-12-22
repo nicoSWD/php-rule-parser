@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\TokenStream\Token;
 
 final class TokenGreaterEqual extends BaseToken
 {
-    public function getType() : int
+    public function getType(): int
     {
         return TokenType::OPERATOR;
     }

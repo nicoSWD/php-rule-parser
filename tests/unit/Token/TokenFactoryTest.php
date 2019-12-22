@@ -18,7 +18,7 @@ final class TokenFactoryTest extends TestCase
     /** @var Token\TokenFactory */
     private $tokenFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tokenFactory = new Token\TokenFactory();
     }

@@ -11,11 +11,13 @@ abstract class Grammar
 {
     abstract public function getDefinition(): array;
 
+    /** @return array<string, string> */
     public function getInternalFunctions(): array
     {
         return [];
     }
 
+    /** @return array<string, string> */
     public function getInternalMethods(): array
     {
         return [];

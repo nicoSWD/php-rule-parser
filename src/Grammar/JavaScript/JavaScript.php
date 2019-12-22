@@ -10,7 +10,7 @@ namespace nicoSWD\Rule\Grammar\JavaScript;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\TokenStream\Token\Token;
 
-class JavaScript extends Grammar
+final class JavaScript extends Grammar
 {
     public function getDefinition(): array
     {

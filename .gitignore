@@ -1,4 +1,5 @@
-/vendor/
+/tests/log
 /composer.lock
-tests/log
-coverage.clover
+/coverage.clover
+/.phpunit.result.cache
+/vendor/

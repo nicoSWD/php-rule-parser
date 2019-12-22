@@ -26,7 +26,7 @@ class TokenStream extends ArrayIterator
         $this->ast = $ast;
     }
 
-    public function next()
+    public function next(): void
     {
         $this->stack->next();
     }
@@ -46,11 +46,12 @@ class TokenStream extends ArrayIterator
         return $this->stack->key();
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->stack->rewind();
     }
 
+    /** @return ArrayIterator<BaseToken> */
     public function getStack(): ArrayIterator
     {
         return $this->stack;

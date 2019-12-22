@@ -40,8 +40,10 @@ abstract class BaseNode
         while ($stack->valid()) {
             $stack->next();
 
-            /** @var BaseToken $token */
-            if (!$token = $stack->current()) {
+            /** @var ?BaseToken $token */
+            $token = $stack->current();
+
+            if (!$token) {
                 break;
             } elseif ($token->isMethod()) {
                 $this->methodName = $token->getValue();
@@ -68,7 +70,7 @@ abstract class BaseNode
 
     private function getMethodName(): string
     {
-        return preg_replace('~\W~', '', $this->methodName);
+        return (string) preg_replace('~\W~', '', $this->methodName);
     }
 
     protected function getFunction(): Closure
@@ -141,7 +143,7 @@ abstract class BaseNode
         return $this->tokenStream->current();
     }
 
-    private function assertNoTrailingComma(bool $commaExpected, TokenCollection $items, BaseToken $token)
+    private function assertNoTrailingComma(bool $commaExpected, TokenCollection $items, BaseToken $token): void
     {
         if (!$commaExpected && $items->count() > 0) {
             throw ParserException::unexpectedComma($token);

@@ -15,7 +15,6 @@ $rule = 'parseInt("2") == var_two && ("foo".toUpperCase() === "FOO") || 1 in ["1
 
 var_dump($tokenizer->tokenize($rule));
 
-?>
 --EXPECTF--
 object(ArrayIterator)#%d (1) {
   ["storage":"ArrayIterator":private]=>

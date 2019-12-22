@@ -75,7 +75,7 @@ class Parser
         return $this->handlers[$tokenType] ?? $this->handlers[TokenType::UNKNOWN];
     }
 
-    private function evaluateExpression(CompilerInterface $compiler)
+    private function evaluateExpression(CompilerInterface $compiler): void
     {
         $expression = $this->expressionFactory->createFromOperator($this->operator);
 
@@ -139,7 +139,7 @@ class Parser
         };
     }
 
-    private function resetState()
+    private function resetState(): void
     {
         $this->operator = null;
         $this->values = [];

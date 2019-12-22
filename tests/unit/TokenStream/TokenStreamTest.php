@@ -35,7 +35,7 @@ final class TokenStreamTest extends TestCase
     /** @var TokenStream */
     private $tokenStream;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->stack = \Mockery::mock(ArrayIterator::class);
         $this->ast = \Mockery::mock(AST::class);

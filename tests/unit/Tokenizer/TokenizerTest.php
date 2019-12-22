@@ -68,7 +68,7 @@ final class TokenizerTest extends TestCase
         $grammar = $this->getTokenizer([[Token\Token::BOOL, '\b(?:yes|no)\b', 10]])->getGrammar();
 
         $this->assertInstanceOf(Grammar::class, $grammar);
-        $this->assertInternalType('array', $grammar->getDefinition());
+        $this->assertIsArray($grammar->getDefinition());
         $this->assertCount(1, $grammar->getDefinition());
     }
 

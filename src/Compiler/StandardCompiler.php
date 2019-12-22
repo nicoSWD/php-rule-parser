@@ -24,8 +24,11 @@ class StandardCompiler implements CompilerInterface
     const OPENING_PARENTHESIS = '(';
     const CLOSING_PARENTHESIS = ')';
 
+    /** @var string */
     private $output = '';
+    /** @var int */
     private $openParenthesis = 0;
+    /** @var int */
     private $closedParenthesis = 0;
 
     public function getCompiledRule(): string
@@ -39,13 +42,13 @@ class StandardCompiler implements CompilerInterface
         return $this->output;
     }
 
-    private function openParenthesis()
+    private function openParenthesis(): void
     {
         $this->openParenthesis++;
         $this->output .= self::OPENING_PARENTHESIS;
     }
 
-    private function closeParenthesis()
+    private function closeParenthesis(): void
     {
         if ($this->openParenthesis < 1) {
             throw new ParserException('Missing opening parenthesis');
@@ -55,7 +58,7 @@ class StandardCompiler implements CompilerInterface
         $this->output .= self::CLOSING_PARENTHESIS;
     }
 
-    public function addParentheses(BaseToken $token)
+    public function addParentheses(BaseToken $token): void
     {
         if ($token instanceof TokenOpeningParenthesis) {
             if (!$this->expectOpeningParenthesis()) {
@@ -67,7 +70,7 @@ class StandardCompiler implements CompilerInterface
         }
     }
 
-    public function addLogical(BaseToken $token)
+    public function addLogical(BaseToken $token): void
     {
         $lastChar = $this->getLastChar();
 
@@ -82,7 +85,7 @@ class StandardCompiler implements CompilerInterface
         }
     }
 
-    public function addBoolean(bool $bool)
+    public function addBoolean(bool $bool): void
     {
         $lastChar = $this->getLastChar();
 
