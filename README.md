@@ -16,7 +16,7 @@ This library has initially been used to change and configure the behavior of cer
 
 Find me on Twitter: @[nicoSWD](https://twitter.com/nicoSWD)
 
-(If you're using PHP 5, you might want to look at [version 0.4.0](https://github.com/nicoSWD/php-rule-parser/tree/0.4.0))
+(If you're using PHP 5, you might want to take a look at [version 0.4.0](https://github.com/nicoSWD/php-rule-parser/tree/0.4.0))
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/67203389-970c-419c-9430-a7f9a005bd94/big.png)](https://insight.sensiolabs.com/projects/67203389-970c-419c-9430-a7f9a005bd94)
 
