@@ -21,7 +21,8 @@ final class ObjectTest extends AbstractTestBase
                 return 'test one two';
             }
 
-            function test2() {
+            function test2()
+            {
                 return new class () {
                     public function cat()
                     {
