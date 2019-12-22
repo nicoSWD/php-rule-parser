@@ -23,7 +23,7 @@ final class ObjectTest extends AbstractTestBase
 
             public function test2()
             {
-                return new class () {
+                return new class {
                     public function cat()
                     {
                         return 'meow';
