@@ -38,6 +38,7 @@ This library works best with one of these bundles below, but they're not require
 
 ## Usage Examples
 
+Test if a value is in a given array
 ```php
 $variables = ['foo' => 6];
 
@@ -45,11 +46,13 @@ $rule = new Rule('foo in [4, 6, 7]', $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
+Simple array manipulation 
 ```php
-$rule = new Rule('[1, 4, 3].join("") === "143"');
+$rule = new Rule('[1, 4, 3].join(".") === "1.4.3"');
 var_dump($rule->isTrue()); // bool(true)
 ```
 
+Test if a value is between a given range
 ```php
 $variables = ['threshold' => 80];
 
