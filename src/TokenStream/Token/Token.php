@@ -15,6 +15,7 @@ class Token
     const NOT_EQUAL = 'NotEqual';
     const EQUAL_STRICT = 'EqualStrict';
     const EQUAL = 'Equal';
+    const NOT_IN = 'NotIn';
     const IN = 'In';
     const BOOL = 'Bool';
     const NULL = 'Null';
