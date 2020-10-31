@@ -22,7 +22,7 @@ final class JavaScript extends Grammar
             [Token::EQUAL_STRICT, '===', 125],
             [Token::EQUAL, '==', 120],
             [Token::IN, '\bin\b', 115],
-            [Token::NOT_IN, '\bnot in\b', 116], //???
+            [Token::NOT_IN, '\bnot in\b', 116],
             [Token::BOOL, '\b(?:true|false)\b', 110],
             [Token::NULL, '\bnull\b', 105],
             [Token::METHOD, '\.\s*[a-zA-Z_]\w*\s*\(', 100],

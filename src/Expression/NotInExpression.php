@@ -25,6 +25,6 @@ final class NotInExpression extends BaseExpression
             ));
         }
 
-        return !in_array($leftValue, $rightValue, true);  // ???
+        return !in_array($leftValue, $rightValue, true);
     }
 }
