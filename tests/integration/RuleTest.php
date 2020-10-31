@@ -100,5 +100,4 @@ final class RuleTest extends TestCase
         $this->assertEmpty($rule->getError());
         $this->assertFalse($rule->isTrue());
     }
-
 }
