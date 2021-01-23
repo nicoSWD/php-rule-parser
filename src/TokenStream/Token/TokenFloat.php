@@ -14,7 +14,7 @@ final class TokenFloat extends BaseToken
         return TokenType::VALUE;
     }
 
-    public function getValue()
+    public function getValue(): float
     {
         return (float) parent::getValue();
     }

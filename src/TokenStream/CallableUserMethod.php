@@ -7,20 +7,18 @@
  */
 namespace nicoSWD\Rule\TokenStream;
 
+use Closure;
 use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 
 final class CallableUserMethod implements CallableUserFunctionInterface
 {
-    const MAGIC_METHOD_PREFIX = '__';
+    private const MAGIC_METHOD_PREFIX = '__';
 
-    /** @var TokenFactory */
-    private $tokenFactory;
-    /** @var callable */
-    private $callable;
-    /** @var string[] */
-    private $methodPrefixes = ['', 'get', 'is', 'get_', 'is_'];
+    private TokenFactory $tokenFactory;
+    private Closure $callable;
+    private array $methodPrefixes = ['', 'get', 'is', 'get_', 'is_'];
 
     /**
      * @throws Exception\UndefinedMethodException
@@ -34,10 +32,10 @@ final class CallableUserMethod implements CallableUserFunctionInterface
 
     public function call(?BaseToken ...$param): BaseToken
     {
-        $callable = $this->callable;
+        $callableCopy = $this->callable;
 
         return $this->tokenFactory->createFromPHPType(
-            $callable(...$param)
+            $callableCopy(...$param)
         );
     }
 
@@ -50,16 +48,14 @@ final class CallableUserMethod implements CallableUserFunctionInterface
         $object = $token->getValue();
 
         if (property_exists($object, $methodName)) {
-            return function () use ($object, $methodName) {
-                return $object->{$methodName};
-            };
+            return fn () => $object->{$methodName};
         }
 
         $method = $this->findCallableMethod($object, $methodName);
 
-        return function (?BaseToken ...$params) use ($method) {
-            return $method(...$this->getTokenValues($params));
-        };
+        return fn (?BaseToken ...$params) => $method(
+            ...$this->getTokenValues($params)
+        );
     }
 
     /**
@@ -98,7 +94,7 @@ final class CallableUserMethod implements CallableUserFunctionInterface
     /** @throws Exception\ForbiddenMethodException */
     private function assertNonMagicMethod(string $methodName): void
     {
-        if (substr($methodName, 0, 2) === self::MAGIC_METHOD_PREFIX) {
+        if (str_starts_with($methodName, self::MAGIC_METHOD_PREFIX)) {
             throw new Exception\ForbiddenMethodException();
         }
     }

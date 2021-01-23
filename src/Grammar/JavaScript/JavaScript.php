@@ -51,7 +51,7 @@ final class JavaScript extends Grammar
     public function getInternalFunctions(): array
     {
         return [
-            'parseInt'   => Functions\ParseInt::class,
+            'parseInt' => Functions\ParseInt::class,
             'parseFloat' => Functions\ParseFloat::class,
         ];
     }
@@ -59,18 +59,18 @@ final class JavaScript extends Grammar
     public function getInternalMethods(): array
     {
         return [
-            'charAt'      => Methods\CharAt::class,
-            'concat'      => Methods\Concat::class,
-            'indexOf'     => Methods\IndexOf::class,
-            'join'        => Methods\Join::class,
-            'replace'     => Methods\Replace::class,
-            'split'       => Methods\Split::class,
-            'substr'      => Methods\Substr::class,
-            'test'        => Methods\Test::class,
+            'charAt' => Methods\CharAt::class,
+            'concat' => Methods\Concat::class,
+            'indexOf' => Methods\IndexOf::class,
+            'join' => Methods\Join::class,
+            'replace' => Methods\Replace::class,
+            'split' => Methods\Split::class,
+            'substr' => Methods\Substr::class,
+            'test' => Methods\Test::class,
             'toLowerCase' => Methods\ToLowerCase::class,
             'toUpperCase' => Methods\ToUpperCase::class,
-            'startsWith'  => Methods\StartsWith::class,
-            'endsWith'    => Methods\EndsWith::class,
+            'startsWith' => Methods\StartsWith::class,
+            'endsWith' => Methods\EndsWith::class,
         ];
     }
 }

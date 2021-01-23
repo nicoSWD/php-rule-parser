@@ -55,4 +55,9 @@ class ParserException extends \Exception
     {
         return new self('Unexpected end of string');
     }
+
+    public static function unsupportedType(string $type): self
+    {
+        return new self(sprintf('Unsupported PHP type: "%s"', $type));
+    }
 }

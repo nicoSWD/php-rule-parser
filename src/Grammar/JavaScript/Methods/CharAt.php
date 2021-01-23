@@ -17,7 +17,7 @@ final class CharAt extends CallableFunction
     public function call(?BaseToken ...$parameters): BaseToken
     {
         $tokenValue = $this->token->getValue();
-        $offset = $this->parseParameter($parameters, 0);
+        $offset = $this->parseParameter($parameters, numParam: 0);
 
         if (!$offset) {
             $offset = 0;

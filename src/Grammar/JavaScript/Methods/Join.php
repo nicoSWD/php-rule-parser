@@ -22,7 +22,7 @@ final class Join extends CallableFunction
             throw new ParserException(sprintf('%s.join is not a function', $this->token->getValue()));
         }
 
-        $glue = $this->parseParameter($parameters, 0);
+        $glue = $this->parseParameter($parameters, numParam: 0);
 
         if ($glue) {
             $glue = $glue->getValue();

@@ -17,7 +17,7 @@ final class Replace extends CallableFunction
     public function call(?BaseToken ...$parameters): BaseToken
     {
         $isRegExpr = false;
-        $search = $this->parseParameter($parameters, 0);
+        $search = $this->parseParameter($parameters, numParam: 0);
 
         if (!$search) {
             $search = '';
@@ -26,7 +26,7 @@ final class Replace extends CallableFunction
             $search = $search->getValue();
         }
 
-        $replace = $this->parseParameter($parameters, 1);
+        $replace = $this->parseParameter($parameters, numParam: 1);
 
         if (!$replace) {
             $replace = 'undefined';

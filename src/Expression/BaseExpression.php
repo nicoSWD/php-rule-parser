@@ -9,10 +9,5 @@ namespace nicoSWD\Rule\Expression;
 
 abstract class BaseExpression
 {
-    /**
-     * @param mixed $leftValue
-     * @param mixed $rightValue
-     * @return bool
-     */
-    abstract public function evaluate($leftValue, $rightValue): bool;
+    abstract public function evaluate(mixed $leftValue, mixed $rightValue): bool;
 }

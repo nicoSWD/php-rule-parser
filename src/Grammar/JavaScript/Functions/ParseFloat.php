@@ -16,7 +16,7 @@ final class ParseFloat extends CallableFunction implements CallableUserFunctionI
 {
     public function call(?BaseToken ...$parameters): BaseToken
     {
-        $value = $this->parseParameter($parameters, 0);
+        $value = $this->parseParameter($parameters, numParam: 0);
 
         if (!isset($value)) {
             return new TokenFloat(NAN);

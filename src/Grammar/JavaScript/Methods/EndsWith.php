@@ -21,14 +21,14 @@ final class EndsWith extends CallableFunction
             throw new ParserException('Call to undefined method "endsWith" on non-string');
         }
 
-        $needle = $this->parseParameter($parameters, 0);
+        $needle = $this->parseParameter($parameters, numParam: 0);
         $haystack = $this->token->getValue();
 
         if (!$needle) {
             $result = false;
         } else {
             $needle = $needle->getValue();
-            $result = substr($haystack, -strlen($needle)) === $needle;
+            $result = str_ends_with($haystack, $needle);
         }
 
         return new TokenBool($result);

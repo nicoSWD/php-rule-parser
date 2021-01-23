@@ -15,21 +15,18 @@ use nicoSWD\Rule\TokenStream\Token\TokenOpeningParenthesis;
 
 class StandardCompiler implements CompilerInterface
 {
-    const BOOL_TRUE = '1';
-    const BOOL_FALSE = '0';
+    private const BOOL_TRUE = '1';
+    private const BOOL_FALSE = '0';
 
-    const LOGICAL_AND = '&';
-    const LOGICAL_OR = '|';
+    private const LOGICAL_AND = '&';
+    private const LOGICAL_OR = '|';
 
-    const OPENING_PARENTHESIS = '(';
-    const CLOSING_PARENTHESIS = ')';
+    private const OPENING_PARENTHESIS = '(';
+    private const CLOSING_PARENTHESIS = ')';
 
-    /** @var string */
-    private $output = '';
-    /** @var int */
-    private $openParenthesis = 0;
-    /** @var int */
-    private $closedParenthesis = 0;
+    private string $output = '';
+    private int $openParenthesis = 0;
+    private int $closedParenthesis = 0;
 
     public function getCompiledRule(): string
     {
@@ -105,26 +102,24 @@ class StandardCompiler implements CompilerInterface
     {
         $lastChar = $this->getLastChar();
 
-        return (
+        return
             $lastChar === self::LOGICAL_AND ||
-            $lastChar === self::LOGICAL_OR
-        );
+            $lastChar === self::LOGICAL_OR;
     }
 
     private function expectOpeningParenthesis(): bool
     {
         $lastChar = $this->getLastChar();
 
-        return (
+        return
             $lastChar === '' ||
             $lastChar === self::LOGICAL_AND ||
             $lastChar === self::LOGICAL_OR ||
-            $lastChar === self::OPENING_PARENTHESIS
-        );
+            $lastChar === self::OPENING_PARENTHESIS;
     }
 
     private function getLastChar(): string
     {
-        return substr($this->output, -1);
+        return substr($this->output, offset: -1);
     }
 }

@@ -22,7 +22,7 @@ final class Test extends CallableFunction
             throw new ParserException('undefined is not a function');
         }
 
-        $string = $this->parseParameter($parameters, 0);
+        $string = $this->parseParameter($parameters, numParam: 0);
 
         if (!$string) {
             $bool = false;
@@ -31,9 +31,7 @@ final class Test extends CallableFunction
             // It's also irrelevant in .test() but allowed in JS here
             $pattern = preg_replace_callback(
                 '~/[igm]{0,3}$~',
-                function (array $modifiers) {
-                    return str_replace('g', '', $modifiers[0]);
-                },
+                fn (array $modifiers) => str_replace('g', '', $modifiers[0]),
                 $this->token->getValue()
             );
 

@@ -14,7 +14,7 @@ final class TokenNull extends BaseToken
         return TokenType::VALUE;
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
         return null;
     }

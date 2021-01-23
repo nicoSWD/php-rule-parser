@@ -16,13 +16,13 @@ final class Split extends CallableFunction
 {
     public function call(?BaseToken ...$parameters): BaseToken
     {
-        $separator = $this->parseParameter($parameters, 0);
+        $separator = $this->parseParameter($parameters, numParam: 0);
 
         if (!$separator || !is_string($separator->getValue())) {
             $newValue = [$this->token->getValue()];
         } else {
             $params = [$separator->getValue(), $this->token->getValue()];
-            $limit = $this->parseParameter($parameters, 1);
+            $limit = $this->parseParameter($parameters, numParam: 1);
 
             if ($limit !== null) {
                 $params[] = (int) $limit->getValue();

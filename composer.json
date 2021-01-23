@@ -1,7 +1,7 @@
 {
   "name": "nicoswd/php-rule-parser",
   "type": "library",
-  "description": "PHP 7 Rule Engine - Rule Parser & Evaluator",
+  "description": "Rule Engine - Rule Parser & Evaluator",
   "keywords": [
     "rule",
     "parser",

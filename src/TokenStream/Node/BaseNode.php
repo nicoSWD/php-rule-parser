@@ -17,12 +17,9 @@ use nicoSWD\Rule\TokenStream\Token\TokenType;
 
 abstract class BaseNode
 {
-    /** @var TokenStream */
-    protected $tokenStream;
-    /** @var string */
-    private $methodName = '';
-    /** @var int */
-    private $methodOffset = 0;
+    protected TokenStream $tokenStream;
+    private string $methodName = '';
+    private int $methodOffset = 0;
 
     public function __construct(TokenStream $tokenStream)
     {

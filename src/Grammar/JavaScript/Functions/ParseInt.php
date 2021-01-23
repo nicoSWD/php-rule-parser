@@ -16,7 +16,7 @@ final class ParseInt extends CallableFunction implements CallableUserFunctionInt
 {
     public function call(?BaseToken ...$parameters): BaseToken
     {
-        $value = $this->parseParameter($parameters, 0);
+        $value = $this->parseParameter($parameters, numParam: 0);
 
         if (!isset($value)) {
             return new TokenInteger(NAN);

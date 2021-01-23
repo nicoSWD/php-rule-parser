@@ -18,7 +18,7 @@ final class TokenBool extends BaseToken
      * @return bool
      * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
-    public function getValue()
+    public function getValue(): bool
     {
         $value = parent::getValue();
 

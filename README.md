@@ -1,4 +1,4 @@
-## PHP Rule Engine for PHP 7
+## PHP Rule Engine
 
 
 [![Latest Stable Version](https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=master)](https://travis-ci.org/nicoSWD/php-rule-parser)

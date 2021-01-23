@@ -22,8 +22,8 @@ final class StartsWith extends CallableFunction
             throw new ParserException('Call to undefined method "startsWith" on non-string');
         }
 
-        $needle = $this->parseParameter($parameters, 0);
-        $offset = $this->getOffset($this->parseParameter($parameters, 1));
+        $needle = $this->parseParameter($parameters, numParam: 0);
+        $offset = $this->getOffset($this->parseParameter($parameters, numParam: 1));
         $position = strpos($this->token->getValue(), $needle->getValue(), $offset);
 
         return new TokenBool($position === $offset);

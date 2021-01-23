@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\Expression;
 
 final class NotEqualStrictExpression extends BaseExpression
 {
-    public function evaluate($leftValue, $rightValue): bool
+    public function evaluate(mixed $leftValue, mixed $rightValue): bool
     {
         return $leftValue !== $rightValue;
     }
