@@ -10,7 +10,7 @@ namespace nicoSWD\Rule\TokenStream;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 
-final class  CallableUserMethodFactory implements CallableUserMethodFactoryInterface
+final class CallableUserMethodFactory implements CallableUserMethodFactoryInterface
 {
     public function create(BaseToken $token, TokenFactory $tokenFactory, string $methodName): CallableUserMethod
     {
