@@ -20,6 +20,7 @@ class TokenFactory
         Token::NOT_EQUAL           => TokenNotEqual::class,
         Token::EQUAL_STRICT        => TokenEqualStrict::class,
         Token::EQUAL               => TokenEqual::class,
+        Token::NOT_IN              => TokenNotIn::class,
         Token::IN                  => TokenIn::class,
         Token::BOOL                => TokenBool::class,
         Token::NULL                => TokenNull::class,

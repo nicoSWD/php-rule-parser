@@ -48,6 +48,7 @@ final class ExpressionFactoryTest extends TestCase
             [Expression\LessThanEqualExpression::class, new Token\TokenSmallerEqual('<=')],
             [Expression\GreaterThanEqualExpression::class, new Token\TokenGreaterEqual('>=')],
             [Expression\InExpression::class, new Token\TokenIn('in')],
+            [Expression\NotInExpression::class, new Token\TokenNotIn('not in')],
         ];
     }
 }

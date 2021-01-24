@@ -21,7 +21,8 @@ class ExpressionFactory implements ExpressionFactoryInterface
         Token\TokenSmaller::class        => LessThanExpression::class,
         Token\TokenSmallerEqual::class   => LessThanEqualExpression::class,
         Token\TokenGreaterEqual::class   => GreaterThanEqualExpression::class,
-        Token\TokenIn::class             => InExpression::class
+        Token\TokenIn::class             => InExpression::class,
+        Token\TokenNotIn::class          => NotInExpression::class,
     ];
 
     public function createFromOperator(Token\BaseToken $operator): BaseExpression

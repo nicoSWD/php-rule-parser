@@ -61,4 +61,43 @@ final class RuleTest extends TestCase
         $this->assertEmpty($rule->getError());
         $this->assertTrue($rule->isTrue());
     }
+    /** @test */
+    public function basicInRule(): void
+    {
+        $ruleStr = '4 in [4, 6, 7]';
+
+        $rule = new Rule\Rule($ruleStr);
+
+        $this->assertTrue($rule->isValid());
+        $this->assertEmpty($rule->getError());
+        $this->assertTrue($rule->isTrue());
+
+        $ruleStr = '5 in [4, 6, 7]';
+
+        $rule = new Rule\Rule($ruleStr);
+
+        $this->assertTrue($rule->isValid());
+        $this->assertEmpty($rule->getError());
+        $this->assertFalse($rule->isTrue());
+    }
+
+    /** @test */
+    public function basicNotInRule(): void
+    {
+        $ruleStr = '5 not in [4, 6, 7]';
+
+        $rule = new Rule\Rule($ruleStr);
+
+        $this->assertTrue($rule->isValid());
+        $this->assertEmpty($rule->getError());
+        $this->assertTrue($rule->isTrue());
+
+        $ruleStr = '4 not in [4, 6, 7]';
+
+        $rule = new Rule\Rule($ruleStr);
+
+        $this->assertTrue($rule->isValid());
+        $this->assertEmpty($rule->getError());
+        $this->assertFalse($rule->isTrue());
+    }
 }
