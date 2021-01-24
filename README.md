@@ -120,7 +120,7 @@ Comparison  | not equal to             | !=
 Comparison  | identical                | ===
 Comparison  | not identical            | !==
 Containment | contains                 | in 
-Containment | contains                 | not in 
+Containment | does not contain         | not in 
 Logical     | and                      | &&
 Logical     | or                       | \|\|
 
