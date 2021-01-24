@@ -16,6 +16,7 @@ class Token
     public const EQUAL_STRICT = 'EqualStrict';
     public const EQUAL = 'Equal';
     public const IN = 'In';
+    public const NOT_IN = 'NotIn';
     public const BOOL = 'Bool';
     public const NULL = 'Null';
     public const METHOD = 'Method';
