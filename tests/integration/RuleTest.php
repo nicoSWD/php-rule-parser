@@ -84,7 +84,8 @@ final class RuleTest extends TestCase
     /** @test */
     public function basicNotInRule(): void
     {
-        $ruleStr = '5 not in [4, 6, 7]';
+        $ruleStr = '5 not 
+                in [4, 6, 7]';
 
         $rule = new Rule\Rule($ruleStr);
 
