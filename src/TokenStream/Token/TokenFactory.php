@@ -62,7 +62,7 @@ class TokenFactory
             Token::NEWLINE => TokenNewline::class,
             Token::SPACE => TokenSpace::class,
             Token::UNKNOWN => TokenUnknown::class,
-            default => throw new InvalidArgumentException("Unknown token $tokenName")
+            default => throw ParserException::unknownTokenName($tokenName)
         };
     }
 

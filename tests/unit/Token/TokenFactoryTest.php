@@ -7,7 +7,6 @@
  */
 namespace nicoSWD\Rule\tests\unit\Token;
 
-use InvalidArgumentException;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\Token\TokenEqualStrict;
@@ -45,7 +44,7 @@ final class TokenFactoryTest extends TestCase
     /** @test */
     public function givenAnInvalidTokenNameItShouldThrowAnException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ParserException::class);
 
         $this->tokenFactory->createFromTokenName('betrunken');
     }

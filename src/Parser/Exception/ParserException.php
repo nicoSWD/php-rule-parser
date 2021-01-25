@@ -67,4 +67,9 @@ class ParserException extends \Exception
             sprintf('Unexpected operator %s at position %d', $token->getOriginalValue(), $token->getOffset())
         );
     }
+
+    public static function unknownTokenName(string $tokenName): self
+    {
+        return new self("Unknown token $tokenName");
+    }
 }
