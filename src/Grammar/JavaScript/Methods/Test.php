@@ -44,6 +44,6 @@ final class Test extends CallableFunction
             $bool = (bool) preg_match($pattern, (string) $subject);
         }
 
-        return new TokenBool($bool);
+        return TokenBool::fromBool($bool);
     }
 }

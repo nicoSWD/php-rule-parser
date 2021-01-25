@@ -31,6 +31,6 @@ final class EndsWith extends CallableFunction
             $result = str_ends_with($haystack, $needle);
         }
 
-        return new TokenBool($result);
+        return TokenBool::fromBool($result);
     }
 }

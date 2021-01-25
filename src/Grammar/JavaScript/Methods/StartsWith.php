@@ -26,7 +26,7 @@ final class StartsWith extends CallableFunction
         $offset = $this->getOffset($this->parseParameter($parameters, numParam: 1));
         $position = strpos($this->token->getValue(), $needle->getValue(), $offset);
 
-        return new TokenBool($position === $offset);
+        return TokenBool::fromBool($position === $offset);
     }
 
     private function getOffset(?BaseToken $offset): int

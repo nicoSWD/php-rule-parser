@@ -17,7 +17,8 @@ class Token
     public const EQUAL = 'Equal';
     public const IN = 'In';
     public const NOT_IN = 'NotIn';
-    public const BOOL = 'Bool';
+    public const BOOL_TRUE = 'True';
+    public const BOOL_FALSE = 'False';
     public const NULL = 'Null';
     public const METHOD = 'Method';
     public const FUNCTION = 'Function';

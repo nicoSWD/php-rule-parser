@@ -19,7 +19,7 @@ class TokenFactory
         return match (gettype($value)) {
             'string' => new TokenString($value),
             'integer' => new TokenInteger($value),
-            'boolean' => new TokenBool($value),
+            'boolean' => TokenBool::fromBool($value),
             'NULL' => new TokenNull($value),
             'double' => new TokenFloat($value),
             'object' => new TokenObject($value),
@@ -39,7 +39,8 @@ class TokenFactory
             Token::EQUAL => TokenEqual::class,
             Token::IN => TokenIn::class,
             Token::NOT_IN => TokenNotIn::class,
-            Token::BOOL => TokenBool::class,
+            Token::BOOL_TRUE => TokenBoolTrue::class,
+            Token::BOOL_FALSE => TokenBoolFalse::class,
             Token::NULL => TokenNull::class,
             Token::METHOD => TokenMethod::class,
             Token::FUNCTION => TokenFunction::class,

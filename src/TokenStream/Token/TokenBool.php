@@ -7,21 +7,18 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-final class TokenBool extends BaseToken
+abstract class TokenBool extends BaseToken
 {
+    public static function fromBool(bool $bool): static
+    {
+        return match ($bool) {
+            true => new TokenBoolTrue(true),
+            false => new TokenBoolFalse(false),
+        };
+    }
+
     public function getType(): int
     {
         return TokenType::VALUE;
-    }
-
-    /**
-     * @return bool
-     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
-     */
-    public function getValue(): bool
-    {
-        $value = parent::getValue();
-
-        return $value === true || strtolower((string) $value) === 'true';
     }
 }
