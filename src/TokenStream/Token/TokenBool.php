@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\TokenStream\Token;
 
 abstract class TokenBool extends BaseToken
 {
-    public static function fromBool(bool $bool): static
+    public static function fromBool(bool $bool): TokenBool
     {
         return match ($bool) {
             true => new TokenBoolTrue(true),

@@ -11,7 +11,6 @@ use ArrayIterator;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use SplPriorityQueue;
-use stdClass;
 
 final class Tokenizer implements TokenizerInterface
 {
@@ -51,12 +50,14 @@ final class Tokenizer implements TokenizerInterface
 
     private function registerToken(string $class, string $regex, int $priority): void
     {
-        $token = new stdClass();
-        $token->class = $class;
-        $token->regex = $regex;
-        $token->priority = $priority;
-
-        $this->tokens[$class] = $token;
+        $this->tokens[$class] = new class ($class, $regex, $priority) {
+            public function __construct(
+                public string $class,
+                public string $regex,
+                public int $priority
+            ) {
+            }
+        };
     }
 
     private function getMatchedToken(array $matches): string

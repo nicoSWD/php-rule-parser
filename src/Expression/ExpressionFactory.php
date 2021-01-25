@@ -7,11 +7,13 @@
  */
 namespace nicoSWD\Rule\Expression;
 
+use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 class ExpressionFactory implements ExpressionFactoryInterface
 {
+    /** @throws ParserException */
     public function createFromOperator(BaseToken $operator): BaseExpression
     {
         return match (get_class($operator)) {
@@ -25,6 +27,7 @@ class ExpressionFactory implements ExpressionFactoryInterface
             Token\TokenGreaterEqual::class => new GreaterThanEqualExpression(),
             Token\TokenIn::class => new InExpression(),
             Token\TokenNotIn::class => new NotInExpression(),
+            default => throw ParserException::unknownOperator($operator),
         };
     }
 }

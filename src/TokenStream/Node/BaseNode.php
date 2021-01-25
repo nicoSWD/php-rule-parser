@@ -47,9 +47,8 @@ abstract class BaseNode
                 $this->methodName = $token->getValue();
                 $this->methodOffset = $stack->key();
                 $hasMethod = true;
-            } elseif ($token->isWhitespace()) {
-                continue;
-            } else {
+                break;
+            } elseif (!$token->isWhitespace()) {
                 break;
             }
         }

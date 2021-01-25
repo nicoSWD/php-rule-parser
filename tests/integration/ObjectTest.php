@@ -9,7 +9,6 @@ namespace nicoSWD\Rule\tests\integration;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Rule;
-use stdClass;
 
 final class ObjectTest extends AbstractTestBase
 {
@@ -120,7 +119,7 @@ final class ObjectTest extends AbstractTestBase
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage("Forbidden method \"{$magicMethod}\" at position 6");
 
-        $myObj = new stdClass();
+        $myObj = new class() {};
 
         $variables = [
             'my_obj' => $myObj,
@@ -132,7 +131,7 @@ final class ObjectTest extends AbstractTestBase
     /** @test */
     public function undefinedMethodsShouldThrowAnError(): void
     {
-        $myObj = new stdClass();
+        $myObj = new class() {};
 
         $variables = [
             'my_obj' => $myObj,

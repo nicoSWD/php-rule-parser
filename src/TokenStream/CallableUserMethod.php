@@ -43,7 +43,7 @@ final class CallableUserMethod implements CallableUserFunctionInterface
      * @throws Exception\UndefinedMethodException
      * @throws Exception\ForbiddenMethodException
      */
-    private function getCallable(BaseToken $token, string $methodName): callable
+    private function getCallable(BaseToken $token, string $methodName): Closure
     {
         $object = $token->getValue();
 
@@ -62,11 +62,11 @@ final class CallableUserMethod implements CallableUserFunctionInterface
      * @throws Exception\UndefinedMethodException
      * @throws Exception\ForbiddenMethodException
      */
-    private function findCallableMethod($object, string $methodName): callable
+    private function findCallableMethod(object $object, string $methodName): callable
     {
         $this->assertNonMagicMethod($methodName);
 
-        $callable = [$object, $methodName];
+        $callableMethod = [$object, $methodName];
         $index = 0;
 
         do {
@@ -74,10 +74,10 @@ final class CallableUserMethod implements CallableUserFunctionInterface
                 throw new Exception\UndefinedMethodException();
             }
 
-            $callable[1] = $this->methodPrefixes[$index++] . $methodName;
-        } while (!is_callable($callable));
+            $callableMethod[1] = $this->methodPrefixes[$index++] . $methodName;
+        } while (!is_callable($callableMethod));
 
-        return $callable;
+        return $callableMethod;
     }
 
     private function getTokenValues(array $params): array
