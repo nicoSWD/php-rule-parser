@@ -45,6 +45,7 @@ class StandardCompiler implements CompilerInterface
         $this->output .= self::OPENING_PARENTHESIS;
     }
 
+    /** @throws ParserException */
     private function closeParenthesis(): void
     {
         if ($this->openParenthesis < 1) {
@@ -55,6 +56,7 @@ class StandardCompiler implements CompilerInterface
         $this->output .= self::CLOSING_PARENTHESIS;
     }
 
+    /** @throws ParserException */
     public function addParentheses(BaseToken $token): void
     {
         if ($token instanceof TokenOpeningParenthesis) {
@@ -67,6 +69,7 @@ class StandardCompiler implements CompilerInterface
         }
     }
 
+    /** @throws ParserException */
     public function addLogical(BaseToken $token): void
     {
         $lastChar = $this->getLastChar();
@@ -82,6 +85,7 @@ class StandardCompiler implements CompilerInterface
         }
     }
 
+    /** @throws MissingOperatorException */
     public function addBoolean(bool $bool): void
     {
         $lastChar = $this->getLastChar();

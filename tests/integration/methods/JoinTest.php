@@ -11,7 +11,7 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
 final class JoinTest extends AbstractTestBase
 {
-    protected $array = ['foo' => ['foo', 'bar']];
+    protected array $array = ['foo' => ['foo', 'bar']];
 
     /** @test */
     public function ifOmittedDelimiterFallsBackToDefault(): void

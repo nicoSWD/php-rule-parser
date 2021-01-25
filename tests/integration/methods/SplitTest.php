@@ -11,7 +11,7 @@ use nicoSWD\Rule\tests\integration\AbstractTestBase;
 
 final class SplitTest extends AbstractTestBase
 {
-    protected $var = ['foo' => 'bar,baz,foo'];
+    protected array $var = ['foo' => 'bar,baz,foo'];
 
     /** @test */
     public function ifOmittedSeparatorFallsBackToDefault(): void

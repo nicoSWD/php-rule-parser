@@ -45,8 +45,7 @@ final class ObjectTest extends AbstractTestBase
     public function givenAnObjectHasPropertiesWhenPublicTheyShouldBeAccessible(): void
     {
         $myObj = new class {
-            /** @var string */
-            public $test = 'my string';
+            public string $test = 'my string';
         };
 
         $variables = [

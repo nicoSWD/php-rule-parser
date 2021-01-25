@@ -13,8 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 final class EvaluatorTest extends TestCase
 {
-    /** @var Evaluator */
-    private $evaluator;
+    private Evaluator $evaluator;
 
     protected function setUp(): void
     {

@@ -23,14 +23,10 @@ final class ParserTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /** @var AST|m\Mock */
-    private $ast;
-    /** @var ExpressionFactoryInterface|m\Mock */
-    private $expressionFactory;
-    /** @var CompilerFactoryInterface|m\Mock */
-    private $compilerFactory;
-    /** @var Parser */
-    private $parser;
+    private AST|m\Mock $ast;
+    private ExpressionFactoryInterface|m\Mock $expressionFactory;
+    private CompilerFactoryInterface|m\Mock $compilerFactory;
+    private Parser $parser;
 
     protected function setUp(): void
     {

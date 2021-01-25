@@ -25,16 +25,11 @@ final class ASTTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /** @var TokenizerInterface|MockInterface */
-    private $tokenizer;
-    /** @var TokenFactory|MockInterface */
-    private $tokenFactory;
-    /** @var TokenStreamFactory|MockInterface */
-    private $tokenStreamFactory;
-    /** @var AST */
-    private $ast;
-    /** @var CallableUserMethodFactory */
-    private $userMethodFactory;
+    private TokenizerInterface|MockInterface $tokenizer;
+    private TokenFactory|MockInterface $tokenFactory;
+    private TokenStreamFactory|MockInterface $tokenStreamFactory;
+    private AST $ast;
+    private CallableUserMethodFactory $userMethodFactory;
 
     protected function setUp(): void
     {

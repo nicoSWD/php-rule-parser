@@ -28,12 +28,9 @@ final class TokenStreamTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
     
-    /** @var ArrayIterator|MockInterface */
-    private $stack;
-    /** @var AST|MockInterface */
-    private $ast;
-    /** @var TokenStream */
-    private $tokenStream;
+    private ArrayIterator|MockInterface $stack;
+    private AST|MockInterface $ast;
+    private TokenStream $tokenStream;
 
     protected function setUp(): void
     {
@@ -91,9 +88,7 @@ final class TokenStreamTest extends TestCase
     /** @test */
     public function givenAFunctionNameWhenFoundItShouldACallableClosure()
     {
-        $this->ast->shouldReceive('getFunction')->once()->with('foo')->andReturn(function (): int {
-            return 42;
-        });
+        $this->ast->shouldReceive('getFunction')->once()->with('foo')->andReturn(fn () => 42);
 
         $function = $this->tokenStream->getFunction('foo');
         $this->assertSame(42, $function());

@@ -14,8 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ExpressionFactoryTest extends TestCase
 {
-    /** @var ExpressionFactory */
-    private $factory;
+    private ExpressionFactory $factory;
 
     protected function setUp(): void
     {

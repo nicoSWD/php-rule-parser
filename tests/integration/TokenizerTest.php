@@ -11,11 +11,11 @@ use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rule\Tokenizer\Tokenizer;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 
 final class TokenizerTest extends TestCase
 {
-    /** @var Tokenizer */
-    private $tokenizer;
+    private Tokenizer $tokenizer;
 
     protected function setUp(): void
     {
@@ -25,7 +25,7 @@ final class TokenizerTest extends TestCase
     /** @test */
     public function getMatchedTokenReturnsFalseOnFailure(): void
     {
-        $reflection = new \ReflectionMethod($this->tokenizer, 'getMatchedToken');
+        $reflection = new ReflectionMethod($this->tokenizer, 'getMatchedToken');
         $reflection->setAccessible(true);
         $result = $reflection->invoke($this->tokenizer, []);
 
