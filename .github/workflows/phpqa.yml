@@ -1,2 +1,21 @@
-- name: EdgedesignCZ PHPQA tool suite
-  uses: mickaelandrieu/phpqa-ga@v1.0
+name: Static code analysis
+
+on: [pull_request]
+
+jobs:
+  static-code-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: PHPStan
+        uses: docker://jakzal/phpqa:php8.0-alpine
+        with:
+          args: phpstan analyze src/ -l 1
+      - name: PHP-CS-Fixer
+        uses: docker://jakzal/phpqa:php8.0-alpine
+        with:
+          args: php-cs-fixer --dry-run --allow-risky=yes --no-interaction --ansi fix
+      - name: Deptrac
+        uses: docker://jakzal/phpqa:php8.0-alpine
+        with:
+          args: deptrac --no-interaction --ansi --formatter-graphviz-display=0
