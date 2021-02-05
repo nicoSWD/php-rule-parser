@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\Grammar;
 
 abstract class Grammar
 {
-    /** @return array<int, array<int, mixed>> */
+    /** @return array<int, <mixed>> */
     abstract public function getDefinition(): array;
 
     /** @return array<string, string> */

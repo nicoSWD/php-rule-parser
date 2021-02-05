@@ -45,7 +45,7 @@ final class Replace extends CallableFunction
 
     private function doRegexReplace(string $search, string $replace): string
     {
-        list($expression, $modifiers) = $this->splitRegex($search);
+        [$expression, $modifiers] = $this->splitRegex($search);
 
         $modifiers = str_replace('g', '', $modifiers, $count);
         $limit = $count > 0 ? -1 : 1;

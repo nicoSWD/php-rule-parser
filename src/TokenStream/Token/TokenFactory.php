@@ -7,7 +7,6 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-use InvalidArgumentException;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\TokenCollection;
 
@@ -28,6 +27,7 @@ class TokenFactory
         };
     }
 
+    /** @throws ParserException */
     public function createFromTokenName(string $tokenName): string
     {
         return match ($tokenName) {

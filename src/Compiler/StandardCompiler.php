@@ -28,6 +28,7 @@ class StandardCompiler implements CompilerInterface
     private int $openParenthesis = 0;
     private int $closedParenthesis = 0;
 
+    /** @throws ParserException */
     public function getCompiledRule(): string
     {
         if ($this->isIncompleteCondition()) {

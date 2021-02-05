@@ -65,8 +65,6 @@ final class CallableUserMethod implements CallableUserFunctionInterface
     private function findCallableMethod(object $object, string $methodName): callable
     {
         $this->assertNonMagicMethod($methodName);
-
-        $callableMethod = [$object, $methodName];
         $index = 0;
 
         do {
@@ -74,10 +72,10 @@ final class CallableUserMethod implements CallableUserFunctionInterface
                 throw new Exception\UndefinedMethodException();
             }
 
-            $callableMethod[1] = $this->methodPrefixes[$index++] . $methodName;
-        } while (!is_callable($callableMethod));
+            $callableMethod = $this->methodPrefixes[$index++] . $methodName;
+        } while (!is_callable([$object, $callableMethod]));
 
-        return $callableMethod;
+        return [$object, $callableMethod];
     }
 
     private function getTokenValues(array $params): array
