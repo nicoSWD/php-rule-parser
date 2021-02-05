@@ -7,26 +7,27 @@
  */
 namespace nicoSWD\Rule\Expression;
 
+use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token;
+use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 class ExpressionFactory implements ExpressionFactoryInterface
 {
-    /** @var array<string, string> */
-    protected $classLookup = [
-        Token\TokenEqual::class          => EqualExpression::class,
-        Token\TokenEqualStrict::class    => EqualStrictExpression::class,
-        Token\TokenNotEqual::class       => NotEqualExpression::class,
-        Token\TokenNotEqualStrict::class => NotEqualStrictExpression::class,
-        Token\TokenGreater::class        => GreaterThanExpression::class,
-        Token\TokenSmaller::class        => LessThanExpression::class,
-        Token\TokenSmallerEqual::class   => LessThanEqualExpression::class,
-        Token\TokenGreaterEqual::class   => GreaterThanEqualExpression::class,
-        Token\TokenIn::class             => InExpression::class,
-        Token\TokenNotIn::class          => NotInExpression::class,
-    ];
-
-    public function createFromOperator(Token\BaseToken $operator): BaseExpression
+    /** @throws ParserException */
+    public function createFromOperator(BaseToken $operator): BaseExpression
     {
-        return new $this->classLookup[get_class($operator)]();
+        return match (get_class($operator)) {
+            Token\TokenEqual::class => new EqualExpression(),
+            Token\TokenEqualStrict::class => new EqualStrictExpression(),
+            Token\TokenNotEqual::class => new NotEqualExpression(),
+            Token\TokenNotEqualStrict::class => new NotEqualStrictExpression(),
+            Token\TokenGreater::class => new GreaterThanExpression(),
+            Token\TokenSmaller::class => new LessThanExpression(),
+            Token\TokenSmallerEqual::class => new LessThanEqualExpression(),
+            Token\TokenGreaterEqual::class => new GreaterThanEqualExpression(),
+            Token\TokenIn::class => new InExpression(),
+            Token\TokenNotIn::class => new NotInExpression(),
+            default => throw ParserException::unknownOperator($operator),
+        };
     }
 }

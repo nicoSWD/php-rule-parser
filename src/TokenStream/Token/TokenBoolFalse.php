@@ -7,15 +7,10 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-final class TokenFloat extends BaseToken
+final class TokenBoolFalse extends TokenBool
 {
-    public function getType(): int
+    public function getValue(): bool
     {
-        return TokenType::VALUE;
-    }
-
-    public function getValue(): float
-    {
-        return (float) parent::getValue();
+        return false;
     }
 }

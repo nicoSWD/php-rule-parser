@@ -11,25 +11,17 @@ use ArrayIterator;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use SplPriorityQueue;
-use stdClass;
 
 final class Tokenizer implements TokenizerInterface
 {
-    /** @var TokenFactory */
-    private $tokenFactory;
-    /** @var Grammar */
-    private $grammar;
-    /** @var stdClass[] */
-    private $tokens = [];
-    /** @var string */
-    private $regex = '';
+    private array $tokens = [];
+    private string $compiledRegex = '';
 
-    public function __construct(Grammar $grammar, TokenFactory $tokenFactory)
-    {
-        $this->tokenFactory = $tokenFactory;
-        $this->grammar = $grammar;
-
-        foreach ($grammar->getDefinition() as list($class, $regex, $priority)) {
+    public function __construct(
+        private Grammar $grammar,
+        private TokenFactory $tokenFactory
+    ) {
+        foreach ($grammar->getDefinition() as [$class, $regex, $priority]) {
             $this->registerToken($class, $regex, $priority);
         }
     }
@@ -58,12 +50,14 @@ final class Tokenizer implements TokenizerInterface
 
     private function registerToken(string $class, string $regex, int $priority): void
     {
-        $token = new stdClass();
-        $token->class = $class;
-        $token->regex = $regex;
-        $token->priority = $priority;
-
-        $this->tokens[$class] = $token;
+        $this->tokens[$class] = new class ($class, $regex, $priority) {
+            public function __construct(
+                public string $class,
+                public string $regex,
+                public int $priority
+            ) {
+            }
+        };
     }
 
     private function getMatchedToken(array $matches): string
@@ -79,17 +73,17 @@ final class Tokenizer implements TokenizerInterface
 
     private function getRegex(): string
     {
-        if (!$this->regex) {
+        if (!$this->compiledRegex) {
             $regex = [];
 
             foreach ($this->getQueue() as $token) {
                 $regex[] = "(?<$token->class>$token->regex)";
             }
 
-            $this->regex = '~(' . implode('|', $regex) . ')~As';
+            $this->compiledRegex = '~(' . implode('|', $regex) . ')~As';
         }
 
-        return $this->regex;
+        return $this->compiledRegex;
     }
 
     private function getQueue(): SplPriorityQueue

@@ -17,8 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class HighlighterTest extends TestCase
 {
-    /** @var Highlighter */
-    private $highlighter;
+    private Highlighter $highlighter;
 
     protected function setUp(): void
     {

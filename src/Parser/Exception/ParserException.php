@@ -55,4 +55,21 @@ class ParserException extends \Exception
     {
         return new self('Unexpected end of string');
     }
+
+    public static function unsupportedType(string $type): self
+    {
+        return new self(sprintf('Unsupported PHP type: "%s"', $type));
+    }
+
+    public static function unknownOperator(BaseToken $token): self
+    {
+        return new self(
+            sprintf('Unexpected operator %s at position %d', $token->getOriginalValue(), $token->getOffset())
+        );
+    }
+
+    public static function unknownTokenName(string $tokenName): self
+    {
+        return new self("Unknown token $tokenName");
+    }
 }

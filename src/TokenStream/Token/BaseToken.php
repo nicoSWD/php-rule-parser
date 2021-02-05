@@ -12,25 +12,20 @@ use nicoSWD\Rule\TokenStream\TokenStream;
 
 abstract class BaseToken
 {
-    /** @var mixed */
-    private $value;
-    /** @var int */
-    private $offset = 0;
-
     abstract public function getType(): int;
 
-    public function __construct($value, int $offset = 0)
-    {
-        $this->value = $value;
-        $this->offset = $offset;
+    public function __construct(
+        private mixed $value,
+        private int $offset = 0
+    ) {
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }
 
-    final public function getOriginalValue()
+    final public function getOriginalValue(): mixed
     {
         return $this->value;
     }

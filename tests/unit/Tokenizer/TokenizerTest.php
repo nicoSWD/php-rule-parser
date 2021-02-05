@@ -18,16 +18,16 @@ final class TokenizerTest extends TestCase
     public function givenAGrammarWithCollidingRegexItShouldTakeThePriorityIntoAccount(): void
     {
         $tokens = $this->tokenizeWithGrammar('yes   somevar', [
-            [Token\Token::BOOL, '\b(?:yes|no)\b', 20],
+            [Token\Token::BOOL_TRUE, '\byes\b', 20],
             [Token\Token::VARIABLE, '\b[a-z]+\b', 10],
             [Token\Token::SPACE, '\s+', 5],
         ]);
 
         $this->assertCount(3, $tokens);
 
-        $this->assertSame('yes', $tokens[0]->getOriginalValue());
+        $this->assertTrue($tokens[0]->getValue());
         $this->assertSame(0, $tokens[0]->getOffset());
-        $this->assertInstanceOf(Token\TokenBool::class, $tokens[0]);
+        $this->assertInstanceOf(Token\TokenBoolTrue::class, $tokens[0]);
 
         $this->assertSame('   ', $tokens[1]->getValue());
         $this->assertSame(3, $tokens[1]->getOffset());
@@ -43,7 +43,7 @@ final class TokenizerTest extends TestCase
     {
         $tokens = $this->tokenizeWithGrammar('somevar   yes', [
             [Token\Token::VARIABLE, '\b[a-z]+\b', 20],
-            [Token\Token::BOOL, '\b(?:yes|no)\b', 10],
+            [Token\Token::BOOL_TRUE, '\byes\b', 10],
             [Token\Token::SPACE, '\s+', 5],
         ]);
 
@@ -65,7 +65,7 @@ final class TokenizerTest extends TestCase
     /** @test */
     public function givenAGrammarItShouldBeAvailableThroughGetter(): void
     {
-        $grammar = $this->getTokenizer([[Token\Token::BOOL, '\b(?:yes|no)\b', 10]])->getGrammar();
+        $grammar = $this->getTokenizer([[Token\Token::BOOL_TRUE, '\byes\b', 10]])->getGrammar();
 
         $this->assertInstanceOf(Grammar::class, $grammar);
         $this->assertIsArray($grammar->getDefinition());
@@ -89,8 +89,7 @@ final class TokenizerTest extends TestCase
     private function getTokenizer(array $definition): Tokenizer
     {
         $grammar = new class($definition) extends Grammar {
-            /** @var array */
-            private $definition = [];
+            private array $definition;
 
             public function __construct(array $definition)
             {

@@ -9,11 +9,11 @@ namespace nicoSWD\Rule\Evaluator;
 
 final class Evaluator implements EvaluatorInterface
 {
-    const LOGICAL_AND = '&';
-    const LOGICAL_OR = '|';
+    private const LOGICAL_AND = '&';
+    private const LOGICAL_OR = '|';
 
-    const BOOL_TRUE = '1';
-    const BOOL_FALSE = '0';
+    private const BOOL_TRUE = '1';
+    private const BOOL_FALSE = '0';
 
     public function evaluate(string $group): bool
     {
@@ -25,8 +25,8 @@ final class Evaluator implements EvaluatorInterface
                 '~\(([^()]+)\)~',
                 $evalGroup,
                 $group,
-                -1,
-                $count
+                limit: -1,
+                count: $count
             );
         } while ($count > 0);
 

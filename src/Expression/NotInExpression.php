@@ -12,7 +12,7 @@ use nicoSWD\Rule\Parser\Exception\ParserException;
 
 final class NotInExpression extends BaseExpression
 {
-    public function evaluate($leftValue, $rightValue): bool
+    public function evaluate(mixed $leftValue, mixed $rightValue): bool
     {
         if ($rightValue instanceof TokenCollection) {
             $rightValue = $rightValue->toArray();
@@ -25,6 +25,6 @@ final class NotInExpression extends BaseExpression
             ));
         }
 
-        return !in_array($leftValue, $rightValue, true);
+        return !in_array($leftValue, $rightValue, strict: true);
     }
 }

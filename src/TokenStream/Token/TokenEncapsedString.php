@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\TokenStream\Token;
 
 final class TokenEncapsedString extends TokenString
 {
-    public function getValue()
+    public function getValue(): string
     {
         return substr(parent::getValue(), 1, -1);
     }

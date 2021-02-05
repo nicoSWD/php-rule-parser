@@ -15,15 +15,10 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 class TokenStream extends ArrayIterator
 {
-    /** @var ArrayIterator */
-    private $stack;
-    /** @var AST */
-    private $ast;
-
-    public function __construct(ArrayIterator $stack, AST $ast)
-    {
-        $this->stack = $stack;
-        $this->ast = $ast;
+    public function __construct(
+        private ArrayIterator $stack,
+        private AST $ast
+    ) {
     }
 
     public function next(): void
@@ -68,7 +63,7 @@ class TokenStream extends ArrayIterator
     {
         try {
             return $this->ast->getVariable($variableName);
-        } catch (Exception\UndefinedVariableException $e) {
+        } catch (Exception\UndefinedVariableException) {
             throw ParserException::undefinedVariable($variableName, $this->getCurrentToken());
         }
     }
@@ -78,7 +73,7 @@ class TokenStream extends ArrayIterator
     {
         try {
             return $this->ast->getFunction($functionName);
-        } catch (Exception\UndefinedFunctionException $e) {
+        } catch (Exception\UndefinedFunctionException) {
             throw ParserException::undefinedFunction($functionName, $this->getCurrentToken());
         }
     }
@@ -88,9 +83,9 @@ class TokenStream extends ArrayIterator
     {
         try {
             return $this->ast->getMethod($methodName, $token);
-        } catch (Exception\UndefinedMethodException $e) {
+        } catch (Exception\UndefinedMethodException) {
             throw ParserException::undefinedMethod($methodName, $this->getCurrentToken());
-        } catch (Exception\ForbiddenMethodException $e) {
+        } catch (Exception\ForbiddenMethodException) {
             throw ParserException::forbiddenMethod($methodName, $this->getCurrentToken());
         }
     }

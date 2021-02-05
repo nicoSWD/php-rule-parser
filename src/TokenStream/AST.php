@@ -19,20 +19,13 @@ use nicoSWD\Rule\TokenStream\Token\TokenObject;
 
 class AST
 {
-    /** @var TokenizerInterface */
-    private $tokenizer;
-    /** @var TokenFactory */
-    private $tokenFactory;
-    /** @var TokenStreamFactory */
-    private $tokenStreamFactory;
-    /** @var CallableUserMethodFactoryInterface */
-    private $userMethodFactory;
-    /** @var Closure[] */
-    private $functions = [];
-    /** @var string[] */
-    private $methods = [];
-    /** @var mixed[] */
-    private $variables = [];
+    private TokenizerInterface $tokenizer;
+    private TokenFactory $tokenFactory;
+    private TokenStreamFactory $tokenStreamFactory;
+    private CallableUserMethodFactoryInterface $userMethodFactory;
+    private array $functions = [];
+    private array $methods = [];
+    private array $variables = [];
 
     public function __construct(
         TokenizerInterface $tokenizer,

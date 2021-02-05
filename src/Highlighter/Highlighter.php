@@ -14,7 +14,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenType;
 final class Highlighter
 {
     /** @var string[] */
-    private $styles = [
+    private array $styles = [
         TokenType::COMMENT        => 'color: #948a8a; font-style: italic;',
         TokenType::LOGICAL        => 'color: #c72d2d;',
         TokenType::OPERATOR       => 'color: #000;',
@@ -30,12 +30,8 @@ final class Highlighter
         TokenType::INT_VALUE      => '',
     ];
 
-    /** @var TokenizerInterface */
-    private $tokenizer;
-
-    public function __construct(TokenizerInterface $tokenizer)
+    public function __construct(private TokenizerInterface $tokenizer)
     {
-        $this->tokenizer = $tokenizer;
     }
 
     public function setStyle(int $group, string $style): void

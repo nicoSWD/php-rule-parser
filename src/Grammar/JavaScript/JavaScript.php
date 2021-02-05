@@ -23,7 +23,8 @@ final class JavaScript extends Grammar
             [Token::EQUAL, '==', 120],
             [Token::IN, '\bin\b', 115],
             [Token::NOT_IN, '\bnot\s+in\b', 116],
-            [Token::BOOL, '\b(?:true|false)\b', 110],
+            [Token::BOOL_TRUE, '\btrue\b', 110],
+            [Token::BOOL_FALSE, '\bfalse\b', 111],
             [Token::NULL, '\bnull\b', 105],
             [Token::METHOD, '\.\s*[a-zA-Z_]\w*\s*\(', 100],
             [Token::FUNCTION, '[a-zA-Z_]\w*\s*\(', 95],
@@ -51,7 +52,7 @@ final class JavaScript extends Grammar
     public function getInternalFunctions(): array
     {
         return [
-            'parseInt'   => Functions\ParseInt::class,
+            'parseInt' => Functions\ParseInt::class,
             'parseFloat' => Functions\ParseFloat::class,
         ];
     }
@@ -59,18 +60,18 @@ final class JavaScript extends Grammar
     public function getInternalMethods(): array
     {
         return [
-            'charAt'      => Methods\CharAt::class,
-            'concat'      => Methods\Concat::class,
-            'indexOf'     => Methods\IndexOf::class,
-            'join'        => Methods\Join::class,
-            'replace'     => Methods\Replace::class,
-            'split'       => Methods\Split::class,
-            'substr'      => Methods\Substr::class,
-            'test'        => Methods\Test::class,
+            'charAt' => Methods\CharAt::class,
+            'concat' => Methods\Concat::class,
+            'indexOf' => Methods\IndexOf::class,
+            'join' => Methods\Join::class,
+            'replace' => Methods\Replace::class,
+            'split' => Methods\Split::class,
+            'substr' => Methods\Substr::class,
+            'test' => Methods\Test::class,
             'toLowerCase' => Methods\ToLowerCase::class,
             'toUpperCase' => Methods\ToUpperCase::class,
-            'startsWith'  => Methods\StartsWith::class,
-            'endsWith'    => Methods\EndsWith::class,
+            'startsWith' => Methods\StartsWith::class,
+            'endsWith' => Methods\EndsWith::class,
         ];
     }
 }

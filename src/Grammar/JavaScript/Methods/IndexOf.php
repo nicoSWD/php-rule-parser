@@ -15,7 +15,7 @@ final class IndexOf extends CallableFunction
 {
     public function call(?BaseToken ...$parameters): BaseToken
     {
-        $needle = $this->parseParameter($parameters, 0);
+        $needle = $this->parseParameter($parameters, numParam: 0);
 
         if (!$needle) {
             $value = -1;

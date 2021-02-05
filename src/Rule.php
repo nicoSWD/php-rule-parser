@@ -12,16 +12,11 @@ use nicoSWD\Rule\Evaluator\EvaluatorInterface;
 
 class Rule
 {
-    /** @var string */
-    private $rule;
-    /** @var Parser\Parser */
-    private $parser;
-    /** @var string */
-    private $parsedRule = '';
-    /** @var string */
-    private $error = '';
-    /** @var object */
-    private static $container;
+    private string $rule;
+    private Parser\Parser $parser;
+    private string $parsedRule = '';
+    private string $error = '';
+    private static object $container;
 
     public function __construct(string $rule, array $variables = [])
     {

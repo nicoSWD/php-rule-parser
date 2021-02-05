@@ -7,12 +7,10 @@
  */
 namespace nicoSWD\Rule\Expression;
 
+use nicoSWD\Rule\Parser\Exception\ParserException;
+
 abstract class BaseExpression
 {
-    /**
-     * @param mixed $leftValue
-     * @param mixed $rightValue
-     * @return bool
-     */
-    abstract public function evaluate($leftValue, $rightValue): bool;
+    /** @throws ParserException */
+    abstract public function evaluate(mixed $leftValue, mixed $rightValue): bool;
 }

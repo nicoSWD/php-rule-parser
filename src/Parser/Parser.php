@@ -17,27 +17,14 @@ use nicoSWD\Rule\TokenStream\Token\TokenType;
 
 class Parser
 {
-    /** @var AST */
-    private $ast;
-    /** @var ExpressionFactoryInterface */
-    private $expressionFactory;
-    /** @var CompilerFactoryInterface */
-    private $compilerFactory;
-    /** @var ?BaseToken */
-    private $operator;
-    /** @var mixed[] */
-    private $values = [];
-    /** @var Closure[] */
-    private $handlers;
+    private ?BaseToken $operator;
+    private array $values = [];
 
     public function __construct(
-        AST $ast,
-        ExpressionFactoryInterface $expressionFactory,
-        CompilerFactoryInterface $compilerFactory
+        private AST $ast,
+        private ExpressionFactoryInterface $expressionFactory,
+        private CompilerFactoryInterface $compilerFactory
     ) {
-        $this->ast = $ast;
-        $this->expressionFactory = $expressionFactory;
-        $this->compilerFactory = $compilerFactory;
     }
 
     public function parse(string $rule): string
@@ -59,20 +46,14 @@ class Parser
 
     private function getHandlerForType(int $tokenType): Closure
     {
-        if (!isset($this->handlers)) {
-            $this->handlers = [
-                TokenType::VALUE       => $this->handleValueToken(),
-                TokenType::INT_VALUE   => $this->handleValueToken(),
-                TokenType::OPERATOR    => $this->handleOperatorToken(),
-                TokenType::LOGICAL     => $this->handleLogicalToken(),
-                TokenType::PARENTHESIS => $this->handleParenthesisToken(),
-                TokenType::SPACE       => $this->handleDummyToken(),
-                TokenType::COMMENT     => $this->handleDummyToken(),
-                TokenType::UNKNOWN     => $this->handleUnknownToken(),
-            ];
-        }
-
-        return $this->handlers[$tokenType] ?? $this->handlers[TokenType::UNKNOWN];
+        return match ($tokenType) {
+            TokenType::VALUE, TokenType::INT_VALUE => $this->handleValueToken(),
+            TokenType::OPERATOR => $this->handleOperatorToken(),
+            TokenType::LOGICAL => $this->handleLogicalToken(),
+            TokenType::PARENTHESIS => $this->handleParenthesisToken(),
+            TokenType::COMMENT, TokenType::SPACE => $this->handleDummyToken(),
+            default => $this->handleUnknownToken(),
+        };
     }
 
     private function evaluateExpression(CompilerInterface $compiler): void
@@ -88,19 +69,32 @@ class Parser
 
     private function expressionCanBeEvaluated(): bool
     {
-        return isset($this->operator) && count($this->values) === 2;
+        return count($this->values) === 2;
     }
 
     private function handleValueToken(): Closure
     {
-        return function (BaseToken $token) {
-            $this->values[] = $token->getValue();
-        };
+        return fn (BaseToken $token) => $this->values[] = $token->getValue();
+    }
+
+    private function handleLogicalToken(): Closure
+    {
+        return fn (BaseToken $token, CompilerInterface $compiler) => $compiler->addLogical($token);
+    }
+
+    private function handleParenthesisToken(): Closure
+    {
+        return fn (BaseToken $token, CompilerInterface $compiler) => $compiler->addParentheses($token);
+    }
+
+    private function handleUnknownToken(): Closure
+    {
+        return fn (BaseToken $token) => throw Exception\ParserException::unknownToken($token);
     }
 
     private function handleOperatorToken(): Closure
     {
-        return function (BaseToken $token) {
+        return function (BaseToken $token): void {
             if (isset($this->operator)) {
                 throw Exception\ParserException::unexpectedToken($token);
             } elseif (empty($this->values)) {
@@ -111,30 +105,9 @@ class Parser
         };
     }
 
-    private function handleLogicalToken(): Closure
-    {
-        return function (BaseToken $token, CompilerInterface $compiler) {
-            $compiler->addLogical($token);
-        };
-    }
-
-    private function handleParenthesisToken(): Closure
-    {
-        return function (BaseToken $token, CompilerInterface $compiler) {
-            $compiler->addParentheses($token);
-        };
-    }
-
-    private function handleUnknownToken(): Closure
-    {
-        return function (BaseToken $token) {
-            throw Exception\ParserException::unknownToken($token);
-        };
-    }
-
     private function handleDummyToken(): Closure
     {
-        return function () {
+        return function (): void {
             // Do nothing
         };
     }

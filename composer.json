@@ -1,7 +1,7 @@
 {
   "name": "nicoswd/php-rule-parser",
   "type": "library",
-  "description": "PHP 7 Rule Engine - Rule Parser & Evaluator",
+  "description": "Rule Engine - Rule Parser & Evaluator",
   "keywords": [
     "rule",
     "parser",
@@ -33,7 +33,7 @@
     }
   },
   "require": {
-    "php": ">=7.1"
+    "php": ">=8.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.0|^9.0",

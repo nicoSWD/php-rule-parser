@@ -22,7 +22,7 @@ final class CallableUserMethodTest extends TestCase
         $object = new stdClass();
         $object->my_test = 123;
 
-        $this->assertSame(123, $this->callMethod($object, 'my_test')->getOriginalValue());
+        $this->assertSame(123, $this->callMethod($object, 'my_test')->getValue());
     }
 
     /** @test */
@@ -35,7 +35,7 @@ final class CallableUserMethodTest extends TestCase
             }
         };
 
-        $this->assertSame(123, $this->callMethod($object, 'my_test')->getOriginalValue());
+        $this->assertSame(123, $this->callMethod($object, 'my_test')->getValue());
     }
 
     /** @test */
@@ -53,8 +53,8 @@ final class CallableUserMethodTest extends TestCase
             }
         };
 
-        $this->assertSame(123, $this->callMethod($object, 'my_test')->getOriginalValue());
-        $this->assertSame(456, $this->callMethod($object, 'myTest')->getOriginalValue());
+        $this->assertSame(123, $this->callMethod($object, 'my_test')->getValue());
+        $this->assertSame(456, $this->callMethod($object, 'myTest')->getValue());
     }
 
     /** @test */
@@ -72,8 +72,8 @@ final class CallableUserMethodTest extends TestCase
             }
         };
 
-        $this->assertSame(123, $this->callMethod($object, 'my_test')->getOriginalValue());
-        $this->assertSame(456, $this->callMethod($object, 'myTest')->getOriginalValue());
+        $this->assertSame(123, $this->callMethod($object, 'my_test')->getValue());
+        $this->assertSame(456, $this->callMethod($object, 'myTest')->getValue());
     }
 
     private function callMethod($object, string $methodName): BaseToken
