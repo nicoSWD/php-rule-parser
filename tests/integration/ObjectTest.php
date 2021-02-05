@@ -119,7 +119,8 @@ final class ObjectTest extends AbstractTestBase
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage("Forbidden method \"{$magicMethod}\" at position 6");
 
-        $myObj = new class() {};
+        $myObj = new class() {
+        };
 
         $variables = [
             'my_obj' => $myObj,
@@ -131,7 +132,8 @@ final class ObjectTest extends AbstractTestBase
     /** @test */
     public function undefinedMethodsShouldThrowAnError(): void
     {
-        $myObj = new class() {};
+        $myObj = new class() {
+        };
 
         $variables = [
             'my_obj' => $myObj,

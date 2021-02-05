@@ -50,7 +50,7 @@ final class Tokenizer implements TokenizerInterface
 
     private function registerToken(string $class, string $regex, int $priority): void
     {
-        $this->tokens[$class] = new class ($class, $regex, $priority) {
+        $this->tokens[$class] = new class($class, $regex, $priority) {
             public function __construct(
                 public string $class,
                 public string $regex,
