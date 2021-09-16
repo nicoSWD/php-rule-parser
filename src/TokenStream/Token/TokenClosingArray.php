@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\TokenStream\Token;
 
 final class TokenClosingArray extends BaseToken
 {
-    public function getType(): int
+    public function getType(): TokenType
     {
         return TokenType::SQUARE_BRACKET;
     }

@@ -100,7 +100,7 @@ abstract class BaseNode
     }
 
     /** @throws ParserException */
-    private function getCommaSeparatedValues(int $stopAt): TokenCollection
+    private function getCommaSeparatedValues(TokenType $stopAt): TokenCollection
     {
         $items = new TokenCollection();
         $commaExpected = false;

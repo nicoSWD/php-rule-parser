@@ -7,8 +7,8 @@
  */
 namespace nicoSWD\Rule\Evaluator;
 
-enum Operator: string
+enum Boolean: string
 {
-    case LOGICAL_AND = '&';
-    case LOGICAL_OR = '|';
+    case BOOL_TRUE = '1';
+    case BOOL_FALSE = '0';
 }

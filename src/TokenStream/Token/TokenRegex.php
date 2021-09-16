@@ -12,7 +12,7 @@ use nicoSWD\Rule\TokenStream\TokenStream;
 
 final class TokenRegex extends BaseToken
 {
-    public function getType(): int
+    public function getType(): TokenType
     {
         return TokenType::VALUE;
     }

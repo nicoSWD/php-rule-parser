@@ -10,31 +10,31 @@ namespace nicoSWD\Rule\Highlighter;
 use ArrayIterator;
 use nicoSWD\Rule\Tokenizer\TokenizerInterface;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
+use WeakMap;
 
 final class Highlighter
 {
-    /** @var string[] */
-    private array $styles = [
-        TokenType::COMMENT => 'color: #948a8a; font-style: italic;',
-        TokenType::LOGICAL => 'color: #c72d2d;',
-        TokenType::OPERATOR => 'color: #000;',
-        TokenType::PARENTHESIS => 'color: #000;',
-        TokenType::SPACE => '',
-        TokenType::UNKNOWN => '',
-        TokenType::VALUE => 'color: #e36700; font-style: italic;',
-        TokenType::VARIABLE => 'color: #007694; font-weight: 900;',
-        TokenType::METHOD => 'color: #000',
-        TokenType::SQUARE_BRACKET => '',
-        TokenType::COMMA => '',
-        TokenType::FUNCTION => '',
-        TokenType::INT_VALUE => '',
-    ];
+    private \SplObjectStorage $styles;
 
     public function __construct(private TokenizerInterface $tokenizer)
     {
+        $this->styles = new \SplObjectStorage();
+        $this->styles[TokenType::COMMENT] = 'color: #948a8a; font-style: italic;';
+        $this->styles[TokenType::LOGICAL] = 'color: #c72d2d;';
+        $this->styles[TokenType::OPERATOR] = 'color: #000;';
+        $this->styles[TokenType::PARENTHESIS] = 'color: #000;';
+        $this->styles[TokenType::SPACE] = '';
+        $this->styles[TokenType::UNKNOWN] = '';
+        $this->styles[TokenType::VALUE] = 'color: #e36700; font-style: italic;';
+        $this->styles[TokenType::VARIABLE] = 'color: #007694; font-weight: 900;';
+        $this->styles[TokenType::METHOD] = 'color: #000';
+        $this->styles[TokenType::SQUARE_BRACKET] = '';
+        $this->styles[TokenType::COMMA] = '';
+        $this->styles[TokenType::FUNCTION] = '';
+        $this->styles[TokenType::INT_VALUE] = '';
     }
 
-    public function setStyle(int $group, string $style): void
+    public function setStyle(TokenType $group, string $style): void
     {
         if (!isset($this->styles[$group])) {
             throw new Exception\InvalidGroupException(
@@ -42,7 +42,7 @@ final class Highlighter
             );
         }
 
-        $this->styles[$group] = (string) $style;
+        $this->styles[$group] = $style;
     }
 
     public function highlightString(string $string): string

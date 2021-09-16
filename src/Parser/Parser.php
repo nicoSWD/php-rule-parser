@@ -44,7 +44,7 @@ class Parser
         return $compiler->getCompiledRule();
     }
 
-    private function getHandlerForType(int $tokenType): Closure
+    private function getHandlerForType(TokenType $tokenType): Closure
     {
         return match ($tokenType) {
             TokenType::VALUE, TokenType::INT_VALUE => $this->handleValueToken(),

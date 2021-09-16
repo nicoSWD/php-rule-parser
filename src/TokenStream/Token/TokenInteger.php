@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\TokenStream\Token;
 
 final class TokenInteger extends BaseToken
 {
-    public function getType(): int
+    public function getType(): TokenType
     {
         return TokenType::INT_VALUE;
     }

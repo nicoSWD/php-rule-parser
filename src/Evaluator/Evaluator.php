@@ -7,14 +7,10 @@
  */
 namespace nicoSWD\Rule\Evaluator;
 
+use Closure;
+
 final class Evaluator implements EvaluatorInterface
 {
-    private const LOGICAL_AND = '&';
-    private const LOGICAL_OR = '|';
-
-    private const BOOL_TRUE = '1';
-    private const BOOL_FALSE = '0';
-
     public function evaluate(string $group): bool
     {
         $evalGroup = $this->evalGroup();
@@ -22,7 +18,7 @@ final class Evaluator implements EvaluatorInterface
 
         do {
             $group = preg_replace_callback(
-                '~\(([^()]+)\)~',
+                '~\((?<match>[^()]+)\)~',
                 $evalGroup,
                 $group,
                 limit: -1,
@@ -30,22 +26,22 @@ final class Evaluator implements EvaluatorInterface
             );
         } while ($count > 0);
 
-        return (bool) $evalGroup([1 => $group]);
+        return (bool) $evalGroup(['match' => $group]);
     }
 
-    private function evalGroup(): callable
+    private function evalGroup(): Closure
     {
         return function (array $group): ?int {
             $result = null;
             $operator = null;
             $offset = 0;
 
-            while (isset($group[1][$offset])) {
-                $value = $group[1][$offset++];
+            while (isset($group['match'][$offset])) {
+                $value = $group['match'][$offset++];
 
-                if ($this->isLogical($value)) {
-                    $operator = $value;
-                } elseif ($this->isBoolean($value)) {
+                if (Operator::tryFrom($value)) {
+                    $operator = Operator::from($value);
+                } elseif (Boolean::tryFrom($value)) {
                     $result = $this->setResult($result, (int) $value, $operator);
                 } else {
                     throw new Exception\UnknownSymbolException(sprintf('Unexpected "%s"', $value));
@@ -56,26 +52,16 @@ final class Evaluator implements EvaluatorInterface
         };
     }
 
-    private function setResult(?int $result, int $value, ?string $operator): int
+    private function setResult(?int $result, int $value, ?Operator $operator): int
     {
         if (!isset($result)) {
             $result = $value;
-        } elseif ($operator === self::LOGICAL_AND) {
+        } elseif ($operator === Operator::LOGICAL_AND) {
             $result &= $value;
-        } elseif ($operator === self::LOGICAL_OR) {
+        } elseif ($operator === Operator::LOGICAL_OR) {
             $result |= $value;
         }
 
         return $result;
-    }
-
-    private function isLogical(string $value): bool
-    {
-        return $value === self::LOGICAL_AND || $value === self::LOGICAL_OR;
-    }
-
-    private function isBoolean(string $value): bool
-    {
-        return $value === self::BOOL_TRUE || $value === self::BOOL_FALSE;
     }
 }

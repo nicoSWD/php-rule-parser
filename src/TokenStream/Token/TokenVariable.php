@@ -12,7 +12,7 @@ use nicoSWD\Rule\TokenStream\TokenStream;
 
 final class TokenVariable extends BaseToken
 {
-    public function getType(): int
+    public function getType(): TokenType
     {
         return TokenType::VARIABLE;
     }

@@ -36,16 +36,4 @@ final class HighlighterTest extends TestCase
 
         $this->assertStringContainsString('<span style="color: gray;">[</span>', $code);
     }
-
-    /** @test */
-    public function invalidGroupThrowsException(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Invalid group');
-
-        $this->highlighter->setStyle(
-            99,
-            'color: test-color;'
-        );
-    }
 }

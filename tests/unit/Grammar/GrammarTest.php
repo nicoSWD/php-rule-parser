@@ -5,7 +5,7 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\unit\Parser;
+namespace nicoSWD\Rule\tests\unit\Grammar;
 
 use nicoSWD\Rule\Grammar\Grammar;
 use PHPUnit\Framework\TestCase;

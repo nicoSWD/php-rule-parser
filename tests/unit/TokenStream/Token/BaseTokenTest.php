@@ -5,7 +5,7 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\unit\TokenStream;
+namespace nicoSWD\Rule\tests\unit\TokenStream\Token;
 
 use Mockery\MockInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
@@ -21,7 +21,7 @@ final class BaseTokenTest extends TestCase
     protected function setUp(): void
     {
         $this->token = new class('&&', 1337) extends BaseToken {
-            public function getType(): int
+            public function getType(): TokenType
             {
                 return TokenType::LOGICAL;
             }
@@ -65,7 +65,7 @@ final class BaseTokenTest extends TestCase
     public function isValue(): void
     {
         $token = new class('123', 1337) extends BaseToken {
-            public function getType(): int
+            public function getType(): TokenType
             {
                 return TokenType::VALUE;
             }
@@ -78,7 +78,7 @@ final class BaseTokenTest extends TestCase
     public function isWhitespace(): void
     {
         $token = new class(' ', 1337) extends BaseToken {
-            public function getType(): int
+            public function getType(): TokenType
             {
                 return TokenType::SPACE;
             }
@@ -91,7 +91,7 @@ final class BaseTokenTest extends TestCase
     public function isMethod(): void
     {
         $token = new class('.derp(', 1337) extends BaseToken {
-            public function getType(): int
+            public function getType(): TokenType
             {
                 return TokenType::METHOD;
             }
@@ -104,7 +104,7 @@ final class BaseTokenTest extends TestCase
     public function isComma(): void
     {
         $token = new class(',', 1337) extends BaseToken {
-            public function getType(): int
+            public function getType(): TokenType
             {
                 return TokenType::COMMA;
             }
@@ -117,7 +117,7 @@ final class BaseTokenTest extends TestCase
     public function isOperator(): void
     {
         $token = new class('>', 1337) extends BaseToken {
-            public function getType(): int
+            public function getType(): TokenType
             {
                 return TokenType::OPERATOR;
             }
@@ -130,7 +130,7 @@ final class BaseTokenTest extends TestCase
     public function isLogical(): void
     {
         $token = new class('&&', 1337) extends BaseToken {
-            public function getType(): int
+            public function getType(): TokenType
             {
                 return TokenType::LOGICAL;
             }
@@ -143,7 +143,7 @@ final class BaseTokenTest extends TestCase
     public function isParenthesis(): void
     {
         $token = new class('(', 1337) extends BaseToken {
-            public function getType(): int
+            public function getType(): TokenType
             {
                 return TokenType::PARENTHESIS;
             }

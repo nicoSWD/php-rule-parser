@@ -28,7 +28,7 @@ final class Tokenizer implements TokenizerInterface
 
     public function tokenize(string $string): ArrayIterator
     {
-        $regex = $this->getRegex();
+        $regex = $this->buildRegex();
         $stack = [];
         $offset = 0;
 
@@ -42,6 +42,7 @@ final class Tokenizer implements TokenizerInterface
 
         return new ArrayIterator($stack);
     }
+
 
     public function getGrammar(): Grammar
     {
@@ -71,7 +72,7 @@ final class Tokenizer implements TokenizerInterface
         return 'Unknown';
     }
 
-    private function getRegex(): string
+    private function buildRegex(): string
     {
         if (!$this->compiledRegex) {
             $regex = [];

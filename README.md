@@ -180,7 +180,7 @@ $highlighter = new Rule\Highlighter\Highlighter(new Rule\Tokenizer());
 
 // Optional custom styles
 $highlighter->setStyle(
-    Rule\Constants::GROUP_VARIABLE,
+    TokenType::VARIABLE,
     'color: #007694; font-weight: 900;'
 );
 

@@ -54,7 +54,7 @@ final class TokenStreamTest extends TestCase
             new TokenString('b')
         );
 
-        foreach ($this->tokenStream as $key => $value) {
+        foreach ($this->tokenStream as $value) {
             $this->assertInstanceOf(BaseToken::class, $value);
         }
     }

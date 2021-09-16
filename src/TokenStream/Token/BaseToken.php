@@ -12,7 +12,7 @@ use nicoSWD\Rule\TokenStream\TokenStream;
 
 abstract class BaseToken
 {
-    abstract public function getType(): int;
+    abstract public function getType(): TokenType;
 
     public function __construct(
         private mixed $value,
@@ -41,19 +41,19 @@ abstract class BaseToken
         return $this;
     }
 
-    public function isOfType(int $type): bool
+    public function isOfType(TokenType $type): bool
     {
-        return ($this->getType() | $type) === $type;
+        return $this->getType() === $type;
     }
 
     public function isValue(): bool
     {
-        return $this->isOfType(TokenType::VALUE | TokenType::INT_VALUE);
+        return $this->isOfType(TokenType::VALUE) || $this->isOfType(TokenType::INT_VALUE);
     }
 
     public function isWhitespace(): bool
     {
-        return $this->isOfType(TokenType::SPACE | TokenType::COMMENT);
+        return $this->isOfType(TokenType::SPACE) || $this->isOfType(TokenType::COMMENT);
     }
 
     public function isMethod(): bool
