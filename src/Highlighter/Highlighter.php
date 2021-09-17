@@ -10,15 +10,15 @@ namespace nicoSWD\Rule\Highlighter;
 use ArrayIterator;
 use nicoSWD\Rule\Tokenizer\TokenizerInterface;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
-use WeakMap;
+use SplObjectStorage;
 
 final class Highlighter
 {
-    private \SplObjectStorage $styles;
+    private readonly SplObjectStorage $styles;
 
     public function __construct(private TokenizerInterface $tokenizer)
     {
-        $this->styles = new \SplObjectStorage();
+        $this->styles = new SplObjectStorage();
         $this->styles[TokenType::COMMENT] = 'color: #948a8a; font-style: italic;';
         $this->styles[TokenType::LOGICAL] = 'color: #c72d2d;';
         $this->styles[TokenType::OPERATOR] = 'color: #000;';

@@ -24,10 +24,10 @@ class AST
     private array $variables = [];
 
     public function __construct(
-        private TokenizerInterface $tokenizer,
-        private TokenFactory $tokenFactory,
-        private TokenStreamFactory $tokenStreamFactory,
-        private CallableUserMethodFactoryInterface $userMethodFactory
+        private readonly TokenizerInterface $tokenizer,
+        private readonly TokenFactory $tokenFactory,
+        private readonly TokenStreamFactory $tokenStreamFactory,
+        private readonly CallableUserMethodFactoryInterface $userMethodFactory,
     ) {
     }
 

@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 final class TokenFactoryTest extends TestCase
 {
-    private Token\TokenFactory $tokenFactory;
+    private readonly Token\TokenFactory $tokenFactory;
 
     protected function setUp(): void
     {
@@ -39,14 +39,6 @@ final class TokenFactoryTest extends TestCase
         $this->expectExceptionMessage('Unsupported PHP type: "resource"');
 
         $this->tokenFactory->createFromPHPType(tmpfile());
-    }
-
-    /** @test */
-    public function givenAnInvalidTokenNameItShouldThrowAnException(): void
-    {
-        $this->expectException(ParserException::class);
-
-        $this->tokenFactory->createFromTokenName('betrunken');
     }
 
     /** @test */

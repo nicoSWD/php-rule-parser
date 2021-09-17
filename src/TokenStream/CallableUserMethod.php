@@ -14,10 +14,10 @@ use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 
 final class CallableUserMethod implements CallableUserFunctionInterface
 {
-    private const MAGIC_METHOD_PREFIX = '__';
+    final const MAGIC_METHOD_PREFIX = '__';
 
-    private TokenFactory $tokenFactory;
-    private Closure $callable;
+    private readonly TokenFactory $tokenFactory;
+    private readonly Closure $callable;
     private array $methodPrefixes = ['', 'get', 'is', 'get_', 'is_'];
 
     /**

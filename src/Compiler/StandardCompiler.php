@@ -17,8 +17,8 @@ use nicoSWD\Rule\TokenStream\Token\TokenOpeningParenthesis;
 
 class StandardCompiler implements CompilerInterface
 {
-    private const OPENING_PARENTHESIS = '(';
-    private const CLOSING_PARENTHESIS = ')';
+    final const OPENING_PARENTHESIS = '(';
+    final const CLOSING_PARENTHESIS = ')';
 
     private string $output = '';
     private int $openParenthesis = 0;
@@ -91,7 +91,9 @@ class StandardCompiler implements CompilerInterface
             throw new MissingOperatorException();
         }
 
-        $this->output .= $bool ? Boolean::BOOL_TRUE->value : Boolean::BOOL_FALSE->value;
+        $this->output .= $bool
+            ? Boolean::BOOL_TRUE->value
+            : Boolean::BOOL_FALSE->value;
     }
 
     private function numParenthesesMatch(): bool

@@ -15,8 +15,8 @@ abstract class BaseToken
     abstract public function getType(): TokenType;
 
     public function __construct(
-        private mixed $value,
-        private int $offset = 0
+        private readonly mixed $value,
+        private readonly int $offset = 0,
     ) {
     }
 

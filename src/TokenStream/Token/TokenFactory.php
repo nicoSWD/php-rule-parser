@@ -28,7 +28,7 @@ class TokenFactory
     }
 
     /** @throws ParserException */
-    public function createFromTokenName(string $tokenName): string
+    public function createFromTokenName(Token $tokenName): string
     {
         return match ($tokenName) {
             Token::AND => TokenAnd::class,
@@ -62,7 +62,6 @@ class TokenFactory
             Token::NEWLINE => TokenNewline::class,
             Token::SPACE => TokenSpace::class,
             Token::UNKNOWN => TokenUnknown::class,
-            default => throw ParserException::unknownTokenName($tokenName)
         };
     }
 

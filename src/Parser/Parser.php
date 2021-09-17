@@ -21,9 +21,9 @@ class Parser
     private array $values = [];
 
     public function __construct(
-        private AST $ast,
-        private ExpressionFactoryInterface $expressionFactory,
-        private CompilerFactoryInterface $compilerFactory
+        private readonly AST $ast,
+        private readonly ExpressionFactoryInterface $expressionFactory,
+        private readonly CompilerFactoryInterface $compilerFactory,
     ) {
     }
 

@@ -13,7 +13,10 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 interface TokenizerInterface
 {
-    /** @return ArrayIterator<int, BaseToken> */
+    /**
+     * @param string $string
+     * @return ArrayIterator<int, BaseToken>
+     */
     public function tokenize(string $string): ArrayIterator;
 
     public function getGrammar(): Grammar;

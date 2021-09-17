@@ -17,8 +17,8 @@ use nicoSWD\Rule\TokenStream\Token\TokenType;
 
 abstract class BaseNode
 {
-    protected TokenStream $tokenStream;
-    private string $methodName = '';
+    protected readonly TokenStream $tokenStream;
+    private string $methodName;
     private int $methodOffset = 0;
 
     public function __construct(TokenStream $tokenStream)

@@ -16,8 +16,8 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 class TokenStream extends ArrayIterator
 {
     public function __construct(
-        private ArrayIterator $stack,
-        private AST $ast
+        private readonly ArrayIterator $stack,
+        private readonly AST $ast,
     ) {
     }
 
