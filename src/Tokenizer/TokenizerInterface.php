@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
@@ -7,17 +7,17 @@
  */
 namespace nicoSWD\Rule\Tokenizer;
 
-use ArrayIterator;
+use Iterator;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
-interface TokenizerInterface
+abstract class TokenizerInterface
 {
+    public readonly Grammar $grammar;
+
     /**
      * @param string $string
-     * @return ArrayIterator<int, BaseToken>
+     * @return Iterator<int, BaseToken>
      */
-    public function tokenize(string $string): ArrayIterator;
-
-    public function getGrammar(): Grammar;
+    abstract public function tokenize(string $string): Iterator;
 }

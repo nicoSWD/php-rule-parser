@@ -38,9 +38,10 @@ final class Evaluator implements EvaluatorInterface
 
             while (isset($group['match'][$offset])) {
                 $value = $group['match'][$offset++];
+                $possibleOperator = Operator::tryFrom($value);
 
-                if (Operator::tryFrom($value)) {
-                    $operator = Operator::from($value);
+                if ($possibleOperator) {
+                    $operator = $possibleOperator;
                 } elseif (Boolean::tryFrom($value)) {
                     $result = $this->setResult($result, (int) $value, $operator);
                 } else {
@@ -56,9 +57,9 @@ final class Evaluator implements EvaluatorInterface
     {
         if (!isset($result)) {
             $result = $value;
-        } elseif ($operator === Operator::LOGICAL_AND) {
+        } elseif (Operator::isAnd($operator)) {
             $result &= $value;
-        } elseif ($operator === Operator::LOGICAL_OR) {
+        } elseif (Operator::isOr($operator)) {
             $result |= $value;
         }
 

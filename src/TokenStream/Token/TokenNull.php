@@ -7,7 +7,9 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-final class TokenNull extends BaseToken
+use nicoSWD\Rule\TokenStream\Token\Type\Value;
+
+final class TokenNull extends BaseToken implements Value
 {
     public function getType(): TokenType
     {

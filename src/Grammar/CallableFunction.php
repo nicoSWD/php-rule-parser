@@ -12,7 +12,7 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 abstract class CallableFunction implements CallableUserFunctionInterface
 {
     public function __construct(
-        protected readonly ?BaseToken $token = null
+        protected readonly ?BaseToken $token = null,
     ) {
     }
 

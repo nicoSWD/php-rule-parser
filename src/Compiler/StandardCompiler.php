@@ -14,11 +14,13 @@ use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenAnd;
 use nicoSWD\Rule\TokenStream\Token\TokenOpeningParenthesis;
+use nicoSWD\Rule\TokenStream\Token\Type\Logical;
+use nicoSWD\Rule\TokenStream\Token\Type\Parenthesis;
 
-class StandardCompiler implements CompilerInterface
+final class StandardCompiler implements CompilerInterface
 {
-    final const OPENING_PARENTHESIS = '(';
-    final const CLOSING_PARENTHESIS = ')';
+    private const OPENING_PARENTHESIS = '(';
+    private const CLOSING_PARENTHESIS = ')';
 
     private string $output = '';
     private int $openParenthesis = 0;
@@ -54,7 +56,7 @@ class StandardCompiler implements CompilerInterface
     }
 
     /** @throws ParserException */
-    public function addParentheses(BaseToken $token): void
+    public function addParentheses(BaseToken & Parenthesis $token): void
     {
         if ($token instanceof TokenOpeningParenthesis) {
             if (!$this->expectOpeningParenthesis()) {
@@ -67,11 +69,9 @@ class StandardCompiler implements CompilerInterface
     }
 
     /** @throws ParserException */
-    public function addLogical(BaseToken $token): void
+    public function addLogical(BaseToken & Logical $token): void
     {
-        $lastChar = Operator::tryFrom($this->getLastChar());
-
-        if ($lastChar !== null) {
+        if (Operator::tryFrom($this->getLastChar()) !== null) {
             throw ParserException::unexpectedToken($token);
         }
 
@@ -85,15 +85,11 @@ class StandardCompiler implements CompilerInterface
     /** @throws MissingOperatorException */
     public function addBoolean(bool $bool): void
     {
-        $lastChar = Boolean::tryFrom($this->getLastChar());
-
-        if ($lastChar !== null) {
+        if (Boolean::tryFrom($this->getLastChar()) !== null) {
             throw new MissingOperatorException();
         }
 
-        $this->output .= $bool
-            ? Boolean::BOOL_TRUE->value
-            : Boolean::BOOL_FALSE->value;
+        $this->output .= Boolean::fromBool($bool)->value;
     }
 
     private function numParenthesesMatch(): bool

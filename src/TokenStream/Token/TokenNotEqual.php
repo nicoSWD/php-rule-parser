@@ -7,7 +7,9 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-final class TokenNotEqual extends BaseToken
+use nicoSWD\Rule\TokenStream\Token\Type\Operator;
+
+final class TokenNotEqual extends BaseToken implements Operator
 {
     public function getType(): TokenType
     {

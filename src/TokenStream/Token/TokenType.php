@@ -10,7 +10,6 @@ namespace nicoSWD\Rule\TokenStream\Token;
 enum TokenType
 {
     case OPERATOR;
-    case INT_VALUE;
     case VALUE;
     case LOGICAL;
     case VARIABLE;
@@ -22,4 +21,9 @@ enum TokenType
     case COMMA;
     case METHOD;
     case FUNCTION;
+
+    public static function isValue(BaseToken $token): bool
+    {
+        return $token->getType() === self::VALUE;
+    }
 }

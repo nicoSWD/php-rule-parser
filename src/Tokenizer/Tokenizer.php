@@ -8,93 +8,44 @@
 namespace nicoSWD\Rule\Tokenizer;
 
 use ArrayIterator;
+use Iterator;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\TokenStream\Token\Token;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
-use SplPriorityQueue;
 
-final class Tokenizer implements TokenizerInterface
+final class Tokenizer extends TokenizerInterface
 {
-    private array $tokens;
-    private string $compiledRegex = '';
-
     public function __construct(
-        private readonly Grammar $grammar,
+        public readonly Grammar $grammar,
         private readonly TokenFactory $tokenFactory,
     ) {
-        foreach ($grammar->getDefinition() as [$class, $regex, $priority]) {
-            $this->registerToken($class, $regex, $priority);
-        }
     }
 
-    public function tokenize(string $string): ArrayIterator
+    public function tokenize(string $string): Iterator
     {
-        $regex = $this->buildRegex();
+        $regex = $this->grammar->buildRegex();
         $stack = [];
         $offset = 0;
 
-        while (preg_match($regex, $string, $matches, 0, $offset)) {
+        while (preg_match($regex, $string, $matches, offset: $offset)) {
             $token = $this->getMatchedToken($matches);
-            $className = $this->tokenFactory->createFromTokenName(Token::from($token));
+            $className = $this->tokenFactory->createFromToken($token);
 
-            $stack[] = new $className($matches[$token], $offset);
+            $stack[] = new $className($matches[$token->value], $offset);
             $offset += strlen($matches[0]);
         }
 
         return new ArrayIterator($stack);
     }
 
-    public function getGrammar(): Grammar
-    {
-        return $this->grammar;
-    }
-
-    private function registerToken(Token $class, string $regex, int $priority): void
-    {
-        $this->tokens[$class->name] = new class($class, $regex, $priority) {
-            public function __construct(
-                public readonly Token $class,
-                public readonly string $regex,
-                public readonly int $priority
-            ) {
-            }
-        };
-    }
-
-    private function getMatchedToken(array $matches): string
+    private function getMatchedToken(array $matches): Token
     {
         foreach ($matches as $key => $value) {
             if ($value !== '' && !is_int($key)) {
-                return $key;
+                return Token::from($key);
             }
         }
 
-        return 'Unknown';
-    }
-
-    private function buildRegex(): string
-    {
-        if (!$this->compiledRegex) {
-            $regex = [];
-
-            foreach ($this->getQueue() as $token) {
-                $regex[] = "(?<{$token->class->value}>$token->regex)";
-            }
-
-            $this->compiledRegex = '~(' . implode('|', $regex) . ')~As';
-        }
-
-        return $this->compiledRegex;
-    }
-
-    private function getQueue(): SplPriorityQueue
-    {
-        $queue = new SplPriorityQueue();
-
-        foreach ($this->tokens as $class) {
-            $queue->insert($class, $class->priority);
-        }
-
-        return $queue;
+        return Token::UNKNOWN;
     }
 }

@@ -7,7 +7,9 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-abstract class TokenBool extends BaseToken
+use nicoSWD\Rule\TokenStream\Token\Type\Value;
+
+abstract class TokenBool extends BaseToken implements Value
 {
     public static function fromBool(bool $bool): TokenBool
     {

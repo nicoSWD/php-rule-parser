@@ -8,16 +8,17 @@
 namespace nicoSWD\Rule\TokenStream\Token;
 
 use nicoSWD\Rule\TokenStream\Node\NodeString;
-use nicoSWD\Rule\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\Token\Type\Value;
+use nicoSWD\Rule\TokenStream\TokenIterator;
 
-final class TokenRegex extends BaseToken
+final class TokenRegex extends BaseToken implements Value
 {
     public function getType(): TokenType
     {
         return TokenType::VALUE;
     }
 
-    public function createNode(TokenStream $tokenStream): BaseToken
+    public function createNode(TokenIterator $tokenStream): BaseToken
     {
         return (new NodeString($tokenStream))->getNode();
     }

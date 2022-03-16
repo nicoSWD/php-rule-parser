@@ -28,6 +28,7 @@ class Rule
         $this->rule = $rule;
     }
 
+    /** @throws Parser\Exception\ParserException */
     public function isTrue(): bool
     {
         /** @var EvaluatorInterface $evaluator */
@@ -39,6 +40,7 @@ class Rule
         );
     }
 
+    /** @throws Parser\Exception\ParserException */
     public function isFalse(): bool
     {
         return !$this->isTrue();

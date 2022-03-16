@@ -19,6 +19,16 @@ final class GrammarTest extends TestCase
             {
                 return [];
             }
+
+            public function getInternalFunctions(): array
+            {
+                return [];
+            }
+
+            public function getInternalMethods(): array
+            {
+                return [];
+            }
         };
 
         $this->assertSame([], $grammar->getDefinition());

@@ -7,7 +7,9 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-final class TokenClosingParenthesis extends BaseToken
+use nicoSWD\Rule\TokenStream\Token\Type\Parenthesis;
+
+final class TokenClosingParenthesis extends BaseToken implements Parenthesis
 {
     public function getType(): TokenType
     {

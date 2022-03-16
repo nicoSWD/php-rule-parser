@@ -8,7 +8,7 @@
 namespace nicoSWD\Rule\TokenStream\Token;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\TokenIterator;
 
 abstract class BaseToken
 {
@@ -36,7 +36,7 @@ abstract class BaseToken
     }
 
     /** @throws ParserException */
-    public function createNode(TokenStream $tokenStream): self
+    public function createNode(TokenIterator $tokenStream): self
     {
         return $this;
     }
@@ -46,38 +46,10 @@ abstract class BaseToken
         return $this->getType() === $type;
     }
 
-    public function isValue(): bool
+    public function canBeIgnored(): bool
     {
-        return $this->isOfType(TokenType::VALUE) || $this->isOfType(TokenType::INT_VALUE);
-    }
-
-    public function isWhitespace(): bool
-    {
-        return $this->isOfType(TokenType::SPACE) || $this->isOfType(TokenType::COMMENT);
-    }
-
-    public function isMethod(): bool
-    {
-        return $this->isOfType(TokenType::METHOD);
-    }
-
-    public function isComma(): bool
-    {
-        return $this->isOfType(TokenType::COMMA);
-    }
-
-    public function isOperator(): bool
-    {
-        return $this->isOfType(TokenType::OPERATOR);
-    }
-
-    public function isLogical(): bool
-    {
-        return $this->isOfType(TokenType::LOGICAL);
-    }
-
-    public function isParenthesis(): bool
-    {
-        return $this->isOfType(TokenType::PARENTHESIS);
+        return
+            $this->isOfType(TokenType::SPACE) ||
+            $this->isOfType(TokenType::COMMENT);
     }
 }

@@ -7,7 +7,6 @@
  */
 namespace nicoSWD\Rule\tests\integration;
 
-use Exception;
 use nicoSWD\Rule;
 use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rule\Highlighter\Highlighter;

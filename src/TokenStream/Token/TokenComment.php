@@ -7,7 +7,9 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-final class TokenComment extends BaseToken
+use nicoSWD\Rule\TokenStream\Token\Type\Whitespace;
+
+final class TokenComment extends BaseToken implements Whitespace
 {
     public function getType(): TokenType
     {

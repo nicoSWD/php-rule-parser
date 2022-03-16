@@ -7,20 +7,54 @@
  */
 namespace nicoSWD\Rule\Grammar;
 
+use SplPriorityQueue;
+
 abstract class Grammar
 {
-    /** @return array<int, <mixed>> */
+    private string $compiledRegex = '';
+    /** @var Definition[] */
+    private array $tokens = [];
+
+    /** @return Definition[] */
     abstract public function getDefinition(): array;
 
-    /** @return array<string, string> */
-    public function getInternalFunctions(): array
+    /** @return InternalFunction[] */
+    abstract public function getInternalFunctions(): array;
+
+    /** @return InternalMethod[] */
+    abstract public function getInternalMethods(): array;
+
+    public function buildRegex(): string
     {
-        return [];
+        if (!$this->compiledRegex) {
+            $this->registerTokens();
+            $regex = [];
+
+            foreach ($this->getQueue() as $token) {
+                $regex[] = "(?<{$token->token->value}>{$token->regex})";
+            }
+
+            $this->compiledRegex = '~(' . implode('|', $regex) . ')~As';
+        }
+
+        return $this->compiledRegex;
     }
 
-    /** @return array<string, string> */
-    public function getInternalMethods(): array
+    private function getQueue(): SplPriorityQueue
     {
-        return [];
+        $queue = new SplPriorityQueue();
+
+        foreach ($this->tokens as $token) {
+            $queue->insert($token, $token->priority);
+        }
+
+        return $queue;
+    }
+
+    private function registerTokens(): void
+    {
+        foreach ($this->getDefinition() as $definition) {
+            $this->tokens[$definition->token->value] = $definition;
+        }
     }
 }

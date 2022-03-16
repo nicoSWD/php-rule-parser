@@ -7,7 +7,9 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-final class TokenOr extends BaseToken
+use nicoSWD\Rule\TokenStream\Token\Type\Logical;
+
+final class TokenOr extends BaseToken implements Logical
 {
     public function getType(): TokenType
     {

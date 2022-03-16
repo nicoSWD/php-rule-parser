@@ -31,7 +31,7 @@ final class Test extends CallableFunction
             // It's also irrelevant in .test() but allowed in JS here
             $pattern = preg_replace_callback(
                 '~/[igm]{0,3}$~',
-                fn (array $modifiers) => str_replace('g', '', $modifiers[0]),
+                static fn (array $modifiers): string => str_replace('g', '', $modifiers[0]),
                 $this->token->getValue()
             );
 

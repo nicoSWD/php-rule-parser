@@ -8,125 +8,156 @@
 namespace nicoSWD\Rule\tests\unit\TokenStream;
 
 use ArrayIterator;
+use Iterator;
+use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
-use nicoSWD\Rule\Grammar\CallableFunction;
-use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\TokenStream\AST;
-use nicoSWD\Rule\TokenStream\Exception\UndefinedFunctionException;
-use nicoSWD\Rule\TokenStream\Exception\UndefinedMethodException;
-use nicoSWD\Rule\TokenStream\Exception\UndefinedVariableException;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenFunction;
-use nicoSWD\Rule\TokenStream\Token\TokenMethod;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
-use nicoSWD\Rule\TokenStream\Token\TokenVariable;
+use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
+use nicoSWD\Rule\Grammar\Grammar;
+use nicoSWD\Rule\Grammar\InternalFunction;
+use nicoSWD\Rule\Tokenizer\Tokenizer;
+use nicoSWD\Rule\Tokenizer\TokenizerInterface;
+use nicoSWD\Rule\TokenStream\CallableUserMethodFactoryInterface;
 use nicoSWD\Rule\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\Exception\UndefinedFunctionException;
+use nicoSWD\Rule\TokenStream\Node\BaseNode;
+use nicoSWD\Rule\TokenStream\Token\BaseToken;
+use nicoSWD\Rule\TokenStream\Token\TokenFactory;
+use nicoSWD\Rule\TokenStream\TokenIteratorFactory;
+use nicoSWD\Rule\TokenStream\CallableUserMethodFactory;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 final class TokenStreamTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
-    
-    private ArrayIterator|MockInterface $stack;
-    private AST|MockInterface $ast;
-    private TokenStream $tokenStream;
+
+    private readonly TokenStream $tokenStream;
+    private readonly TokenFactory|MockInterface $tokenFactory;
+    private readonly CallableUserMethodFactory $userMethodFactory;
+    private readonly TokenIteratorFactory $tokenStreamFactory;
 
     protected function setUp(): void
     {
-        $this->stack = \Mockery::mock(ArrayIterator::class);
-        $this->ast = \Mockery::mock(AST::class);
-
-        $this->tokenStream = new TokenStream($this->stack, $this->ast);
+        $this->tokenFactory = Mockery::mock(TokenFactory::class);
+        $this->userMethodFactory = new CallableUserMethodFactory();
+        $this->tokenStreamFactory = new TokenIteratorFactory();
     }
 
     /** @test */
-    public function givenAStackWhenNotEmptyItShouldBeIterable()
+    public function givenAFunctionNameWhenValidItShouldReturnTheCorrespondingFunction(): void
     {
-        $this->stack->shouldReceive('rewind');
-        $this->stack->shouldReceive('valid')->andReturn(true, true, true, false);
-        $this->stack->shouldReceive('key')->andReturn(1, 2, 3);
-        $this->stack->shouldReceive('next');
-        $this->stack->shouldReceive('seek');
-        $this->stack->shouldReceive('current')->times(5)->andReturn(
-            new TokenString('a'),
-            new TokenMethod('.foo('),
-            new TokenString('b')
+        $grammar = $this->createGrammarWithInternalFunctions([new InternalFunction('test', TestFunc::class)]);
+        $tokenizer = new Tokenizer($grammar, $this->tokenFactory);
+
+        $tokenStream = new TokenStream(
+            $tokenizer,
+            $this->tokenFactory,
+            $this->tokenStreamFactory,
+            $this->userMethodFactory
         );
 
-        foreach ($this->tokenStream as $value) {
-            $this->assertInstanceOf(BaseToken::class, $value);
-        }
+        /** @var BaseToken $result */
+        $result = $tokenStream->getFunction('test')->call(Mockery::mock(BaseNode::class));
+
+        $this->assertSame(234, $result->getValue());
     }
 
     /** @test */
-    public function givenATokenStackItShouldBeAccessibleViaGetter()
+    public function givenAFunctionNameWhenItDoesNotImplementTheInterfaceItShouldThrowAnException(): void
     {
-        $this->assertInstanceOf(ArrayIterator::class, $this->tokenStream->getStack());
+        $this->expectExceptionMessage(sprintf(
+            'stdClass must be an instance of %s',
+            CallableUserFunctionInterface::class
+        ));
+
+        $grammar = $this->createGrammarWithInternalFunctions([new InternalFunction('test', stdClass::class)]);
+        $tokenizer = new Tokenizer($grammar, $this->tokenFactory);
+
+        $tokenStream = new TokenStream(
+            $tokenizer,
+            $this->tokenFactory,
+            $this->tokenStreamFactory,
+            $this->userMethodFactory
+        );
+
+        $tokenStream->getFunction('test')->call(Mockery::mock(BaseNode::class));
     }
 
     /** @test */
-    public function givenAVariableNameWhenFoundItShouldReturnItsValue()
+    public function givenAFunctionNameNotDefinedItShouldThrowAnException(): void
     {
-        $this->ast->shouldReceive('getVariable')->once()->with('foo')->andReturn(new TokenVariable('bar'));
+        $this->expectException(UndefinedFunctionException::class);
+        $this->expectExceptionMessage('pineapple_pizza');
 
-        $token = $this->tokenStream->getVariable('foo');
-        $this->assertInstanceOf(TokenVariable::class, $token);
+        $tokenizer = $this->createDummyTokenizer();
+        $userMethodFactory = $this->createCallableUserMethodFactory();
+
+        $tokenStream = new TokenStream(
+            $tokenizer,
+            new TokenFactory(),
+            $this->tokenStreamFactory,
+            $userMethodFactory,
+        );
+
+        $tokenStream->getFunction('pineapple_pizza');
     }
 
-    /** @test */
-    public function givenAVariableNameWhenNotFoundItShouldThrowAnException()
+    private function createDummyTokenizer(): TokenizerInterface
     {
-        $this->expectException(ParserException::class);
+        return new class ($this->createGrammarWithInternalFunctions()) extends TokenizerInterface {
+            public function __construct(
+                public readonly Grammar $grammar,
+            ) {
+            }
 
-        $this->ast->shouldReceive('getVariable')->once()->with('foo')->andThrow(new UndefinedVariableException());
-        $this->stack->shouldReceive('current')->once()->andReturn(new TokenVariable('nope'));
-
-        $this->tokenStream->getVariable('foo');
+            public function tokenize(string $string): Iterator
+            {
+                return new ArrayIterator([]);
+            }
+        };
     }
 
-    /** @test */
-    public function givenAFunctionNameWhenFoundItShouldACallableClosure()
+    private function createGrammarWithInternalFunctions(array $internalFunctions = []): Grammar
     {
-        $this->ast->shouldReceive('getFunction')->once()->with('foo')->andReturn(fn () => 42);
+        return new class ($internalFunctions) extends Grammar {
+            public function __construct(
+                private array $internalFunctions,
+            ) {
+            }
 
-        $function = $this->tokenStream->getFunction('foo');
-        $this->assertSame(42, $function());
+            public function getDefinition(): array
+            {
+                return [];
+            }
+
+            public function getInternalFunctions(): array
+            {
+                return $this->internalFunctions;
+            }
+
+            public function getInternalMethods(): array
+            {
+                return [];
+            }
+        };
     }
 
-    /** @test */
-    public function givenAFunctionNameWhenNotFoundItShouldThrowAnException()
+    private function createCallableUserMethodFactory(): CallableUserMethodFactoryInterface
     {
-        $this->expectException(ParserException::class);
-
-        $this->ast->shouldReceive('getFunction')->once()->with('foo')->andThrow(new UndefinedFunctionException());
-        $this->stack->shouldReceive('current')->once()->andReturn(new TokenFunction('nope('));
-
-        $this->tokenStream->getFunction('foo');
-    }
-
-    /** @test */
-    public function givenAMethodNameWhenFoundItShouldReturnAnInstanceOfCallableFunction()
-    {
-        $token = new TokenString('bar');
-        $callableFunction = \Mockery::mock(CallableFunction::class);
-
-        $this->ast->shouldReceive('getMethod')->once()->with('foo', $token)->andReturn($callableFunction);
-
-        $method = $this->tokenStream->getMethod('foo', $token);
-
-        $this->assertInstanceOf(CallableFunction::class, $method);
-    }
-
-    /** @test */
-    public function givenAMethodNameWhenNotFoundItShouldThrowAnException()
-    {
-        $this->expectException(ParserException::class);
-
-        $token = new TokenString('bar');
-        $this->ast->shouldReceive('getMethod')->once()->with('foo', $token)->andThrow(new UndefinedMethodException());
-        $this->stack->shouldReceive('current')->once()->andReturn(new TokenFunction('bar'));
-
-        $this->tokenStream->getMethod('foo', $token);
+        return new class implements CallableUserMethodFactoryInterface {
+            public function create(
+                BaseToken $token,
+                TokenFactory $tokenFactory,
+                string $methodName
+            ): CallableUserFunctionInterface {
+                return new class implements CallableUserFunctionInterface {
+                    public function call(?BaseToken ...$param): BaseToken
+                    {
+                        return Mockery::mock(BaseToken::class);
+                    }
+                };
+            }
+        };
     }
 }

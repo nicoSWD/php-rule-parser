@@ -1,12 +1,12 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\Evaluator\Exception;
+namespace nicoSWD\Rule\TokenStream\Token\Type;
 
-final class UnknownSymbolException extends \Exception
+interface Logical
 {
 }

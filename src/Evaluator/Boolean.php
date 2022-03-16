@@ -9,6 +9,11 @@ namespace nicoSWD\Rule\Evaluator;
 
 enum Boolean: string
 {
-    case BOOL_TRUE = '1';
-    case BOOL_FALSE = '0';
+    case TRUE = '1';
+    case FALSE = '0';
+
+    final public static function fromBool(bool $bool): self
+    {
+        return $bool ? self::TRUE : self::FALSE;
+    }
 }

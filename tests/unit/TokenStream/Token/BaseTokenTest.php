@@ -10,7 +10,7 @@ namespace nicoSWD\Rule\tests\unit\TokenStream\Token;
 use Mockery\MockInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
-use nicoSWD\Rule\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\TokenIterator;
 use PHPUnit\Framework\TestCase;
 
 final class BaseTokenTest extends TestCase
@@ -49,8 +49,8 @@ final class BaseTokenTest extends TestCase
     /** @test */
     public function createNode(): void
     {
-        /** @var TokenStream|MockInterface $tokenStream */
-        $tokenStream = \Mockery::mock(TokenStream::class);
+        /** @var TokenIterator|MockInterface $tokenStream */
+        $tokenStream = \Mockery::mock(TokenIterator::class);
         $this->assertSame($this->token, $this->token->createNode($tokenStream));
     }
 
@@ -59,96 +59,5 @@ final class BaseTokenTest extends TestCase
     {
         $this->assertTrue($this->token->isOfType(TokenType::LOGICAL));
         $this->assertFalse($this->token->isOfType(TokenType::COMMA));
-    }
-
-    /** @test */
-    public function isValue(): void
-    {
-        $token = new class('123', 1337) extends BaseToken {
-            public function getType(): TokenType
-            {
-                return TokenType::VALUE;
-            }
-        };
-
-        $this->assertTrue($token->isValue());
-    }
-
-    /** @test */
-    public function isWhitespace(): void
-    {
-        $token = new class(' ', 1337) extends BaseToken {
-            public function getType(): TokenType
-            {
-                return TokenType::SPACE;
-            }
-        };
-
-        $this->assertTrue($token->isWhitespace());
-    }
-
-    /** @test */
-    public function isMethod(): void
-    {
-        $token = new class('.derp(', 1337) extends BaseToken {
-            public function getType(): TokenType
-            {
-                return TokenType::METHOD;
-            }
-        };
-
-        $this->assertTrue($token->isMethod());
-    }
-
-    /** @test */
-    public function isComma(): void
-    {
-        $token = new class(',', 1337) extends BaseToken {
-            public function getType(): TokenType
-            {
-                return TokenType::COMMA;
-            }
-        };
-
-        $this->assertTrue($token->isComma());
-    }
-
-    /** @test */
-    public function isOperator(): void
-    {
-        $token = new class('>', 1337) extends BaseToken {
-            public function getType(): TokenType
-            {
-                return TokenType::OPERATOR;
-            }
-        };
-
-        $this->assertTrue($token->isOperator());
-    }
-
-    /** @test */
-    public function isLogical(): void
-    {
-        $token = new class('&&', 1337) extends BaseToken {
-            public function getType(): TokenType
-            {
-                return TokenType::LOGICAL;
-            }
-        };
-
-        $this->assertTrue($token->isLogical());
-    }
-
-    /** @test */
-    public function isParenthesis(): void
-    {
-        $token = new class('(', 1337) extends BaseToken {
-            public function getType(): TokenType
-            {
-                return TokenType::PARENTHESIS;
-            }
-        };
-
-        $this->assertTrue($token->isParenthesis());
     }
 }
