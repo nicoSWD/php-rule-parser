@@ -11,8 +11,9 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 abstract class CallableFunction implements CallableUserFunctionInterface
 {
-    public function __construct(protected ?BaseToken $token = null)
-    {
+    public function __construct(
+        protected readonly ?BaseToken $token = null,
+    ) {
     }
 
     protected function parseParameter(array $parameters, int $numParam): ?BaseToken

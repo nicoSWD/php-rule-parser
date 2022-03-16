@@ -5,8 +5,8 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\Highlighter\Exception;
+namespace nicoSWD\Rule\TokenStream\Token\Type;
 
-class InvalidGroupException extends \Exception
+interface Whitespace
 {
 }

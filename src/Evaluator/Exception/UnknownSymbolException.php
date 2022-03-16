@@ -7,6 +7,6 @@
  */
 namespace nicoSWD\Rule\Evaluator\Exception;
 
-class UnknownSymbolException extends \Exception
+final class UnknownSymbolException extends \Exception
 {
 }

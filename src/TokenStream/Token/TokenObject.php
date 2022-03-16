@@ -7,9 +7,11 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-final class TokenObject extends BaseToken
+use nicoSWD\Rule\TokenStream\Token\Type\Value;
+
+final class TokenObject extends BaseToken implements Value
 {
-    public function getType(): int
+    public function getType(): TokenType
     {
         return TokenType::VALUE;
     }

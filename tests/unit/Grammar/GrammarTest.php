@@ -5,7 +5,7 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\tests\unit\Parser;
+namespace nicoSWD\Rule\tests\unit\Grammar;
 
 use nicoSWD\Rule\Grammar\Grammar;
 use PHPUnit\Framework\TestCase;
@@ -16,6 +16,16 @@ final class GrammarTest extends TestCase
     {
         $grammar = new class extends Grammar {
             public function getDefinition(): array
+            {
+                return [];
+            }
+
+            public function getInternalFunctions(): array
+            {
+                return [];
+            }
+
+            public function getInternalMethods(): array
             {
                 return [];
             }

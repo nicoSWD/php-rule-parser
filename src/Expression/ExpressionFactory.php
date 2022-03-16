@@ -9,14 +9,14 @@ namespace nicoSWD\Rule\Expression;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
+use nicoSWD\Rule\TokenStream\Token\Type\Operator;
 
-class ExpressionFactory implements ExpressionFactoryInterface
+final class ExpressionFactory implements ExpressionFactoryInterface
 {
     /** @throws ParserException */
-    public function createFromOperator(BaseToken $operator): BaseExpression
+    public function createFromOperator(Operator $operator): BaseExpression
     {
-        return match (get_class($operator)) {
+        return match ($operator::class) {
             Token\TokenEqual::class => new EqualExpression(),
             Token\TokenEqualStrict::class => new EqualStrictExpression(),
             Token\TokenNotEqual::class => new NotEqualExpression(),

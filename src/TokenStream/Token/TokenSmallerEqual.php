@@ -7,9 +7,11 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-final class TokenSmallerEqual extends BaseToken
+use nicoSWD\Rule\TokenStream\Token\Type\Operator;
+
+final class TokenSmallerEqual extends BaseToken implements Operator
 {
-    public function getType(): int
+    public function getType(): TokenType
     {
         return TokenType::OPERATOR;
     }

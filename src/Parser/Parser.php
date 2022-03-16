@@ -10,111 +10,87 @@ namespace nicoSWD\Rule\Parser;
 use Closure;
 use nicoSWD\Rule\Compiler\CompilerFactoryInterface;
 use nicoSWD\Rule\Compiler\CompilerInterface;
-use nicoSWD\Rule\Expression\ExpressionFactoryInterface;
-use nicoSWD\Rule\TokenStream\AST;
+use nicoSWD\Rule\TokenStream\TokenStream;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
+use nicoSWD\Rule\TokenStream\Token\Type\Operator;
 
-class Parser
+final class Parser
 {
-    private ?BaseToken $operator;
-    private array $values = [];
-
     public function __construct(
-        private AST $ast,
-        private ExpressionFactoryInterface $expressionFactory,
-        private CompilerFactoryInterface $compilerFactory
+        private readonly TokenStream $tokenStream,
+        private readonly EvaluatableExpressionFactory $expressionFactory,
+        private readonly CompilerFactoryInterface $compilerFactory,
     ) {
     }
 
+    /** @throws Exception\ParserException */
     public function parse(string $rule): string
     {
         $compiler = $this->compilerFactory->create();
-        $this->resetState();
+        $expression = $this->expressionFactory->create();
 
-        foreach ($this->ast->getStream($rule) as $token) {
-            $handler = $this->getHandlerForType($token->getType());
-            $handler($token, $compiler);
+        foreach ($this->tokenStream->getStream($rule) as $token) {
+            $handler = $this->getHandlerForToken($token, $expression);
+            $handler($compiler);
 
-            if ($this->expressionCanBeEvaluated()) {
-                $this->evaluateExpression($compiler);
+            if ($expression->isComplete()) {
+                $compiler->addBoolean($expression->evaluate());
             }
         }
 
         return $compiler->getCompiledRule();
     }
 
-    private function getHandlerForType(int $tokenType): Closure
+    private function getHandlerForToken(BaseToken $token, EvaluatableExpression $expression): Closure
     {
-        return match ($tokenType) {
-            TokenType::VALUE, TokenType::INT_VALUE => $this->handleValueToken(),
-            TokenType::OPERATOR => $this->handleOperatorToken(),
-            TokenType::LOGICAL => $this->handleLogicalToken(),
-            TokenType::PARENTHESIS => $this->handleParenthesisToken(),
+        return match ($token->getType()) {
+            TokenType::VALUE => $this->handleValueToken($token, $expression),
+            TokenType::OPERATOR => $this->handleOperatorToken($token, $expression),
+            TokenType::LOGICAL => $this->handleLogicalToken($token),
+            TokenType::PARENTHESIS => $this->handleParenthesisToken($token),
             TokenType::COMMENT, TokenType::SPACE => $this->handleDummyToken(),
-            default => $this->handleUnknownToken(),
+            default => $this->handleUnknownToken($token),
         };
     }
 
-    private function evaluateExpression(CompilerInterface $compiler): void
+    private function handleValueToken(BaseToken $token, EvaluatableExpression $expression): Closure
     {
-        $expression = $this->expressionFactory->createFromOperator($this->operator);
-
-        $compiler->addBoolean(
-            $expression->evaluate(...$this->values)
-        );
-
-        $this->resetState();
+        return static fn () => $expression->addValue($token->getValue());
     }
 
-    private function expressionCanBeEvaluated(): bool
+    private function handleLogicalToken(BaseToken $token): Closure
     {
-        return count($this->values) === 2;
+        return static fn (CompilerInterface $compiler) => $compiler->addLogical($token);
     }
 
-    private function handleValueToken(): Closure
+    private function handleParenthesisToken(BaseToken $token): Closure
     {
-        return fn (BaseToken $token) => $this->values[] = $token->getValue();
+        return static fn (CompilerInterface $compiler) => $compiler->addParentheses($token);
     }
 
-    private function handleLogicalToken(): Closure
+    private function handleUnknownToken(BaseToken $token): Closure
     {
-        return fn (BaseToken $token, CompilerInterface $compiler) => $compiler->addLogical($token);
+        return static fn () => throw Exception\ParserException::unknownToken($token);
     }
 
-    private function handleParenthesisToken(): Closure
+    private function handleOperatorToken(BaseToken & Operator $token, EvaluatableExpression $expression): Closure
     {
-        return fn (BaseToken $token, CompilerInterface $compiler) => $compiler->addParentheses($token);
-    }
-
-    private function handleUnknownToken(): Closure
-    {
-        return fn (BaseToken $token) => throw Exception\ParserException::unknownToken($token);
-    }
-
-    private function handleOperatorToken(): Closure
-    {
-        return function (BaseToken $token): void {
-            if (isset($this->operator)) {
+        return static function () use ($token, $expression): void {
+            if ($expression->hasOperator()) {
                 throw Exception\ParserException::unexpectedToken($token);
-            } elseif (empty($this->values)) {
+            } elseif ($expression->hasNoValues()) {
                 throw Exception\ParserException::incompleteExpression($token);
             }
 
-            $this->operator = $token;
+            $expression->operator = $token;
         };
     }
 
     private function handleDummyToken(): Closure
     {
-        return function (): void {
+        return static function (): void {
             // Do nothing
         };
-    }
-
-    private function resetState(): void
-    {
-        $this->operator = null;
-        $this->values = [];
     }
 }

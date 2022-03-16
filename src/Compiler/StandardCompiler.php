@@ -8,19 +8,17 @@
 namespace nicoSWD\Rule\Compiler;
 
 use nicoSWD\Rule\Compiler\Exception\MissingOperatorException;
+use nicoSWD\Rule\Evaluator\Boolean;
+use nicoSWD\Rule\Evaluator\Operator;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenAnd;
 use nicoSWD\Rule\TokenStream\Token\TokenOpeningParenthesis;
+use nicoSWD\Rule\TokenStream\Token\Type\Logical;
+use nicoSWD\Rule\TokenStream\Token\Type\Parenthesis;
 
-class StandardCompiler implements CompilerInterface
+final class StandardCompiler implements CompilerInterface
 {
-    private const BOOL_TRUE = '1';
-    private const BOOL_FALSE = '0';
-
-    private const LOGICAL_AND = '&';
-    private const LOGICAL_OR = '|';
-
     private const OPENING_PARENTHESIS = '(';
     private const CLOSING_PARENTHESIS = ')';
 
@@ -58,7 +56,7 @@ class StandardCompiler implements CompilerInterface
     }
 
     /** @throws ParserException */
-    public function addParentheses(BaseToken $token): void
+    public function addParentheses(BaseToken & Parenthesis $token): void
     {
         if ($token instanceof TokenOpeningParenthesis) {
             if (!$this->expectOpeningParenthesis()) {
@@ -71,31 +69,27 @@ class StandardCompiler implements CompilerInterface
     }
 
     /** @throws ParserException */
-    public function addLogical(BaseToken $token): void
+    public function addLogical(BaseToken & Logical $token): void
     {
-        $lastChar = $this->getLastChar();
-
-        if ($lastChar === self::LOGICAL_AND || $lastChar === self::LOGICAL_OR) {
+        if (Operator::tryFrom($this->getLastChar()) !== null) {
             throw ParserException::unexpectedToken($token);
         }
 
         if ($token instanceof TokenAnd) {
-            $this->output .= self::LOGICAL_AND;
+            $this->output .= Operator::LOGICAL_AND->value;
         } else {
-            $this->output .= self::LOGICAL_OR;
+            $this->output .= Operator::LOGICAL_OR->value;
         }
     }
 
     /** @throws MissingOperatorException */
     public function addBoolean(bool $bool): void
     {
-        $lastChar = $this->getLastChar();
-
-        if ($lastChar === self::BOOL_TRUE || $lastChar === self::BOOL_FALSE) {
+        if (Boolean::tryFrom($this->getLastChar()) !== null) {
             throw new MissingOperatorException();
         }
 
-        $this->output .= $bool ? self::BOOL_TRUE : self::BOOL_FALSE;
+        $this->output .= Boolean::fromBool($bool)->value;
     }
 
     private function numParenthesesMatch(): bool
@@ -105,11 +99,7 @@ class StandardCompiler implements CompilerInterface
 
     private function isIncompleteCondition(): bool
     {
-        $lastChar = $this->getLastChar();
-
-        return
-            $lastChar === self::LOGICAL_AND ||
-            $lastChar === self::LOGICAL_OR;
+        return Operator::tryFrom($this->getLastChar()) !== null;
     }
 
     private function expectOpeningParenthesis(): bool
@@ -118,9 +108,8 @@ class StandardCompiler implements CompilerInterface
 
         return
             $lastChar === '' ||
-            $lastChar === self::LOGICAL_AND ||
-            $lastChar === self::LOGICAL_OR ||
-            $lastChar === self::OPENING_PARENTHESIS;
+            $lastChar === self::OPENING_PARENTHESIS ||
+            Operator::tryFrom($lastChar) !== null;
     }
 
     private function getLastChar(): string

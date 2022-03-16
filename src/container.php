@@ -8,22 +8,22 @@
 namespace nicoSWD\Rule;
 
 use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
-use nicoSWD\Rule\TokenStream\AST;
+use nicoSWD\Rule\Parser\EvaluatableExpressionFactory;
+use nicoSWD\Rule\TokenStream\TokenStream;
 use nicoSWD\Rule\Compiler\CompilerFactory;
 use nicoSWD\Rule\Evaluator\Evaluator;
 use nicoSWD\Rule\Evaluator\EvaluatorInterface;
-use nicoSWD\Rule\Expression\ExpressionFactory;
 use nicoSWD\Rule\Tokenizer\Tokenizer;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
-use nicoSWD\Rule\TokenStream\TokenStreamFactory;
+use nicoSWD\Rule\TokenStream\TokenIteratorFactory;
 use nicoSWD\Rule\TokenStream\CallableUserMethodFactory;
 
 return new class {
-    private static TokenStreamFactory $tokenStreamFactory;
+    private static TokenIteratorFactory $tokenStreamFactory;
     private static TokenFactory $tokenFactory;
     private static CompilerFactory $compiler;
     private static JavaScript $javaScript;
-    private static ExpressionFactory $expressionFactory;
+    private static EvaluatableExpressionFactory $expressionFactory;
     private static CallableUserMethodFactory $userMethodFactory;
     private static Tokenizer $tokenizer;
     private static Evaluator $evaluator;
@@ -64,12 +64,12 @@ return new class {
         return self::$compiler;
     }
 
-    private static function ast(array $variables): AST
+    private static function ast(array $variables): TokenStream
     {
-        $ast = new AST(self::tokenizer(), self::tokenFactory(), self::tokenStreamFactory(), self::userMethodFactory());
-        $ast->setVariables($variables);
+        $tokenStream = new TokenStream(self::tokenizer(), self::tokenFactory(), self::tokenStreamFactory(), self::userMethodFactory());
+        $tokenStream->setVariables($variables);
 
-        return $ast;
+        return $tokenStream;
     }
 
     private static function tokenizer(): Tokenizer
@@ -90,19 +90,19 @@ return new class {
         return self::$javaScript;
     }
 
-    private static function tokenStreamFactory(): TokenStreamFactory
+    private static function tokenStreamFactory(): TokenIteratorFactory
     {
         if (!isset(self::$tokenStreamFactory)) {
-            self::$tokenStreamFactory = new TokenStreamFactory();
+            self::$tokenStreamFactory = new TokenIteratorFactory();
         }
 
         return self::$tokenStreamFactory;
     }
 
-    private static function expressionFactory(): ExpressionFactory
+    private static function expressionFactory(): EvaluatableExpressionFactory
     {
         if (!isset(self::$expressionFactory)) {
-            self::$expressionFactory = new ExpressionFactory();
+            self::$expressionFactory = new EvaluatableExpressionFactory();
         }
 
         return self::$expressionFactory;

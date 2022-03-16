@@ -8,16 +8,16 @@
 namespace nicoSWD\Rule\TokenStream\Token;
 
 use nicoSWD\Rule\TokenStream\Node\NodeArray;
-use nicoSWD\Rule\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\TokenIterator;
 
 final class TokenOpeningArray extends BaseToken
 {
-    public function getType(): int
+    public function getType(): TokenType
     {
         return TokenType::SQUARE_BRACKET;
     }
 
-    public function createNode(TokenStream $tokenStream): BaseToken
+    public function createNode(TokenIterator $tokenStream): BaseToken
     {
         return (new NodeArray($tokenStream))->getNode();
     }

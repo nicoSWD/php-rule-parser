@@ -32,6 +32,6 @@ final class Substr extends CallableFunction
 
         $value = substr($this->token->getValue(), ...$params);
 
-        return new TokenString((string) $value);
+        return new TokenString($value);
     }
 }

@@ -7,12 +7,12 @@
  */
 namespace nicoSWD\Rule\TokenStream;
 
-use ArrayIterator;
+use Iterator;
 
-class TokenStreamFactory
+final class TokenIteratorFactory
 {
-    public function create(ArrayIterator $stack, AST $ast): TokenStream
+    public function create(Iterator $stack, TokenStream $tokenStream): TokenIterator
     {
-        return new TokenStream($stack, $ast);
+        return new TokenIterator($stack, $tokenStream);
     }
 }
