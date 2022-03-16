@@ -36,7 +36,7 @@ tools:
     excluded_dirs: [tests]
 build:
   environment:
-    php: 8.1
+    php: 8.1.0
   nodes:
     analysis:
       tests:
