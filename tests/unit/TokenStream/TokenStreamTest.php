@@ -105,7 +105,7 @@ final class TokenStreamTest extends TestCase
 
     private function createDummyTokenizer(): TokenizerInterface
     {
-        return new class ($this->createGrammarWithInternalFunctions()) extends TokenizerInterface {
+        return new class($this->createGrammarWithInternalFunctions()) extends TokenizerInterface {
             public function __construct(
                 public readonly Grammar $grammar,
             ) {
@@ -120,7 +120,7 @@ final class TokenStreamTest extends TestCase
 
     private function createGrammarWithInternalFunctions(array $internalFunctions = []): Grammar
     {
-        return new class ($internalFunctions) extends Grammar {
+        return new class($internalFunctions) extends Grammar {
             public function __construct(
                 private array $internalFunctions,
             ) {

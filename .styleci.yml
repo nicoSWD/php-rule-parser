@@ -8,3 +8,5 @@ finder:
 enabled:
   - short_array_syntax
   - cast_spaces
+disabled:
+  - lowercase_constants

@@ -103,7 +103,7 @@ class TokenStream
 
     private function registerFunctions(): void
     {
-        foreach ($this->tokenizer->grammar->getInternalFunctions() as $function)  {
+        foreach ($this->tokenizer->grammar->getInternalFunctions() as $function) {
             $this->registerFunctionClass($function->name, $function->class);
         }
     }
