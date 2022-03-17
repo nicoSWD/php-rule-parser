@@ -7,8 +7,13 @@
  */
 namespace nicoSWD\Rule\Evaluator;
 
-enum Operator: string
+enum Boolean: string
 {
-    case LOGICAL_AND = '&';
-    case LOGICAL_OR = '|';
+    case TRUE = '1';
+    case FALSE = '0';
+
+    final public static function fromBool(bool $bool): self
+    {
+        return $bool ? self::TRUE : self::FALSE;
+    }
 }
