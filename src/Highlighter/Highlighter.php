@@ -20,14 +20,7 @@ final class Highlighter
     public function __construct(
         private readonly TokenizerInterface $tokenizer,
     ) {
-        $this->styles = new SplObjectStorage();
-        $this->styles[TokenType::COMMENT] = 'color: #948a8a; font-style: italic;';
-        $this->styles[TokenType::LOGICAL] = 'color: #c72d2d;';
-        $this->styles[TokenType::OPERATOR] = 'color: #000;';
-        $this->styles[TokenType::PARENTHESIS] = 'color: #000;';
-        $this->styles[TokenType::VALUE] = 'color: #e36700; font-style: italic;';
-        $this->styles[TokenType::VARIABLE] = 'color: #007694; font-weight: 900;';
-        $this->styles[TokenType::METHOD] = 'color: #000';
+        $this->styles = $this->defaultStyles();
     }
 
     public function setStyle(TokenType $group, string $style): void
@@ -61,5 +54,19 @@ final class Highlighter
     private function encode(BaseToken $token): string
     {
         return htmlentities($token->getOriginalValue(), ENT_QUOTES, 'utf-8');
+    }
+
+    private function defaultStyles(): SplObjectStorage
+    {
+        $styles = new SplObjectStorage();
+        $styles[TokenType::COMMENT] = 'color: #948a8a; font-style: italic;';
+        $styles[TokenType::LOGICAL] = 'color: #c72d2d;';
+        $styles[TokenType::OPERATOR] = 'color: #000;';
+        $styles[TokenType::PARENTHESIS] = 'color: #000;';
+        $styles[TokenType::VALUE] = 'color: #e36700; font-style: italic;';
+        $styles[TokenType::VARIABLE] = 'color: #007694; font-weight: 900;';
+        $styles[TokenType::METHOD] = 'color: #000';
+
+        return $styles;
     }
 }

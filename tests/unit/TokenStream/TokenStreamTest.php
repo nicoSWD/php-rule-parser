@@ -107,7 +107,7 @@ final class TokenStreamTest extends TestCase
     {
         return new class($this->createGrammarWithInternalFunctions()) extends TokenizerInterface {
             public function __construct(
-                public readonly Grammar $grammar,
+                public Grammar $grammar,
             ) {
             }
 

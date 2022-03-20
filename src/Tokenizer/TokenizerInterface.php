@@ -13,7 +13,7 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 abstract class TokenizerInterface
 {
-    public readonly Grammar $grammar;
+    public Grammar $grammar;
 
     /**
      * @param string $string

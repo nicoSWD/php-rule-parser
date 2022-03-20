@@ -16,7 +16,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 final class Tokenizer extends TokenizerInterface
 {
     public function __construct(
-        public readonly Grammar $grammar,
+        public Grammar $grammar,
         private readonly TokenFactory $tokenFactory,
     ) {
     }
