@@ -1,10 +1,12 @@
 ---
 preset: psr2
 risky: true
-version: 8
+version: 8.1
 finder:
   name:
     - "*.php"
 enabled:
   - short_array_syntax
   - cast_spaces
+disabled:
+  - lowercase_constants

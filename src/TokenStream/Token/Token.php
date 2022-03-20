@@ -7,37 +7,37 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-class Token
+enum Token: string
 {
-    public const AND = 'And';
-    public const OR = 'Or';
-    public const NOT_EQUAL_STRICT = 'NotEqualStrict';
-    public const NOT_EQUAL = 'NotEqual';
-    public const EQUAL_STRICT = 'EqualStrict';
-    public const EQUAL = 'Equal';
-    public const IN = 'In';
-    public const NOT_IN = 'NotIn';
-    public const BOOL_TRUE = 'True';
-    public const BOOL_FALSE = 'False';
-    public const NULL = 'Null';
-    public const METHOD = 'Method';
-    public const FUNCTION = 'Function';
-    public const VARIABLE = 'Variable';
-    public const FLOAT = 'Float';
-    public const INTEGER = 'Integer';
-    public const ENCAPSED_STRING = 'EncapsedString';
-    public const SMALLER_EQUAL = 'SmallerEqual';
-    public const GREATER_EQUAL = 'GreaterEqual';
-    public const SMALLER = 'Smaller';
-    public const GREATER = 'Greater';
-    public const OPENING_PARENTHESIS = 'OpeningParentheses';
-    public const CLOSING_PARENTHESIS = 'ClosingParentheses';
-    public const OPENING_ARRAY = 'OpeningArray';
-    public const CLOSING_ARRAY = 'ClosingArray';
-    public const COMMA = 'Comma';
-    public const REGEX = 'Regex';
-    public const COMMENT = 'Comment';
-    public const NEWLINE = 'Newline';
-    public const SPACE = 'Space';
-    public const UNKNOWN = 'Unknown';
+    case AND = 'And';
+    case OR = 'Or';
+    case NOT_EQUAL_STRICT = 'NotEqualStrict';
+    case NOT_EQUAL = 'NotEqual';
+    case EQUAL_STRICT = 'EqualStrict';
+    case EQUAL = 'Equal';
+    case IN = 'In';
+    case NOT_IN = 'NotIn';
+    case BOOL_TRUE = 'True';
+    case BOOL_FALSE = 'False';
+    case NULL = 'Null';
+    case METHOD = 'Method';
+    case FUNCTION = 'Function';
+    case VARIABLE = 'Variable';
+    case FLOAT = 'Float';
+    case INTEGER = 'Integer';
+    case ENCAPSED_STRING = 'EncapsedString';
+    case SMALLER_EQUAL = 'SmallerEqual';
+    case GREATER_EQUAL = 'GreaterEqual';
+    case SMALLER = 'Smaller';
+    case GREATER = 'Greater';
+    case OPENING_PARENTHESIS = 'OpeningParentheses';
+    case CLOSING_PARENTHESIS = 'ClosingParentheses';
+    case OPENING_ARRAY = 'OpeningArray';
+    case CLOSING_ARRAY = 'ClosingArray';
+    case COMMA = 'Comma';
+    case REGEX = 'Regex';
+    case COMMENT = 'Comment';
+    case NEWLINE = 'Newline';
+    case SPACE = 'Space';
+    case UNKNOWN = 'Unknown';
 }

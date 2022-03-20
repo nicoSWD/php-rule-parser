@@ -16,8 +16,9 @@ final class CallableUserMethod implements CallableUserFunctionInterface
 {
     private const MAGIC_METHOD_PREFIX = '__';
 
-    private TokenFactory $tokenFactory;
-    private Closure $callable;
+    private readonly TokenFactory $tokenFactory;
+    private readonly Closure $callable;
+
     private array $methodPrefixes = ['', 'get', 'is', 'get_', 'is_'];
 
     /**
@@ -32,10 +33,10 @@ final class CallableUserMethod implements CallableUserFunctionInterface
 
     public function call(?BaseToken ...$param): BaseToken
     {
-        $callableCopy = $this->callable;
+        $callable = $this->callable;
 
         return $this->tokenFactory->createFromPHPType(
-            $callableCopy(...$param)
+            $callable(...$param)
         );
     }
 
@@ -48,12 +49,12 @@ final class CallableUserMethod implements CallableUserFunctionInterface
         $object = $token->getValue();
 
         if (property_exists($object, $methodName)) {
-            return fn () => $object->{$methodName};
+            return static fn (): mixed => $object->{$methodName};
         }
 
         $method = $this->findCallableMethod($object, $methodName);
 
-        return fn (?BaseToken ...$params) => $method(
+        return fn (?BaseToken ...$params): mixed => $method(
             ...$this->getTokenValues($params)
         );
     }
@@ -80,13 +81,7 @@ final class CallableUserMethod implements CallableUserFunctionInterface
 
     private function getTokenValues(array $params): array
     {
-        $values = [];
-
-        foreach ($params as $token) {
-            $values[] = $token->getValue();
-        }
-
-        return $values;
+        return array_map(static fn (BaseToken $token): mixed => $token->getValue(), $params);
     }
 
     /** @throws Exception\ForbiddenMethodException */

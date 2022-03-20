@@ -9,32 +9,30 @@ namespace nicoSWD\Rule\tests\unit\Parser;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use nicoSWD\Rule\TokenStream\AST;
+use nicoSWD\Rule\Compiler\StandardCompiler;
+use nicoSWD\Rule\Parser\EvaluatableExpressionFactory;
+use nicoSWD\Rule\TokenStream\TokenStream;
 use nicoSWD\Rule\Compiler\CompilerFactoryInterface;
-use nicoSWD\Rule\Compiler\CompilerInterface;
-use nicoSWD\Rule\Expression\BaseExpression;
-use nicoSWD\Rule\Expression\ExpressionFactoryInterface;
 use nicoSWD\Rule\Parser\Parser;
 use nicoSWD\Rule\TokenStream\Token;
-use nicoSWD\Rule\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\TokenIterator;
 use PHPUnit\Framework\TestCase;
 
 final class ParserTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private AST|m\Mock $ast;
-    private ExpressionFactoryInterface|m\Mock $expressionFactory;
+    private TokenStream|m\Mock $tokenStream;
+    private EvaluatableExpressionFactory $expressionFactory;
     private CompilerFactoryInterface|m\Mock $compilerFactory;
     private Parser $parser;
 
     protected function setUp(): void
     {
-        $this->ast = m::mock(AST::class);
-        $this->expressionFactory = m::mock(ExpressionFactoryInterface::class);
+        $this->tokenStream = m::mock(TokenStream::class);
         $this->compilerFactory = m::mock(CompilerFactoryInterface::class);
 
-        $this->parser = new Parser($this->ast, $this->expressionFactory, $this->compilerFactory);
+        $this->parser = new Parser($this->tokenStream, new EvaluatableExpressionFactory(), $this->compilerFactory);
     }
 
     /** @test */
@@ -54,14 +52,10 @@ final class ParserTest extends TestCase
             new Token\TokenComment('// true dat!')
         ];
 
-        $compiler = m::mock(CompilerInterface::class);
-        $compiler->shouldReceive('addLogical')->once();
-        $compiler->shouldReceive('addParentheses')->twice();
-        $compiler->shouldReceive('addBoolean')->twice();
-        $compiler->shouldReceive('getCompiledRule')->once()->andReturn('(1)&1');
+        $compiler = new StandardCompiler();
 
         /** @var m\MockInterface $tokenStream */
-        $tokenStream = \Mockery::mock(TokenStream::class);
+        $tokenStream = \Mockery::mock(TokenIterator::class);
         $tokenStream->shouldReceive('rewind')->once();
         $tokenStream->shouldReceive('next');
         $tokenStream->shouldReceive('current')->andReturn(...$tokens);
@@ -70,22 +64,7 @@ final class ParserTest extends TestCase
         });
 
         $this->compilerFactory->shouldReceive('create')->once()->andReturn($compiler);
-        $this->ast->shouldReceive('getStream')->once()->andReturn($tokenStream);
-
-        $equalExpression = m::mock(BaseExpression::class);
-        $equalExpression->shouldReceive('evaluate')->once()->with(1, '1');
-
-        $greaterExpression = m::mock(BaseExpression::class);
-        $greaterExpression->shouldReceive('evaluate')->once()->with(2, 1);
-
-        $this->expressionFactory
-            ->shouldReceive('createFromOperator')
-            ->twice()
-            ->with(m::type(Token\BaseToken::class))
-            ->andReturn(
-                $equalExpression,
-                $greaterExpression
-            );
+        $this->tokenStream->shouldReceive('getStream')->once()->andReturn($tokenStream);
 
         $this->assertSame('(1)&1', $this->parser->parse('(1=="1")&&2>1 // true dat!'));
     }

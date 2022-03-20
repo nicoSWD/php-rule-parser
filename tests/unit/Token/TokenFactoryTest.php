@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 final class TokenFactoryTest extends TestCase
 {
-    private Token\TokenFactory $tokenFactory;
+    private readonly Token\TokenFactory $tokenFactory;
 
     protected function setUp(): void
     {
@@ -42,16 +42,8 @@ final class TokenFactoryTest extends TestCase
     }
 
     /** @test */
-    public function givenAnInvalidTokenNameItShouldThrowAnException(): void
-    {
-        $this->expectException(ParserException::class);
-
-        $this->tokenFactory->createFromTokenName('betrunken');
-    }
-
-    /** @test */
     public function givenAValidTokenNameItShouldReturnItsCorrespondingClassName(): void
     {
-        $this->assertSame(TokenEqualStrict::class, $this->tokenFactory->createFromTokenName(Token\Token::EQUAL_STRICT));
+        $this->assertSame(TokenEqualStrict::class, $this->tokenFactory->createFromToken(Token\Token::EQUAL_STRICT));
     }
 }

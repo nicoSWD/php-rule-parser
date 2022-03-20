@@ -23,14 +23,13 @@ class TokenFactory
             'double' => new TokenFloat($value),
             'object' => new TokenObject($value),
             'array' => $this->buildTokenCollection($value),
-            default => throw ParserException::unsupportedType(gettype($value))
+            default => throw ParserException::unsupportedType(gettype($value)),
         };
     }
 
-    /** @throws ParserException */
-    public function createFromTokenName(string $tokenName): string
+    public function createFromToken(Token $token): string
     {
-        return match ($tokenName) {
+        return match ($token) {
             Token::AND => TokenAnd::class,
             Token::OR => TokenOr::class,
             Token::NOT_EQUAL_STRICT => TokenNotEqualStrict::class,
@@ -62,7 +61,6 @@ class TokenFactory
             Token::NEWLINE => TokenNewline::class,
             Token::SPACE => TokenSpace::class,
             Token::UNKNOWN => TokenUnknown::class,
-            default => throw ParserException::unknownTokenName($tokenName)
         };
     }
 

@@ -10,20 +10,21 @@ namespace nicoSWD\Rule\TokenStream\Node;
 use Closure;
 use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
+use nicoSWD\Rule\TokenStream\Token\Type\Method;
+use nicoSWD\Rule\TokenStream\Token\Type\Whitespace;
 use nicoSWD\Rule\TokenStream\TokenCollection;
 use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\TokenIterator;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
 
 abstract class BaseNode
 {
-    protected TokenStream $tokenStream;
-    private string $methodName = '';
+    private string $methodName;
     private int $methodOffset = 0;
 
-    public function __construct(TokenStream $tokenStream)
-    {
-        $this->tokenStream = $tokenStream;
+    public function __construct(
+        protected readonly TokenIterator $tokenStream,
+    ) {
     }
 
     /** @throws ParserException */
@@ -43,12 +44,12 @@ abstract class BaseNode
 
             if (!$token) {
                 break;
-            } elseif ($token->isMethod()) {
+            } elseif ($token instanceof Method) {
                 $this->methodName = $token->getValue();
                 $this->methodOffset = $stack->key();
                 $hasMethod = true;
                 break;
-            } elseif (!$token->isWhitespace()) {
+            } elseif (!$token instanceof Whitespace) {
                 break;
             }
         }
@@ -100,7 +101,7 @@ abstract class BaseNode
     }
 
     /** @throws ParserException */
-    private function getCommaSeparatedValues(int $stopAt): TokenCollection
+    private function getCommaSeparatedValues(TokenType $stopAt): TokenCollection
     {
         $items = new TokenCollection();
         $commaExpected = false;
@@ -108,14 +109,14 @@ abstract class BaseNode
         do {
             $token = $this->getNextToken();
 
-            if ($token->isValue()) {
+            if (TokenType::isValue($token)) {
                 if ($commaExpected) {
                     throw ParserException::unexpectedToken($token);
                 }
 
                 $commaExpected = true;
                 $items->attach($token);
-            } elseif ($token->isComma()) {
+            } elseif ($token->isOfType(TokenType::COMMA)) {
                 if (!$commaExpected) {
                     throw ParserException::unexpectedComma($token);
                 }
@@ -123,7 +124,7 @@ abstract class BaseNode
                 $commaExpected = false;
             } elseif ($token->isOfType($stopAt)) {
                 break;
-            } elseif (!$token->isWhitespace()) {
+            } elseif (!$token->canBeIgnored()) {
                 throw ParserException::unexpectedToken($token);
             }
         } while (true);

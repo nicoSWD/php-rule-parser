@@ -18,8 +18,6 @@ Find me on Twitter: @[nicoSWD](https://twitter.com/nicoSWD)
 
 (If you're using PHP 5, you might want to take a look at [version 0.4.0](https://github.com/nicoSWD/php-rule-parser/tree/0.4.0))
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/67203389-970c-419c-9430-a7f9a005bd94/big.png)](https://insight.sensiolabs.com/projects/67203389-970c-419c-9430-a7f9a005bd94)
-
 ## Install
 
 Via Composer
@@ -40,23 +38,29 @@ This library works best with one of these bundles below, but they're not require
 
 Test if a value is in a given array
 ```php
-$variables = ['foo' => 6];
+$variables = [
+    'coupon_code' => $_POST['coupon_code'],
+];
 
-$rule = new Rule('foo in [4, 6, 7]', $variables);
+$rule = new Rule('coupon_code in ["summer_discount", "summer21"]', $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
-Simple array manipulation 
+Performing a regular expression
 ```php
-$rule = new Rule('[1, 4, 3].join(".") === "1.4.3"');
+$variables = [
+    'coupon_code' => $_POST['coupon_code'],
+];
+
+$rule = new Rule('coupon_code.test(/^summer20[0-9]{2}$/) == true', $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
 Test if a value is between a given range
 ```php
-$variables = ['threshold' => 80];
+$variables = ['points' => 80];
 
-$rule = new Rule('threshold >= 50 && threshold <= 100', $variables);
+$rule = new Rule('points >= 50 && points <= 100', $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
@@ -64,8 +68,6 @@ Call methods on objects from within rules
 ```php
 class User
 {
-    // ...
-
     public function points(): int
     {
         return 1337;    
@@ -180,7 +182,7 @@ $highlighter = new Rule\Highlighter\Highlighter(new Rule\Tokenizer());
 
 // Optional custom styles
 $highlighter->setStyle(
-    Rule\Constants::GROUP_VARIABLE,
+    TokenType::VARIABLE,
     'color: #007694; font-weight: 900;'
 );
 

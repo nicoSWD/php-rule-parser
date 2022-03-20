@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\TokenStream\Token;
 
 final class TokenComma extends BaseToken
 {
-    public function getType(): int
+    public function getType(): TokenType
     {
         return TokenType::COMMA;
     }

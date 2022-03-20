@@ -8,14 +8,14 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: PHPStan
-        uses: docker://jakzal/phpqa:php8.0-alpine
+        uses: docker://jakzal/phpqa:php8.1
         with:
           args: phpstan analyze src/ -l 1
       - name: PHP-CS-Fixer
-        uses: docker://jakzal/phpqa:php8.0-alpine
+        uses: docker://jakzal/phpqa:php8.1
         with:
           args: php-cs-fixer --dry-run --allow-risky=yes --no-interaction --ansi fix
       - name: Deptrac
-        uses: docker://jakzal/phpqa:php8.0-alpine
+        uses: docker://jakzal/phpqa:php8.1
         with:
           args: deptrac --no-interaction --ansi --formatter-graphviz-display=0

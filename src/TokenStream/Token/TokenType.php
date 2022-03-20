@@ -7,19 +7,23 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-class TokenType
+enum TokenType
 {
-    public const OPERATOR = 1;
-    public const INT_VALUE = 2;
-    public const VALUE = 4;
-    public const LOGICAL = 8;
-    public const VARIABLE = 16;
-    public const COMMENT = 32;
-    public const SPACE = 64;
-    public const UNKNOWN = 128;
-    public const PARENTHESIS = 256;
-    public const SQUARE_BRACKET = 512;
-    public const COMMA = 1024;
-    public const METHOD = 2048;
-    public const FUNCTION = 4098;
+    case OPERATOR;
+    case VALUE;
+    case LOGICAL;
+    case VARIABLE;
+    case COMMENT;
+    case SPACE;
+    case UNKNOWN;
+    case PARENTHESIS;
+    case SQUARE_BRACKET;
+    case COMMA;
+    case METHOD;
+    case FUNCTION;
+
+    public static function isValue(BaseToken $token): bool
+    {
+        return $token->getType() === self::VALUE;
+    }
 }

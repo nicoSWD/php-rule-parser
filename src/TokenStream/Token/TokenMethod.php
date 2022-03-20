@@ -7,9 +7,11 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-final class TokenMethod extends BaseToken
+use nicoSWD\Rule\TokenStream\Token\Type\Method;
+
+final class TokenMethod extends BaseToken implements Method
 {
-    public function getType(): int
+    public function getType(): TokenType
     {
         return TokenType::METHOD;
     }

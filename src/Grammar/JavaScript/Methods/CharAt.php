@@ -27,11 +27,7 @@ final class CharAt extends CallableFunction
             $offset = $offset->getValue();
         }
 
-        if (!isset($tokenValue[$offset])) {
-            $char = '';
-        } else {
-            $char = $tokenValue[$offset];
-        }
+        $char = $tokenValue[$offset] ?? '';
 
         return new TokenString($char);
     }

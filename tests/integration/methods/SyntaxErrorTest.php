@@ -90,6 +90,6 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".test("foo") === false');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('undefined is not a function', $rule->getError());
+        $this->assertSame('test() is not a function', $rule->getError());
     }
 }

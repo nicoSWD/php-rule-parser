@@ -5,14 +5,15 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <nico@oelgart.com>
  */
-namespace nicoSWD\Rule\TokenStream;
+namespace nicoSWD\Rule\Evaluator;
 
-use ArrayIterator;
-
-class TokenStreamFactory
+enum Boolean: string
 {
-    public function create(ArrayIterator $stack, AST $ast): TokenStream
+    case TRUE = '1';
+    case FALSE = '0';
+
+    final public static function fromBool(bool $bool): self
     {
-        return new TokenStream($stack, $ast);
+        return $bool ? self::TRUE : self::FALSE;
     }
 }

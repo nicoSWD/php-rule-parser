@@ -9,6 +9,7 @@ namespace nicoSWD\Rule\tests\integration;
 
 use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rule\Tokenizer\Tokenizer;
+use nicoSWD\Rule\TokenStream\Token\Token;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
@@ -26,10 +27,9 @@ final class TokenizerTest extends TestCase
     public function getMatchedTokenReturnsFalseOnFailure(): void
     {
         $reflection = new ReflectionMethod($this->tokenizer, 'getMatchedToken');
-        $reflection->setAccessible(true);
         $result = $reflection->invoke($this->tokenizer, []);
 
-        $this->assertSame('Unknown', $result);
+        $this->assertSame(Token::UNKNOWN, $result);
     }
 
     /** @test */
