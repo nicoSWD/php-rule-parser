@@ -12,6 +12,7 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
 use nicoSWD\Rule\TokenStream\TokenIterator;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class BaseTokenTest extends TestCase
 {
@@ -28,25 +29,25 @@ final class BaseTokenTest extends TestCase
         };
     }
 
-    /** @test */
+    #[Test]
     public function offset(): void
     {
         $this->assertSame(1337, $this->token->getOffset());
     }
 
-    /** @test */
+    #[Test]
     public function getValue(): void
     {
         $this->assertSame('&&', $this->token->getValue());
     }
 
-    /** @test */
+    #[Test]
     public function getOriginalValue(): void
     {
         $this->assertSame('&&', $this->token->getOriginalValue());
     }
 
-    /** @test */
+    #[Test]
     public function createNode(): void
     {
         /** @var TokenIterator|MockInterface $tokenStream */
@@ -54,7 +55,7 @@ final class BaseTokenTest extends TestCase
         $this->assertSame($this->token, $this->token->createNode($tokenStream));
     }
 
-    /** @test */
+    #[Test]
     public function isOfType(): void
     {
         $this->assertTrue($this->token->isOfType(TokenType::LOGICAL));

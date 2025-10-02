@@ -9,10 +9,11 @@ namespace nicoSWD\Rule\tests\integration;
 
 use nicoSWD\Rule;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class RuleTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function basicRuleWithCommentsEvaluatesCorrectly(): void
     {
         $string = '
@@ -39,7 +40,7 @@ final class RuleTest extends TestCase
         $this->assertTrue(!$rule->isFalse());
     }
 
-    /** @test */
+    #[Test]
     public function isValidReturnsFalseOnInvalidSyntax(): void
     {
         $ruleStr = '(2 == 2) && (1 < 3 && 3 > 2 (1 == 1))';
@@ -50,7 +51,7 @@ final class RuleTest extends TestCase
         $this->assertSame('Unexpected "(" at position 28', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function isValidReturnsTrueOnValidSyntax(): void
     {
         $ruleStr = '(2 == 2) && (1 < 3 && 3 > 2 || (1 == 1))';
@@ -61,7 +62,7 @@ final class RuleTest extends TestCase
         $this->assertEmpty($rule->getError());
         $this->assertTrue($rule->isTrue());
     }
-    /** @test */
+    #[Test]
     public function basicInRule(): void
     {
         $ruleStr = '4 in [4, 6, 7]';
@@ -81,7 +82,7 @@ final class RuleTest extends TestCase
         $this->assertFalse($rule->isTrue());
     }
 
-    /** @test */
+    #[Test]
     public function basicNotInRule(): void
     {
         $ruleStr = '5 not 

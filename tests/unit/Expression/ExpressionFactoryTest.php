@@ -10,7 +10,9 @@ namespace nicoSWD\Rule\tests\unit\Expression;
 use nicoSWD\Rule\Expression;
 use nicoSWD\Rule\Expression\ExpressionFactory;
 use nicoSWD\Rule\TokenStream\Token;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class ExpressionFactoryTest extends TestCase
 {
@@ -21,10 +23,8 @@ final class ExpressionFactoryTest extends TestCase
         $this->factory = new ExpressionFactory();
     }
 
-    /**
-     * @test
-     * @dataProvider expressionProvider
-     */
+    #[Test]
+    #[DataProvider('expressionProvider')]
     public function givenAnEqualOperatorItShouldCreateAnEqualExpression(
         string $expressionClass,
         Token\BaseToken $token
@@ -35,7 +35,7 @@ final class ExpressionFactoryTest extends TestCase
         );
     }
 
-    public function expressionProvider(): array
+    public static function expressionProvider(): array
     {
         return [
             [Expression\EqualExpression::class, new Token\TokenEqual('==')],

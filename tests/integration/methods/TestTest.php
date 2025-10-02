@@ -8,24 +8,25 @@
 namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class TestTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function basicRegularExpression(): void
     {
         $this->assertTrue($this->evaluate('/^foo$/.test("foo") === true'));
         $this->assertTrue($this->evaluate('/^foo$/.test(foo) === true', ['foo' => 'foo']));
     }
 
-    /** @test */
+    #[Test]
     public function arrayIsConvertedToString(): void
     {
         $this->assertTrue($this->evaluate('/^foo$/.test(["foo"]) === true'));
         $this->assertTrue($this->evaluate('/1/.test([[[1]]]) === true'));
     }
 
-    /** @test */
+    #[Test]
     public function modifiers(): void
     {
         $this->assertTrue($this->evaluate('/^foo$/i.test("FOO") === true'));
@@ -34,7 +35,7 @@ final class TestTest extends AbstractTestBase
         $this->assertFalse($this->evaluate('/^foo$/.test("' . "\n\n" .'foo") === true'));
     }
 
-    /** @test */
+    #[Test]
     public function gModifierIsIgnored(): void
     {
         $this->assertTrue($this->evaluate('/^foo$/gi.test("foo") === true'), 'gi');
@@ -42,7 +43,7 @@ final class TestTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('/^foo$/g.test("foo") === true'), '"g" modifier alone');
     }
 
-    /** @test */
+    #[Test]
     public function booleansAndNullsAsSubject(): void
     {
         $this->assertTrue($this->evaluate('/^foo$/.test(true) === false'));
@@ -51,7 +52,7 @@ final class TestTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('/^true/.test(true) === false'));
     }
 
-    /** @test */
+    #[Test]
     public function withOmittedParameters(): void
     {
         $this->assertTrue($this->evaluate('/^foo$/.test() === false'));

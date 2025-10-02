@@ -13,6 +13,7 @@ use nicoSWD\Rule\Highlighter\Highlighter;
 use nicoSWD\Rule\Tokenizer\Tokenizer;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class HighlighterTest extends TestCase
 {
@@ -23,7 +24,7 @@ final class HighlighterTest extends TestCase
         $this->highlighter = new Highlighter(new Tokenizer(new JavaScript(), new TokenFactory()));
     }
 
-    /** @test */
+    #[Test]
     public function givenAStyleForATokenGroupItShouldBeUsed(): void
     {
         $this->highlighter->setStyle(

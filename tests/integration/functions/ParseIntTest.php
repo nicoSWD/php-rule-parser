@@ -8,35 +8,36 @@
 namespace nicoSWD\Rule\tests\integration\functions;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class ParseIntTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function onStringLiteral(): void
     {
         $this->assertTrue($this->evaluate('parseInt("3") === 3'));
     }
 
-    /** @test */
+    #[Test]
     public function onStringLiteralWithSpaces(): void
     {
         $this->assertTrue($this->evaluate('parseInt(" 3 ") === 3'));
     }
 
-    /** @test */
+    #[Test]
     public function onStringLiteralWithNonNumericChars(): void
     {
         $this->assertTrue($this->evaluate('parseInt("3aaa") === 3'));
     }
 
-    /** @test */
+    #[Test]
     public function onUserDefinedVariable(): void
     {
         $this->assertTrue($this->evaluate('parseInt(foo) === 3', ['foo' => '3']));
         $this->assertFalse($this->evaluate('parseInt(foo) === "3"', ['foo' => 3]));
     }
 
-    /** @test */
+    #[Test]
     public function callWithoutArgsShouldReturnNan(): void
     {
         $this->assertFalse($this->evaluate('parseInt() === 1'));

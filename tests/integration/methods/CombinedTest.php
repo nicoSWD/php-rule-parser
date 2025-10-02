@@ -8,10 +8,11 @@
 namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class CombinedTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function mixedMethodCalls(): void
     {
         $this->assertTrue($this->evaluate(
@@ -41,7 +42,7 @@ final class CombinedTest extends AbstractTestBase
         ));
     }
 
-    /** @test */
+    #[Test]
     public function chainedMethodCalls(): void
     {
         $this->assertTrue($this->evaluate(
@@ -69,7 +70,7 @@ final class CombinedTest extends AbstractTestBase
         ));
     }
 
-    /** @test */
+    #[Test]
     public function functionCallInsideMethod(): void
     {
         $this->assertTrue($this->evaluate('"abc".substr(parseInt(" 2 ")) === "c"'));

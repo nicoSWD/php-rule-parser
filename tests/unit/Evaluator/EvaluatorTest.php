@@ -10,6 +10,7 @@ namespace nicoSWD\Rule\tests\unit\Evaluator;
 use nicoSWD\Rule\Evaluator\Evaluator;
 use nicoSWD\Rule\Evaluator\Exception\UnknownSymbolException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class EvaluatorTest extends TestCase
 {
@@ -20,7 +21,7 @@ final class EvaluatorTest extends TestCase
         $this->evaluator = new Evaluator();
     }
 
-    /** @test */
+    #[Test]
     public function givenACompiledRuleWithAnLogicalAndItShouldEvaluateBothOperandsAndReturnTheResult(): void
     {
         $this->assertTrue($this->evaluator->evaluate('1&1'));
@@ -29,7 +30,7 @@ final class EvaluatorTest extends TestCase
         $this->assertFalse($this->evaluator->evaluate('0&0'));
     }
 
-    /** @test */
+    #[Test]
     public function givenACompiledRuleWithAnLogicalOrItShouldEvaluateBothOperandsAndReturnTheResult(): void
     {
         $this->assertTrue($this->evaluator->evaluate('1|1'));
@@ -38,7 +39,7 @@ final class EvaluatorTest extends TestCase
         $this->assertFalse($this->evaluator->evaluate('0|0'));
     }
 
-    /** @test */
+    #[Test]
     public function givenACompiledRuleWithGroupsTheyShouldBeEvaluatedFirst(): void
     {
         $this->assertTrue($this->evaluator->evaluate('0|(1|0)'));
@@ -48,7 +49,7 @@ final class EvaluatorTest extends TestCase
         $this->assertFalse($this->evaluator->evaluate('0|(0|(1&0))'));
     }
 
-    /** @test */
+    #[Test]
     public function givenACharacterWhenUnknownItShouldThrowAnException(): void
     {
         $this->expectException(UnknownSymbolException::class);

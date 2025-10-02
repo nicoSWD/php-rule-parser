@@ -9,10 +9,11 @@ namespace nicoSWD\Rule\tests\integration\arrays;
 
 use nicoSWD\Rule\Rule;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class ArraysTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function arraysEqualUserSuppliedArrays(): void
     {
         $this->assertTrue($this->evaluate(
@@ -26,20 +27,20 @@ final class ArraysTest extends AbstractTestBase
         ]));
     }
 
-    /** @test */
+    #[Test]
     public function emptyArrayDoesParseCorrectly(): void
     {
         $this->assertTrue($this->evaluate('[] === []'));
     }
 
-    /** @test */
+    #[Test]
     public function literalArrayComparison(): void
     {
         $this->assertTrue($this->evaluate('[123, 12] === [123, 12]'));
         $this->assertFalse($this->evaluate('[123, 12] === [123, 12, 1]'));
     }
 
-    /** @test */
+    #[Test]
     public function commentsAreIgnoredInArray(): void
     {
         $this->assertTrue($this->evaluate(
@@ -51,7 +52,7 @@ final class ArraysTest extends AbstractTestBase
         ));
     }
 
-    /** @test */
+    #[Test]
     public function trailingCommaThrowsException(): void
     {
         $rule = new Rule('["foo", "bar", ] === ["foo", "bar"]');
@@ -60,7 +61,7 @@ final class ArraysTest extends AbstractTestBase
         $this->assertSame('Unexpected "," at position 15', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function lineIsReportedCorrectlyOnSyntaxError2(): void
     {
         $rule = new Rule('["foo", "bar", ,] === ["foo", "bar"]');
@@ -69,7 +70,7 @@ final class ArraysTest extends AbstractTestBase
         $this->assertSame('Unexpected "," at position 15', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function missingCommaThrowsException(): void
     {
         $rule = new Rule('["foo"  "bar"] === ["foo", "bar"]');
@@ -78,7 +79,7 @@ final class ArraysTest extends AbstractTestBase
         $this->assertSame('Unexpected "bar" at position 8', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function unexpectedTokenThrowsException(): void
     {
         $rule = new Rule('["foo", ===] === ["foo", "bar"]');
@@ -87,7 +88,7 @@ final class ArraysTest extends AbstractTestBase
         $this->assertSame('Unexpected "===" at position 8', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function unexpectedEndOfStringThrowsException(): void
     {
         $rule = new Rule('["foo", "bar"');

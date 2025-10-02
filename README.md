@@ -1,6 +1,5 @@
 ## PHP Rule Engine
 
-
 [![Latest Stable Version](https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=master)](https://travis-ci.org/nicoSWD/php-rule-parser)
 [![Build status][Master coverage image]][Master coverage] 
 [![Code Quality][Master quality image]][Master quality] 
@@ -12,7 +11,6 @@
 You're looking at a standalone PHP library to parse and evaluate text based rules with a Javascript-like syntax. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
 
 This library has initially been used to change and configure the behavior of certain "Workflows" (without changing actual code) in an intranet application, but it may serve a purpose elsewhere.
-
 
 Find me on Twitter: @[nicoSWD](https://twitter.com/nicoSWD)
 
@@ -39,7 +37,7 @@ This library works best with one of these bundles below, but they're not require
 Test if a value is in a given array
 ```php
 $variables = [
-    'coupon_code' => $_POST['coupon_code'],
+    'coupon_code' => (string) $_POST['coupon_code'],
 ];
 
 $rule = new Rule('coupon_code in ["summer_discount", "summer21"]', $variables);
@@ -49,7 +47,7 @@ var_dump($rule->isTrue()); // bool(true)
 Performing a regular expression
 ```php
 $variables = [
-    'coupon_code' => $_POST['coupon_code'],
+    'coupon_code' => (string) $_POST['coupon_code'],
 ];
 
 $rule = new Rule('coupon_code.test(/^summer20[0-9]{2}$/) == true', $variables);

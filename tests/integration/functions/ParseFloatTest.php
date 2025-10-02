@@ -8,35 +8,36 @@
 namespace nicoSWD\Rule\tests\integration\functions;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class ParseFloatTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function onStringLiteral(): void
     {
         $this->assertTrue($this->evaluate('parseFloat("3.1337") === 3.1337'));
     }
 
-    /** @test */
+    #[Test]
     public function onStringLiteralWithSpaces(): void
     {
         $this->assertTrue($this->evaluate('parseFloat(" 3.1 ") === 3.1'));
     }
 
-    /** @test */
+    #[Test]
     public function onStringLiteralWithNonNumericChars(): void
     {
         $this->assertTrue($this->evaluate('parseFloat("3.12aaa") === 3.12'));
     }
 
-    /** @test */
+    #[Test]
     public function onUserDefinedVariable(): void
     {
         $this->assertTrue($this->evaluate('parseFloat(foo) === 3.4', ['foo' => '3.4']));
         $this->assertFalse($this->evaluate('parseFloat(foo) === "3.5"', ['foo' => 3.5]));
     }
 
-    /** @test */
+    #[Test]
     public function callWithoutArgsShouldReturnNaN(): void
     {
         $this->assertFalse($this->evaluate('parseFloat() === 1'));

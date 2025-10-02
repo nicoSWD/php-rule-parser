@@ -9,10 +9,11 @@ namespace nicoSWD\Rule\tests\integration\functions;
 
 use nicoSWD\Rule\Rule;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class SyntaxErrorTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function undefinedFunctionThrowsException(): void
     {
         $rule = new Rule('nope() === true');
@@ -21,7 +22,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('nope is not defined at position 0', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function incorrectSpellingThrowsException(): void
     {
         $rule = new Rule('/* fail */ paRSeInt("2") === 2');

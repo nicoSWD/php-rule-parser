@@ -9,10 +9,11 @@ namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\Rule;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class ToUpperCaseTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function spacesBetweenVariableAndMethodWork(): void
     {
         $this->assertTrue($this->evaluate('foo . toUpperCase() === "BAR"', ['foo' => 'bar']));
@@ -24,20 +25,20 @@ final class ToUpperCaseTest extends AbstractTestBase
         ));
     }
 
-    /** @test */
+    #[Test]
     public function ifCallOnStringLiteralsWorks(): void
     {
         $this->assertTrue($this->evaluate('"bar".toUpperCase() === "BAR"'));
         $this->assertTrue($this->evaluate('"bar" . toUpperCase() === "BAR"'));
     }
 
-    /** @test */
+    #[Test]
     public function ifMethodCanBeCalledOnVariablesHoldingIntegers(): void
     {
         $this->assertTrue($this->evaluate('foo.toUpperCase() === "1"', ['foo' => 1]));
     }
 
-    /** @test */
+    #[Test]
     public function callOnIntegersThrowsException(): void
     {
         $rule = new Rule('1.toUpperCase() === "1"', ['foo' => 1]);

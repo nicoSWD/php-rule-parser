@@ -12,6 +12,7 @@ use nicoSWD\Rule\Tokenizer\Tokenizer;
 use nicoSWD\Rule\TokenStream\Token\Token;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 use ReflectionMethod;
 
 final class TokenizerTest extends TestCase
@@ -23,7 +24,7 @@ final class TokenizerTest extends TestCase
         $this->tokenizer = new Tokenizer(new JavaScript(), new TokenFactory());
     }
 
-    /** @test */
+    #[Test]
     public function getMatchedTokenReturnsFalseOnFailure(): void
     {
         $reflection = new ReflectionMethod($this->tokenizer, 'getMatchedToken');
@@ -32,7 +33,7 @@ final class TokenizerTest extends TestCase
         $this->assertSame(Token::UNKNOWN, $result);
     }
 
-    /** @test */
+    #[Test]
     public function tokenPositionAndLineAreCorrect(): void
     {
         $tokens = $this->tokenizer->tokenize('1');

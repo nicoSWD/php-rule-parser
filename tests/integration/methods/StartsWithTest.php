@@ -9,24 +9,25 @@ namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class StartsWithTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function givenAStringWhenStartsWithNeedleItShouldReturnTrue(): void
     {
         $this->assertTrue($this->evaluate('"bar".startsWith("ba") === true'));
         $this->assertTrue($this->evaluate('foo.startsWith("ar", 1) === true', ['foo' => 'bar']));
     }
 
-    /** @test */
+    #[Test]
     public function givenAStringWhenNotStartsWithNeedleItShouldReturnTrue(): void
     {
         $this->assertTrue($this->evaluate('"bar".startsWith("a") === false'));
         $this->assertTrue($this->evaluate('foo.startsWith("x") === false', ['foo' => 'bar']));
     }
 
-    /** @test */
+    #[Test]
     public function givenAStringWhenTestedOnNonStringValuesItShouldThrowAnException(): void
     {
         $this->expectException(ParserException::class);

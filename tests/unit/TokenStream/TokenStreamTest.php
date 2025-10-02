@@ -26,6 +26,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\TokenIteratorFactory;
 use nicoSWD\Rule\TokenStream\CallableUserMethodFactory;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 use stdClass;
 
 final class TokenStreamTest extends TestCase
@@ -44,7 +45,7 @@ final class TokenStreamTest extends TestCase
         $this->tokenStreamFactory = new TokenIteratorFactory();
     }
 
-    /** @test */
+    #[Test]
     public function givenAFunctionNameWhenValidItShouldReturnTheCorrespondingFunction(): void
     {
         $grammar = $this->createGrammarWithInternalFunctions([new InternalFunction('test', TestFunc::class)]);
@@ -63,7 +64,7 @@ final class TokenStreamTest extends TestCase
         $this->assertSame(234, $result->getValue());
     }
 
-    /** @test */
+    #[Test]
     public function givenAFunctionNameWhenItDoesNotImplementTheInterfaceItShouldThrowAnException(): void
     {
         $this->expectExceptionMessage(sprintf(
@@ -84,7 +85,7 @@ final class TokenStreamTest extends TestCase
         $tokenStream->getFunction('test')->call(Mockery::mock(BaseNode::class));
     }
 
-    /** @test */
+    #[Test]
     public function givenAFunctionNameNotDefinedItShouldThrowAnException(): void
     {
         $this->expectException(UndefinedFunctionException::class);

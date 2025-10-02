@@ -8,24 +8,25 @@
 namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class JoinTest extends AbstractTestBase
 {
     protected array $array = ['foo' => ['foo', 'bar']];
 
-    /** @test */
+    #[Test]
     public function ifOmittedDelimiterFallsBackToDefault(): void
     {
         $this->assertTrue($this->evaluate('foo.join() === "foo,bar"', $this->array));
     }
 
-    /** @test */
+    #[Test]
     public function literalStringDelimiter(): void
     {
         $this->assertTrue($this->evaluate('foo.join("|") === "foo|bar"', $this->array));
     }
 
-    /** @test */
+    #[Test]
     public function variableValueAsDelimiter(): void
     {
         $this->assertTrue($this->evaluate(
@@ -34,20 +35,20 @@ final class JoinTest extends AbstractTestBase
         ));
     }
 
-    /** @test */
+    #[Test]
     public function callOnStringLiteralArray(): void
     {
         $this->assertTrue($this->evaluate('[1, 2, 3].join("|") === "1|2|3"'));
         $this->assertTrue($this->evaluate('[1, 2, 3] . join("|") === "1|2|3"'));
     }
 
-    /** @test */
+    #[Test]
     public function variableInArrayIsJoined(): void
     {
         $this->assertTrue($this->evaluate('[1, 2, foo].join("|") === "1|2|3"', ['foo' => 3]));
     }
 
-    /** @test */
+    #[Test]
     public function joinOnEmptyArray(): void
     {
         $this->assertTrue($this->evaluate('[].join("|") === ""'));

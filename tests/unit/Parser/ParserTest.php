@@ -17,6 +17,7 @@ use nicoSWD\Rule\Parser\Parser;
 use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\TokenIterator;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class ParserTest extends TestCase
 {
@@ -35,7 +36,7 @@ final class ParserTest extends TestCase
         $this->parser = new Parser($this->tokenStream, new EvaluatableExpressionFactory(), $this->compilerFactory);
     }
 
-    /** @test */
+    #[Test]
     public function givenARuleStringWhenValidItShouldReturnTheCompiledRule(): void
     {
         $tokens = [

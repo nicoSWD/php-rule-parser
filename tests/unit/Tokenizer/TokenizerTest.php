@@ -12,10 +12,11 @@ use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\Tokenizer\Tokenizer;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class TokenizerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function givenAGrammarWithCollidingRegexItShouldTakeThePriorityIntoAccount(): void
     {
         $tokens = $this->tokenizeWithGrammar('yes   somevar', [
@@ -39,7 +40,7 @@ final class TokenizerTest extends TestCase
         $this->assertInstanceOf(Token\TokenVariable::class, $tokens[2]);
     }
 
-    /** @test */
+    #[Test]
     public function givenAGrammarWithCollidingRegexWhenPriorityIsWrongItShouldNeverMatchTheOneWithLowerPriority(): void
     {
         $tokens = $this->tokenizeWithGrammar('somevar   yes', [

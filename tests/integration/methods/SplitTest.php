@@ -8,26 +8,27 @@
 namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class SplitTest extends AbstractTestBase
 {
     protected array $var = ['foo' => 'bar,baz,foo'];
 
-    /** @test */
+    #[Test]
     public function ifOmittedSeparatorFallsBackToDefault(): void
     {
         $this->assertTrue($this->evaluate('foo.split() === ["bar,baz,foo"]', $this->var));
         $this->assertTrue($this->evaluate('["bar,baz,foo"] === foo.split()', $this->var));
     }
 
-    /** @test */
+    #[Test]
     public function splittingLiteralStringAndVariableString(): void
     {
         $this->assertTrue($this->evaluate('foo.split(",") === ["bar", "baz", "foo"]', $this->var));
         $this->assertTrue($this->evaluate('"bar,baz,foo".split(",") === ["bar", "baz", "foo"]'));
     }
 
-    /** @test */
+    #[Test]
     public function booleansAndNullDoNotSplitAnywhere(): void
     {
         $this->assertTrue($this->evaluate('"foo".split(true) === ["foo"]'));
@@ -35,7 +36,7 @@ final class SplitTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('"foo".split(null) === ["foo"]'));
     }
 
-    /** @test */
+    #[Test]
     public function splitDelimiterAsVariable(): void
     {
         $this->assertTrue($this->evaluate(
@@ -44,7 +45,7 @@ final class SplitTest extends AbstractTestBase
         ));
     }
 
-    /** @test */
+    #[Test]
     public function splitDelimiterAsVariableWithMethodCall(): void
     {
         $this->assertTrue($this->evaluate(
@@ -56,19 +57,19 @@ final class SplitTest extends AbstractTestBase
         ));
     }
 
-    /** @test */
+    #[Test]
     public function splitWithRegularExpression(): void
     {
         $this->assertTrue($this->evaluate('"foo     bar".split(/\s+/) === ["foo", "bar"]'));
     }
 
-    /** @test */
+    #[Test]
     public function splitWithRegexAndLimit(): void
     {
         $this->assertTrue($this->evaluate('"foo bar baz".split(/\s+/, 2) === ["foo", "bar baz"]'));
     }
 
-    /** @test */
+    #[Test]
     public function splitWithLimit(): void
     {
         $this->assertTrue($this->evaluate('"foo bar baz".split(" ", 2) === ["foo", "bar baz"]'));

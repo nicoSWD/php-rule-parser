@@ -9,10 +9,11 @@ namespace nicoSWD\Rule\tests\integration\operators;
 
 use nicoSWD\Rule\Rule;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class OperatorsTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function allAvailableOperators(): void
     {
         $this->assertTrue($this->evaluate('3 == 3'), 'Equal operator failed on two integers');
@@ -30,7 +31,7 @@ final class OperatorsTest extends AbstractTestBase
         $this->assertFalse($this->evaluate('2 !== 2'));
     }
 
-    /** @test */
+    #[Test]
     public function strictOperators(): void
     {
         $this->assertFalse($this->evaluate('"4" === 4'));
@@ -40,7 +41,7 @@ final class OperatorsTest extends AbstractTestBase
         $this->assertFalse($this->evaluate('4 !== 4'));
     }
 
-    /** @test */
+    #[Test]
     public function inOperator(): void
     {
         $this->assertTrue($this->evaluate('123 in foo', ['foo' => [123, 12]]));
@@ -49,13 +50,13 @@ final class OperatorsTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('123 in [123, 12]'));
     }
 
-    /** @test */
+    #[Test]
     public function inOperatorOnReturnedValueByMethodCall(): void
     {
         $this->assertTrue($this->evaluate('"123" in "321,123".split(",")'));
     }
 
-    /** @test */
+    #[Test]
     public function inOperatorWithNonArrayRightValueThrowsException(): void
     {
         $rule = new Rule('"123" in "foo"');
@@ -64,7 +65,7 @@ final class OperatorsTest extends AbstractTestBase
         $this->assertSame('Expected array, got "string"', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function commentsAreIgnoredCorrectly(): void
     {
         $this->assertFalse($this->evaluate('1 == 2 // || 1 == 1'));
@@ -76,7 +77,7 @@ final class OperatorsTest extends AbstractTestBase
         ));
     }
 
-    /** @test */
+    #[Test]
     public function equalOperator(): void
     {
         $this->assertTrue($this->evaluate('foo == -1', ['foo' => -1]));

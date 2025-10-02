@@ -9,29 +9,30 @@ namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class EndsWithTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function givenAStringWhenEndsWithNeedleItShouldReturnTrue(): void
     {
         $this->assertTrue($this->evaluate('foo.endsWith("llo") === true', ['foo' => 'hello']));
         $this->assertTrue($this->evaluate('"hello".endsWith("llo") === true'));
     }
 
-    /** @test */
+    #[Test]
     public function givenAStringWhenNotEndsWithNeedleItShouldReturnFalse(): void
     {
         $this->assertTrue($this->evaluate('"hello".endsWith("ell") === false'));
     }
 
-    /** @test */
+    #[Test]
     public function givenAStringWhenTestedWithEndsWithWithoutArgsItShouldReturnFalse(): void
     {
         $this->assertTrue($this->evaluate('"hello".endsWith() === false'));
     }
 
-    /** @test */
+    #[Test]
     public function givenAStringWhenTestedOnNonStringValuesItShouldThrowAnException(): void
     {
         $this->expectException(ParserException::class);

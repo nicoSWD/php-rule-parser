@@ -23,6 +23,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenString;
 use nicoSWD\Rule\TokenStream\Token\TokenVariable;
 use nicoSWD\Rule\TokenStream\TokenIterator;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class TokenIteratorTest extends TestCase
 {
@@ -40,7 +41,7 @@ final class TokenIteratorTest extends TestCase
         $this->tokenIterator = new TokenIterator($this->stack, $this->tokenStream);
     }
 
-    /** @test */
+    #[Test]
     public function givenAStackWhenNotEmptyItShouldBeIterable()
     {
         $this->stack->shouldReceive('rewind');
@@ -59,13 +60,13 @@ final class TokenIteratorTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function givenATokenStackItShouldBeAccessibleViaGetter()
     {
         $this->assertInstanceOf(ArrayIterator::class, $this->tokenIterator->getStack());
     }
 
-    /** @test */
+    #[Test]
     public function givenAVariableNameWhenFoundItShouldReturnItsValue()
     {
         $this->tokenStream->shouldReceive('getVariable')->once()->with('foo')->andReturn(new TokenVariable('bar'));
@@ -74,7 +75,7 @@ final class TokenIteratorTest extends TestCase
         $this->assertInstanceOf(TokenVariable::class, $token);
     }
 
-    /** @test */
+    #[Test]
     public function givenAVariableNameWhenNotFoundItShouldThrowAnException()
     {
         $this->expectException(ParserException::class);
@@ -85,7 +86,7 @@ final class TokenIteratorTest extends TestCase
         $this->tokenIterator->getVariable('foo');
     }
 
-    /** @test */
+    #[Test]
     public function givenAFunctionNameWhenFoundItShouldACallableClosure()
     {
         $this->tokenStream->shouldReceive('getFunction')->once()->with('foo')->andReturn(fn () => 42);
@@ -94,7 +95,7 @@ final class TokenIteratorTest extends TestCase
         $this->assertSame(42, $function());
     }
 
-    /** @test */
+    #[Test]
     public function givenAFunctionNameWhenNotFoundItShouldThrowAnException()
     {
         $this->expectException(ParserException::class);
@@ -105,7 +106,7 @@ final class TokenIteratorTest extends TestCase
         $this->tokenIterator->getFunction('foo');
     }
 
-    /** @test */
+    #[Test]
     public function givenAMethodNameWhenFoundItShouldReturnAnInstanceOfCallableFunction()
     {
         $token = new TokenString('bar');
@@ -118,7 +119,7 @@ final class TokenIteratorTest extends TestCase
         $this->assertInstanceOf(CallableFunction::class, $method);
     }
 
-    /** @test */
+    #[Test]
     public function givenAMethodNameWhenNotFoundItShouldThrowAnException()
     {
         $this->expectException(ParserException::class);

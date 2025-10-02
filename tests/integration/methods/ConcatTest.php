@@ -8,10 +8,11 @@
 namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class ConcatTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function allParametersAreConcatenated(): void
     {
         $this->assertTrue($this->evaluate('foo.concat("bar", "baz") === "foobarbaz"', ['foo' => 'foo']));
@@ -20,7 +21,7 @@ final class ConcatTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('"foo".concat("bar", 1) === "foobar1"'));
     }
 
-    /** @test */
+    #[Test]
     public function arraysAreImplodedByCommaBeforeConcatenating(): void
     {
         $this->assertTrue($this->evaluate('"foo".concat("bar", [1, 2]) === "foobar1,2"'));

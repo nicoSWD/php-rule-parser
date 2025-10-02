@@ -11,6 +11,7 @@ use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\Token\TokenEqualStrict;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class TokenFactoryTest extends TestCase
 {
@@ -21,7 +22,7 @@ final class TokenFactoryTest extends TestCase
         $this->tokenFactory = new Token\TokenFactory();
     }
 
-    /** @test */
+    #[Test]
     public function simpleTypeReturnsCorrectInstance(): void
     {
         $this->assertInstanceOf(Token\TokenNull::class, $this->tokenFactory->createFromPHPType(null));
@@ -32,7 +33,7 @@ final class TokenFactoryTest extends TestCase
         $this->assertInstanceOf(Token\TokenArray::class, $this->tokenFactory->createFromPHPType([1, 2]));
     }
 
-    /** @test */
+    #[Test]
     public function unsupportedTypeThrowsException(): void
     {
         $this->expectException(ParserException::class);
@@ -41,7 +42,7 @@ final class TokenFactoryTest extends TestCase
         $this->tokenFactory->createFromPHPType(tmpfile());
     }
 
-    /** @test */
+    #[Test]
     public function givenAValidTokenNameItShouldReturnItsCorrespondingClassName(): void
     {
         $this->assertSame(TokenEqualStrict::class, $this->tokenFactory->createFromToken(Token\Token::EQUAL_STRICT));
