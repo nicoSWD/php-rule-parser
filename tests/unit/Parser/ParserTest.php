@@ -7,6 +7,7 @@
  */
 namespace nicoSWD\Rule\tests\unit\Parser;
 
+use ArrayIterator;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use nicoSWD\Rule\Compiler\StandardCompiler;
@@ -54,18 +55,11 @@ final class ParserTest extends TestCase
         ];
 
         $compiler = new StandardCompiler();
-
-        /** @var m\MockInterface $tokenStream */
-        $tokenStream = \Mockery::mock(TokenIterator::class);
-        $tokenStream->shouldReceive('rewind')->once();
-        $tokenStream->shouldReceive('next');
-        $tokenStream->shouldReceive('current')->andReturn(...$tokens);
-        $tokenStream->shouldReceive('valid')->andReturnUsing(function () use (&$tokens) {
-            return !!next($tokens);
-        });
+        $arrayIterator = new ArrayIterator($tokens);
+        $tokenIterator = new TokenIterator($arrayIterator, $this->tokenStream);
 
         $this->compilerFactory->shouldReceive('create')->once()->andReturn($compiler);
-        $this->tokenStream->shouldReceive('getStream')->once()->andReturn($tokenStream);
+        $this->tokenStream->shouldReceive('getStream')->once()->andReturn($tokenIterator);
 
         $this->assertSame('(1)&1', $this->parser->parse('(1=="1")&&2>1 // true dat!'));
     }

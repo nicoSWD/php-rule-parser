@@ -9,12 +9,12 @@ namespace nicoSWD\Rule\Grammar;
 
 use nicoSWD\Rule\TokenStream\Token\Token;
 
-final class Definition
+final readonly class Definition
 {
     public function __construct(
-        public readonly Token $token,
-        public readonly string $regex,
-        public readonly int $priority,
+        public Token $token,
+        public string $regex,
+        public int $priority,
     ) {
     }
 }

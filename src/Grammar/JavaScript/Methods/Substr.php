@@ -15,14 +15,8 @@ final class Substr extends CallableFunction
 {
     public function call(?BaseToken ...$parameters): BaseToken
     {
-        $params = [];
         $start = $this->parseParameter($parameters, numParam: 0);
-
-        if (!$start) {
-            $params[] = 0;
-        } else {
-            $params[] = (int) $start->getValue();
-        }
+        $params = [(int) $start?->getValue()];
 
         $offset = $this->parseParameter($parameters, numParam: 1);
 

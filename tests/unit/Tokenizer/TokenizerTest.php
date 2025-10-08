@@ -11,8 +11,8 @@ use nicoSWD\Rule\Grammar\Definition;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\Tokenizer\Tokenizer;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 final class TokenizerTest extends TestCase
 {
@@ -81,11 +81,8 @@ final class TokenizerTest extends TestCase
     private function getTokenizer(array $definition): Tokenizer
     {
         $grammar = new class($definition) extends Grammar {
-            private array $definition;
-
-            public function __construct(array $definition)
+            public function __construct(private readonly array $definition)
             {
-                $this->definition = $definition;
             }
 
             public function getDefinition(): array

@@ -7,12 +7,14 @@
  */
 namespace nicoSWD\Rule\tests\unit\TokenStream\Token;
 
+use ArrayIterator;
 use Mockery\MockInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
 use nicoSWD\Rule\TokenStream\TokenIterator;
-use PHPUnit\Framework\TestCase;
+use nicoSWD\Rule\TokenStream\TokenStream;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 final class BaseTokenTest extends TestCase
 {
@@ -30,33 +32,35 @@ final class BaseTokenTest extends TestCase
     }
 
     #[Test]
-    public function offset(): void
+    public function givenATokenWhenGettingOffsetItShouldReturnTheExpectedOffset(): void
     {
         $this->assertSame(1337, $this->token->getOffset());
     }
 
     #[Test]
-    public function getValue(): void
+    public function givenATokenWhenGettingValueItShouldReturnTheExpectedValue(): void
     {
         $this->assertSame('&&', $this->token->getValue());
     }
 
     #[Test]
-    public function getOriginalValue(): void
+    public function givenATokenWhenGettingOriginalValueItShouldReturnTheExpectedOriginalValue(): void
     {
         $this->assertSame('&&', $this->token->getOriginalValue());
     }
 
     #[Test]
-    public function createNode(): void
+    public function givenATokenIteratorWhenCreatingNodeItShouldReturnTheSameToken(): void
     {
-        /** @var TokenIterator|MockInterface $tokenStream */
-        $tokenStream = \Mockery::mock(TokenIterator::class);
-        $this->assertSame($this->token, $this->token->createNode($tokenStream));
+        /** @var TokenStream|MockInterface $tokenStream */
+        $tokenStream = \Mockery::mock(TokenStream::class);
+        $iterator = new TokenIterator(new ArrayIterator([]), $tokenStream);
+
+        $this->assertSame($this->token, $this->token->createNode($iterator));
     }
 
     #[Test]
-    public function isOfType(): void
+    public function givenALogicalTokenWhenCheckingTypeItShouldReturnTrueForLogicalAndFalseForComma(): void
     {
         $this->assertTrue($this->token->isOfType(TokenType::LOGICAL));
         $this->assertFalse($this->token->isOfType(TokenType::COMMA));

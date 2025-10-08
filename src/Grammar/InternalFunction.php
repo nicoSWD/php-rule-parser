@@ -7,11 +7,11 @@
  */
 namespace nicoSWD\Rule\Grammar;
 
-final class InternalFunction
+final readonly class InternalFunction
 {
     public function __construct(
-        public readonly string $name,
-        public readonly string $class,
+        public string $name,
+        public string $class,
     ) {
     }
 }

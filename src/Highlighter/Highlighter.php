@@ -7,7 +7,7 @@
  */
 namespace nicoSWD\Rule\Highlighter;
 
-use ArrayIterator;
+use Iterator;
 use nicoSWD\Rule\Tokenizer\TokenizerInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
@@ -15,7 +15,7 @@ use SplObjectStorage;
 
 final class Highlighter
 {
-    private readonly SplObjectStorage $styles;
+    private SplObjectStorage $styles;
 
     public function __construct(
         private readonly TokenizerInterface $tokenizer,
@@ -33,7 +33,7 @@ final class Highlighter
         return $this->highlightTokens($this->tokenizer->tokenize($string));
     }
 
-    public function highlightTokens(ArrayIterator $tokens): string
+    public function highlightTokens(Iterator $tokens): string
     {
         $string = '';
 

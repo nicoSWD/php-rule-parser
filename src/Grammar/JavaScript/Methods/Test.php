@@ -27,7 +27,7 @@ final class Test extends CallableFunction
         if (!$string) {
             $bool = false;
         } else {
-            // Remove "g" modifier as is does not exist in PHP
+            // Remove "g" modifier as it does not exist in PHP
             // It's also irrelevant in .test() but allowed in JS here
             $pattern = preg_replace_callback(
                 '~/[igm]{0,3}$~',

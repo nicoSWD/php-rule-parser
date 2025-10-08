@@ -123,7 +123,7 @@ final class TokenStreamTest extends TestCase
     {
         return new class($internalFunctions) extends Grammar {
             public function __construct(
-                private array $internalFunctions,
+                private readonly array $internalFunctions,
             ) {
             }
 
@@ -150,7 +150,7 @@ final class TokenStreamTest extends TestCase
             public function create(
                 BaseToken $token,
                 TokenFactory $tokenFactory,
-                string $methodName
+                string $methodName,
             ): CallableUserFunctionInterface {
                 return new class implements CallableUserFunctionInterface {
                     public function call(?BaseToken ...$param): BaseToken

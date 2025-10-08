@@ -45,6 +45,6 @@ final class TokenFactoryTest extends TestCase
     #[Test]
     public function givenAValidTokenNameItShouldReturnItsCorrespondingClassName(): void
     {
-        $this->assertSame(TokenEqualStrict::class, $this->tokenFactory->createFromToken(Token\Token::EQUAL_STRICT));
+        $this->assertInstanceOf(TokenEqualStrict::class, $this->tokenFactory->createFromToken(Token\Token::EQUAL_STRICT, ['EqualStrict' => '==='], 0));
     }
 }

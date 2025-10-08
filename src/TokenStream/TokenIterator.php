@@ -13,11 +13,11 @@ use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
-class TokenIterator implements Iterator
+readonly class TokenIterator implements Iterator
 {
     public function __construct(
-        private readonly Iterator $stack,
-        private readonly TokenStream $tokenStream,
+        private Iterator $stack,
+        private TokenStream $tokenStream,
     ) {
     }
 

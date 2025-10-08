@@ -19,8 +19,8 @@ use nicoSWD\Rule\TokenStream\Token\Type\Parenthesis;
 
 final class StandardCompiler implements CompilerInterface
 {
-    private const OPENING_PARENTHESIS = '(';
-    private const CLOSING_PARENTHESIS = ')';
+    private const string OPENING_PARENTHESIS = '(';
+    private const string CLOSING_PARENTHESIS = ')';
 
     private string $output = '';
     private int $openParenthesis = 0;

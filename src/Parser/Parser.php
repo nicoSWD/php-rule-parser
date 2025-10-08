@@ -15,12 +15,12 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
 use nicoSWD\Rule\TokenStream\Token\Type\Operator;
 
-final class Parser
+final readonly class Parser
 {
     public function __construct(
-        private readonly TokenStream $tokenStream,
-        private readonly EvaluatableExpressionFactory $expressionFactory,
-        private readonly CompilerFactoryInterface $compilerFactory,
+        private TokenStream $tokenStream,
+        private EvaluatableExpressionFactory $expressionFactory,
+        private CompilerFactoryInterface $compilerFactory,
     ) {
     }
 

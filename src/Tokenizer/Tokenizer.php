@@ -29,9 +29,7 @@ final class Tokenizer extends TokenizerInterface
 
         while (preg_match($regex, $string, $matches, offset: $offset)) {
             $token = $this->getMatchedToken($matches);
-            $className = $this->tokenFactory->createFromToken($token);
-
-            $stack[] = new $className($matches[$token->value], $offset);
+            $stack[] = $this->tokenFactory->createFromToken($token, $matches, $offset);
             $offset += strlen($matches[0]);
         }
 
