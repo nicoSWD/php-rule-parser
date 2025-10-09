@@ -3,13 +3,14 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
 namespace nicoSWD\Rule\Parser\Exception;
 
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
+use nicoSWD\Rule\TokenStream\Token\Type\Operator;
 
-class ParserException extends \Exception
+final class ParserException extends \Exception
 {
     public static function unexpectedToken(BaseToken $token): self
     {
@@ -61,15 +62,10 @@ class ParserException extends \Exception
         return new self(sprintf('Unsupported PHP type: "%s"', $type));
     }
 
-    public static function unknownOperator(BaseToken $token): self
+    public static function unknownOperator(BaseToken & Operator $token): self
     {
         return new self(
             sprintf('Unexpected operator %s at position %d', $token->getOriginalValue(), $token->getOffset())
         );
-    }
-
-    public static function unknownTokenName(string $tokenName): self
-    {
-        return new self("Unknown token $tokenName");
     }
 }

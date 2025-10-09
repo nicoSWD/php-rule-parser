@@ -3,16 +3,17 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
 namespace nicoSWD\Rule\tests\integration;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Rule;
+use PHPUnit\Framework\Attributes\Test;
 
 final class ObjectTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function givenAnObjectHasMethodsWhenPublicTheyShouldBeAccessible(): void
     {
         $myObj = new class {
@@ -40,7 +41,7 @@ final class ObjectTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('my_obj.test2().cat() === "meow"', $variables));
     }
 
-    /** @test */
+    #[Test]
     public function givenAnObjectHasPropertiesWhenPublicTheyShouldBeAccessible(): void
     {
         $myObj = new class {
@@ -54,7 +55,7 @@ final class ObjectTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('my_obj.test() === "my string"', $variables));
     }
 
-    /** @test */
+    #[Test]
     public function publicMethodsShouldBeAccessibleMagicallyViaGet(): void
     {
         $myObj = new class {
@@ -71,7 +72,7 @@ final class ObjectTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('my_obj.string() === "some string"', $variables));
     }
 
-    /** @test */
+    #[Test]
     public function publicMethodsShouldBeAccessibleMagicallyViaIs(): void
     {
         $myObj = new class {
@@ -93,7 +94,7 @@ final class ObjectTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('my_obj.string(my_obj.yes()) === "yes"', $variables));
     }
 
-    /** @test */
+    #[Test]
     public function givenAnObjectWhenMagicMethodCallIsAvailableItShouldBeAccessible(): void
     {
         $myObj = new class {
@@ -129,7 +130,7 @@ final class ObjectTest extends AbstractTestBase
         $this->evaluate("my_obj.{$magicMethod}()", $variables);
     }
 
-    /** @test */
+    #[Test]
     public function undefinedMethodsShouldThrowAnError(): void
     {
         $myObj = new class() {
@@ -145,7 +146,7 @@ final class ObjectTest extends AbstractTestBase
         $this->assertSame('Undefined method "nope" at position 6', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function givenAnObjectWithMagicMethodGetWhenPropertyDoesNotExistItShouldNotBeCalled(): void
     {
         $myObj = new class {

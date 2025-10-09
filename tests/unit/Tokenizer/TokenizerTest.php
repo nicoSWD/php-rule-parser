@@ -3,24 +3,26 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
 namespace nicoSWD\Rule\tests\unit\Tokenizer;
 
+use nicoSWD\Rule\Grammar\Definition;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\Tokenizer\Tokenizer;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 final class TokenizerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function givenAGrammarWithCollidingRegexItShouldTakeThePriorityIntoAccount(): void
     {
         $tokens = $this->tokenizeWithGrammar('yes   somevar', [
-            [Token\Token::BOOL_TRUE, '\byes\b', 20],
-            [Token\Token::VARIABLE, '\b[a-z]+\b', 10],
-            [Token\Token::SPACE, '\s+', 5],
+            new Definition(Token\Token::BOOL_TRUE, '\byes\b', 20),
+            new Definition(Token\Token::VARIABLE, '\b[a-z]+\b', 10),
+            new Definition(Token\Token::SPACE, '\s+', 5),
         ]);
 
         $this->assertCount(3, $tokens);
@@ -38,13 +40,13 @@ final class TokenizerTest extends TestCase
         $this->assertInstanceOf(Token\TokenVariable::class, $tokens[2]);
     }
 
-    /** @test */
+    #[Test]
     public function givenAGrammarWithCollidingRegexWhenPriorityIsWrongItShouldNeverMatchTheOneWithLowerPriority(): void
     {
         $tokens = $this->tokenizeWithGrammar('somevar   yes', [
-            [Token\Token::VARIABLE, '\b[a-z]+\b', 20],
-            [Token\Token::BOOL_TRUE, '\byes\b', 10],
-            [Token\Token::SPACE, '\s+', 5],
+            new Definition(Token\Token::VARIABLE, '\b[a-z]+\b', 20),
+            new Definition(Token\Token::BOOL_TRUE, '\byes\b', 10),
+            new Definition(Token\Token::SPACE, '\s+', 5),
         ]);
 
         $this->assertCount(3, $tokens);
@@ -60,16 +62,6 @@ final class TokenizerTest extends TestCase
         $this->assertSame('yes', $tokens[2]->getValue());
         $this->assertSame(10, $tokens[2]->getOffset());
         $this->assertInstanceOf(Token\TokenVariable::class, $tokens[2]);
-    }
-
-    /** @test */
-    public function givenAGrammarItShouldBeAvailableThroughGetter(): void
-    {
-        $grammar = $this->getTokenizer([[Token\Token::BOOL_TRUE, '\byes\b', 10]])->getGrammar();
-
-        $this->assertInstanceOf(Grammar::class, $grammar);
-        $this->assertIsArray($grammar->getDefinition());
-        $this->assertCount(1, $grammar->getDefinition());
     }
 
     /** @return Token\BaseToken[] */
@@ -89,16 +81,23 @@ final class TokenizerTest extends TestCase
     private function getTokenizer(array $definition): Tokenizer
     {
         $grammar = new class($definition) extends Grammar {
-            private array $definition;
-
-            public function __construct(array $definition)
+            public function __construct(private readonly array $definition)
             {
-                $this->definition = $definition;
             }
 
             public function getDefinition(): array
             {
                 return $this->definition;
+            }
+
+            public function getInternalFunctions(): array
+            {
+                return [];
+            }
+
+            public function getInternalMethods(): array
+            {
+                return [];
             }
         };
 

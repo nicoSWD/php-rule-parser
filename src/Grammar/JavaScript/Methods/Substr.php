@@ -3,7 +3,7 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
@@ -15,14 +15,8 @@ final class Substr extends CallableFunction
 {
     public function call(?BaseToken ...$parameters): BaseToken
     {
-        $params = [];
         $start = $this->parseParameter($parameters, numParam: 0);
-
-        if (!$start) {
-            $params[] = 0;
-        } else {
-            $params[] = (int) $start->getValue();
-        }
+        $params = [(int) $start?->getValue()];
 
         $offset = $this->parseParameter($parameters, numParam: 1);
 
@@ -32,6 +26,6 @@ final class Substr extends CallableFunction
 
         $value = substr($this->token->getValue(), ...$params);
 
-        return new TokenString((string) $value);
+        return new TokenString($value);
     }
 }

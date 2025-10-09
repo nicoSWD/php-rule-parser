@@ -3,18 +3,19 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
 namespace nicoSWD\Rule\tests\integration;
 
 use nicoSWD\Rule\Rule;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 final class SyntaxErrorTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function emptyParenthesisThrowException(): void
     {
         $rule = new Rule('(totalamount != 3) ()', [
@@ -25,7 +26,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Unexpected "(" at position 19', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function doubleOperatorThrowsException(): void
     {
         $rule = new Rule('country == == "venezuela"', ['country' => 'spain']);
@@ -34,7 +35,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Unexpected "==" at position 11', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function missingLeftValueThrowsException(): void
     {
         $rule = new Rule('== "venezuela"');
@@ -43,7 +44,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Incomplete expression for token "=="', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function missingOperatorThrowsException(): void
     {
         $rule = new Rule('total == -1 total > 10', ['total' => 12]);
@@ -52,7 +53,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Missing operator', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function missingOpeningParenthesisThrowsException(): void
     {
         $rule = new Rule('1 == 1)');
@@ -61,7 +62,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Missing opening parenthesis', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function missingClosingParenthesisThrowsException(): void
     {
         $rule = new Rule('(1 == 1');
@@ -70,7 +71,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Missing closing parenthesis', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function misplacedMinusThrowsException(): void
     {
         $rule = new Rule('1 == 1 && -foo == 1', ['foo' => 1]);
@@ -79,7 +80,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Unknown token "-" at position 10', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function undefinedVariableThrowsException(): void
     {
         $rule = new Rule(' // new line on purpose
@@ -89,7 +90,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Undefined variable "foo" at position 36', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function incompleteExpressionExceptionIsThrownCorrectly(): void
     {
         $rule = new Rule('1 == 1 && country', ['country' => 'es']);
@@ -98,7 +99,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Incomplete condition', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function rulesEvaluatesTrueThrowsExceptionsForUndefinedVars(): void
     {
         $rule = new Rule('nonono=="MA"');
@@ -107,7 +108,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Undefined variable "nonono" at position 0', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function rulesEvaluatesTrueThrowsExceptionsOnSyntaxErrors(): void
     {
         $rule = new Rule('country == "MA" &&', ['country' => 'es']);
@@ -116,7 +117,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Incomplete condition', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function multipleLogicalTokensThrowException(): void
     {
         $rule = new Rule('country == "MA" && &&', ['country' => 'es']);
@@ -125,7 +126,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $this->assertSame('Unexpected "&&" at position 19', $rule->getError());
     }
 
-    /** @test */
+    #[Test]
     public function unknownTokenExceptionIsThrown(): void
     {
         $rule = new Rule('country == "MA" ^', ['country' => 'es']);

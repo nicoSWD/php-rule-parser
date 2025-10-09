@@ -3,20 +3,21 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
 namespace nicoSWD\Rule\Expression;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
+use nicoSWD\Rule\TokenStream\Token\Type\Operator;
 
-class ExpressionFactory implements ExpressionFactoryInterface
+final class ExpressionFactory implements ExpressionFactoryInterface
 {
     /** @throws ParserException */
-    public function createFromOperator(BaseToken $operator): BaseExpression
+    public function createFromOperator(BaseToken & Operator $operator): BaseExpression
     {
-        return match (get_class($operator)) {
+        return match ($operator::class) {
             Token\TokenEqual::class => new EqualExpression(),
             Token\TokenEqualStrict::class => new EqualStrictExpression(),
             Token\TokenNotEqual::class => new NotEqualExpression(),

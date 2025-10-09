@@ -3,7 +3,7 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
@@ -19,7 +19,7 @@ final class Test extends CallableFunction
     public function call(?BaseToken ...$parameters): BaseToken
     {
         if (!$this->token instanceof TokenRegex) {
-            throw new ParserException('undefined is not a function');
+            throw new ParserException('test() is not a function');
         }
 
         $string = $this->parseParameter($parameters, numParam: 0);
@@ -27,11 +27,11 @@ final class Test extends CallableFunction
         if (!$string) {
             $bool = false;
         } else {
-            // Remove "g" modifier as is does not exist in PHP
+            // Remove "g" modifier as it does not exist in PHP
             // It's also irrelevant in .test() but allowed in JS here
             $pattern = preg_replace_callback(
                 '~/[igm]{0,3}$~',
-                fn (array $modifiers) => str_replace('g', '', $modifiers[0]),
+                static fn (array $modifiers): string => str_replace('g', '', $modifiers[0]),
                 $this->token->getValue()
             );
 

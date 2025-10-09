@@ -3,7 +3,7 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
 namespace nicoSWD\Rule\tests\unit\Token;
 
@@ -11,17 +11,18 @@ use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\Token\TokenEqualStrict;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 final class TokenFactoryTest extends TestCase
 {
-    private Token\TokenFactory $tokenFactory;
+    private readonly Token\TokenFactory $tokenFactory;
 
     protected function setUp(): void
     {
         $this->tokenFactory = new Token\TokenFactory();
     }
 
-    /** @test */
+    #[Test]
     public function simpleTypeReturnsCorrectInstance(): void
     {
         $this->assertInstanceOf(Token\TokenNull::class, $this->tokenFactory->createFromPHPType(null));
@@ -32,7 +33,7 @@ final class TokenFactoryTest extends TestCase
         $this->assertInstanceOf(Token\TokenArray::class, $this->tokenFactory->createFromPHPType([1, 2]));
     }
 
-    /** @test */
+    #[Test]
     public function unsupportedTypeThrowsException(): void
     {
         $this->expectException(ParserException::class);
@@ -41,17 +42,9 @@ final class TokenFactoryTest extends TestCase
         $this->tokenFactory->createFromPHPType(tmpfile());
     }
 
-    /** @test */
-    public function givenAnInvalidTokenNameItShouldThrowAnException(): void
-    {
-        $this->expectException(ParserException::class);
-
-        $this->tokenFactory->createFromTokenName('betrunken');
-    }
-
-    /** @test */
+    #[Test]
     public function givenAValidTokenNameItShouldReturnItsCorrespondingClassName(): void
     {
-        $this->assertSame(TokenEqualStrict::class, $this->tokenFactory->createFromTokenName(Token\Token::EQUAL_STRICT));
+        $this->assertInstanceOf(TokenEqualStrict::class, $this->tokenFactory->createFromToken(Token\Token::EQUAL_STRICT, ['EqualStrict' => '==='], 0));
     }
 }

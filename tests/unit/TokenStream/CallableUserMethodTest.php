@@ -3,7 +3,7 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
 namespace nicoSWD\Rule\tests\unit\TokenStream;
 
@@ -12,11 +12,12 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenObject;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 use stdClass;
 
 final class CallableUserMethodTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function givenAnObjectWithAPublicPropertyItShouldBeAccessible(): void
     {
         $object = new stdClass();
@@ -25,7 +26,7 @@ final class CallableUserMethodTest extends TestCase
         $this->assertSame(123, $this->callMethod($object, 'my_test')->getValue());
     }
 
-    /** @test */
+    #[Test]
     public function givenAnObjectWithAPublicWhenMethodMatchingItShouldBeUsed(): void
     {
         $object = new class {
@@ -38,7 +39,7 @@ final class CallableUserMethodTest extends TestCase
         $this->assertSame(123, $this->callMethod($object, 'my_test')->getValue());
     }
 
-    /** @test */
+    #[Test]
     public function givenAnObjectWithAPublicWhenMethodNameWithIsPrefixMatchesItShouldBeUsed(): void
     {
         $object = new class {
@@ -57,7 +58,7 @@ final class CallableUserMethodTest extends TestCase
         $this->assertSame(456, $this->callMethod($object, 'myTest')->getValue());
     }
 
-    /** @test */
+    #[Test]
     public function givenAnObjectWithAPublicWhenMethodNameWithGetPrefixMatchesItShouldBeUsed(): void
     {
         $object = new class {

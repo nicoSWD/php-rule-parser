@@ -3,13 +3,15 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
 namespace nicoSWD\Rule\tests\integration;
 
+use PHPUnit\Framework\Attributes\Test;
+
 final class ParserTest extends AbstractTestBase
 {
-    /** @test */
+    #[Test]
     public function multipleAnds(): void
     {
         $rule = 'foo=="MA" && bar=="EGP" && baz>50000';
@@ -37,7 +39,7 @@ final class ParserTest extends AbstractTestBase
         ]));
     }
 
-    /** @test */
+    #[Test]
     public function mixedOrsAndAnds(): void
     {
         $rule = '
@@ -53,14 +55,14 @@ final class ParserTest extends AbstractTestBase
         ]));
     }
 
-    /** @test */
+    #[Test]
     public function emptyOrIncompleteRuleReturnsFalse(): void
     {
         $rule = '';
         $this->assertFalse($this->evaluate($rule));
     }
 
-    /** @test */
+    #[Test]
     public function freakingLongRule(): void
     {
         $rule = '
@@ -87,7 +89,7 @@ final class ParserTest extends AbstractTestBase
         ]));
     }
 
-    /** @test */
+    #[Test]
     public function negativeComparison(): void
     {
         $rule = '
@@ -107,7 +109,7 @@ final class ParserTest extends AbstractTestBase
         ]));
     }
 
-    /** @test */
+    #[Test]
     public function spacesBetweenStuff(): void
     {
         $rule = 'foo   !=   3
@@ -120,7 +122,7 @@ final class ParserTest extends AbstractTestBase
         $this->assertTrue($this->evaluate($rule, ['foo' => '-1']));
     }
 
-    /** @test */
+    #[Test]
     public function singleLineCommentDoesNotKillTheRest(): void
     {
         $rule = ' 2 > 3

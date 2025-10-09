@@ -3,13 +3,15 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-final class TokenMethod extends BaseToken
+use nicoSWD\Rule\TokenStream\Token\Type\Method;
+
+final class TokenMethod extends BaseToken implements Method
 {
-    public function getType(): int
+    public function getType(): TokenType
     {
         return TokenType::METHOD;
     }

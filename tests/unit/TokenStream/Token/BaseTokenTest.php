@@ -3,14 +3,17 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
-namespace nicoSWD\Rule\tests\unit\TokenStream;
+namespace nicoSWD\Rule\tests\unit\TokenStream\Token;
 
+use ArrayIterator;
 use Mockery\MockInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
+use nicoSWD\Rule\TokenStream\TokenIterator;
 use nicoSWD\Rule\TokenStream\TokenStream;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 final class BaseTokenTest extends TestCase
@@ -21,134 +24,45 @@ final class BaseTokenTest extends TestCase
     protected function setUp(): void
     {
         $this->token = new class('&&', 1337) extends BaseToken {
-            public function getType(): int
+            public function getType(): TokenType
             {
                 return TokenType::LOGICAL;
             }
         };
     }
 
-    /** @test */
-    public function offset(): void
+    #[Test]
+    public function givenATokenWhenGettingOffsetItShouldReturnTheExpectedOffset(): void
     {
         $this->assertSame(1337, $this->token->getOffset());
     }
 
-    /** @test */
-    public function getValue(): void
+    #[Test]
+    public function givenATokenWhenGettingValueItShouldReturnTheExpectedValue(): void
     {
         $this->assertSame('&&', $this->token->getValue());
     }
 
-    /** @test */
-    public function getOriginalValue(): void
+    #[Test]
+    public function givenATokenWhenGettingOriginalValueItShouldReturnTheExpectedOriginalValue(): void
     {
         $this->assertSame('&&', $this->token->getOriginalValue());
     }
 
-    /** @test */
-    public function createNode(): void
+    #[Test]
+    public function givenATokenIteratorWhenCreatingNodeItShouldReturnTheSameToken(): void
     {
         /** @var TokenStream|MockInterface $tokenStream */
         $tokenStream = \Mockery::mock(TokenStream::class);
-        $this->assertSame($this->token, $this->token->createNode($tokenStream));
+        $iterator = new TokenIterator(new ArrayIterator([]), $tokenStream);
+
+        $this->assertSame($this->token, $this->token->createNode($iterator));
     }
 
-    /** @test */
-    public function isOfType(): void
+    #[Test]
+    public function givenALogicalTokenWhenCheckingTypeItShouldReturnTrueForLogicalAndFalseForComma(): void
     {
         $this->assertTrue($this->token->isOfType(TokenType::LOGICAL));
         $this->assertFalse($this->token->isOfType(TokenType::COMMA));
-    }
-
-    /** @test */
-    public function isValue(): void
-    {
-        $token = new class('123', 1337) extends BaseToken {
-            public function getType(): int
-            {
-                return TokenType::VALUE;
-            }
-        };
-
-        $this->assertTrue($token->isValue());
-    }
-
-    /** @test */
-    public function isWhitespace(): void
-    {
-        $token = new class(' ', 1337) extends BaseToken {
-            public function getType(): int
-            {
-                return TokenType::SPACE;
-            }
-        };
-
-        $this->assertTrue($token->isWhitespace());
-    }
-
-    /** @test */
-    public function isMethod(): void
-    {
-        $token = new class('.derp(', 1337) extends BaseToken {
-            public function getType(): int
-            {
-                return TokenType::METHOD;
-            }
-        };
-
-        $this->assertTrue($token->isMethod());
-    }
-
-    /** @test */
-    public function isComma(): void
-    {
-        $token = new class(',', 1337) extends BaseToken {
-            public function getType(): int
-            {
-                return TokenType::COMMA;
-            }
-        };
-
-        $this->assertTrue($token->isComma());
-    }
-
-    /** @test */
-    public function isOperator(): void
-    {
-        $token = new class('>', 1337) extends BaseToken {
-            public function getType(): int
-            {
-                return TokenType::OPERATOR;
-            }
-        };
-
-        $this->assertTrue($token->isOperator());
-    }
-
-    /** @test */
-    public function isLogical(): void
-    {
-        $token = new class('&&', 1337) extends BaseToken {
-            public function getType(): int
-            {
-                return TokenType::LOGICAL;
-            }
-        };
-
-        $this->assertTrue($token->isLogical());
-    }
-
-    /** @test */
-    public function isParenthesis(): void
-    {
-        $token = new class('(', 1337) extends BaseToken {
-            public function getType(): int
-            {
-                return TokenType::PARENTHESIS;
-            }
-        };
-
-        $this->assertTrue($token->isParenthesis());
     }
 }

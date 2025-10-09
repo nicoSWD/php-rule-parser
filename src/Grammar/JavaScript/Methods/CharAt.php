@@ -3,7 +3,7 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
@@ -27,11 +27,7 @@ final class CharAt extends CallableFunction
             $offset = $offset->getValue();
         }
 
-        if (!isset($tokenValue[$offset])) {
-            $char = '';
-        } else {
-            $char = $tokenValue[$offset];
-        }
+        $char = $tokenValue[$offset] ?? '';
 
         return new TokenString($char);
     }

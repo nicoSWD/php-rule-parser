@@ -3,10 +3,10 @@
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
- * @author      Nicolas Oelgart <nico@oelgart.com>
+ * @author      Nicolas Oelgart <hello@nico.es>
  */
 namespace nicoSWD\Rule\Evaluator\Exception;
 
-class UnknownSymbolException extends \Exception
+final class UnknownSymbolException extends \Exception
 {
 }
