@@ -1,20 +1,14 @@
 ## PHP Rule Engine
 
-[![Latest Stable Version](https://travis-ci.org/nicoSWD/php-rule-parser.svg?branch=master)](https://travis-ci.org/nicoSWD/php-rule-parser)
+[![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
+[![Total Downloads](https://img.shields.io/packagist/dt/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser) 
 [![Build status][Master coverage image]][Master coverage] 
 [![Code Quality][Master quality image]][Master quality] 
 [![StyleCI](https://styleci.io/repos/39503126/shield?branch=master&style=flat)](https://styleci.io/repos/39503126)
 
-[![Total Downloads](https://img.shields.io/packagist/dt/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser) 
-[![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
-
 You're looking at a standalone PHP library to parse and evaluate text based rules with a Javascript-like syntax. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
 
 This library has initially been used to change and configure the behavior of certain "Workflows" (without changing actual code) in an intranet application, but it may serve a purpose elsewhere.
-
-Find me on Twitter: @[nicoSWD](https://twitter.com/nicoSWD)
-
-(If you're using PHP 5, you might want to take a look at [version 0.4.0](https://github.com/nicoSWD/php-rule-parser/tree/0.4.0))
 
 ## Install
 
