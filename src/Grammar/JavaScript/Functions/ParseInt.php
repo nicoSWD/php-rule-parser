@@ -10,6 +10,7 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Functions;
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
+use nicoSWD\Rule\TokenStream\Token\TokenFloat;
 use nicoSWD\Rule\TokenStream\Token\TokenInteger;
 
 final class ParseInt extends CallableFunction implements CallableUserFunctionInterface
@@ -19,7 +20,7 @@ final class ParseInt extends CallableFunction implements CallableUserFunctionInt
         $value = $this->parseParameter($parameters, numParam: 0);
 
         if (!isset($value)) {
-            return new TokenInteger(NAN);
+            return new TokenFloat(NAN);
         }
 
         return new TokenInteger((int) $value->getValue());

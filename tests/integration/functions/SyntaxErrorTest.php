@@ -19,7 +19,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('nope() === true');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('nope is not defined at position 0', $rule->getError());
+        $this->assertSame('nope is not defined at position 0', $rule->error);
     }
 
     #[Test]
@@ -28,6 +28,6 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('/* fail */ paRSeInt("2") === 2');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('paRSeInt is not defined at position 11', $rule->getError());
+        $this->assertSame('paRSeInt is not defined at position 11', $rule->error);
     }
 }

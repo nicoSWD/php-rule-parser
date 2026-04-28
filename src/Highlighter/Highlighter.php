@@ -8,7 +8,6 @@
 namespace nicoSWD\Rule\Highlighter;
 
 use Iterator;
-use nicoSWD\Rule\Tokenizer\TokenizerInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
 use SplObjectStorage;
@@ -17,9 +16,8 @@ final class Highlighter
 {
     private SplObjectStorage $styles;
 
-    public function __construct(
-        private readonly TokenizerInterface $tokenizer,
-    ) {
+    public function __construct()
+    {
         $this->styles = $this->defaultStyles();
     }
 
@@ -28,9 +26,9 @@ final class Highlighter
         $this->styles[$group] = $style;
     }
 
-    public function highlightString(string $string): string
+    public function highlightString(string $string, Iterator $tokens): string
     {
-        return $this->highlightTokens($this->tokenizer->tokenize($string));
+        return $this->highlightTokens($tokens);
     }
 
     public function highlightTokens(Iterator $tokens): string

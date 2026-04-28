@@ -19,6 +19,6 @@ final class TokenOpeningArray extends BaseToken
 
     public function createNode(TokenIterator $tokenStream): BaseToken
     {
-        return (new NodeArray($tokenStream))->getNode();
+        return new NodeArray($tokenStream)->getNode();
     }
 }

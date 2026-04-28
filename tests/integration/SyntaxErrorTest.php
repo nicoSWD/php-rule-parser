@@ -23,7 +23,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         ]);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "(" at position 19', $rule->getError());
+        $this->assertSame('Unexpected "(" at position 19', $rule->error);
     }
 
     #[Test]
@@ -32,7 +32,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('country == == "venezuela"', ['country' => 'spain']);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "==" at position 11', $rule->getError());
+        $this->assertSame('Unexpected "==" at position 11', $rule->error);
     }
 
     #[Test]
@@ -41,7 +41,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('== "venezuela"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "==" at position 0', $rule->getError());
+        $this->assertSame('Unexpected "==" at position 0', $rule->error);
     }
 
     #[Test]
@@ -50,7 +50,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('total == -1 total > 10', ['total' => 12]);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "total" at position 12', $rule->getError());
+        $this->assertSame('Unexpected "total" at position 12', $rule->error);
     }
 
     #[Test]
@@ -59,7 +59,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('1 == 1)');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected ")" at position 6', $rule->getError());
+        $this->assertSame('Unexpected ")" at position 6', $rule->error);
     }
 
     #[Test]
@@ -68,7 +68,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('(1 == 1');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected end of string', $rule->getError());
+        $this->assertSame('Unexpected end of string', $rule->error);
     }
 
     #[Test]
@@ -77,7 +77,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('1 == 1 && -foo == 1', ['foo' => 1]);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "-" at position 10', $rule->getError());
+        $this->assertSame('Unexpected "-" at position 10', $rule->error);
     }
 
     #[Test]
@@ -87,7 +87,7 @@ final class SyntaxErrorTest extends AbstractTestBase
             foo == "MA"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Undefined variable "foo" at position 36', $rule->getError());
+        $this->assertSame('Undefined variable "foo" at position 36', $rule->error);
     }
 
     #[Test]
@@ -105,7 +105,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('nonono=="MA"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Undefined variable "nonono" at position 0', $rule->getError());
+        $this->assertSame('Undefined variable "nonono" at position 0', $rule->error);
     }
 
     #[Test]
@@ -114,7 +114,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('country == "MA" &&', ['country' => 'es']);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected end of string', $rule->getError());
+        $this->assertSame('Unexpected end of string', $rule->error);
     }
 
     #[Test]
@@ -123,7 +123,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('country == "MA" && &&', ['country' => 'es']);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "&&" at position 19', $rule->getError());
+        $this->assertSame('Unexpected "&&" at position 19', $rule->error);
     }
 
     #[Test]
@@ -132,6 +132,6 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('country == "MA" ^', ['country' => 'es']);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "^" at position 16', $rule->getError());
+        $this->assertSame('Unexpected "^" at position 16', $rule->error);
     }
 }

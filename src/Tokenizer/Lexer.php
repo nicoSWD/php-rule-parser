@@ -314,7 +314,6 @@ final class Lexer extends TokenizerInterface
             $this->pos = $savedPos;
         }
 
-        // Check for keywords
         $token = match ($name) {
             'true' => Token::BOOL_TRUE,
             'false' => Token::BOOL_FALSE,

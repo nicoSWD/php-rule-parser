@@ -72,7 +72,7 @@ class TokenFactory
         $tokenCollection = new TokenCollection();
 
         foreach ($items as $item) {
-            $tokenCollection->attach($this->createFromPHPType($item));
+            $tokenCollection->add($this->createFromPHPType($item));
         }
 
         return new TokenArray($tokenCollection);

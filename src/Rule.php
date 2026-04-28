@@ -7,41 +7,58 @@
  */
 namespace nicoSWD\Rule;
 
-use Exception;
-use nicoSWD\Rule\AST\AstEvaluator;
 use nicoSWD\Rule\AST\Node;
 
+/**
+ * Convenience class for evaluating a single rule expression.
+ *
+ * This class provides a simple, familiar API for evaluating rules.
+ * For more advanced use cases (multiple rules, custom configuration),
+ * use RuleEngine directly.
+ *
+ * Usage:
+ * ```php
+ * // Simple usage (creates a default RuleEngine internally)
+ * $rule = new Rule('foo > 5', ['foo' => 10]);
+ * $rule->isTrue();  // true
+ *
+ * // With a shared engine (more efficient for multiple rules)
+ * $engine = new RuleEngine(defaultVariables: ['foo' => 10]);
+ * $rule1 = new Rule('foo > 5', engine: $engine);
+ * $rule2 = new Rule('foo < 3', engine: $engine);
+ * ```
+ */
 class Rule
 {
-    private readonly Parser\Parser $parser;
-    private readonly AstEvaluator $astEvaluator;
-    private string $rule;
+    private readonly RuleEngine $engine;
+    private readonly string $rule;
+    private readonly array $variables;
     private ?Node $ast = null;
-    private string $error = '';
-    private static object $container;
-
-    public function __construct(string $rule, array $variables = [])
-    {
-        if (!isset(self::$container)) {
-            self::$container = require __DIR__ . '/container.php';
+    public string $error = '' {
+        get {
+            return $this->error;
         }
-
-        $this->parser = self::$container->parser($variables);
-        $this->astEvaluator = self::$container->astEvaluator($variables);
-        $this->rule = $rule;
     }
 
-    /** @throws Parser\Exception\ParserException */
+    public function __construct(
+        string $rule,
+        array $variables = [],
+        ?RuleEngine $engine = null,
+    ) {
+        $this->engine = $engine ?? new RuleEngine();
+        $this->rule = $rule;
+        $this->variables = $variables;
+    }
+
     public function isTrue(): bool
     {
         if ($this->ast === null) {
-            $this->ast = $this->parser->parse($this->rule);
+            $this->ast = $this->engine->parse($this->rule, $this->variables);
         }
 
-        return $this->astEvaluator->evaluate($this->ast);
+        return $this->engine->evaluate($this->rule, $this->variables);
     }
 
-    /** @throws Parser\Exception\ParserException */
     public function isFalse(): bool
     {
         return !$this->isTrue();
@@ -52,19 +69,9 @@ class Rule
      */
     public function isValid(): bool
     {
-        try {
-            $this->ast = $this->parser->parse($this->rule);
-            $this->astEvaluator->evaluate($this->ast);
-        } catch (Exception $e) {
-            $this->error = $e->getMessage();
-            return false;
-        }
+        $this->error = $this->engine->getError($this->rule, $this->variables);
 
-        return true;
+        return $this->error === '';
     }
 
-    public function getError(): string
-    {
-        return $this->error;
-    }
 }

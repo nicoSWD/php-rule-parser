@@ -10,7 +10,6 @@ namespace nicoSWD\Rule\tests\unit\Parser;
 use ArrayIterator;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use nicoSWD\Rule\AST\BoolNode;
 use nicoSWD\Rule\AST\ComparisonNode;
 use nicoSWD\Rule\AST\ComparisonOperator;
 use nicoSWD\Rule\AST\IntegerNode;

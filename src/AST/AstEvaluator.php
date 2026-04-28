@@ -8,20 +8,19 @@
 namespace nicoSWD\Rule\AST;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
+use nicoSWD\Rule\TokenStream\Exception\ForbiddenMethodException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedFunctionException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedMethodException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedVariableException;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenArray;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
-use nicoSWD\Rule\TokenStream\TokenCollection;
 use nicoSWD\Rule\TokenStream\TokenStream;
 
-final class AstEvaluator
+final readonly class AstEvaluator
 {
     public function __construct(
-        private readonly TokenStream $tokenStream,
-        private readonly TokenFactory $tokenFactory,
+        private TokenStream  $tokenStream,
+        private TokenFactory $tokenFactory,
     ) {
     }
 
@@ -160,8 +159,10 @@ final class AstEvaluator
 
         try {
             $method = $this->tokenStream->getMethod($node->name, $objectToken);
-        } catch (UndefinedMethodException $e) {
+        } catch (UndefinedMethodException) {
             throw ParserException::undefinedMethod($node->name, $node->offset);
+        } catch (ForbiddenMethodException) {
+            throw ParserException::forbiddenMethod($node->name, $objectToken);
         }
 
         $result = $method->call(...$args);

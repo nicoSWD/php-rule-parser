@@ -19,6 +19,6 @@ final class TokenFunction extends BaseToken
 
     public function createNode(TokenIterator $tokenStream): BaseToken
     {
-        return (new NodeFunction($tokenStream))->getNode();
+        return new NodeFunction($tokenStream)->getNode();
     }
 }

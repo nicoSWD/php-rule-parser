@@ -143,7 +143,7 @@ final class ObjectTest extends AbstractTestBase
         $rule = new Rule('my_obj.nope() === false', $variables);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Undefined method "nope" at position 6', $rule->getError());
+        $this->assertSame('Undefined method "nope" at position 6', $rule->error);
     }
 
     #[Test]
@@ -163,7 +163,7 @@ final class ObjectTest extends AbstractTestBase
         $rule = new Rule('my_obj.nope() === "nope"', $variables);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Undefined method "nope" at position 6', $rule->getError());
+        $this->assertSame('Undefined method "nope" at position 6', $rule->error);
     }
 
     public function phpMagicMethods(): array

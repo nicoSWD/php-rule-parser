@@ -62,7 +62,7 @@ final class OperatorsTest extends AbstractTestBase
         $rule = new Rule('"123" in "foo"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Expected array, got "string"', $rule->getError());
+        $this->assertSame('Expected array, got "string"', $rule->error);
     }
 
     #[Test]

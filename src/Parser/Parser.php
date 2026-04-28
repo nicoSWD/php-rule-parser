@@ -21,7 +21,6 @@ use nicoSWD\Rule\AST\Node;
 use nicoSWD\Rule\AST\NullNode;
 use nicoSWD\Rule\AST\RegexNode;
 use nicoSWD\Rule\AST\StringNode;
-use nicoSWD\Rule\AST\ValueNode;
 use nicoSWD\Rule\AST\VariableNode;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenAnd;
@@ -191,9 +190,7 @@ final readonly class Parser
             $tokens->next();
 
             // Check for method calls chained onto this value
-            $node = $this->parseMethodChain($node, $tokens);
-
-            return $node;
+            return $this->parseMethodChain($node, $tokens);
         }
 
         throw Exception\ParserException::unexpectedToken($token);
@@ -224,14 +221,7 @@ final readonly class Parser
         // Move past the function token
         $tokens->next();
 
-        // Consume the opening parenthesis
-        $this->skipIgnoredTokens($tokens);
-        if (!$tokens->valid() || !$tokens->peekRaw() instanceof TokenOpeningParenthesis) {
-            throw Exception\ParserException::unexpectedToken($tokens->valid() ? $tokens->peekRaw() : null);
-        }
-        $tokens->next();
-
-        $arguments = $this->parseArguments($tokens);
+        $arguments = $this->parseParenthesizedArguments($tokens);
 
         return new FunctionCallNode($functionName, $arguments, $offset);
     }
@@ -247,14 +237,7 @@ final readonly class Parser
             $offset = $methodToken->getOffset();
             $tokens->next();
 
-            // Consume the opening parenthesis
-            $this->skipIgnoredTokens($tokens);
-            if (!$tokens->valid() || !$tokens->peekRaw() instanceof TokenOpeningParenthesis) {
-                throw Exception\ParserException::unexpectedToken($tokens->valid() ? $tokens->peekRaw() : null);
-            }
-            $tokens->next();
-
-            $arguments = $this->parseArguments($tokens);
+            $arguments = $this->parseParenthesizedArguments($tokens);
 
             $object = new MethodCallNode($object, $methodName, $arguments, $offset);
 
@@ -265,46 +248,25 @@ final readonly class Parser
     }
 
     /** @throws Exception\ParserException */
+    private function parseParenthesizedArguments(TokenIterator $tokens): array
+    {
+        // Consume the opening parenthesis
+        $this->skipIgnoredTokens($tokens);
+        if (!$tokens->valid() || !$tokens->peekRaw() instanceof TokenOpeningParenthesis) {
+            throw Exception\ParserException::unexpectedToken($tokens->valid() ? $tokens->peekRaw() : null);
+        }
+        $tokens->next();
+
+        return $this->parseArguments($tokens);
+    }
+
+    /** @throws Exception\ParserException */
     private function parseArguments(TokenIterator $tokens): array
     {
-        $arguments = [];
-        $expectComma = false;
-
-        while ($tokens->valid()) {
-            $this->skipIgnoredTokens($tokens);
-
-            if (!$tokens->valid()) {
-                throw Exception\ParserException::unexpectedEndOfString();
-            }
-
-            $token = $tokens->peekRaw();
-
-            // Closing parenthesis ends the argument list
-            if ($token instanceof TokenClosingParenthesis) {
-                $tokens->next(); // consume ')'
-                return $arguments;
-            }
-
-            if ($token instanceof TokenComma) {
-                if (!$expectComma) {
-                    throw Exception\ParserException::unexpectedComma($token);
-                }
-                $expectComma = false;
-                $tokens->next();
-                continue;
-            }
-
-            if ($expectComma) {
-                throw Exception\ParserException::unexpectedToken($token);
-            }
-
-            // Parse the argument value (could be a complex expression or just a value)
-            $arg = $this->parsePrimary($tokens);
-            $arguments[] = $arg;
-            $expectComma = true;
-        }
-
-        throw Exception\ParserException::unexpectedEndOfString();
+        return $this->parseCommaSeparatedList(
+            $tokens,
+            static fn (BaseToken $token): bool => $token instanceof TokenClosingParenthesis,
+        );
     }
 
     /** @throws Exception\ParserException */
@@ -313,6 +275,21 @@ final readonly class Parser
         // Consume the opening '['
         $tokens->next();
 
+        $items = $this->parseCommaSeparatedList(
+            $tokens,
+            static fn (BaseToken $token): bool => $token instanceof TokenClosingArray,
+        );
+
+        return new ArrayNode($items);
+    }
+
+    /**
+     * @param callable(BaseToken): bool $isTerminator
+     * @return Node[]
+     * @throws Exception\ParserException
+     */
+    private function parseCommaSeparatedList(TokenIterator $tokens, callable $isTerminator): array
+    {
         $items = [];
         $expectComma = false;
 
@@ -325,10 +302,10 @@ final readonly class Parser
 
             $token = $tokens->peekRaw();
 
-            // Closing array ends the array literal
-            if ($token instanceof TokenClosingArray) {
-                $tokens->next(); // consume ']'
-                return new ArrayNode($items);
+            // Closing token ends the list
+            if ($isTerminator($token)) {
+                $tokens->next(); // consume the closing token
+                return $items;
             }
 
             if ($token instanceof TokenComma) {
@@ -344,7 +321,7 @@ final readonly class Parser
                 throw Exception\ParserException::unexpectedToken($token);
             }
 
-            // Array items can be any primary expression (including nested arrays)
+            // Parse the item value (could be a complex expression)
             $item = $this->parsePrimary($tokens);
             $items[] = $item;
             $expectComma = true;

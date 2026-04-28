@@ -20,6 +20,6 @@ final class TokenVariable extends BaseToken implements Value
 
     public function createNode(TokenIterator $tokenStream): BaseToken
     {
-        return (new NodeVariable($tokenStream))->getNode();
+        return new NodeVariable($tokenStream)->getNode();
     }
 }

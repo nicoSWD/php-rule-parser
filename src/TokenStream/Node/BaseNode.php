@@ -115,7 +115,7 @@ abstract class BaseNode
                 }
 
                 $commaExpected = true;
-                $items->attach($token);
+                $items->add($token);
             } elseif ($token->isOfType(TokenType::COMMA)) {
                 if (!$commaExpected) {
                     throw ParserException::unexpectedComma($token);

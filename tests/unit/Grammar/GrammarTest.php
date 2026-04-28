@@ -15,11 +15,6 @@ final class GrammarTest extends TestCase
     public function testDefaultValues()
     {
         $grammar = new class extends Grammar {
-            public function getDefinition(): array
-            {
-                return [];
-            }
-
             public function getInternalFunctions(): array
             {
                 return [];
@@ -31,7 +26,6 @@ final class GrammarTest extends TestCase
             }
         };
 
-        $this->assertSame([], $grammar->getDefinition());
         $this->assertSame([], $grammar->getInternalFunctions());
         $this->assertSame([], $grammar->getInternalMethods());
     }

@@ -20,6 +20,11 @@ final class TokenCollection extends SplObjectStorage
         return $token;
     }
 
+    public function add(BaseToken $token): void
+    {
+        $this->offsetSet($token);
+    }
+
     public function toArray(): array
     {
         $items = [];

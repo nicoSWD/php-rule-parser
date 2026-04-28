@@ -20,6 +20,6 @@ class TokenString extends BaseToken implements Value
 
     public function createNode(TokenIterator $tokenStream): BaseToken
     {
-        return (new NodeString($tokenStream))->getNode();
+        return new NodeString($tokenStream)->getNode();
     }
 }

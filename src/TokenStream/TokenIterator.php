@@ -31,7 +31,6 @@ readonly class TokenIterator implements Iterator
         return $this->stack->valid();
     }
 
-    /** @throws ParserException */
     public function current(): BaseToken
     {
         return $this->getCurrentToken()->createNode($this);
