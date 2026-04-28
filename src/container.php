@@ -7,13 +7,15 @@
  */
 namespace nicoSWD\Rule;
 
+use nicoSWD\Rule\AST\AstEvaluator;
 use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rule\Parser\EvaluatableExpressionFactory;
 use nicoSWD\Rule\TokenStream\TokenStream;
 use nicoSWD\Rule\Compiler\CompilerFactory;
 use nicoSWD\Rule\Evaluator\Evaluator;
 use nicoSWD\Rule\Evaluator\EvaluatorInterface;
-use nicoSWD\Rule\Tokenizer\Tokenizer;
+use nicoSWD\Rule\Tokenizer\Lexer;
+use nicoSWD\Rule\Tokenizer\TokenizerInterface;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\TokenIteratorFactory;
 use nicoSWD\Rule\TokenStream\CallableUserMethodFactory;
@@ -25,15 +27,13 @@ return new class {
     private static JavaScript $javaScript;
     private static EvaluatableExpressionFactory $expressionFactory;
     private static CallableUserMethodFactory $userMethodFactory;
-    private static Tokenizer $tokenizer;
+    private static TokenizerInterface $tokenizer;
     private static Evaluator $evaluator;
 
     public function parser(array $variables): Parser\Parser
     {
         return new Parser\Parser(
             self::ast($variables),
-            self::expressionFactory(),
-            self::compiler()
         );
     }
 
@@ -44,6 +44,14 @@ return new class {
         }
 
         return self::$evaluator;
+    }
+
+    public function astEvaluator(array $variables): AstEvaluator
+    {
+        return new AstEvaluator(
+            self::ast($variables),
+            self::tokenFactory(),
+        );
     }
 
     private static function tokenFactory(): TokenFactory
@@ -67,15 +75,15 @@ return new class {
     private static function ast(array $variables): TokenStream
     {
         $tokenStream = new TokenStream(self::tokenizer(), self::tokenFactory(), self::tokenStreamFactory(), self::userMethodFactory());
-        $tokenStream->setVariables($variables);
+        $tokenStream->variables = $variables;
 
         return $tokenStream;
     }
 
-    private static function tokenizer(): Tokenizer
+    private static function tokenizer(): TokenizerInterface
     {
         if (!isset(self::$tokenizer)) {
-            self::$tokenizer = new Tokenizer(self::javascript(), self::tokenFactory());
+            self::$tokenizer = new Lexer(self::javascript(), self::tokenFactory());
         }
 
         return self::$tokenizer;

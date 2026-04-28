@@ -37,6 +37,15 @@ readonly class TokenIterator implements Iterator
         return $this->getCurrentToken()->createNode($this);
     }
 
+    /**
+     * Returns the raw token without creating a node.
+     * Used by the AST parser to inspect tokens without resolving them.
+     */
+    public function peekRaw(): BaseToken
+    {
+        return $this->getCurrentToken();
+    }
+
     public function key(): int
     {
         return $this->stack->key();
@@ -64,7 +73,7 @@ readonly class TokenIterator implements Iterator
         try {
             return $this->tokenStream->getVariable($variableName);
         } catch (Exception\UndefinedVariableException) {
-            throw ParserException::undefinedVariable($variableName, $this->getCurrentToken());
+            throw ParserException::undefinedVariable($variableName, $this->getCurrentToken()->getOffset());
         }
     }
 
@@ -74,7 +83,7 @@ readonly class TokenIterator implements Iterator
         try {
             return $this->tokenStream->getFunction($functionName);
         } catch (Exception\UndefinedFunctionException) {
-            throw ParserException::undefinedFunction($functionName, $this->getCurrentToken());
+            throw ParserException::undefinedFunction($functionName, $this->getCurrentToken()->getOffset());
         }
     }
 
@@ -84,7 +93,7 @@ readonly class TokenIterator implements Iterator
         try {
             return $this->tokenStream->getMethod($methodName, $token);
         } catch (Exception\UndefinedMethodException) {
-            throw ParserException::undefinedMethod($methodName, $this->getCurrentToken());
+            throw ParserException::undefinedMethod($methodName, $this->getCurrentToken()->getOffset());
         } catch (Exception\ForbiddenMethodException) {
             throw ParserException::forbiddenMethod($methodName, $this->getCurrentToken());
         }

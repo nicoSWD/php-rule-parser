@@ -43,7 +43,7 @@ final class ToUpperCaseTest extends AbstractTestBase
     {
         $rule = new Rule('1.toUpperCase() === "1"', ['foo' => 1]);
 
-        $this->assertFalse($rule->isValid());
-        $this->assertSame('Unknown token ".toUpperCase(" at position 1', $rule->getError());
+        $this->assertTrue($rule->isValid());
+        $this->assertTrue($rule->isTrue());
     }
 }

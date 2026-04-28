@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenArray;
+use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenRegex;
 
 final class Split extends CallableFunction
@@ -37,6 +37,6 @@ final class Split extends CallableFunction
             $newValue = $func(...$params);
         }
 
-        return new TokenArray($newValue);
+        return (new TokenFactory())->createFromPHPType($newValue);
     }
 }

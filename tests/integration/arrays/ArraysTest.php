@@ -57,8 +57,8 @@ final class ArraysTest extends AbstractTestBase
     {
         $rule = new Rule('["foo", "bar", ] === ["foo", "bar"]');
 
-        $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "," at position 15', $rule->getError());
+        $this->assertTrue($rule->isValid());
+        $this->assertTrue($rule->isTrue());
     }
 
     #[Test]

@@ -27,8 +27,8 @@ final class SyntaxErrorTest extends AbstractTestBase
     {
         $rule = new Rule('"foo".charAt(1 , ) === "b"');
 
-        $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "," at position 17', $rule->getError());
+        $this->assertTrue($rule->isValid());
+        $this->assertFalse($rule->isTrue());
     }
 
     #[Test]

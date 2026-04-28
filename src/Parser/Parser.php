@@ -7,90 +7,403 @@
  */
 namespace nicoSWD\Rule\Parser;
 
-use Closure;
-use nicoSWD\Rule\Compiler\CompilerFactoryInterface;
-use nicoSWD\Rule\Compiler\CompilerInterface;
-use nicoSWD\Rule\TokenStream\TokenStream;
+use nicoSWD\Rule\AST\ArrayNode;
+use nicoSWD\Rule\AST\BoolNode;
+use nicoSWD\Rule\AST\ComparisonNode;
+use nicoSWD\Rule\AST\ComparisonOperator;
+use nicoSWD\Rule\AST\FloatNode;
+use nicoSWD\Rule\AST\FunctionCallNode;
+use nicoSWD\Rule\AST\IntegerNode;
+use nicoSWD\Rule\AST\LogicalNode;
+use nicoSWD\Rule\AST\LogicalOperator;
+use nicoSWD\Rule\AST\MethodCallNode;
+use nicoSWD\Rule\AST\Node;
+use nicoSWD\Rule\AST\NullNode;
+use nicoSWD\Rule\AST\RegexNode;
+use nicoSWD\Rule\AST\StringNode;
+use nicoSWD\Rule\AST\ValueNode;
+use nicoSWD\Rule\AST\VariableNode;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenType;
-use nicoSWD\Rule\TokenStream\Token\Type\Operator;
+use nicoSWD\Rule\TokenStream\Token\TokenAnd;
+use nicoSWD\Rule\TokenStream\Token\TokenBoolFalse;
+use nicoSWD\Rule\TokenStream\Token\TokenBoolTrue;
+use nicoSWD\Rule\TokenStream\Token\TokenClosingArray;
+use nicoSWD\Rule\TokenStream\Token\TokenClosingParenthesis;
+use nicoSWD\Rule\TokenStream\Token\TokenComma;
+use nicoSWD\Rule\TokenStream\Token\TokenEncapsedString;
+use nicoSWD\Rule\TokenStream\Token\TokenEqual;
+use nicoSWD\Rule\TokenStream\Token\TokenEqualStrict;
+use nicoSWD\Rule\TokenStream\Token\TokenFloat;
+use nicoSWD\Rule\TokenStream\Token\TokenFunction;
+use nicoSWD\Rule\TokenStream\Token\TokenGreater;
+use nicoSWD\Rule\TokenStream\Token\TokenGreaterEqual;
+use nicoSWD\Rule\TokenStream\Token\TokenIn;
+use nicoSWD\Rule\TokenStream\Token\TokenInteger;
+use nicoSWD\Rule\TokenStream\Token\TokenMethod;
+use nicoSWD\Rule\TokenStream\Token\TokenNotEqual;
+use nicoSWD\Rule\TokenStream\Token\TokenNotEqualStrict;
+use nicoSWD\Rule\TokenStream\Token\TokenNotIn;
+use nicoSWD\Rule\TokenStream\Token\TokenNull;
+use nicoSWD\Rule\TokenStream\Token\TokenOpeningArray;
+use nicoSWD\Rule\TokenStream\Token\TokenOpeningParenthesis;
+use nicoSWD\Rule\TokenStream\Token\TokenOr;
+use nicoSWD\Rule\TokenStream\Token\TokenRegex;
+use nicoSWD\Rule\TokenStream\Token\TokenSmaller;
+use nicoSWD\Rule\TokenStream\Token\TokenSmallerEqual;
+use nicoSWD\Rule\TokenStream\Token\TokenString;
+use nicoSWD\Rule\TokenStream\Token\TokenVariable;
+use nicoSWD\Rule\TokenStream\TokenIterator;
+use nicoSWD\Rule\TokenStream\TokenStream;
 
+/**
+ * Recursive descent parser that builds an AST from the token stream.
+ *
+ * Grammar (precedence from lowest to highest):
+ *   expression     -> logical_or
+ *   logical_or     -> logical_and ( "||" logical_and )*
+ *   logical_and    -> comparison ( "&&" comparison )*
+ *   comparison     -> primary ( comparison_op primary )?
+ *   primary        -> "(" expression ")"
+ *                   | value
+ *   value          -> variable method_call*
+ *                   | function_call
+ *                   | string | integer | float | bool | null | regex
+ *                   | array_literal method_call*
+ */
 final readonly class Parser
 {
     public function __construct(
         private TokenStream $tokenStream,
-        private EvaluatableExpressionFactory $expressionFactory,
-        private CompilerFactoryInterface $compilerFactory,
     ) {
     }
 
     /** @throws Exception\ParserException */
-    public function parse(string $rule): string
+    public function parse(string $rule): Node
     {
-        $compiler = $this->compilerFactory->create();
-        $expression = $this->expressionFactory->create();
+        $tokenIterator = $this->tokenStream->getStream($rule);
 
-        foreach ($this->tokenStream->getStream($rule) as $token) {
-            $handler = $this->getHandlerForToken($token, $expression);
-            $handler($compiler);
+        if (!$tokenIterator->valid()) {
+            return new BoolNode(false);
+        }
 
-            if ($expression->isComplete()) {
-                $compiler->addBoolean($expression->evaluate());
+        $node = $this->parseExpression($tokenIterator);
+
+        // If there are remaining non-ignorable tokens, that's a syntax error
+        $this->skipIgnoredTokens($tokenIterator);
+        if ($tokenIterator->valid()) {
+            throw Exception\ParserException::unexpectedToken($tokenIterator->peekRaw());
+        }
+
+        return $node;
+    }
+
+    /** @throws Exception\ParserException */
+    private function parseExpression(TokenIterator $tokens): Node
+    {
+        return $this->parseLogicalOr($tokens);
+    }
+
+    /** @throws Exception\ParserException */
+    private function parseLogicalOr(TokenIterator $tokens): Node
+    {
+        $left = $this->parseLogicalAnd($tokens);
+
+        while ($this->peekToken($tokens) instanceof TokenOr) {
+            $this->consumeToken($tokens); // consume ||
+            $right = $this->parseLogicalAnd($tokens);
+            $left = new LogicalNode($left, $right, LogicalOperator::OR);
+        }
+
+        return $left;
+    }
+
+    /** @throws Exception\ParserException */
+    private function parseLogicalAnd(TokenIterator $tokens): Node
+    {
+        $left = $this->parseComparison($tokens);
+
+        while ($this->peekToken($tokens) instanceof TokenAnd) {
+            $this->consumeToken($tokens); // consume &&
+            $right = $this->parseComparison($tokens);
+            $left = new LogicalNode($left, $right, LogicalOperator::AND);
+        }
+
+        return $left;
+    }
+
+    /** @throws Exception\ParserException */
+    private function parseComparison(TokenIterator $tokens): Node
+    {
+        $left = $this->parsePrimary($tokens);
+
+        $operatorToken = $this->peekToken($tokens);
+
+        if ($operatorToken !== null) {
+            $operator = $this->matchComparisonOperator($operatorToken);
+
+            if ($operator !== null) {
+                $this->consumeToken($tokens); // consume operator
+                $right = $this->parsePrimary($tokens);
+
+                return new ComparisonNode($left, $right, $operator);
             }
         }
 
-        return $compiler->getCompiledRule();
+        return $left;
     }
 
-    private function getHandlerForToken(BaseToken $token, EvaluatableExpression $expression): Closure
+    /** @throws Exception\ParserException */
+    private function parsePrimary(TokenIterator $tokens): Node
     {
-        return match ($token->getType()) {
-            TokenType::VALUE => $this->handleValueToken($token, $expression),
-            TokenType::OPERATOR => $this->handleOperatorToken($token, $expression),
-            TokenType::LOGICAL => $this->handleLogicalToken($token),
-            TokenType::PARENTHESIS => $this->handleParenthesisToken($token),
-            TokenType::COMMENT, TokenType::SPACE => $this->handleDummyToken(),
-            default => $this->handleUnknownToken($token),
+        $this->skipIgnoredTokens($tokens);
+
+        if (!$tokens->valid()) {
+            throw Exception\ParserException::unexpectedEndOfString();
+        }
+
+        $token = $tokens->peekRaw();
+
+        // Parenthesized expression
+        if ($token instanceof TokenOpeningParenthesis) {
+            $tokens->next();
+            $node = $this->parseExpression($tokens);
+            $this->expectClosingParenthesis($tokens);
+
+            return $node;
+        }
+
+        // Array literal (may have method calls chained)
+        if ($token instanceof TokenOpeningArray) {
+            $node = $this->parseArrayLiteral($tokens);
+            return $this->parseMethodChain($node, $tokens);
+        }
+
+        // Function call
+        if ($token instanceof TokenFunction) {
+            $node = $this->parseFunctionCall($tokens);
+            return $this->parseMethodChain($node, $tokens);
+        }
+
+        // Simple value tokens (advance past them)
+        $node = $this->parseSimpleValue($token);
+
+        if ($node !== null) {
+            $tokens->next();
+
+            // Check for method calls chained onto this value
+            $node = $this->parseMethodChain($node, $tokens);
+
+            return $node;
+        }
+
+        throw Exception\ParserException::unexpectedToken($token);
+    }
+
+    private function parseSimpleValue(BaseToken $token): ?Node
+    {
+        return match ($token::class) {
+            TokenVariable::class => new VariableNode($token->getOriginalValue(), $token->getOffset()),
+            TokenEncapsedString::class, TokenString::class => new StringNode($token->getValue()),
+            TokenInteger::class => new IntegerNode($token->getValue()),
+            TokenFloat::class => new FloatNode($token->getValue()),
+            TokenBoolTrue::class => new BoolNode(true),
+            TokenBoolFalse::class => new BoolNode(false),
+            TokenNull::class => new NullNode(),
+            TokenRegex::class => new RegexNode($token->getValue(), $token),
+            default => null,
         };
     }
 
-    private function handleValueToken(BaseToken $token, EvaluatableExpression $expression): Closure
+    /** @throws Exception\ParserException */
+    private function parseFunctionCall(TokenIterator $tokens): FunctionCallNode
     {
-        return static fn () => $expression->addValue($token->getValue());
+        $token = $tokens->peekRaw();
+        $functionName = $token->getValue();
+        $offset = $token->getOffset();
+
+        // Move past the function token
+        $tokens->next();
+
+        // Consume the opening parenthesis
+        $this->skipIgnoredTokens($tokens);
+        if (!$tokens->valid() || !$tokens->peekRaw() instanceof TokenOpeningParenthesis) {
+            throw Exception\ParserException::unexpectedToken($tokens->valid() ? $tokens->peekRaw() : null);
+        }
+        $tokens->next();
+
+        $arguments = $this->parseArguments($tokens);
+
+        return new FunctionCallNode($functionName, $arguments, $offset);
     }
 
-    private function handleLogicalToken(BaseToken $token): Closure
+    /** @throws Exception\ParserException */
+    private function parseMethodChain(Node $object, TokenIterator $tokens): Node
     {
-        return static fn (CompilerInterface $compiler) => $compiler->addLogical($token);
+        $this->skipIgnoredTokens($tokens);
+
+        while ($tokens->valid() && $tokens->peekRaw() instanceof TokenMethod) {
+            $methodToken = $tokens->peekRaw();
+            $methodName = $methodToken->getValue();
+            $offset = $methodToken->getOffset();
+            $tokens->next();
+
+            // Consume the opening parenthesis
+            $this->skipIgnoredTokens($tokens);
+            if (!$tokens->valid() || !$tokens->peekRaw() instanceof TokenOpeningParenthesis) {
+                throw Exception\ParserException::unexpectedToken($tokens->valid() ? $tokens->peekRaw() : null);
+            }
+            $tokens->next();
+
+            $arguments = $this->parseArguments($tokens);
+
+            $object = new MethodCallNode($object, $methodName, $arguments, $offset);
+
+            $this->skipIgnoredTokens($tokens);
+        }
+
+        return $object;
     }
 
-    private function handleParenthesisToken(BaseToken $token): Closure
+    /** @throws Exception\ParserException */
+    private function parseArguments(TokenIterator $tokens): array
     {
-        return static fn (CompilerInterface $compiler) => $compiler->addParentheses($token);
-    }
+        $arguments = [];
+        $expectComma = false;
 
-    private function handleUnknownToken(BaseToken $token): Closure
-    {
-        return static fn () => throw Exception\ParserException::unknownToken($token);
-    }
+        while ($tokens->valid()) {
+            $this->skipIgnoredTokens($tokens);
 
-    private function handleOperatorToken(BaseToken & Operator $token, EvaluatableExpression $expression): Closure
-    {
-        return static function () use ($token, $expression): void {
-            if ($expression->hasOperator()) {
-                throw Exception\ParserException::unexpectedToken($token);
-            } elseif ($expression->hasNoValues()) {
-                throw Exception\ParserException::incompleteExpression($token);
+            if (!$tokens->valid()) {
+                throw Exception\ParserException::unexpectedEndOfString();
             }
 
-            $expression->operator = $token;
+            $token = $tokens->peekRaw();
+
+            // Closing parenthesis ends the argument list
+            if ($token instanceof TokenClosingParenthesis) {
+                $tokens->next(); // consume ')'
+                return $arguments;
+            }
+
+            if ($token instanceof TokenComma) {
+                if (!$expectComma) {
+                    throw Exception\ParserException::unexpectedComma($token);
+                }
+                $expectComma = false;
+                $tokens->next();
+                continue;
+            }
+
+            if ($expectComma) {
+                throw Exception\ParserException::unexpectedToken($token);
+            }
+
+            // Parse the argument value (could be a complex expression or just a value)
+            $arg = $this->parsePrimary($tokens);
+            $arguments[] = $arg;
+            $expectComma = true;
+        }
+
+        throw Exception\ParserException::unexpectedEndOfString();
+    }
+
+    /** @throws Exception\ParserException */
+    private function parseArrayLiteral(TokenIterator $tokens): ArrayNode
+    {
+        // Consume the opening '['
+        $tokens->next();
+
+        $items = [];
+        $expectComma = false;
+
+        while ($tokens->valid()) {
+            $this->skipIgnoredTokens($tokens);
+
+            if (!$tokens->valid()) {
+                throw Exception\ParserException::unexpectedEndOfString();
+            }
+
+            $token = $tokens->peekRaw();
+
+            // Closing array ends the array literal
+            if ($token instanceof TokenClosingArray) {
+                $tokens->next(); // consume ']'
+                return new ArrayNode($items);
+            }
+
+            if ($token instanceof TokenComma) {
+                if (!$expectComma) {
+                    throw Exception\ParserException::unexpectedComma($token);
+                }
+                $expectComma = false;
+                $tokens->next();
+                continue;
+            }
+
+            if ($expectComma) {
+                throw Exception\ParserException::unexpectedToken($token);
+            }
+
+            // Array items can be any primary expression (including nested arrays)
+            $item = $this->parsePrimary($tokens);
+            $items[] = $item;
+            $expectComma = true;
+        }
+
+        throw Exception\ParserException::unexpectedEndOfString();
+    }
+
+    /** @throws Exception\ParserException */
+    private function expectClosingParenthesis(TokenIterator $tokens): void
+    {
+        $this->skipIgnoredTokens($tokens);
+
+        if (!$tokens->valid()) {
+            throw Exception\ParserException::unexpectedEndOfString();
+        }
+
+        $token = $tokens->peekRaw();
+
+        if (!$token instanceof TokenClosingParenthesis) {
+            throw Exception\ParserException::unexpectedToken($token);
+        }
+
+        $tokens->next(); // consume ')'
+    }
+
+    private function matchComparisonOperator(BaseToken $token): ?ComparisonOperator
+    {
+        return match ($token::class) {
+            TokenEqual::class => ComparisonOperator::EQUAL,
+            TokenEqualStrict::class => ComparisonOperator::EQUAL_STRICT,
+            TokenNotEqual::class => ComparisonOperator::NOT_EQUAL,
+            TokenNotEqualStrict::class => ComparisonOperator::NOT_EQUAL_STRICT,
+            TokenSmaller::class => ComparisonOperator::LESS_THAN,
+            TokenGreater::class => ComparisonOperator::GREATER_THAN,
+            TokenSmallerEqual::class => ComparisonOperator::LESS_THAN_EQUAL,
+            TokenGreaterEqual::class => ComparisonOperator::GREATER_THAN_EQUAL,
+            TokenIn::class => ComparisonOperator::IN,
+            TokenNotIn::class => ComparisonOperator::NOT_IN,
+            default => null,
         };
     }
 
-    private function handleDummyToken(): Closure
+    private function peekToken(TokenIterator $tokens): ?BaseToken
     {
-        return static function (): void {
-            // Do nothing
-        };
+        $this->skipIgnoredTokens($tokens);
+
+        return $tokens->valid() ? $tokens->peekRaw() : null;
+    }
+
+    private function consumeToken(TokenIterator $tokens): void
+    {
+        $tokens->next();
+    }
+
+    private function skipIgnoredTokens(TokenIterator $tokens): void
+    {
+        while ($tokens->valid() && $tokens->peekRaw()->canBeIgnored()) {
+            $tokens->next();
+        }
     }
 }

@@ -27,14 +27,14 @@ final class ParserException extends \Exception
         return new self(sprintf('Incomplete expression for token "%s"', $token->getValue()));
     }
 
-    public static function undefinedVariable(string $name, BaseToken $token): self
+    public static function undefinedVariable(string $name, int $offset): self
     {
-        return new self(sprintf('Undefined variable "%s" at position %d', $name, $token->getOffset()));
+        return new self(sprintf('Undefined variable "%s" at position %d', $name, $offset));
     }
 
-    public static function undefinedMethod(string $name, BaseToken $token): self
+    public static function undefinedMethod(string $name, int $offset): self
     {
-        return new self(sprintf('Undefined method "%s" at position %d', $name, $token->getOffset()));
+        return new self(sprintf('Undefined method "%s" at position %d', $name, $offset));
     }
 
     public static function forbiddenMethod(string $name, BaseToken $token): self
@@ -42,9 +42,9 @@ final class ParserException extends \Exception
         return new self(sprintf('Forbidden method "%s" at position %d', $name, $token->getOffset()));
     }
 
-    public static function undefinedFunction(string $name, BaseToken $token): self
+    public static function undefinedFunction(string $name, int $offset): self
     {
-        return new self(sprintf('%s is not defined at position %d', $name, $token->getOffset()));
+        return new self(sprintf('%s is not defined at position %d', $name, $offset));
     }
 
     public static function unexpectedComma(BaseToken $token): self
@@ -67,5 +67,10 @@ final class ParserException extends \Exception
         return new self(
             sprintf('Unexpected operator %s at position %d', $token->getOriginalValue(), $token->getOffset())
         );
+    }
+
+    public static function expectedArray(string $type): self
+    {
+        return new self(sprintf('Expected array, got "%s"', $type));
     }
 }

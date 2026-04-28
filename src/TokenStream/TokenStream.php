@@ -21,7 +21,11 @@ class TokenStream
 {
     private array $functions = [];
     private array $methods = [];
-    private array $variables = [];
+    public array $variables = [] {
+        set {
+            $this->variables = $value;
+        }
+    }
 
     public function __construct(
         private readonly TokenizerInterface $tokenizer,
@@ -55,11 +59,6 @@ class TokenStream
         }
 
         return new $this->methods[$methodName]($token);
-    }
-
-    public function setVariables(array $variables): void
-    {
-        $this->variables = $variables;
     }
 
     /**
