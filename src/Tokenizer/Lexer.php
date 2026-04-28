@@ -127,7 +127,23 @@ final class Lexer extends TokenizerInterface
         $quote = $this->input[$this->pos];
         $this->pos++; // skip opening quote
 
-        $value = $quote;
+        $value = $quote . $this->readDelimitedContent($quote);
+
+        return $this->tokenFactory->createFromToken(Token::ENCAPSED_STRING, [Token::ENCAPSED_STRING->value => $value], $offset);
+    }
+
+    /**
+     * Read content delimited by a character, handling backslash escapes.
+     *
+     * The opening delimiter must already be consumed before calling this method.
+     *
+     * @param string $delimiter The closing delimiter character to look for.
+     * @param bool $disallowNewlines If true, newlines will stop reading (for regex).
+     * @return string The content between (but not including) the delimiters.
+     */
+    private function readDelimitedContent(string $delimiter, bool $disallowNewlines = false): string
+    {
+        $value = '';
 
         while ($this->pos < $this->length) {
             $ch = $this->input[$this->pos];
@@ -142,15 +158,21 @@ final class Lexer extends TokenizerInterface
                 continue;
             }
 
-            $value .= $ch;
-            $this->pos++;
-
-            if ($ch === $quote) {
+            if ($ch === $delimiter) {
+                $value .= $ch;
+                $this->pos++;
                 break;
             }
+
+            if ($disallowNewlines && ($ch === "\r" || $ch === "\n")) {
+                break;
+            }
+
+            $value .= $ch;
+            $this->pos++;
         }
 
-        return $this->tokenFactory->createFromToken(Token::ENCAPSED_STRING, [Token::ENCAPSED_STRING->value => $value], $offset);
+        return $value;
     }
 
     private function readSlash(): BaseToken
@@ -189,36 +211,8 @@ final class Lexer extends TokenizerInterface
         }
 
         // Regex literal
-        $value = '/';
-        $this->pos++;
-
-        while ($this->pos < $this->length) {
-            $ch = $this->input[$this->pos];
-
-            if ($ch === '\\') {
-                $value .= $ch;
-                $this->pos++;
-                if ($this->pos < $this->length) {
-                    $value .= $this->input[$this->pos];
-                    $this->pos++;
-                }
-                continue;
-            }
-
-            if ($ch === '/') {
-                $value .= $ch;
-                $this->pos++;
-                break;
-            }
-
-            // Don't allow newlines in regex
-            if ($ch === "\r" || $ch === "\n") {
-                break;
-            }
-
-            $value .= $ch;
-            $this->pos++;
-        }
+        $this->pos++; // skip opening '/'
+        $value = '/' . $this->readDelimitedContent('/', disallowNewlines: true);
 
         // Read optional flags
         while ($this->pos < $this->length && str_contains('igm', $this->input[$this->pos])) {

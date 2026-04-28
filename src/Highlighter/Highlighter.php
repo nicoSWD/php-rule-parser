@@ -26,7 +26,7 @@ final class Highlighter
         $this->styles[$group] = $style;
     }
 
-    public function highlightString(string $string, Iterator $tokens): string
+    public function highlightString(Iterator $tokens): string
     {
         return $this->highlightTokens($tokens);
     }

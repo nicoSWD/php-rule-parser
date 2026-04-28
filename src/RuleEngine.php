@@ -12,6 +12,7 @@ use nicoSWD\Rule\AST\AstEvaluator;
 use nicoSWD\Rule\AST\Node;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
+use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Parser\Parser;
 use nicoSWD\Rule\Tokenizer\Lexer;
 use nicoSWD\Rule\Tokenizer\TokenizerInterface;
@@ -89,11 +90,10 @@ final readonly class RuleEngine
     /**
      * Evaluate a rule string and return whether it's true or false.
      *
-     * @param string $rule     The rule expression to evaluate
-     * @param array  $variables Optional variables to use (merged with defaults)
-     * @return bool
-     *
-     * @throws Parser\Exception\ParserException
+     * @param string $rule The rule expression to evaluate
+     * @param array $variables Optional variables to use (merged with defaults)
+     * @return bool*
+     * @throws ParserException
      */
     public function evaluate(string $rule, array $variables = []): bool
     {

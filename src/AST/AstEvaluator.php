@@ -24,7 +24,9 @@ final readonly class AstEvaluator
     ) {
     }
 
-    /** @throws ParserException */
+    /**
+     * @throws ParserException
+     */
     public function evaluate(Node $node): bool
     {
         return match ($node::class) {
@@ -42,7 +44,9 @@ final readonly class AstEvaluator
         return (bool) $this->resolveValue($node);
     }
 
-    /** @throws ParserException */
+    /**
+     * @throws ParserException
+     */
     private function evaluateLogical(LogicalNode $node): bool
     {
         $left = $this->evaluate($node->left);
@@ -54,7 +58,9 @@ final readonly class AstEvaluator
         };
     }
 
-    /** @throws ParserException */
+    /**
+     * @throws ParserException
+     */
     private function evaluateComparison(ComparisonNode $node): bool
     {
         $leftValue = $this->resolveValue($node->left);
@@ -84,7 +90,9 @@ final readonly class AstEvaluator
         return in_array($leftValue, $rightValue, strict: true);
     }
 
-    /** @throws ParserException */
+    /**
+     * @throws ParserException
+     */
     private function resolveValue(Node $node): mixed
     {
         return match ($node::class) {
@@ -107,7 +115,7 @@ final readonly class AstEvaluator
     {
         try {
             $token = $this->tokenStream->getVariable($node->name);
-        } catch (UndefinedVariableException $e) {
+        } catch (UndefinedVariableException) {
             throw ParserException::undefinedVariable($node->name, $node->offset);
         }
 
@@ -137,7 +145,7 @@ final readonly class AstEvaluator
 
         try {
             $closure = $this->tokenStream->getFunction($node->name);
-        } catch (UndefinedFunctionException $e) {
+        } catch (UndefinedFunctionException) {
             throw ParserException::undefinedFunction($node->name, $node->offset);
         }
 

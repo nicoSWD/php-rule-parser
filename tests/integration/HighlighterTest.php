@@ -35,7 +35,7 @@ final class HighlighterTest extends TestCase
         );
 
         $tokens = $this->tokenizer->tokenize('[1, 2] == "1,2".split(",") && parseInt(foo) === 12');
-        $code = $this->highlighter->highlightString('[1, 2] == "1,2".split(",") && parseInt(foo) === 12', $tokens);
+        $code = $this->highlighter->highlightString($tokens);
 
         $this->assertStringContainsString('<span style="color: gray;">[</span>', $code);
     }

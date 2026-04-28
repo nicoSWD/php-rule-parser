@@ -33,7 +33,8 @@
     }
   },
   "require": {
-    "php": ">=8.4"
+    "php": ">=8.4",
+    "ext-ctype": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "^12.3",
