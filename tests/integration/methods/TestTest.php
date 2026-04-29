@@ -57,4 +57,26 @@ final class TestTest extends AbstractTestBase
     {
         $this->assertTrue($this->evaluate('/^foo$/.test() === false'));
     }
+
+    #[Test]
+    public function testAsDirectLogicalOperandWithAnd(): void
+    {
+        $this->assertTrue($this->evaluate('/a/.test("a") && /x/.test("x")'));
+        $this->assertFalse($this->evaluate('/a/.test("b") && /x/.test("x")'));
+        $this->assertFalse($this->evaluate('/a/.test("a") && /x/.test("y")'));
+    }
+
+    #[Test]
+    public function testAsDirectLogicalOperandWithOr(): void
+    {
+        $this->assertTrue($this->evaluate('/a/.test("a") || /x/.test("y")'));
+        $this->assertFalse($this->evaluate('/a/.test("b") || /x/.test("y")'));
+    }
+
+    #[Test]
+    public function testAsDirectLogicalOperandWithStrictComparison(): void
+    {
+        $this->assertTrue($this->evaluate('/a/.test("a") === true && /x/.test("x") === true'));
+        $this->assertFalse($this->evaluate('/a/.test("b") === true && /x/.test("x") === true'));
+    }
 }

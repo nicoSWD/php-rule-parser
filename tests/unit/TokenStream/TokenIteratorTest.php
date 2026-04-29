@@ -48,8 +48,7 @@ final class TokenIteratorTest extends TestCase
         $this->stack->shouldReceive('valid')->andReturn(true, true, true, false);
         $this->stack->shouldReceive('key')->andReturn(1, 2, 3);
         $this->stack->shouldReceive('next');
-        $this->stack->shouldReceive('seek');
-        $this->stack->shouldReceive('current')->times(5)->andReturn(
+        $this->stack->shouldReceive('current')->times(3)->andReturn(
             new TokenString('a'),
             new TokenMethod('.foo('),
             new TokenString('b')

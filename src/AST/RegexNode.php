@@ -20,7 +20,7 @@ final class RegexNode extends ValueNode
         $this->originalToken = $originalToken;
     }
 
-    public function getNativeValue(): mixed
+    public function getNativeValue(): string
     {
         return $this->pattern;
     }

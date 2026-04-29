@@ -7,12 +7,8 @@
  */
 namespace nicoSWD\Rule\tests\unit\TokenStream\Token;
 
-use ArrayIterator;
-use Mockery\MockInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
-use nicoSWD\Rule\TokenStream\TokenIterator;
-use nicoSWD\Rule\TokenStream\TokenStream;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -47,16 +43,6 @@ final class BaseTokenTest extends TestCase
     public function givenATokenWhenGettingOriginalValueItShouldReturnTheExpectedOriginalValue(): void
     {
         $this->assertSame('&&', $this->token->getOriginalValue());
-    }
-
-    #[Test]
-    public function givenATokenIteratorWhenCreatingNodeItShouldReturnTheSameToken(): void
-    {
-        /** @var TokenStream|MockInterface $tokenStream */
-        $tokenStream = \Mockery::mock(TokenStream::class);
-        $iterator = new TokenIterator(new ArrayIterator([]), $tokenStream);
-
-        $this->assertSame($this->token, $this->token->createNode($iterator));
     }
 
     #[Test]

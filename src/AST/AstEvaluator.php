@@ -34,11 +34,14 @@ final readonly class AstEvaluator
             ComparisonNode::class => $this->evaluateComparison($node),
             BoolNode::class => $node->value,
             VariableNode::class => $this->evaluateVariableAsBool($node),
+            MethodCallNode::class, FunctionCallNode::class => (bool) $this->resolveValue($node),
             default => throw new \RuntimeException('Unexpected root node type: ' . $node::class),
         };
     }
 
-    /** @throws ParserException */
+    /**
+     * @throws ParserException
+     */
     private function evaluateVariableAsBool(VariableNode $node): bool
     {
         return (bool) $this->resolveValue($node);
@@ -80,7 +83,9 @@ final readonly class AstEvaluator
         };
     }
 
-    /** @throws ParserException */
+    /**
+     * @throws ParserException
+     */
     private function evaluateIn(mixed $leftValue, mixed $rightValue): bool
     {
         if (!is_array($rightValue)) {
@@ -110,7 +115,9 @@ final readonly class AstEvaluator
         };
     }
 
-    /** @throws ParserException */
+    /**
+     * @throws ParserException
+     */
     private function resolveVariable(VariableNode $node): mixed
     {
         try {
@@ -126,7 +133,9 @@ final readonly class AstEvaluator
         return $token->getValue();
     }
 
-    /** @throws ParserException */
+    /**
+     * @throws ParserException
+     */
     private function resolveArray(ArrayNode $node): array
     {
         $items = [];
@@ -138,7 +147,9 @@ final readonly class AstEvaluator
         return $items;
     }
 
-    /** @throws ParserException */
+    /**
+     * @throws ParserException
+     */
     private function resolveFunction(FunctionCallNode $node): mixed
     {
         $args = $this->resolveArguments($node->arguments);
@@ -152,7 +163,9 @@ final readonly class AstEvaluator
         return $closure(...$args)->getValue();
     }
 
-    /** @throws ParserException */
+    /**
+     * @throws ParserException
+     */
     private function resolveMethod(MethodCallNode $node): mixed
     {
         $objectValue = $this->resolveValue($node->object);
@@ -182,7 +195,9 @@ final readonly class AstEvaluator
         return $result->getValue();
     }
 
-    /** @throws ParserException */
+    /**
+     * @throws ParserException
+     */
     private function resolveArguments(array $arguments): array
     {
         $resolved = [];

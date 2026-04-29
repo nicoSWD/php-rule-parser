@@ -158,6 +158,7 @@ final readonly class RuleEngine
     /**
      * Parse a rule string into an AST node, applying the given variables.
      *
+     * @throws ParserException
      * @internal
      */
     public function parse(string $rule, array $variables = []): Node

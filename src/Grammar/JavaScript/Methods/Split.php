@@ -37,6 +37,6 @@ final class Split extends CallableFunction
             $newValue = $func(...$params);
         }
 
-        return (new TokenFactory())->createFromPHPType($newValue);
+        return new TokenFactory()->createFromPHPType($newValue);
     }
 }

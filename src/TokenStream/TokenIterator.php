@@ -33,7 +33,7 @@ readonly class TokenIterator implements Iterator
 
     public function current(): BaseToken
     {
-        return $this->getCurrentToken()->createNode($this);
+        return $this->getCurrentToken();
     }
 
     /**

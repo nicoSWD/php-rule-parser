@@ -8,6 +8,7 @@
 namespace nicoSWD\Rule;
 
 use nicoSWD\Rule\AST\Node;
+use nicoSWD\Rule\Parser\Exception\ParserException;
 
 /**
  * Convenience class for evaluating a single rule expression.
@@ -50,6 +51,9 @@ class Rule
         $this->variables = $variables;
     }
 
+    /**
+     * @throws ParserException
+     */
     public function isTrue(): bool
     {
         if ($this->ast === null) {
@@ -59,6 +63,9 @@ class Rule
         return $this->engine->evaluate($this->rule, $this->variables);
     }
 
+    /**
+     * @throws ParserException
+     */
     public function isFalse(): bool
     {
         return !$this->isTrue();

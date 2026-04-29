@@ -7,18 +7,10 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-use nicoSWD\Rule\TokenStream\Node\NodeFunction;
-use nicoSWD\Rule\TokenStream\TokenIterator;
-
 final class TokenFunction extends BaseToken
 {
     public function getType(): TokenType
     {
         return TokenType::FUNCTION;
-    }
-
-    public function createNode(TokenIterator $tokenStream): BaseToken
-    {
-        return new NodeFunction($tokenStream)->getNode();
     }
 }

@@ -7,8 +7,6 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-use nicoSWD\Rule\TokenStream\TokenIterator;
-
 abstract class BaseToken
 {
     abstract public function getType(): TokenType;
@@ -32,11 +30,6 @@ abstract class BaseToken
     public function getOffset(): int
     {
         return $this->offset;
-    }
-
-    public function createNode(TokenIterator $tokenStream): self
-    {
-        return $this;
     }
 
     public function isOfType(TokenType $type): bool

@@ -44,7 +44,7 @@ $variables = [
     'coupon_code' => (string) $_POST['coupon_code'],
 ];
 
-$rule = new Rule('coupon_code.test(/^summer20[0-9]{2}$/) == true', $variables);
+$rule = new Rule('coupon_code.test(/^summer20[0-9]{2}$/)', $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
@@ -83,14 +83,14 @@ Name        | Example
 ----------- | ------------------------
 charAt      | `"foo".charAt(2) === "o"`            
 concat      | `"foo".concat("bar", "baz") === "foobarbaz"`
-endsWith    | `"foo".endsWith("oo") === true`               
-startsWith  | `"foo".startsWith("fo") === true`        
+endsWith    | `"foo".endsWith("oo")`               
+startsWith  | `"foo".startsWith("fo")`        
 indexOf     | `"foo".indexOf("oo") === 1`                
 join        | `["foo", "bar"].join(",") === "foo,bar"`            
 replace     | `"foo".replace("oo", "aa") === "faa"`               
 split       | `"foo-bar".split("-") === ["foo", "bar"]`           
 substr      | `"foo".substr(1) === "oo"`                 
-test        | `"foo".test(/oo$/) === true`                     
+test        | `"foo".test(/oo$/)`                     
 toLowerCase | `"FOO".toLowerCase() === "foo"`                      
 toUpperCase | `"foo".toUpperCase() === "FOO"`                      
 
