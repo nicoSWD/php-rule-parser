@@ -29,17 +29,18 @@ final class MethodCallNode extends Node
     public function evaluate(EvaluationContext $context): mixed
     {
         $objectValue = $this->object->evaluate($context);
-        $objectToken = $context->tokenFactory->createFromPHPType($objectValue);
 
-        // For regex nodes, use the original token to preserve type information
+        // For regex nodes, preserve the original token for type detection
         if ($this->object instanceof RegexNode) {
             $objectToken = $this->object->originalToken;
+        } else {
+            $objectToken = $context->tokenFactory->createFromPHPType($objectValue);
         }
 
         $args = $this->resolveArguments($context);
 
         try {
-            $method = $context->methodRegistry->get($this->name, $objectToken);
+            $method = $context->methodRegistry->get($this->name, $objectToken, $objectValue);
         } catch (UndefinedMethodException) {
             throw ParserException::undefinedMethod($this->name, $this->offset);
         } catch (ForbiddenMethodException) {
@@ -63,14 +64,8 @@ final class MethodCallNode extends Node
         $resolved = [];
 
         foreach ($this->arguments as $argument) {
-            // Preserve the original token for regex arguments
-            if ($argument instanceof RegexNode) {
-                $resolved[] = $argument->originalToken;
-                continue;
-            }
-
             $value = $argument->evaluate($context);
-            $resolved[] = $context->tokenFactory->createFromPHPType($value);
+            $resolved[] = $value;
         }
 
         return $resolved;

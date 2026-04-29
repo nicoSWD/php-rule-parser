@@ -8,20 +8,19 @@
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\GenericToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class IndexOf extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): GenericToken
     {
         $needle = $this->parseParameter($parameters, numParam: 0);
 
-        if (!$needle) {
+        if ($needle === null) {
             $value = -1;
         } else {
-            $value = strpos($this->token->getValue(), $needle->getValue());
+            $value = strpos($this->token, $needle);
 
             if ($value === false) {
                 $value = -1;

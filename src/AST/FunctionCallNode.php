@@ -44,14 +44,8 @@ final class FunctionCallNode extends Node
         $resolved = [];
 
         foreach ($this->arguments as $argument) {
-            // Preserve the original token for regex arguments
-            if ($argument instanceof RegexNode) {
-                $resolved[] = $argument->originalToken;
-                continue;
-            }
-
             $value = $argument->evaluate($context);
-            $resolved[] = $context->tokenFactory->createFromPHPType($value);
+            $resolved[] = $value;
         }
 
         return $resolved;

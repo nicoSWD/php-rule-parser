@@ -29,7 +29,7 @@ final class ObjectMethodCaller implements CallableInterface
         $this->callable = $this->getCallable($token, $methodName);
     }
 
-    public function call(?BaseToken ...$param): BaseToken
+    public function call(mixed ...$param): BaseToken
     {
         $callable = $this->callable;
 
@@ -52,9 +52,7 @@ final class ObjectMethodCaller implements CallableInterface
 
         $method = $this->findCallableMethod($object, $methodName);
 
-        return fn (?BaseToken ...$params): mixed => $method(
-            ...$this->getTokenValues($params)
-        );
+        return fn (mixed ...$params): mixed => $method(...$params);
     }
 
     /**
@@ -84,11 +82,6 @@ final class ObjectMethodCaller implements CallableInterface
         }
 
         throw new Exception\UndefinedMethodException();
-    }
-
-    private function getTokenValues(array $params): array
-    {
-        return array_map(static fn (BaseToken $token): mixed => $token->getValue(), $params);
     }
 
     /** @throws Exception\ForbiddenMethodException */

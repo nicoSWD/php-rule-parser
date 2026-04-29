@@ -13,5 +13,6 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 interface CallableInterface
 {
     /** @throws ParserException */
-    public function call(?BaseToken ...$param): BaseToken;
+    public function call(mixed ...$param): BaseToken;
+
 }

@@ -31,7 +31,7 @@ class MethodRegistry
      * @throws Exception\UndefinedMethodException
      * @throws Exception\ForbiddenMethodException
      */
-    public function get(string $methodName, BaseToken $token): CallableInterface
+    public function get(string $methodName, BaseToken $token, mixed $rawValue = null): CallableInterface
     {
         if ($token->isOfKind(TokenKind::OBJECT)) {
             return $this->getObjectMethodCaller($token, $methodName);
@@ -41,8 +41,15 @@ class MethodRegistry
             throw new Exception\UndefinedMethodException();
         }
 
-        return new $this->methods[$methodName]($token);
+        // For regex tokens, pass the original token to preserve type information
+        if ($token->isOfKind(TokenKind::REGEX)) {
+            return new $this->methods[$methodName]($token);
+        }
+
+        // Pass the raw PHP value directly to the callable
+        return new $this->methods[$methodName]($rawValue);
     }
+
 
     private function registerMethods(): void
     {

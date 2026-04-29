@@ -8,24 +8,22 @@
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\GenericToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class CharAt extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): GenericToken
     {
-        $tokenValue = $this->token->getValue();
         $offset = $this->parseParameter($parameters, numParam: 0);
 
-        if (!$offset) {
+        if ($offset === null) {
             $offset = 0;
         } else {
-            $offset = (int) $offset->getValue();
+            $offset = (int) $offset;
         }
 
-        $char = $tokenValue[$offset] ?? '';
+        $char = ($this->token)[$offset] ?? '';
 
         return new GenericToken(TokenKind::STRING, $char);
     }

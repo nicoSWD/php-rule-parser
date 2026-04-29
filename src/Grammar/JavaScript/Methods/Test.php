@@ -10,40 +10,61 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenBool;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
-use nicoSWD\Rule\TokenStream\TokenCollection;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Grammar\CallableFunction;
 
 final class Test extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): TokenBool
     {
-        if (!$this->token->isOfKind(TokenKind::REGEX)) {
+        $pattern = $this->getPattern();
+
+        if ($pattern === null) {
             throw new ParserException('test() is not a function');
         }
 
-        $string = $this->parseParameter($parameters, numParam: 0);
+        $subject = $this->parseParameter($parameters, numParam: 0);
 
-        if (!$string) {
-            $bool = false;
-        } else {
-            // Remove "g" modifier as it does not exist in PHP
-            // It's also irrelevant in .test() but allowed in JS here
-            $pattern = preg_replace_callback(
-                '~/[igm]{0,3}$~',
-                static fn (array $modifiers): string => str_replace('g', '', $modifiers[0]),
-                $this->token->getValue()
-            );
-
-            $subject = $string->getValue();
-
-            while ($subject instanceof TokenCollection) {
-                $subject = current($subject->toArray());
-            }
-
-            $bool = (bool) preg_match($pattern, (string) $subject);
+        if ($subject === null) {
+            return TokenBool::fromBool(false);
         }
+
+        while (is_array($subject)) {
+            $subject = current($subject);
+        }
+
+
+        $bool = (bool) preg_match($pattern, (string) $subject);
 
         return TokenBool::fromBool($bool);
     }
+
+    private function getPattern(): ?string
+    {
+        // When called from RegexNode, $this->token is a BaseToken
+        if ($this->token instanceof BaseToken) {
+            if (!$this->token->isOfKind(TokenKind::REGEX)) {
+                return null;
+            }
+            $pattern = $this->token->getValue();
+        } elseif (!is_string($this->token)) {
+            return null;
+        } else {
+            $pattern = $this->token;
+        }
+
+        if (!preg_match('~^/.+/[img]{0,3}$~', $pattern)) {
+            return null;
+        }
+
+        // Remove "g" modifier as it does not exist in PHP
+        // It's also irrelevant in .test() but allowed in JS here
+        return preg_replace_callback(
+            '~/[igm]{0,3}$~',
+            static fn (array $modifiers): string => str_replace('g', '', $modifiers[0]),
+            $pattern
+        );
+    }
 }
+
+

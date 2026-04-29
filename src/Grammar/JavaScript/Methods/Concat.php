@@ -8,21 +8,20 @@
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\GenericToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class Concat extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): GenericToken
     {
-        $value = $this->token->getValue();
+        $value = $this->token;
 
         foreach ($parameters as $parameter) {
-            if ($parameter->isOfKind(TokenKind::ARRAY)) {
-                $value .= implode(',', $parameter->toArray());
+            if (is_array($parameter)) {
+                $value .= implode(',', $parameter);
             } else {
-                $value .= $parameter->getValue();
+                $value .= $parameter;
             }
         }
 

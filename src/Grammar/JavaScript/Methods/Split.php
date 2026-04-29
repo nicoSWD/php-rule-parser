@@ -10,25 +10,24 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
-use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class Split extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): BaseToken
     {
         $separator = $this->parseParameter($parameters, numParam: 0);
 
-        if (!$separator || !is_string($separator->getValue())) {
-            $newValue = [$this->token->getValue()];
+        if (!is_string($separator)) {
+            $newValue = [$this->token];
         } else {
-            $params = [$separator->getValue(), $this->token->getValue()];
+            $params = [$separator, $this->token];
             $limit = $this->parseParameter($parameters, numParam: 1);
 
             if ($limit !== null) {
-                $params[] = (int) $limit->getValue();
+                $params[] = (int) $limit;
             }
 
-            if ($separator->isOfKind(TokenKind::REGEX)) {
+            if ($this->isRegex($separator)) {
                 $func = 'preg_split';
             } else {
                 $func = 'explode';
@@ -39,4 +38,10 @@ final class Split extends CallableFunction
 
         return new TokenFactory()->createFromPHPType($newValue);
     }
+
+    private function isRegex(string $value): bool
+    {
+        return (bool) preg_match('~^/.+/[img]{0,3}$~', $value);
+    }
 }
+

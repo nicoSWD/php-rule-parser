@@ -9,31 +9,30 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenBool;
-use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class StartsWith extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): TokenBool
     {
-        if (!$this->token->isOfKind(TokenKind::STRING)) {
+        if (!is_string($this->token)) {
             throw new ParserException('Call to undefined method "startsWith" on non-string');
         }
 
         $needle = $this->parseParameter($parameters, numParam: 0);
         $offset = $this->getOffset($this->parseParameter($parameters, numParam: 1));
-        $position = strpos($this->token->getValue(), $needle->getValue(), $offset);
+        $position = strpos($this->token, $needle, $offset);
 
         return TokenBool::fromBool($position === $offset);
     }
 
-    private function getOffset(?BaseToken $offset): int
+    private function getOffset(mixed $offset): int
     {
         if ($offset !== null) {
-            return (int) $offset->getValue();
+            return (int) $offset;
         }
 
         return 0;
     }
 }
+

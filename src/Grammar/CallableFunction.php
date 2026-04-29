@@ -7,17 +7,16 @@
  */
 namespace nicoSWD\Rule\Grammar;
 
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
-
 abstract class CallableFunction implements CallableInterface
 {
     public function __construct(
-        protected readonly ?BaseToken $token = null,
+        protected readonly mixed $token = null,
     ) {
     }
 
-    protected function parseParameter(array $parameters, int $numParam): ?BaseToken
+    protected function parseParameter(array $parameters, int $numParam): mixed
     {
         return $parameters[$numParam] ?? null;
     }
 }
+

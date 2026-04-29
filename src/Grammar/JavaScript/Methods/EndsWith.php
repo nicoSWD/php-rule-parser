@@ -9,28 +9,22 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenBool;
-use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class EndsWith extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): TokenBool
     {
-        if (!$this->token->isOfKind(TokenKind::STRING)) {
+        if (!is_string($this->token)) {
             throw new ParserException('Call to undefined method "endsWith" on non-string');
         }
 
         $needle = $this->parseParameter($parameters, numParam: 0);
-        $haystack = $this->token->getValue();
 
-        if (!$needle) {
-            $result = false;
-        } else {
-            $needle = $needle->getValue();
-            $result = str_ends_with($haystack, $needle);
+        if ($needle === null) {
+            return TokenBool::fromBool(false);
         }
 
-        return TokenBool::fromBool($result);
+        return TokenBool::fromBool(str_ends_with($this->token, $needle));
     }
 }

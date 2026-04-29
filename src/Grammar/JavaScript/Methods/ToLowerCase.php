@@ -8,14 +8,14 @@
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\GenericToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class ToLowerCase extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): GenericToken
     {
-        return new GenericToken(TokenKind::STRING, strtolower((string) $this->token->getValue()));
+        return new GenericToken(TokenKind::STRING, strtolower((string) $this->token));
     }
 }
+
