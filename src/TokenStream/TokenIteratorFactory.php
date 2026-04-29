@@ -9,10 +9,17 @@ namespace nicoSWD\Rule\TokenStream;
 
 use Iterator;
 
-final class TokenIteratorFactory
+final readonly class TokenIteratorFactory
 {
-    public function create(Iterator $stack, TokenStream $tokenStream): TokenIterator
+    public function __construct(
+        private VariableRegistry $variableRegistry,
+        private FunctionRegistry $functionRegistry,
+        private MethodRegistry   $methodRegistry,
+    ) {
+    }
+
+    public function create(Iterator $stack): TokenIterator
     {
-        return new TokenIterator($stack, $tokenStream);
+        return new TokenIterator($stack, $this->variableRegistry, $this->functionRegistry, $this->methodRegistry);
     }
 }

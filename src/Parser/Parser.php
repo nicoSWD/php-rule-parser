@@ -32,7 +32,8 @@ use nicoSWD\Rule\AST\VariableNode;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use nicoSWD\Rule\TokenStream\TokenIterator;
-use nicoSWD\Rule\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\TokenIteratorFactory;
+use nicoSWD\Rule\Tokenizer\TokenizerInterface;
 
 /**
  * Recursive descent parser that builds an AST from the token stream.
@@ -57,14 +58,15 @@ use nicoSWD\Rule\TokenStream\TokenStream;
 final readonly class Parser
 {
     public function __construct(
-        private TokenStream $tokenStream,
+        private TokenIteratorFactory $tokenIteratorFactory,
+        private TokenizerInterface $tokenizer,
     ) {
     }
 
     /** @throws Exception\ParserException */
     public function parse(string $rule): Node
     {
-        $tokenIterator = $this->tokenStream->getStream($rule);
+        $tokenIterator = $this->tokenIteratorFactory->create($this->tokenizer->tokenize($rule));
 
         if (!$tokenIterator->valid()) {
             return new BoolNode(false);

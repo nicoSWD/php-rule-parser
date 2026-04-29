@@ -39,7 +39,7 @@ final class MethodCallNode extends Node
         $args = $this->resolveArguments($context);
 
         try {
-            $method = $context->tokenStream->getMethod($this->name, $objectToken);
+            $method = $context->methodRegistry->get($this->name, $objectToken);
         } catch (UndefinedMethodException) {
             throw ParserException::undefinedMethod($this->name, $this->offset);
         } catch (ForbiddenMethodException) {

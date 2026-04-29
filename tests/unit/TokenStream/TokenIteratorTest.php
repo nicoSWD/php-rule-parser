@@ -12,16 +12,18 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\TokenStream\TokenStream;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedFunctionException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedMethodException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedVariableException;
+use nicoSWD\Rule\TokenStream\FunctionRegistry;
+use nicoSWD\Rule\TokenStream\MethodRegistry;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFunction;
 use nicoSWD\Rule\TokenStream\Token\TokenMethod;
 use nicoSWD\Rule\TokenStream\Token\TokenString;
 use nicoSWD\Rule\TokenStream\Token\TokenVariable;
 use nicoSWD\Rule\TokenStream\TokenIterator;
+use nicoSWD\Rule\TokenStream\VariableRegistry;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -30,15 +32,24 @@ final class TokenIteratorTest extends TestCase
     use MockeryPHPUnitIntegration;
     
     private ArrayIterator|MockInterface $stack;
-    private TokenStream|MockInterface $tokenStream;
+    private VariableRegistry|MockInterface $variableRegistry;
+    private FunctionRegistry|MockInterface $functionRegistry;
+    private MethodRegistry|MockInterface $methodRegistry;
     private TokenIterator $tokenIterator;
 
     protected function setUp(): void
     {
         $this->stack = \Mockery::mock(ArrayIterator::class);
-        $this->tokenStream = \Mockery::mock(TokenStream::class);
+        $this->variableRegistry = \Mockery::mock(VariableRegistry::class);
+        $this->functionRegistry = \Mockery::mock(FunctionRegistry::class);
+        $this->methodRegistry = \Mockery::mock(MethodRegistry::class);
 
-        $this->tokenIterator = new TokenIterator($this->stack, $this->tokenStream);
+        $this->tokenIterator = new TokenIterator(
+            $this->stack,
+            $this->variableRegistry,
+            $this->functionRegistry,
+            $this->methodRegistry,
+        );
     }
 
     #[Test]
@@ -68,7 +79,7 @@ final class TokenIteratorTest extends TestCase
     #[Test]
     public function givenAVariableNameWhenFoundItShouldReturnItsValue()
     {
-        $this->tokenStream->shouldReceive('getVariable')->once()->with('foo')->andReturn(new TokenVariable('bar'));
+        $this->variableRegistry->shouldReceive('get')->once()->with('foo')->andReturn(new TokenVariable('bar'));
 
         $token = $this->tokenIterator->getVariable('foo');
         $this->assertInstanceOf(TokenVariable::class, $token);
@@ -79,7 +90,7 @@ final class TokenIteratorTest extends TestCase
     {
         $this->expectException(ParserException::class);
 
-        $this->tokenStream->shouldReceive('getVariable')->once()->with('foo')->andThrow(new UndefinedVariableException());
+        $this->variableRegistry->shouldReceive('get')->once()->with('foo')->andThrow(new UndefinedVariableException());
         $this->stack->shouldReceive('current')->once()->andReturn(new TokenVariable('nope'));
 
         $this->tokenIterator->getVariable('foo');
@@ -88,7 +99,7 @@ final class TokenIteratorTest extends TestCase
     #[Test]
     public function givenAFunctionNameWhenFoundItShouldACallableClosure()
     {
-        $this->tokenStream->shouldReceive('getFunction')->once()->with('foo')->andReturn(fn () => 42);
+        $this->functionRegistry->shouldReceive('get')->once()->with('foo')->andReturn(fn () => 42);
 
         $function = $this->tokenIterator->getFunction('foo');
         $this->assertSame(42, $function());
@@ -99,7 +110,7 @@ final class TokenIteratorTest extends TestCase
     {
         $this->expectException(ParserException::class);
 
-        $this->tokenStream->shouldReceive('getFunction')->once()->with('foo')->andThrow(new UndefinedFunctionException());
+        $this->functionRegistry->shouldReceive('get')->once()->with('foo')->andThrow(new UndefinedFunctionException());
         $this->stack->shouldReceive('current')->once()->andReturn(new TokenFunction('nope('));
 
         $this->tokenIterator->getFunction('foo');
@@ -111,7 +122,7 @@ final class TokenIteratorTest extends TestCase
         $token = new TokenString('bar');
         $callableFunction = \Mockery::mock(CallableFunction::class);
 
-        $this->tokenStream->shouldReceive('getMethod')->once()->with('foo', $token)->andReturn($callableFunction);
+        $this->methodRegistry->shouldReceive('get')->once()->with('foo', $token)->andReturn($callableFunction);
 
         $method = $this->tokenIterator->getMethod('foo', $token);
 
@@ -124,7 +135,7 @@ final class TokenIteratorTest extends TestCase
         $this->expectException(ParserException::class);
 
         $token = new TokenString('bar');
-        $this->tokenStream->shouldReceive('getMethod')->once()->with('foo', $token)->andThrow(new UndefinedMethodException());
+        $this->methodRegistry->shouldReceive('get')->once()->with('foo', $token)->andThrow(new UndefinedMethodException());
         $this->stack->shouldReceive('current')->once()->andReturn(new TokenFunction('bar'));
 
         $this->tokenIterator->getMethod('foo', $token);

@@ -7,14 +7,18 @@
  */
 namespace nicoSWD\Rule\AST;
 
+use nicoSWD\Rule\TokenStream\FunctionRegistry;
+use nicoSWD\Rule\TokenStream\MethodRegistry;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
-use nicoSWD\Rule\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\VariableRegistry;
 
 final readonly class EvaluationContext
 {
     public function __construct(
-        public TokenStream  $tokenStream,
-        public TokenFactory $tokenFactory,
+        public VariableRegistry  $variableRegistry,
+        public FunctionRegistry  $functionRegistry,
+        public MethodRegistry    $methodRegistry,
+        public TokenFactory      $tokenFactory,
     ) {
     }
 }

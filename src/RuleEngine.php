@@ -16,10 +16,12 @@ use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Parser\Parser;
 use nicoSWD\Rule\Tokenizer\Lexer;
 use nicoSWD\Rule\Tokenizer\TokenizerInterface;
+use nicoSWD\Rule\TokenStream\FunctionRegistry;
+use nicoSWD\Rule\TokenStream\MethodRegistry;
 use nicoSWD\Rule\TokenStream\ObjectMethodCallerFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\TokenIteratorFactory;
-use nicoSWD\Rule\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\VariableRegistry;
 
 /**
  * The main entry point for the rule parser engine.
@@ -55,36 +57,41 @@ use nicoSWD\Rule\TokenStream\TokenStream;
 final readonly class RuleEngine
 {
     private TokenFactory $tokenFactory;
-    private TokenIteratorFactory $tokenIteratorFactory;
-    private ObjectMethodCallerFactory $userMethodFactory;
     private TokenizerInterface $tokenizer;
-    private TokenStream $tokenStream;
+    private VariableRegistry $variableRegistry;
+    private FunctionRegistry $functionRegistry;
+    private MethodRegistry $methodRegistry;
     private Parser $parser;
     private AstEvaluator $astEvaluator;
-    private array $defaultVariables;
 
     public function __construct(
         ?TokenizerInterface $tokenizer = null,
         ?Grammar $grammar = null,
-        array $defaultVariables = [],
+        private array $defaultVariables = [],
     ) {
-        $this->defaultVariables = $defaultVariables;
         $this->tokenFactory = new TokenFactory();
-        $this->tokenIteratorFactory = new TokenIteratorFactory();
-        $this->userMethodFactory = new ObjectMethodCallerFactory();
-
         $grammar ??= new JavaScript();
         $this->tokenizer = $tokenizer ?? new Lexer($grammar, $this->tokenFactory);
 
-        $this->tokenStream = new TokenStream(
+        $this->variableRegistry = new VariableRegistry([], $this->tokenFactory);
+        $this->functionRegistry = new FunctionRegistry($grammar);
+        $this->methodRegistry = new MethodRegistry($grammar, $this->tokenFactory, new ObjectMethodCallerFactory());
+
+        $this->parser = new Parser(
+            new TokenIteratorFactory(
+                $this->variableRegistry,
+                $this->functionRegistry,
+                $this->methodRegistry,
+            ),
             $this->tokenizer,
-            $this->tokenFactory,
-            $this->tokenIteratorFactory,
-            $this->userMethodFactory,
         );
 
-        $this->parser = new Parser($this->tokenStream);
-        $this->astEvaluator = new AstEvaluator($this->tokenStream, $this->tokenFactory);
+        $this->astEvaluator = new AstEvaluator(
+            $this->variableRegistry,
+            $this->functionRegistry,
+            $this->methodRegistry,
+            $this->tokenFactory,
+        );
     }
 
     /**
@@ -181,7 +188,9 @@ final readonly class RuleEngine
      */
     public function parse(string $rule, array $variables = []): Node
     {
-        $this->tokenStream->variables = array_merge($this->defaultVariables, $variables);
+        $this->variableRegistry->setVariables(
+            array_merge($this->defaultVariables, $variables),
+        );
 
         return $this->parser->parse($rule);
     }

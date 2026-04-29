@@ -28,7 +28,7 @@ final class FunctionCallNode extends Node
         $args = $this->resolveArguments($context);
 
         try {
-            $closure = $context->tokenStream->getFunction($this->name);
+            $closure = $context->functionRegistry->get($this->name);
         } catch (UndefinedFunctionException) {
             throw ParserException::undefinedFunction($this->name, $this->offset);
         }

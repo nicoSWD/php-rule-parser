@@ -25,7 +25,7 @@ final class VariableNode extends Node
     public function evaluate(EvaluationContext $context): mixed
     {
         try {
-            $token = $context->tokenStream->getVariable($this->name);
+            $token = $context->variableRegistry->get($this->name);
         } catch (UndefinedVariableException) {
             throw ParserException::undefinedVariable($this->name, $this->offset);
         }

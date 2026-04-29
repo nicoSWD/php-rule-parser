@@ -17,7 +17,9 @@ readonly class TokenIterator implements Iterator
 {
     public function __construct(
         private Iterator $stack,
-        private TokenStream $tokenStream,
+        private VariableRegistry $variableRegistry,
+        private FunctionRegistry $functionRegistry,
+        private MethodRegistry $methodRegistry,
     ) {
     }
 
@@ -70,7 +72,7 @@ readonly class TokenIterator implements Iterator
     public function getVariable(string $variableName): BaseToken
     {
         try {
-            return $this->tokenStream->getVariable($variableName);
+            return $this->variableRegistry->get($variableName);
         } catch (Exception\UndefinedVariableException) {
             throw ParserException::undefinedVariable($variableName, $this->getCurrentToken()->getOffset());
         }
@@ -80,7 +82,7 @@ readonly class TokenIterator implements Iterator
     public function getFunction(string $functionName): Closure
     {
         try {
-            return $this->tokenStream->getFunction($functionName);
+            return $this->functionRegistry->get($functionName);
         } catch (Exception\UndefinedFunctionException) {
             throw ParserException::undefinedFunction($functionName, $this->getCurrentToken()->getOffset());
         }
@@ -90,7 +92,7 @@ readonly class TokenIterator implements Iterator
     public function getMethod(string $methodName, BaseToken $token): CallableInterface
     {
         try {
-            return $this->tokenStream->getMethod($methodName, $token);
+            return $this->methodRegistry->get($methodName, $token);
         } catch (Exception\UndefinedMethodException) {
             throw ParserException::undefinedMethod($methodName, $this->getCurrentToken()->getOffset());
         } catch (Exception\ForbiddenMethodException) {
