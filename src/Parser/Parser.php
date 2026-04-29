@@ -12,16 +12,20 @@ use nicoSWD\Rule\AST\ArrayNode;
 use nicoSWD\Rule\AST\BoolNode;
 use nicoSWD\Rule\AST\ComparisonNode;
 use nicoSWD\Rule\AST\ComparisonOperator;
+use nicoSWD\Rule\AST\DivisionNode;
 use nicoSWD\Rule\AST\FloatNode;
 use nicoSWD\Rule\AST\FunctionCallNode;
 use nicoSWD\Rule\AST\IntegerNode;
 use nicoSWD\Rule\AST\LogicalNode;
 use nicoSWD\Rule\AST\LogicalOperator;
 use nicoSWD\Rule\AST\MethodCallNode;
+use nicoSWD\Rule\AST\ModuloNode;
+use nicoSWD\Rule\AST\MultiplicationNode;
 use nicoSWD\Rule\AST\Node;
 use nicoSWD\Rule\AST\NullNode;
 use nicoSWD\Rule\AST\RegexNode;
 use nicoSWD\Rule\AST\StringNode;
+use nicoSWD\Rule\AST\SubtractionNode;
 use nicoSWD\Rule\AST\VariableNode;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenAnd;
@@ -30,6 +34,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenBoolTrue;
 use nicoSWD\Rule\TokenStream\Token\TokenClosingArray;
 use nicoSWD\Rule\TokenStream\Token\TokenClosingParenthesis;
 use nicoSWD\Rule\TokenStream\Token\TokenComma;
+use nicoSWD\Rule\TokenStream\Token\TokenDivide;
 use nicoSWD\Rule\TokenStream\Token\TokenEncapsedString;
 use nicoSWD\Rule\TokenStream\Token\TokenEqual;
 use nicoSWD\Rule\TokenStream\Token\TokenEqualStrict;
@@ -40,6 +45,9 @@ use nicoSWD\Rule\TokenStream\Token\TokenGreaterEqual;
 use nicoSWD\Rule\TokenStream\Token\TokenIn;
 use nicoSWD\Rule\TokenStream\Token\TokenInteger;
 use nicoSWD\Rule\TokenStream\Token\TokenMethod;
+use nicoSWD\Rule\TokenStream\Token\TokenMinus;
+use nicoSWD\Rule\TokenStream\Token\TokenModulo;
+use nicoSWD\Rule\TokenStream\Token\TokenMultiply;
 use nicoSWD\Rule\TokenStream\Token\TokenNotEqual;
 use nicoSWD\Rule\TokenStream\Token\TokenNotEqualStrict;
 use nicoSWD\Rule\TokenStream\Token\TokenNotIn;
@@ -60,17 +68,18 @@ use nicoSWD\Rule\TokenStream\TokenStream;
  * Recursive descent parser that builds an AST from the token stream.
  *
  * Grammar (precedence from lowest to highest):
- *   expression     -> logical_or
- *   logical_or     -> logical_and ( "||" logical_and )*
- *   logical_and    -> comparison ( "&&" comparison )*
- *   comparison     -> additive ( comparison_op additive )?
- *   additive       -> primary ( "+" primary )*
- *   primary        -> "(" expression ")"
- *                   | value
- *   value          -> variable method_call*
- *                   | function_call
- *                   | string | integer | float | bool | null | regex
- *                   | array_literal method_call*
+ *   expression       -> logical_or
+ *   logical_or       -> logical_and ( "||" logical_and )*
+ *   logical_and      -> comparison ( "&&" comparison )*
+ *   comparison       -> additive ( comparison_op additive )?
+ *   additive         -> multiplicative ( ("+" | "-") multiplicative )*
+ *   multiplicative   -> primary ( ("*" | "/" | "%") primary )*
+ *   primary          -> "(" expression ")"
+ *                     | value
+ *   value            -> variable method_call*
+ *                     | function_call
+ *                     | string | integer | float | bool | null | regex
+ *                     | array_literal method_call*
  */
 final readonly class Parser
 {
@@ -157,12 +166,43 @@ final readonly class Parser
     /** @throws Exception\ParserException */
     private function parseAdditive(TokenIterator $tokens): Node
     {
+        $left = $this->parseMultiplicative($tokens);
+
+        while ($this->peekToken($tokens) instanceof TokenPlus || $this->peekToken($tokens) instanceof TokenMinus) {
+            $operator = $this->peekToken($tokens);
+            $this->consumeToken($tokens); // consume + or -
+            $right = $this->parseMultiplicative($tokens);
+
+            $left = match ($operator::class) {
+                TokenPlus::class => new AdditionNode($left, $right),
+                TokenMinus::class => new SubtractionNode($left, $right),
+                default => throw new \RuntimeException('Unexpected additive operator'),
+            };
+        }
+
+        return $left;
+    }
+
+    /** @throws Exception\ParserException */
+    private function parseMultiplicative(TokenIterator $tokens): Node
+    {
         $left = $this->parsePrimary($tokens);
 
-        while ($this->peekToken($tokens) instanceof TokenPlus) {
-            $this->consumeToken($tokens); // consume +
+        while (
+            $this->peekToken($tokens) instanceof TokenMultiply
+            || $this->peekToken($tokens) instanceof TokenDivide
+            || $this->peekToken($tokens) instanceof TokenModulo
+        ) {
+            $operator = $this->peekToken($tokens);
+            $this->consumeToken($tokens); // consume *, /, or %
             $right = $this->parsePrimary($tokens);
-            $left = new AdditionNode($left, $right);
+
+            $left = match ($operator::class) {
+                TokenMultiply::class => new MultiplicationNode($left, $right),
+                TokenDivide::class => new DivisionNode($left, $right),
+                TokenModulo::class => new ModuloNode($left, $right),
+                default => throw new \RuntimeException('Unexpected multiplicative operator'),
+            };
         }
 
         return $left;

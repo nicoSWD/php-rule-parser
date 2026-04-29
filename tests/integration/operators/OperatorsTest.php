@@ -146,4 +146,162 @@ final class OperatorsTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('"foo" + "bar" == "foobar" && 1 + 2 == 3'));
         $this->assertTrue($this->evaluate('"foo" + "bar" == "foobar" || 1 + 2 == 99'));
     }
+
+    // --- Arithmetic operator tests ---
+
+    #[Test]
+    public function subtraction(): void
+    {
+        $this->assertTrue($this->evaluate('5 - 3 == 2'));
+        $this->assertTrue($this->evaluate('10 - 7 == 3'));
+        $this->assertTrue($this->evaluate('100 - 50 - 25 == 25'));
+    }
+
+    #[Test]
+    public function subtractionWithVariables(): void
+    {
+        $this->assertTrue($this->evaluate('foo - 2 == 3', ['foo' => 5]));
+        $this->assertTrue($this->evaluate('foo - bar == 1', ['foo' => 5, 'bar' => 4]));
+    }
+
+    #[Test]
+    public function subtractionInComparison(): void
+    {
+        $this->assertTrue($this->evaluate('5 - 3 > 1'));
+        $this->assertTrue($this->evaluate('5 - 3 < 3'));
+        $this->assertTrue($this->evaluate('5 - 3 == 2'));
+    }
+
+    #[Test]
+    public function multiplication(): void
+    {
+        $this->assertTrue($this->evaluate('3 * 4 == 12'));
+        $this->assertTrue($this->evaluate('10 * 10 == 100'));
+        $this->assertTrue($this->evaluate('2 * 3 * 4 == 24'));
+    }
+
+    #[Test]
+    public function multiplicationWithVariables(): void
+    {
+        $this->assertTrue($this->evaluate('foo * 3 == 15', ['foo' => 5]));
+        $this->assertTrue($this->evaluate('foo * bar == 20', ['foo' => 4, 'bar' => 5]));
+    }
+
+    #[Test]
+    public function multiplicationInComparison(): void
+    {
+        $this->assertTrue($this->evaluate('3 * 4 > 10'));
+        $this->assertTrue($this->evaluate('3 * 4 < 15'));
+        $this->assertTrue($this->evaluate('3 * 4 == 12'));
+    }
+
+    #[Test]
+    public function division(): void
+    {
+        $this->assertTrue($this->evaluate('10 / 2 == 5'));
+        $this->assertTrue($this->evaluate('100 / 4 == 25'));
+        $this->assertTrue($this->evaluate('100 / 5 / 2 == 10'));
+    }
+
+    #[Test]
+    public function divisionWithVariables(): void
+    {
+        $this->assertTrue($this->evaluate('foo / 2 == 5', ['foo' => 10]));
+        $this->assertTrue($this->evaluate('foo / bar == 3', ['foo' => 15, 'bar' => 5]));
+    }
+
+    #[Test]
+    public function divisionInComparison(): void
+    {
+        $this->assertTrue($this->evaluate('10 / 2 > 4'));
+        $this->assertTrue($this->evaluate('10 / 2 < 6'));
+        $this->assertTrue($this->evaluate('10 / 2 == 5'));
+    }
+
+    #[Test]
+    public function modulo(): void
+    {
+        $this->assertTrue($this->evaluate('10 % 3 == 1'));
+        $this->assertTrue($this->evaluate('100 % 50 == 0'));
+        $this->assertTrue($this->evaluate('7 % 2 == 1'));
+    }
+
+    #[Test]
+    public function moduloWithVariables(): void
+    {
+        $this->assertTrue($this->evaluate('foo % 3 == 1', ['foo' => 10]));
+        $this->assertTrue($this->evaluate('foo % bar == 0', ['foo' => 20, 'bar' => 5]));
+    }
+
+    #[Test]
+    public function moduloInComparison(): void
+    {
+        $this->assertTrue($this->evaluate('10 % 3 == 1'));
+        $this->assertTrue($this->evaluate('10 % 3 < 2'));
+        $this->assertTrue($this->evaluate('10 % 3 > 0'));
+    }
+
+    #[Test]
+    public function operatorPrecedenceMultiplicationBeforeAddition(): void
+    {
+        // 2 + 3 * 4 should be 2 + (3 * 4) = 14, not (2 + 3) * 4 = 20
+        $this->assertTrue($this->evaluate('2 + 3 * 4 == 14'));
+        $this->assertFalse($this->evaluate('2 + 3 * 4 == 20'));
+    }
+
+    #[Test]
+    public function operatorPrecedenceDivisionBeforeSubtraction(): void
+    {
+        // 10 - 6 / 2 should be 10 - (6 / 2) = 7, not (10 - 6) / 2 = 2
+        $this->assertTrue($this->evaluate('10 - 6 / 2 == 7'));
+        $this->assertFalse($this->evaluate('10 - 6 / 2 == 2'));
+    }
+
+    #[Test]
+    public function operatorPrecedenceMixed(): void
+    {
+        // 2 + 3 * 4 - 6 / 2 = 2 + 12 - 3 = 11
+        $this->assertTrue($this->evaluate('2 + 3 * 4 - 6 / 2 == 11'));
+    }
+
+    #[Test]
+    public function operatorPrecedenceWithParentheses(): void
+    {
+        // Parentheses override precedence
+        $this->assertTrue($this->evaluate('(2 + 3) * 4 == 20'));
+        $this->assertTrue($this->evaluate('(10 - 6) / 2 == 2'));
+        $this->assertTrue($this->evaluate('(2 + 3) * (4 - 1) == 15'));
+    }
+
+    #[Test]
+    public function arithmeticWithMethodCalls(): void
+    {
+        $this->assertTrue($this->evaluate('"foo".indexOf("f") + 2 == 2'));
+        $this->assertTrue($this->evaluate('2 * "foo".indexOf("o") == 2'));
+    }
+
+    #[Test]
+    public function arithmeticWithLogicalOperators(): void
+    {
+        $this->assertTrue($this->evaluate('1 + 2 == 3 && 3 * 4 == 12'));
+        $this->assertTrue($this->evaluate('10 / 2 == 5 || 1 + 1 == 99'));
+    }
+
+    #[Test]
+    public function negativeNumbersStillWork(): void
+    {
+        $this->assertTrue($this->evaluate('-1 == -1'));
+        $this->assertTrue($this->evaluate('foo == -1', ['foo' => -1]));
+        $this->assertTrue($this->evaluate('-5 + 3 == -2'));
+        $this->assertTrue($this->evaluate('-5 - 3 == -8'));
+    }
+
+    #[Test]
+    public function subtractionVsNegativeNumber(): void
+    {
+        // 5 - 3 should be subtraction, not 5 and -3
+        $this->assertTrue($this->evaluate('5 - 3 == 2'));
+        // -3 alone should be a negative number
+        $this->assertTrue($this->evaluate('-3 == -3'));
+    }
 }

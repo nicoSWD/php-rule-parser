@@ -29,6 +29,7 @@ final class Lexer extends TokenizerInterface
     private string $input;
     private int $pos;
     private int $length;
+    private bool $afterValue = false;
 
     public function __construct(
         public Grammar $grammar,
@@ -41,6 +42,7 @@ final class Lexer extends TokenizerInterface
         $this->input = $string;
         $this->pos = 0;
         $this->length = strlen($string);
+        $this->afterValue = false;
 
         $stack = [];
 
@@ -57,6 +59,13 @@ final class Lexer extends TokenizerInterface
                 $ch === '<' && $this->peek() === '=' => $this->emitOperator(Token::SMALLER_EQUAL, '<=', 2),
                 $ch === '>' && $this->peek() === '=' => $this->emitOperator(Token::GREATER_EQUAL, '>=', 2),
                 $ch === '+' => $this->emitOperator(Token::PLUS, '+', 1),
+                $ch === '-' && $this->afterValue => $this->emitOperator(Token::MINUS, '-', 1),
+                $ch === '-' && $this->isDigit($this->peek()) => $this->readNumber(),
+                $ch === '*' => $this->emitOperator(Token::MULTIPLY, '*', 1),
+                $ch === '/' && ($this->peek() === '/' || $this->peek() === '*') => $this->readSlash(),
+                $ch === '/' && $this->afterValue => $this->emitOperator(Token::DIVIDE, '/', 1),
+                $ch === '/' => $this->readSlash(),
+                $ch === '%' => $this->emitOperator(Token::MODULO, '%', 1),
                 $ch === '<' && $this->peek() === '>' => $this->emitOperator(Token::NOT_EQUAL, '<>', 2),
                 $ch === '<' => $this->emitOperator(Token::SMALLER, '<', 1),
                 $ch === '>' => $this->emitOperator(Token::GREATER, '>', 1),
@@ -67,8 +76,6 @@ final class Lexer extends TokenizerInterface
                 $ch === ',' => $this->emitSimple(Token::COMMA, ','),
                 $ch === '.' => $this->readMethod(),
                 $ch === '"' || $ch === "'" => $this->readString(),
-                $ch === '/' => $this->readSlash(),
-                $ch === '-' && $this->isDigit($this->peek()) => $this->readNumber(),
                 $this->isDigit($ch) => $this->readNumber(),
                 $ch === ' ' || $ch === "\t" => $this->readWhitespace(),
                 $ch === "\r" || $ch === "\n" => $this->readNewlineToken(),
@@ -94,6 +101,12 @@ final class Lexer extends TokenizerInterface
         $offset = $this->pos;
         $this->pos += strlen($value);
 
+        // Opening parentheses, arrays, and commas start a new expression context
+        $this->afterValue = match ($token) {
+            Token::OPENING_PARENTHESIS, Token::OPENING_ARRAY, Token::COMMA => false,
+            default => true,
+        };
+
         return $this->tokenFactory->createFromToken($token, [$token->value => $value], $offset);
     }
 
@@ -101,6 +114,7 @@ final class Lexer extends TokenizerInterface
     {
         $offset = $this->pos;
         $this->pos += $length;
+        $this->afterValue = false;
 
         return $this->tokenFactory->createFromToken($token, [$token->value => $value], $offset);
     }
@@ -120,6 +134,8 @@ final class Lexer extends TokenizerInterface
             $this->pos++;
         }
 
+        $this->afterValue = false; // method is followed by ( which starts a new expression
+
         return $this->tokenFactory->createFromToken(Token::METHOD, [Token::METHOD->value => $name], $offset);
     }
 
@@ -130,6 +146,7 @@ final class Lexer extends TokenizerInterface
         $this->pos++; // skip opening quote
 
         $value = $quote . $this->readDelimitedContent($quote);
+        $this->afterValue = true;
 
         return $this->tokenFactory->createFromToken(Token::ENCAPSED_STRING, [Token::ENCAPSED_STRING->value => $value], $offset);
     }
@@ -230,6 +247,7 @@ final class Lexer extends TokenizerInterface
             $this->pos++;
         }
 
+        $this->afterValue = true;
         return $this->tokenFactory->createFromToken(Token::REGEX, [Token::REGEX->value => $value], $offset);
     }
 
@@ -260,9 +278,11 @@ final class Lexer extends TokenizerInterface
                 $this->pos++;
             }
 
+            $this->afterValue = true;
             return $this->tokenFactory->createFromToken(Token::FLOAT, [Token::FLOAT->value => $value], $offset);
         }
 
+        $this->afterValue = true;
         return $this->tokenFactory->createFromToken(Token::INTEGER, [Token::INTEGER->value => $value], $offset);
     }
 
@@ -312,6 +332,7 @@ final class Lexer extends TokenizerInterface
 
             if ($this->startsWith('in')) {
                 $this->pos += 2; // skip 'in'
+                $this->afterValue = true;
                 return $this->tokenFactory->createFromToken(Token::NOT_IN, [Token::NOT_IN->value => 'not in'], $offset);
             }
 
@@ -327,6 +348,7 @@ final class Lexer extends TokenizerInterface
         };
 
         if ($token !== null) {
+            $this->afterValue = true;
             return $this->tokenFactory->createFromToken($token, [$token->value => $name], $offset);
         }
 
@@ -335,12 +357,14 @@ final class Lexer extends TokenizerInterface
         $this->skipWhitespace();
 
         if ($this->pos < $this->length && $this->input[$this->pos] === '(') {
+            $this->afterValue = false; // function name, followed by ( which starts new expression
             return $this->tokenFactory->createFromToken(Token::FUNCTION, [Token::FUNCTION->value => $name], $offset);
         }
 
         $this->pos = $savedPos;
 
         // It's a variable
+        $this->afterValue = true;
         return $this->tokenFactory->createFromToken(Token::VARIABLE, [Token::VARIABLE->value => $name], $offset);
     }
 

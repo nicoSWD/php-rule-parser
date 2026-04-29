@@ -56,6 +56,23 @@ $rule = new Rule('points >= 50 && points <= 100', $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
 
+Perform arithmetic operations
+```php
+$variables = ['price' => 100, 'quantity' => 3];
+
+$rule = new Rule('price * quantity > 250', $variables);
+var_dump($rule->isTrue()); // bool(true)
+```
+
+Arithmetic operators follow standard precedence rules: `*`, `/`, `%` bind tighter than `+`, `-`. Parentheses can be used to override precedence.
+```php
+$rule = new Rule('2 + 3 * 4 == 14', $variables);
+var_dump($rule->isTrue()); // bool(true) - multiplication before addition
+
+$rule = new Rule('(2 + 3) * 4 == 20', $variables);
+var_dump($rule->isTrue()); // bool(true) - parentheses override precedence
+```
+
 Call methods on objects from within rules
 ```php
 class User
@@ -118,6 +135,11 @@ Containment | contains                 | in
 Containment | does not contain         | not in 
 Logical     | and                      | &&
 Logical     | or                       | \|\|
+Arithmetic  | addition                 | +
+Arithmetic  | subtraction              | -
+Arithmetic  | multiplication           | *
+Arithmetic  | division                 | /
+Arithmetic  | modulo                   | %
 
 ## Error Handling
 
@@ -213,8 +235,7 @@ Pull requests are very welcome! If they include tests, even better. This project
 - Support for object properties (foo.length)
 - Support for returning actual results, other than true or false
 - Support for array / string dereferencing: "foo"[1]
-- Add "typeof" construct
-- Do math (?)
+- ~~Do math (addition, subtraction, multiplication, division, modulo)~~
 - ~~Don't force boolean comparison for tokens that are already booleans. `my_func() && 2 > 1` should work~~
 - ~~Allow string concatenating with "+"~~
 - ~~Duplicate regex modifiers should throw an error~~

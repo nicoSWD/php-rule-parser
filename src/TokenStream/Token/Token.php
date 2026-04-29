@@ -30,6 +30,10 @@ enum Token: string
     case GREATER_EQUAL = 'GreaterEqual';
     case SMALLER = 'Smaller';
     case PLUS = 'Plus';
+    case MINUS = 'Minus';
+    case MULTIPLY = 'Multiply';
+    case DIVIDE = 'Divide';
+    case MODULO = 'Modulo';
     case GREATER = 'Greater';
     case OPENING_PARENTHESIS = 'OpeningParentheses';
     case CLOSING_PARENTHESIS = 'ClosingParentheses';

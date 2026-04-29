@@ -32,7 +32,8 @@ final readonly class AstEvaluator
         return match ($node::class) {
             LogicalNode::class => $this->evaluateLogical($node),
             ComparisonNode::class => $this->evaluateComparison($node),
-            AdditionNode::class => (bool) $this->resolveValue($node),
+            AdditionNode::class, SubtractionNode::class, MultiplicationNode::class,
+            DivisionNode::class, ModuloNode::class => (bool) $this->resolveValue($node),
             BoolNode::class => $node->value,
             VariableNode::class => $this->evaluateVariableAsBool($node),
             MethodCallNode::class, FunctionCallNode::class => (bool) $this->resolveValue($node),
@@ -113,6 +114,10 @@ final readonly class AstEvaluator
             FunctionCallNode::class => $this->resolveFunction($node),
             MethodCallNode::class => $this->resolveMethod($node),
             AdditionNode::class => $this->resolveAddition($node),
+            SubtractionNode::class => $this->resolveSubtraction($node),
+            MultiplicationNode::class => $this->resolveMultiplication($node),
+            DivisionNode::class => $this->resolveDivision($node),
+            ModuloNode::class => $this->resolveModulo($node),
             default => throw new \RuntimeException('Unexpected node type: ' . $node::class),
         };
     }
@@ -130,6 +135,50 @@ final readonly class AstEvaluator
         }
 
         return $left + $right;
+    }
+
+    /**
+     * @throws ParserException
+     */
+    private function resolveSubtraction(SubtractionNode $node): mixed
+    {
+        $left = $this->resolveValue($node->left);
+        $right = $this->resolveValue($node->right);
+
+        return $left - $right;
+    }
+
+    /**
+     * @throws ParserException
+     */
+    private function resolveMultiplication(MultiplicationNode $node): mixed
+    {
+        $left = $this->resolveValue($node->left);
+        $right = $this->resolveValue($node->right);
+
+        return $left * $right;
+    }
+
+    /**
+     * @throws ParserException
+     */
+    private function resolveDivision(DivisionNode $node): mixed
+    {
+        $left = $this->resolveValue($node->left);
+        $right = $this->resolveValue($node->right);
+
+        return $left / $right;
+    }
+
+    /**
+     * @throws ParserException
+     */
+    private function resolveModulo(ModuloNode $node): mixed
+    {
+        $left = $this->resolveValue($node->left);
+        $right = $this->resolveValue($node->right);
+
+        return $left % $right;
     }
 
     /**
