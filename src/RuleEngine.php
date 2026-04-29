@@ -129,14 +129,7 @@ final readonly class RuleEngine
      */
     public function isValid(string $rule, array $variables = []): bool
     {
-        try {
-            $ast = $this->parse($rule, $variables);
-            $this->astEvaluator->evaluate($ast);
-        } catch (Exception) {
-            return false;
-        }
-
-        return true;
+        return $this->getError($rule, $variables) === '';
     }
 
     /**
