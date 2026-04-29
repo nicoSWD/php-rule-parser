@@ -8,23 +8,12 @@
 namespace nicoSWD\Rule\Parser\Exception;
 
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\Type\Operator;
 
 final class ParserException extends \Exception
 {
     public static function unexpectedToken(BaseToken $token): self
     {
         return new self(sprintf('Unexpected "%s" at position %d', $token->getValue(), $token->getOffset()));
-    }
-
-    public static function unknownToken(BaseToken $token): self
-    {
-        return new self(sprintf('Unknown token "%s" at position %d', $token->getValue(), $token->getOffset()));
-    }
-
-    public static function incompleteExpression(BaseToken $token): self
-    {
-        return new self(sprintf('Incomplete expression for token "%s"', $token->getValue()));
     }
 
     public static function undefinedVariable(string $name, int $offset): self
@@ -62,7 +51,7 @@ final class ParserException extends \Exception
         return new self(sprintf('Unsupported PHP type: "%s"', $type));
     }
 
-    public static function unknownOperator(BaseToken & Operator $token): self
+    public static function unknownOperator(BaseToken $token): self
     {
         return new self(
             sprintf('Unexpected operator %s at position %d', $token->getOriginalValue(), $token->getOffset())

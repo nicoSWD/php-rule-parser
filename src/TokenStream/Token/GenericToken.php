@@ -7,13 +7,11 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-use nicoSWD\Rule\TokenStream\Token\Type\Operator;
-
 /**
  * A generic token class that replaces many single-purpose token classes.
  * The specific token kind is identified via the TokenKind enum.
  */
-final class GenericToken extends BaseToken implements Operator
+final class GenericToken extends BaseToken
 {
     public function __construct(
         private readonly TokenKind $kind,

@@ -10,11 +10,10 @@ namespace nicoSWD\Rule\Parser;
 use nicoSWD\Rule\Expression\BaseExpression;
 use nicoSWD\Rule\Expression\ExpressionFactoryInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\Type\Operator;
 
 final class EvaluableExpression
 {
-    public (BaseToken & Operator) | null $operator = null;
+    public ?BaseToken $operator = null;
     public array $values = [];
 
     public function __construct(

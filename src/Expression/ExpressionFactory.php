@@ -10,12 +10,11 @@ namespace nicoSWD\Rule\Expression;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
-use nicoSWD\Rule\TokenStream\Token\Type\Operator;
 
 final class ExpressionFactory implements ExpressionFactoryInterface
 {
     /** @throws ParserException */
-    public function createFromOperator(BaseToken & Operator $operator): BaseExpression
+    public function createFromOperator(BaseToken $operator): BaseExpression
     {
         return match ($operator->getKind()) {
             TokenKind::EQUAL => new EqualExpression(),
