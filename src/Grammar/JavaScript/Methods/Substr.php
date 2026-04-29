@@ -9,7 +9,8 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class Substr extends CallableFunction
 {
@@ -26,6 +27,6 @@ final class Substr extends CallableFunction
 
         $value = substr($this->token->getValue(), ...$params);
 
-        return new TokenString($value);
+        return new GenericToken(TokenKind::STRING, $value);
     }
 }

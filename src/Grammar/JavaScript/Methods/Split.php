@@ -10,7 +10,7 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
-use nicoSWD\Rule\TokenStream\Token\TokenRegex;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class Split extends CallableFunction
 {
@@ -28,7 +28,7 @@ final class Split extends CallableFunction
                 $params[] = (int) $limit->getValue();
             }
 
-            if ($separator instanceof TokenRegex) {
+            if ($separator->isOfKind(TokenKind::REGEX)) {
                 $func = 'preg_split';
             } else {
                 $func = 'explode';

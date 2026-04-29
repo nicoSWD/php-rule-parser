@@ -8,8 +8,8 @@
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenArray;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use nicoSWD\Rule\TokenStream\TokenCollection;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Grammar\CallableFunction;
@@ -18,7 +18,7 @@ final class Join extends CallableFunction
 {
     public function call(?BaseToken ...$parameters): BaseToken
     {
-        if (!$this->token instanceof TokenArray) {
+        if (!$this->token->isOfKind(TokenKind::ARRAY)) {
             throw new ParserException(sprintf('%s.join is not a function', $this->token->getValue()));
         }
 
@@ -36,6 +36,6 @@ final class Join extends CallableFunction
             $array = $array->toArray();
         }
 
-        return new TokenString(implode($glue, $array));
+        return new GenericToken(TokenKind::STRING, implode($glue, $array));
     }
 }

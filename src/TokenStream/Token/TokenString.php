@@ -7,9 +7,7 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-use nicoSWD\Rule\TokenStream\Token\Type\Value;
-
-class TokenString extends BaseToken implements Value
+class TokenString extends BaseToken
 {
     public function getKind(): TokenKind
     {

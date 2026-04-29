@@ -9,8 +9,8 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenRegex;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class Replace extends CallableFunction
 {
@@ -22,7 +22,7 @@ final class Replace extends CallableFunction
         if (!$search) {
             $search = '';
         } else {
-            $isRegExpr = ($search instanceof TokenRegex);
+            $isRegExpr = $search->isOfKind(TokenKind::REGEX);
             $search = $search->getValue();
         }
 
@@ -40,7 +40,7 @@ final class Replace extends CallableFunction
             $value = str_replace($search, $replace, $this->token->getValue());
         }
 
-        return new TokenString($value);
+        return new GenericToken(TokenKind::STRING, $value);
     }
 
     private function doRegexReplace(string $search, string $replace): string

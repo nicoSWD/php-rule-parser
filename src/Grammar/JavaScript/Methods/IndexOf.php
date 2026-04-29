@@ -9,7 +9,8 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenInteger;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class IndexOf extends CallableFunction
 {
@@ -27,6 +28,6 @@ final class IndexOf extends CallableFunction
             }
         }
 
-        return new TokenInteger($value);
+        return new GenericToken(TokenKind::INTEGER, $value);
     }
 }

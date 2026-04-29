@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenBool;
-use nicoSWD\Rule\TokenStream\Token\TokenRegex;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use nicoSWD\Rule\TokenStream\TokenCollection;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Grammar\CallableFunction;
@@ -18,7 +18,7 @@ final class Test extends CallableFunction
 {
     public function call(?BaseToken ...$parameters): BaseToken
     {
-        if (!$this->token instanceof TokenRegex) {
+        if (!$this->token->isOfKind(TokenKind::REGEX)) {
             throw new ParserException('test() is not a function');
         }
 

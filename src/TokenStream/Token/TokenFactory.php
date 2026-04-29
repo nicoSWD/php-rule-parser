@@ -16,12 +16,12 @@ class TokenFactory
     public function createFromPHPType(mixed $value): BaseToken
     {
         return match (gettype($value)) {
-            'string' => new TokenString($value),
-            'integer' => new TokenInteger($value),
-            'boolean' => TokenBool::fromBool($value),
-            'NULL' => new TokenNull($value),
-            'double' => new TokenFloat($value),
-            'object' => new TokenObject($value),
+            'string' => new GenericToken(TokenKind::STRING, $value),
+            'integer' => new GenericToken(TokenKind::INTEGER, $value),
+            'boolean' => new GenericToken($value ? TokenKind::BOOL_TRUE : TokenKind::BOOL_FALSE, $value),
+            'NULL' => new GenericToken(TokenKind::NULL, null),
+            'double' => new GenericToken(TokenKind::FLOAT, $value),
+            'object' => new GenericToken(TokenKind::OBJECT, $value),
             'array' => $this->buildTokenCollection($value),
             default => throw ParserException::unsupportedType(gettype($value)),
         };
@@ -32,22 +32,13 @@ class TokenFactory
         $args = [$matches[$kind->value], $offset];
 
         return match ($kind) {
-            TokenKind::BOOL_TRUE => new TokenBoolTrue(...$args),
-            TokenKind::BOOL_FALSE => new TokenBoolFalse(...$args),
-            TokenKind::NULL => new TokenNull(...$args),
-            TokenKind::FLOAT => new TokenFloat(...$args),
-            TokenKind::INTEGER => new TokenInteger(...$args),
             TokenKind::ENCAPSED_STRING => new TokenEncapsedString(...$args),
-            TokenKind::REGEX => new TokenRegex(...$args),
-            TokenKind::VARIABLE => new TokenVariable(...$args),
-            TokenKind::METHOD => new TokenMethod(...$args),
-            TokenKind::FUNCTION => new TokenFunction(...$args),
             default => new GenericToken($kind, ...$args),
         };
     }
 
     /** @throws ParserException */
-    private function buildTokenCollection(array $items): TokenArray
+    private function buildTokenCollection(array $items): GenericToken
     {
         $tokenCollection = new TokenCollection();
 
@@ -55,6 +46,6 @@ class TokenFactory
             $tokenCollection->add($this->createFromPHPType($item));
         }
 
-        return new TokenArray($tokenCollection);
+        return new GenericToken(TokenKind::ARRAY, $tokenCollection);
     }
 }

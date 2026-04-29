@@ -10,7 +10,7 @@ namespace nicoSWD\Rule\AST;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Exception\ForbiddenMethodException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedMethodException;
-use nicoSWD\Rule\TokenStream\Token\TokenArray;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class MethodCallNode extends Node
 {
@@ -48,7 +48,7 @@ final class MethodCallNode extends Node
 
         $result = $method->call(...$args);
 
-        if ($result instanceof TokenArray) {
+        if ($result->isOfKind(TokenKind::ARRAY)) {
             return $result->toArray();
         }
 

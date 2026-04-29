@@ -263,8 +263,8 @@ final readonly class Parser
         return match ($token->getKind()) {
             TokenKind::VARIABLE => new VariableNode($token->getOriginalValue(), $token->getOffset()),
             TokenKind::ENCAPSED_STRING, TokenKind::STRING => new StringNode($token->getValue()),
-            TokenKind::INTEGER => new IntegerNode($token->getValue()),
-            TokenKind::FLOAT => new FloatNode($token->getValue()),
+            TokenKind::INTEGER => new IntegerNode((int) $token->getValue()),
+            TokenKind::FLOAT => new FloatNode((float) $token->getValue()),
             TokenKind::BOOL_TRUE => new BoolNode(true),
             TokenKind::BOOL_FALSE => new BoolNode(false),
             TokenKind::NULL => new NullNode(),

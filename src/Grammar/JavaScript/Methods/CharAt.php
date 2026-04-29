@@ -9,8 +9,8 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenInteger;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class CharAt extends CallableFunction
 {
@@ -21,14 +21,12 @@ final class CharAt extends CallableFunction
 
         if (!$offset) {
             $offset = 0;
-        } elseif (!$offset instanceof TokenInteger) {
-            $offset = (int) $offset->getValue();
         } else {
-            $offset = $offset->getValue();
+            $offset = (int) $offset->getValue();
         }
 
         $char = $tokenValue[$offset] ?? '';
 
-        return new TokenString($char);
+        return new GenericToken(TokenKind::STRING, $char);
     }
 }

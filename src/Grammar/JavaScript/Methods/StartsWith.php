@@ -11,14 +11,13 @@ use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenBool;
-use nicoSWD\Rule\TokenStream\Token\TokenInteger;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class StartsWith extends CallableFunction
 {
     public function call(?BaseToken ...$parameters): BaseToken
     {
-        if (!$this->token instanceof TokenString) {
+        if (!$this->token->isOfKind(TokenKind::STRING)) {
             throw new ParserException('Call to undefined method "startsWith" on non-string');
         }
 
@@ -31,12 +30,10 @@ final class StartsWith extends CallableFunction
 
     private function getOffset(?BaseToken $offset): int
     {
-        if ($offset instanceof TokenInteger) {
-            $offset = $offset->getValue();
-        } else {
-            $offset = 0;
+        if ($offset !== null) {
+            return (int) $offset->getValue();
         }
 
-        return $offset;
+        return 0;
     }
 }

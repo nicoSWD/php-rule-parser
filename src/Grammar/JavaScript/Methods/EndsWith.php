@@ -11,13 +11,13 @@ use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenBool;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class EndsWith extends CallableFunction
 {
     public function call(?BaseToken ...$parameters): BaseToken
     {
-        if (!$this->token instanceof TokenString) {
+        if (!$this->token->isOfKind(TokenKind::STRING)) {
             throw new ParserException('Call to undefined method "endsWith" on non-string');
         }
 

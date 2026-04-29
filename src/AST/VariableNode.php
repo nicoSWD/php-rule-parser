@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\AST;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedVariableException;
-use nicoSWD\Rule\TokenStream\Token\TokenArray;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class VariableNode extends Node
 {
@@ -30,7 +30,7 @@ final class VariableNode extends Node
             throw ParserException::undefinedVariable($this->name, $this->offset);
         }
 
-        if ($token instanceof TokenArray) {
+        if ($token->isOfKind(TokenKind::ARRAY)) {
             return $token->toArray();
         }
 

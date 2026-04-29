@@ -7,15 +7,21 @@
  */
 namespace nicoSWD\Rule\TokenStream\Token;
 
-use nicoSWD\Rule\TokenStream\Token\Type\Value;
-
-abstract class TokenBool extends BaseToken implements Value
+final class TokenBool extends GenericToken
 {
-    public static function fromBool(bool $bool): TokenBool
+    public function __construct(
+        private readonly TokenKind $kind,
+        mixed $value,
+        int $offset = 0,
+    ) {
+        parent::__construct($kind, $value, $offset);
+    }
+
+    public static function fromBool(bool $bool): self
     {
-        return match ($bool) {
-            true => new TokenBoolTrue(true),
-            false => new TokenBoolFalse(false),
-        };
+        return new self(
+            $bool ? TokenKind::BOOL_TRUE : TokenKind::BOOL_FALSE,
+            $bool,
+        );
     }
 }

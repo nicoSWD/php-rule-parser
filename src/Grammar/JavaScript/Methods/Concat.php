@@ -9,8 +9,8 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenArray;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class Concat extends CallableFunction
 {
@@ -19,13 +19,13 @@ final class Concat extends CallableFunction
         $value = $this->token->getValue();
 
         foreach ($parameters as $parameter) {
-            if ($parameter instanceof TokenArray) {
+            if ($parameter->isOfKind(TokenKind::ARRAY)) {
                 $value .= implode(',', $parameter->toArray());
             } else {
                 $value .= $parameter->getValue();
             }
         }
 
-        return new TokenString($value);
+        return new GenericToken(TokenKind::STRING, $value);
     }
 }

@@ -10,7 +10,8 @@ namespace nicoSWD\Rule\Grammar\JavaScript\Functions;
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\Grammar\CallableInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenFloat;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class ParseFloat extends CallableFunction implements CallableInterface
 {
@@ -19,9 +20,9 @@ final class ParseFloat extends CallableFunction implements CallableInterface
         $value = $this->parseParameter($parameters, numParam: 0);
 
         if (!isset($value)) {
-            return new TokenFloat(NAN);
+            return new GenericToken(TokenKind::FLOAT, NAN);
         }
 
-        return new TokenFloat((float) $value->getValue());
+        return new GenericToken(TokenKind::FLOAT, (float) $value->getValue());
     }
 }

@@ -17,7 +17,6 @@ use nicoSWD\Rule\AST\LogicalNode;
 use nicoSWD\Rule\AST\LogicalOperator;
 use nicoSWD\Rule\AST\StringNode;
 use nicoSWD\Rule\Parser\Parser;
-use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\Token\GenericToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use nicoSWD\Rule\Lexer\Lexer;
@@ -42,14 +41,14 @@ final class ParserTest extends TestCase
     {
         $tokens = [
             new GenericToken(TokenKind::OPENING_PARENTHESIS, '('),
-            new Token\TokenInteger(1),
+            new GenericToken(TokenKind::INTEGER, 1),
             new GenericToken(TokenKind::EQUAL, '=='),
-            new Token\TokenString('1'),
+            new GenericToken(TokenKind::STRING, '1'),
             new GenericToken(TokenKind::CLOSING_PARENTHESIS, ')'),
             new GenericToken(TokenKind::AND, '&&'),
-            new Token\TokenInteger(2),
+            new GenericToken(TokenKind::INTEGER, 2),
             new GenericToken(TokenKind::GREATER, '>'),
-            new Token\TokenInteger(1),
+            new GenericToken(TokenKind::INTEGER, 1),
             new GenericToken(TokenKind::SPACE, ' '),
             new GenericToken(TokenKind::COMMENT, '// true dat!')
         ];

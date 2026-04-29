@@ -11,7 +11,7 @@ namespace nicoSWD\Rule\TokenStream\Token;
  * A generic token class that replaces many single-purpose token classes.
  * The specific token kind is identified via the TokenKind enum.
  */
-final class GenericToken extends BaseToken
+class GenericToken extends BaseToken
 {
     public function __construct(
         private readonly TokenKind $kind,
@@ -24,5 +24,23 @@ final class GenericToken extends BaseToken
     public function getKind(): TokenKind
     {
         return $this->kind;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function toArray(): array
+    {
+        $items = [];
+
+        foreach ($this->getValue() as $value) {
+            if ($value instanceof BaseToken) {
+                $items[] = $value->getValue();
+            } else {
+                $items[] = $value;
+            }
+        }
+
+        return $items;
     }
 }

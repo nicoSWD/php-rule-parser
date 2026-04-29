@@ -13,7 +13,6 @@ use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
-use nicoSWD\Rule\TokenStream\Token\Type\Value;
 
 /**
  * A character-by-character lexer that replaces the regex-based Tokenizer.
@@ -92,9 +91,6 @@ final class DefaultLexer extends Lexer
      * Determine if the given token represents a "value" — meaning the next
      * operator-like character should be treated as a binary operator rather
      * than a unary prefix.
-     *
-     * This replaces the fragile $afterValue boolean flag and the O(n) stack
-     * walk with a deterministic O(1) check against the last meaningful token.
      */
     private function isTokenValue(?BaseToken $token): bool
     {
@@ -102,12 +98,25 @@ final class DefaultLexer extends Lexer
             return false;
         }
 
-        // A token is a "value" if it implements the Value interface,
+        // A token is a "value" if it's a value-type token (string, number, bool, etc.),
         // or if it's a closing parenthesis/array (which represent
         // the end of a sub-expression that evaluates to a value).
-        return $token instanceof Value
-            || $token->isOfKind(TokenKind::CLOSING_PARENTHESIS)
-            || $token->isOfKind(TokenKind::CLOSING_ARRAY);
+        return match ($token->getKind()) {
+            TokenKind::STRING,
+            TokenKind::INTEGER,
+            TokenKind::FLOAT,
+            TokenKind::BOOL_TRUE,
+            TokenKind::BOOL_FALSE,
+            TokenKind::NULL,
+            TokenKind::REGEX,
+            TokenKind::VARIABLE,
+            TokenKind::ENCAPSED_STRING,
+            TokenKind::OBJECT,
+            TokenKind::ARRAY,
+            TokenKind::CLOSING_PARENTHESIS,
+            TokenKind::CLOSING_ARRAY => true,
+            default => false,
+        };
     }
 
     private function emitSimple(LexerContext $ctx, TokenKind $token, string $value): BaseToken
