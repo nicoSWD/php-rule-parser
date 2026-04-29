@@ -134,51 +134,51 @@ unless the called method is defined.
 
 ## Built-in Methods
 
-Name        | Example             
------------ | ------------------------
-charAt      | `"foo".charAt(2) === "o"`            
-concat      | `"foo".concat("bar", "baz") === "foobarbaz"`
-endsWith    | `"foo".endsWith("oo")`               
-startsWith  | `"foo".startsWith("fo")`        
-indexOf     | `"foo".indexOf("oo") === 1`                
-join        | `["foo", "bar"].join(",") === "foo,bar"`            
-replace     | `"foo".replace("oo", "aa") === "faa"`               
-split       | `"foo-bar".split("-") === ["foo", "bar"]`           
-substr      | `"foo".substr(1) === "oo"`                 
-test        | `"foo".test(/oo$/)`                     
-toLowerCase | `"FOO".toLowerCase() === "foo"`                      
-toUpperCase | `"foo".toUpperCase() === "FOO"`                      
+| Name        | Example             |
+| ----------- | ------------------------ |
+| charAt      | `"foo".charAt(2) === "o"`            |
+| concat      | `"foo".concat("bar", "baz") === "foobarbaz"` |
+| endsWith    | `"foo".endsWith("oo")`               |
+| startsWith  | `"foo".startsWith("fo")`        |
+| indexOf     | `"foo".indexOf("oo") === 1`                |
+| join        | `["foo", "bar"].join(",") === "foo,bar"`            |
+| replace     | `"foo".replace("oo", "aa") === "faa"`               |
+| split       | `"foo-bar".split("-") === ["foo", "bar"]`           |
+| substr      | `"foo".substr(1) === "oo"`                 |
+| test        | `"foo".test(/oo$/)`                     |
+| toLowerCase | `"FOO".toLowerCase() === "foo"`                      |
+| toUpperCase | `"foo".toUpperCase() === "FOO"`                      |
 
 ## Built-in Functions
 
-Name        | Example             
------------ | ------------------------
-parseInt    | `parseInt("22aa") === 22`            
-parseFloat  | `parseFloat("3.1") === 3.1`
+| Name        | Example             |
+| ----------- | ------------------------ |
+| parseInt    | `parseInt("22aa") === 22`            |
+| parseFloat  | `parseFloat("3.1") === 3.1` |
 
 ## Supported Operators
 
-Type        | Description              | Operator
------------ | ------------------------ | ----------
-Comparison  | greater than             | >
-Comparison  | greater than or equal to | >=
-Comparison  | less than                | <
-Comparison  | less or equal to         | <=
-Comparison  | equal to                 | ==
-Comparison  | not equal to             | !=
-Comparison  | identical                | ===
-Comparison  | not identical            | !==
-Containment | contains                 | in 
-Containment | does not contain         | not in 
-Logical     | and                      | &&
-Logical     | or                       | \|\|
-Arithmetic  | addition                 | +
-Arithmetic  | subtraction              | -
-Arithmetic  | multiplication           | *
-Arithmetic  | division                 | /
-Arithmetic  | modulo                   | %
-Unary       | negation                 | -
-Unary       | logical NOT              | !
+| Type        | Description              | Operator |
+| ----------- | ------------------------ | ---------- |
+| Comparison  | greater than             | > |
+| Comparison  | greater than or equal to | >= |
+| Comparison  | less than                | < |
+| Comparison  | less or equal to         | <= |
+| Comparison  | equal to                 | == |
+| Comparison  | not equal to             | != |
+| Comparison  | identical                | === |
+| Comparison  | not identical            | !== |
+| Containment | contains                 | in |
+| Containment | does not contain         | not in |
+| Logical     | and                      | && |
+| Logical     | or                       | \|\| |
+| Arithmetic  | addition                 | + |
+| Arithmetic  | subtraction              | - |
+| Arithmetic  | multiplication           | * |
+| Arithmetic  | division                 | / |
+| Arithmetic  | modulo                   | % |
+| Unary       | negation                 | - |
+| Unary       | logical NOT              | ! |
 
 ## Error Handling
 
