@@ -5,6 +5,7 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
 namespace nicoSWD\Rule\TokenStream;
 
 use nicoSWD\Rule\Grammar\CallableInterface;

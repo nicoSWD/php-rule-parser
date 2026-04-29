@@ -5,6 +5,7 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
 namespace nicoSWD\Rule\Grammar;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
@@ -14,5 +15,4 @@ interface CallableInterface
 {
     /** @throws ParserException */
     public function call(mixed ...$param): BaseToken;
-
 }

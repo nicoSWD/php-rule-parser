@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\tests\unit\TokenStream;
 
 use ArrayIterator;
@@ -20,7 +23,7 @@ use PHPUnit\Framework\Attributes\Test;
 final class TokenIteratorTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
-    
+
     private ArrayIterator|MockInterface $stack;
     private TokenIterator $tokenIterator;
 

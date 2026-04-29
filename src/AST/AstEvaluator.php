@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\AST;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
@@ -20,8 +23,8 @@ final readonly class AstEvaluator
     public function __construct(
         VariableRegistry $variableRegistry,
         FunctionRegistry $functionRegistry,
-        MethodRegistry   $methodRegistry,
-        TokenFactory     $tokenFactory,
+        MethodRegistry $methodRegistry,
+        TokenFactory $tokenFactory,
     ) {
         $this->context = new EvaluationContext($variableRegistry, $functionRegistry, $methodRegistry, $tokenFactory);
     }

@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\tests\integration;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
@@ -120,7 +123,7 @@ final class ObjectTest extends AbstractTestBase
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage("Forbidden method \"{$magicMethod}\" at position 6");
 
-        $myObj = new class() {
+        $myObj = new class () {
         };
 
         $variables = [
@@ -133,7 +136,7 @@ final class ObjectTest extends AbstractTestBase
     #[Test]
     public function undefinedMethodsShouldThrowAnError(): void
     {
-        $myObj = new class() {
+        $myObj = new class () {
         };
 
         $variables = [

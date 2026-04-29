@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
@@ -31,8 +34,8 @@ final class TestTest extends AbstractTestBase
     {
         $this->assertTrue($this->evaluate('/^foo$/i.test("FOO") === true'));
         $this->assertFalse($this->evaluate('/^foo$/.test("FOO") === true'));
-        $this->assertTrue($this->evaluate('/^foo$/m.test("' . "\n\n" .'foo") === true'));
-        $this->assertFalse($this->evaluate('/^foo$/.test("' . "\n\n" .'foo") === true'));
+        $this->assertTrue($this->evaluate('/^foo$/m.test("' . "\n\n" . 'foo") === true'));
+        $this->assertFalse($this->evaluate('/^foo$/.test("' . "\n\n" . 'foo") === true'));
     }
 
     #[Test]

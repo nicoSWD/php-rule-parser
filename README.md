@@ -260,7 +260,7 @@ $ composer test
 
 ## Contributing
 
-Pull requests are very welcome! If they include tests, even better. This project follows PSR-2 coding standards, please make sure your pull requests do too.
+Pull requests are very welcome! If they include tests, even better. This project follows [PSR-12](https://www.php-fig.org/psr/psr-12/) coding standards, please make sure your pull requests do too.
 
 ## To Do
 

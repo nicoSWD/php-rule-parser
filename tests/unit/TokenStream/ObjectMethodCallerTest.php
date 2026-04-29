@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\tests\unit\TokenStream;
 
 use nicoSWD\Rule\TokenStream\ObjectMethodCaller;
@@ -31,6 +34,7 @@ final class ObjectMethodCallerTest extends TestCase
     public function givenAnObjectWithAPublicWhenMethodMatchingItShouldBeUsed(): void
     {
         $object = new class {
+            // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
             public function my_test()
             {
                 return 123;
@@ -44,6 +48,7 @@ final class ObjectMethodCallerTest extends TestCase
     public function givenAnObjectWithAPublicWhenMethodNameWithIsPrefixMatchesItShouldBeUsed(): void
     {
         $object = new class {
+            // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
             public function is_my_test()
             {
                 return 123;
@@ -63,6 +68,7 @@ final class ObjectMethodCallerTest extends TestCase
     public function givenAnObjectWithAPublicWhenMethodNameWithGetPrefixMatchesItShouldBeUsed(): void
     {
         $object = new class {
+            // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
             public function get_my_test()
             {
                 return 123;
