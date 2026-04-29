@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\TokenStream\Token;
 
 use nicoSWD\Rule\TokenStream\Token\Type\Operator;
 
-final class TokenSmaller extends BaseToken implements Operator
+final class TokenLessThanEqual extends BaseToken implements Operator
 {
     public function getType(): TokenType
     {

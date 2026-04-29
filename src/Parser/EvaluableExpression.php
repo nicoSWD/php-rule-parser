@@ -12,7 +12,7 @@ use nicoSWD\Rule\Expression\ExpressionFactoryInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\Type\Operator;
 
-final class EvaluatableExpression
+final class EvaluableExpression
 {
     public (BaseToken & Operator) | null $operator = null;
     public array $values = [];

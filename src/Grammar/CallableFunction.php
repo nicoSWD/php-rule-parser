@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\Grammar;
 
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
-abstract class CallableFunction implements CallableUserFunctionInterface
+abstract class CallableFunction implements CallableInterface
 {
     public function __construct(
         protected readonly ?BaseToken $token = null,

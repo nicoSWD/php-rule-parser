@@ -8,12 +8,12 @@
 namespace nicoSWD\Rule\Grammar\JavaScript\Functions;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
-use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
+use nicoSWD\Rule\Grammar\CallableInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFloat;
 use nicoSWD\Rule\TokenStream\Token\TokenInteger;
 
-final class ParseInt extends CallableFunction implements CallableUserFunctionInterface
+final class ParseInt extends CallableFunction implements CallableInterface
 {
     public function call(?BaseToken ...$parameters): BaseToken
     {

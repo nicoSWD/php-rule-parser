@@ -16,7 +16,7 @@ use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Parser\Parser;
 use nicoSWD\Rule\Tokenizer\Lexer;
 use nicoSWD\Rule\Tokenizer\TokenizerInterface;
-use nicoSWD\Rule\TokenStream\CallableUserMethodFactory;
+use nicoSWD\Rule\TokenStream\ObjectMethodCallerFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\TokenIteratorFactory;
 use nicoSWD\Rule\TokenStream\TokenStream;
@@ -56,7 +56,7 @@ final readonly class RuleEngine
 {
     private TokenFactory $tokenFactory;
     private TokenIteratorFactory $tokenIteratorFactory;
-    private CallableUserMethodFactory $userMethodFactory;
+    private ObjectMethodCallerFactory $userMethodFactory;
     private TokenizerInterface $tokenizer;
     private TokenStream $tokenStream;
     private Parser $parser;
@@ -71,7 +71,7 @@ final readonly class RuleEngine
         $this->defaultVariables = $defaultVariables;
         $this->tokenFactory = new TokenFactory();
         $this->tokenIteratorFactory = new TokenIteratorFactory();
-        $this->userMethodFactory = new CallableUserMethodFactory();
+        $this->userMethodFactory = new ObjectMethodCallerFactory();
 
         $grammar ??= new JavaScript();
         $this->tokenizer = $tokenizer ?? new Lexer($grammar, $this->tokenFactory);

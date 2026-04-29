@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\TokenStream;
 
 use Closure;
 use InvalidArgumentException;
-use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
+use nicoSWD\Rule\Grammar\CallableInterface;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedVariableException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
@@ -31,7 +31,7 @@ class TokenStream
         private readonly TokenizerInterface $tokenizer,
         private readonly TokenFactory $tokenFactory,
         private readonly TokenIteratorFactory $tokenIteratorFactory,
-        private readonly CallableUserMethodFactoryInterface $userMethodFactory,
+        private readonly ObjectMethodCallerFactoryInterface $userMethodFactory,
     ) {
     }
 
@@ -44,10 +44,10 @@ class TokenStream
      * @throws Exception\UndefinedMethodException
      * @throws Exception\ForbiddenMethodException
      */
-    public function getMethod(string $methodName, BaseToken $token): CallableUserFunctionInterface
+    public function getMethod(string $methodName, BaseToken $token): CallableInterface
     {
         if ($token instanceof TokenObject) {
-            return $this->getCallableUserMethod($token, $methodName);
+            return $this->getObjectMethodCaller($token, $methodName);
         }
 
         if (empty($this->methods)) {
@@ -112,12 +112,12 @@ class TokenStream
         $this->functions[$functionName] = function (?BaseToken ...$args) use ($className) {
             $function = new $className();
 
-            if (!$function instanceof CallableUserFunctionInterface) {
+            if (!$function instanceof CallableInterface) {
                 throw new InvalidArgumentException(
                     sprintf(
                         '%s must be an instance of %s',
                         $className,
-                        CallableUserFunctionInterface::class
+                        CallableInterface::class
                     )
                 );
             }
@@ -130,7 +130,7 @@ class TokenStream
      * @throws Exception\ForbiddenMethodException
      * @throws Exception\UndefinedMethodException
      */
-    private function getCallableUserMethod(BaseToken $token, string $methodName): CallableUserFunctionInterface
+    private function getObjectMethodCaller(BaseToken $token, string $methodName): CallableInterface
     {
         return $this->userMethodFactory->create($token, $this->tokenFactory, $methodName);
     }

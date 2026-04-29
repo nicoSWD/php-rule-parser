@@ -7,7 +7,7 @@
  */
 namespace nicoSWD\Rule\tests\unit\TokenStream;
 
-use nicoSWD\Rule\TokenStream\CallableUserMethod;
+use nicoSWD\Rule\TokenStream\ObjectMethodCaller;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenObject;
@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use stdClass;
 
-final class CallableUserMethodTest extends TestCase
+final class ObjectMethodCallerTest extends TestCase
 {
     #[Test]
     public function givenAnObjectWithAPublicPropertyItShouldBeAccessible(): void
@@ -79,7 +79,7 @@ final class CallableUserMethodTest extends TestCase
 
     private function callMethod($object, string $methodName): BaseToken
     {
-        $callable = new CallableUserMethod(new TokenObject($object), new TokenFactory(), $methodName);
+        $callable = new ObjectMethodCaller(new TokenObject($object), new TokenFactory(), $methodName);
 
         return $callable->call();
     }

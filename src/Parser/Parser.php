@@ -57,8 +57,8 @@ use nicoSWD\Rule\TokenStream\Token\TokenOpeningParenthesis;
 use nicoSWD\Rule\TokenStream\Token\TokenOr;
 use nicoSWD\Rule\TokenStream\Token\TokenPlus;
 use nicoSWD\Rule\TokenStream\Token\TokenRegex;
-use nicoSWD\Rule\TokenStream\Token\TokenSmaller;
-use nicoSWD\Rule\TokenStream\Token\TokenSmallerEqual;
+use nicoSWD\Rule\TokenStream\Token\TokenLessThan;
+use nicoSWD\Rule\TokenStream\Token\TokenLessThanEqual;
 use nicoSWD\Rule\TokenStream\Token\TokenString;
 use nicoSWD\Rule\TokenStream\Token\TokenVariable;
 use nicoSWD\Rule\TokenStream\TokenIterator;
@@ -412,9 +412,9 @@ final readonly class Parser
             TokenEqualStrict::class => ComparisonOperator::EQUAL_STRICT,
             TokenNotEqual::class => ComparisonOperator::NOT_EQUAL,
             TokenNotEqualStrict::class => ComparisonOperator::NOT_EQUAL_STRICT,
-            TokenSmaller::class => ComparisonOperator::LESS_THAN,
+            TokenLessThan::class => ComparisonOperator::LESS_THAN,
             TokenGreater::class => ComparisonOperator::GREATER_THAN,
-            TokenSmallerEqual::class => ComparisonOperator::LESS_THAN_EQUAL,
+            TokenLessThanEqual::class => ComparisonOperator::LESS_THAN_EQUAL,
             TokenGreaterEqual::class => ComparisonOperator::GREATER_THAN_EQUAL,
             TokenIn::class => ComparisonOperator::IN,
             TokenNotIn::class => ComparisonOperator::NOT_IN,

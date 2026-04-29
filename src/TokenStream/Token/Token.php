@@ -26,9 +26,9 @@ enum Token: string
     case FLOAT = 'Float';
     case INTEGER = 'Integer';
     case ENCAPSED_STRING = 'EncapsedString';
-    case SMALLER_EQUAL = 'SmallerEqual';
+    case LESS_THAN_EQUAL = 'SmallerEqual';
     case GREATER_EQUAL = 'GreaterEqual';
-    case SMALLER = 'Smaller';
+    case LESS_THAN = 'Smaller';
     case PLUS = 'Plus';
     case MINUS = 'Minus';
     case MULTIPLY = 'Multiply';

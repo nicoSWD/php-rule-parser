@@ -7,17 +7,17 @@
  */
 namespace nicoSWD\Rule\TokenStream;
 
-use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
+use nicoSWD\Rule\Grammar\CallableInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 
-final class CallableUserMethodFactory implements CallableUserMethodFactoryInterface
+final class ObjectMethodCallerFactory implements ObjectMethodCallerFactoryInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function create(BaseToken $token, TokenFactory $tokenFactory, string $methodName): CallableUserFunctionInterface
+    public function create(BaseToken $token, TokenFactory $tokenFactory, string $methodName): CallableInterface
     {
-        return new CallableUserMethod($token, $tokenFactory, $methodName);
+        return new ObjectMethodCaller($token, $tokenFactory, $methodName);
     }
 }

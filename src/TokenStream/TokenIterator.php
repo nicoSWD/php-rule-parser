@@ -10,7 +10,7 @@ namespace nicoSWD\Rule\TokenStream;
 use Closure;
 use Iterator;
 use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
+use nicoSWD\Rule\Grammar\CallableInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 readonly class TokenIterator implements Iterator
@@ -87,7 +87,7 @@ readonly class TokenIterator implements Iterator
     }
 
     /** @throws ParserException */
-    public function getMethod(string $methodName, BaseToken $token): CallableUserFunctionInterface
+    public function getMethod(string $methodName, BaseToken $token): CallableInterface
     {
         try {
             return $this->tokenStream->getMethod($methodName, $token);

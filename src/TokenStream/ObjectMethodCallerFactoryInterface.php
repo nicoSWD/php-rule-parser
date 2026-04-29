@@ -7,15 +7,15 @@
  */
 namespace nicoSWD\Rule\TokenStream;
 
-use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
+use nicoSWD\Rule\Grammar\CallableInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 
-interface CallableUserMethodFactoryInterface
+interface ObjectMethodCallerFactoryInterface
 {
     /**
      * @throws Exception\ForbiddenMethodException
      * @throws Exception\UndefinedMethodException
      */
-    public function create(BaseToken $token, TokenFactory $tokenFactory, string $methodName): CallableUserFunctionInterface;
+    public function create(BaseToken $token, TokenFactory $tokenFactory, string $methodName): CallableInterface;
 }

@@ -8,11 +8,11 @@
 namespace nicoSWD\Rule\TokenStream;
 
 use Closure;
-use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
+use nicoSWD\Rule\Grammar\CallableInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 
-final class CallableUserMethod implements CallableUserFunctionInterface
+final class ObjectMethodCaller implements CallableInterface
 {
     private const string MAGIC_METHOD_PREFIX = '__';
     private readonly TokenFactory $tokenFactory;
