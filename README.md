@@ -6,9 +6,7 @@
 [![Code Quality][Master quality image]][Master quality] 
 [![StyleCI](https://styleci.io/repos/39503126/shield?branch=master&style=flat)](https://styleci.io/repos/39503126)
 
-A standalone PHP library to parse and evaluate text-based rules using a JavaScript-like syntax. This project was born out of the need to evaluate hundreds of rules originally written in JavaScript on the server side, using PHP.
-
-The library was initially used to configure the behavior of "Workflows" in an intranet application without changing actual code, but it may serve a purpose elsewhere.
+A PHP library that parses and evaluates boolean expressions using a JavaScript-like syntax. It supports variables, comparison and logical operators, arithmetic, regular expressions, arrays, string methods, and function calls, all from plain text rules.
 
 ## Install
 
@@ -18,118 +16,126 @@ Via Composer
 $ composer require nicoswd/php-rule-parser
 ```
 
-## Bundles
-
-This library works best with one of these bundles below, but they're not required
-
-| Bundle   | Framework      | Packagist     |
-| -------- |  ------------- | ------------- |
-| [nicoSWD/rule-engine-bundle](https://github.com/nicoSWD/rule-engine-bundle) | Symfony | [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/symfony-rule-engine-bundle.svg)](https://packagist.org/packages/nicoswd/symfony-rule-engine-bundle) |
-
 ## Usage Examples
 
-Test if a value is in a given array
+### E-commerce: Validate coupon eligibility
 ```php
 $variables = [
-    'coupon_code' => (string) $_POST['coupon_code'],
+    'cart_total'     => 120,
+    'user_tier'      => 'gold',
+    'is_blacklisted' => false,
 ];
 
-$rule = new Rule('coupon_code in ["summer_discount", "summer21"]', $variables);
-var_dump($rule->isTrue()); // bool(true)
+$rule = new Rule('cart_total >= 50 && user_tier in ["gold", "platinum"] && !is_blacklisted', $variables);
+var_dump($rule->isTrue()); // bool(true) — eligible for discount
 ```
 
-Performing a regular expression
+### Content moderation: Flag suspicious posts
 ```php
 $variables = [
-    'coupon_code' => (string) $_POST['coupon_code'],
+    'body'             => 'Check this out http://spam.com',
+    'is_trusted_author' => false,
 ];
 
-$rule = new Rule('coupon_code.test(/^summer20[0-9]{2}$/)', $variables);
-var_dump($rule->isTrue()); // bool(true)
+$rule = new Rule('body.test(/(https?:\/\/[^\s]+){3,}/) && !is_trusted_author', $variables);
+var_dump($rule->isTrue()); // bool(true) — flagged as spam
 ```
 
-Test if a value is between a given range
+### Access control: Check user permissions
 ```php
-$variables = ['points' => 80];
+$variables = [
+    'role'         => 'editor',
+    'status'       => 'active',
+    'is_suspended' => false,
+];
 
-$rule = new Rule('points >= 50 && points <= 100', $variables);
-var_dump($rule->isTrue()); // bool(true)
+$rule = new Rule('role in ["admin", "editor"] && status == "active" && !is_suspended', $variables);
+var_dump($rule->isTrue()); // bool(true) — access granted
 ```
 
-Perform arithmetic operations
+### Pricing: Calculate order total with conditions
 ```php
-$variables = ['price' => 100, 'quantity' => 3];
+$variables = [
+    'base_price' => 29.99,
+    'tax_rate'   => 21,
+    'quantity'   => 3,
+];
 
-$rule = new Rule('price * quantity > 250', $variables);
-var_dump($rule->isTrue()); // bool(true)
+$rule = new Rule('(base_price + (base_price * tax_rate / 100)) * quantity', $variables);
+var_dump($rule->result()); // float(108.8571...) — total with tax
 ```
 
-Arithmetic operators follow standard precedence rules: `*`, `/`, `%` bind tighter than `+`, `-`. Parentheses can be used to override precedence.
+### Form validation: Check input constraints
 ```php
-$rule = new Rule('2 + 3 * 4 == 14');
-var_dump($rule->isTrue()); // bool(true) - multiplication before addition
+$variables = [
+    'email'   => 'user@example.com',
+    'age'     => 25,
+    'country' => 'US',
+];
 
-$rule = new Rule('(2 + 3) * 4 == 20');
-var_dump($rule->isTrue()); // bool(true) - parentheses override precedence
+$rule = new Rule('email.test(/^[^@\s]+@[^@\s]+\.[^@\s]+$/) && age >= 18 && country in ["US", "CA", "UK"]', $variables);
+var_dump($rule->isTrue()); // bool(true) — valid registration
 ```
 
-Unary minus and logical NOT operators are also supported:
+### Notification routing: Target specific users
 ```php
-$rule = new Rule('-5 * 3 == -15');
-var_dump($rule->isTrue()); // bool(true) - unary minus binds tighter than multiplication
+$variables = [
+    'plan'                 => 'pro',
+    'last_login'           => 3,
+    'notification_opt_out' => false,
+];
 
-$rule = new Rule('--5 == 5');
-var_dump($rule->isTrue()); // bool(true) - double negation
-
-$rule = new Rule('!false');
-var_dump($rule->isTrue()); // bool(true) - logical NOT
-
-$rule = new Rule('!(1 == 2)');
-var_dump($rule->isTrue()); // bool(true) - NOT with parenthesized comparison
-
-$rule = new Rule('!foo', ['foo' => false]);
-var_dump($rule->isTrue()); // bool(true) - NOT with variable
+$rule = new Rule('plan in ["pro", "enterprise"] && last_login < 7 && !notification_opt_out', $variables);
+var_dump($rule->isTrue()); // bool(true) — send notification
 ```
 
-Get the actual computed result of an expression (not just true/false)
+### Feature flags: Roll out features gradually
 ```php
-$rule = new Rule('5 * 3');
-var_dump($rule->result()); // int(15)
+$variables = [
+    'user_id'     => 7,
+    'environment' => 'production',
+];
 
-$rule = new Rule('"hello " + "world"');
-var_dump($rule->result()); // string("hello world")
-
-$rule = new Rule('parseInt("42")');
-var_dump($rule->result()); // int(42)
-
-$rule = new Rule('price * quantity', ['price' => 100, 'quantity' => 3]);
-var_dump($rule->result()); // int(300)
-
-// Comparison and logical expressions still return bool
-$rule = new Rule('foo > 5', ['foo' => 10]);
-var_dump($rule->result()); // bool(true)
+$rule = new Rule('user_id % 10 < 3 && environment == "production"', $variables);
+var_dump($rule->isTrue()); // bool(true) — feature enabled for this user
 ```
 
-Call methods on objects from within rules
+### String manipulation: Format user data
 ```php
-class User
+$variables = [
+    'firstName' => 'John',
+    'lastName'  => 'Doe',
+];
+
+$rule = new Rule('firstName.toUpperCase() + " " + lastName.toUpperCase()', $variables);
+var_dump($rule->result()); // string("JOHN DOE")
+```
+
+### Object method calls: Evaluate complex conditions
+```php
+class Subscription
 {
-    public function points(): int
+    public function isActive(): bool
     {
-        return 1337;    
+        return true;
+    }
+
+    public function daysUntilExpiry(): int
+    {
+        return 15;
     }
 }
 
 $variables = [
-    'user' => new User(),
+    'subscription' => new Subscription(),
 ];
 
-$rule = new Rule('user.points() > 300', $variables);
-var_dump($rule->isTrue()); // bool(true)
+$rule = new Rule('subscription.isActive() && subscription.daysUntilExpiry() > 7', $variables);
+var_dump($rule->isTrue()); // bool(true) — subscription is active and not expiring soon
 ```
 
-For security reasons, PHP's magic methods like `__construct` and `__destruct` cannot be 
-called from within rules. However, `__call` will be invoked automatically if available,
+For security reasons, PHP's magic methods like __construct and __destruct cannot be 
+called from within rules. However, __call will be invoked automatically if available,
 unless the called method is defined.
 
 ## Built-in Methods
