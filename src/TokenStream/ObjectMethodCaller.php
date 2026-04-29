@@ -64,17 +64,26 @@ final class ObjectMethodCaller implements CallableInterface
     private function findCallableMethod(object $object, string $methodName): callable
     {
         $this->assertNonMagicMethod($methodName);
-        $index = 0;
 
-        do {
-            if (!isset($this->methodPrefixes[$index])) {
-                throw new Exception\UndefinedMethodException();
+        // Check exact method name first
+        if (is_callable([$object, $methodName])) {
+            return [$object, $methodName];
+        }
+
+        // Try prefixed versions (get, is, get_, is_)
+        foreach ($this->methodPrefixes as $prefix) {
+            if ($prefix === '') {
+                continue;
             }
 
-            $callableMethod = $this->methodPrefixes[$index++] . $methodName;
-        } while (!is_callable([$object, $callableMethod]));
+            $prefixedMethod = $prefix . $methodName;
 
-        return [$object, $callableMethod];
+            if (is_callable([$object, $prefixedMethod])) {
+                return [$object, $prefixedMethod];
+            }
+        }
+
+        throw new Exception\UndefinedMethodException();
     }
 
     private function getTokenValues(array $params): array
