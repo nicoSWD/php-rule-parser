@@ -35,11 +35,7 @@ class Rule
     private readonly string $rule;
     private readonly array $variables;
     private ?Node $ast = null;
-    public string $error = '' {
-        get {
-            return $this->error;
-        }
-    }
+    public string $error = '';
 
     public function __construct(
         string $rule,
