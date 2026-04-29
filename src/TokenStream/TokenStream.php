@@ -95,15 +95,15 @@ class TokenStream
 
     private function registerMethods(): void
     {
-        foreach ($this->tokenizer->grammar->getInternalMethods() as $internalMethod) {
-            $this->methods[$internalMethod->name] = $internalMethod->class;
+        foreach ($this->tokenizer->grammar->getInternalMethods() as $internalCallable) {
+            $this->methods[$internalCallable->name] = $internalCallable->class;
         }
     }
 
     private function registerFunctions(): void
     {
-        foreach ($this->tokenizer->grammar->getInternalFunctions() as $function) {
-            $this->registerFunctionClass($function->name, $function->class);
+        foreach ($this->tokenizer->grammar->getInternalFunctions() as $internalCallable) {
+            $this->registerFunctionClass($internalCallable->name, $internalCallable->class);
         }
     }
 

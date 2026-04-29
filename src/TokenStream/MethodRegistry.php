@@ -46,8 +46,8 @@ class MethodRegistry
 
     private function registerMethods(): void
     {
-        foreach ($this->grammar->getInternalMethods() as $internalMethod) {
-            $this->methods[$internalMethod->name] = $internalMethod->class;
+        foreach ($this->grammar->getInternalMethods() as $internalCallable) {
+            $this->methods[$internalCallable->name] = $internalCallable->class;
         }
     }
 

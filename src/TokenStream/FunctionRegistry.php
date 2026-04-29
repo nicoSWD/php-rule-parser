@@ -38,8 +38,8 @@ class FunctionRegistry
 
     private function registerFunctions(): void
     {
-        foreach ($this->grammar->getInternalFunctions() as $function) {
-            $this->registerFunctionClass($function->name, $function->class);
+        foreach ($this->grammar->getInternalFunctions() as $internalCallable) {
+            $this->registerFunctionClass($internalCallable->name, $internalCallable->class);
         }
     }
 

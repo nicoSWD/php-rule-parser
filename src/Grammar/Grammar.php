@@ -9,9 +9,9 @@ namespace nicoSWD\Rule\Grammar;
 
 abstract class Grammar
 {
-    /** @return InternalFunction[] */
+    /** @return InternalCallable[] */
     abstract public function getInternalFunctions(): array;
 
-    /** @return InternalMethod[] */
+    /** @return InternalCallable[] */
     abstract public function getInternalMethods(): array;
 }

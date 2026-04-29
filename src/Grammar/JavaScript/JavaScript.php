@@ -8,34 +8,33 @@
 namespace nicoSWD\Rule\Grammar\JavaScript;
 
 use nicoSWD\Rule\Grammar\Grammar;
-use nicoSWD\Rule\Grammar\InternalFunction;
-use nicoSWD\Rule\Grammar\InternalMethod;
+use nicoSWD\Rule\Grammar\InternalCallable;
 
 final class JavaScript extends Grammar
 {
     public function getInternalFunctions(): array
     {
         return [
-            new InternalFunction('parseInt', Functions\ParseInt::class),
-            new InternalFunction('parseFloat', Functions\ParseFloat::class),
+            new InternalCallable('parseInt', Functions\ParseInt::class),
+            new InternalCallable('parseFloat', Functions\ParseFloat::class),
         ];
     }
 
     public function getInternalMethods(): array
     {
         return [
-            new InternalMethod('charAt', Methods\CharAt::class),
-            new InternalMethod('concat', Methods\Concat::class),
-            new InternalMethod('indexOf', Methods\IndexOf::class),
-            new InternalMethod('join', Methods\Join::class),
-            new InternalMethod('replace', Methods\Replace::class),
-            new InternalMethod('split', Methods\Split::class),
-            new InternalMethod('substr', Methods\Substr::class),
-            new InternalMethod('test', Methods\Test::class),
-            new InternalMethod('toLowerCase', Methods\ToLowerCase::class),
-            new InternalMethod('toUpperCase', Methods\ToUpperCase::class),
-            new InternalMethod('startsWith', Methods\StartsWith::class),
-            new InternalMethod('endsWith', Methods\EndsWith::class),
+            new InternalCallable('charAt', Methods\CharAt::class),
+            new InternalCallable('concat', Methods\Concat::class),
+            new InternalCallable('indexOf', Methods\IndexOf::class),
+            new InternalCallable('join', Methods\Join::class),
+            new InternalCallable('replace', Methods\Replace::class),
+            new InternalCallable('split', Methods\Split::class),
+            new InternalCallable('substr', Methods\Substr::class),
+            new InternalCallable('test', Methods\Test::class),
+            new InternalCallable('toLowerCase', Methods\ToLowerCase::class),
+            new InternalCallable('toUpperCase', Methods\ToUpperCase::class),
+            new InternalCallable('startsWith', Methods\StartsWith::class),
+            new InternalCallable('endsWith', Methods\EndsWith::class),
         ];
     }
 }
