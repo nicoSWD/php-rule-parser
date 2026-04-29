@@ -216,8 +216,6 @@ final readonly class Parser
     /** @throws Exception\ParserException */
     private function parsePrimary(TokenIterator $tokens): Node
     {
-        $this->skipIgnoredTokens($tokens);
-
         if (!$tokens->valid()) {
             throw Exception\ParserException::unexpectedEndOfString();
         }
