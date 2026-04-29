@@ -35,4 +35,3 @@ final class StartsWith extends CallableFunction
         return 0;
     }
 }
-

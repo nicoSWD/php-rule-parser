@@ -29,4 +29,3 @@ final class Substr extends CallableFunction
         return new GenericToken(TokenKind::STRING, $value);
     }
 }
-

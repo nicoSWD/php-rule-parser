@@ -44,4 +44,3 @@ final class Split extends CallableFunction
         return (bool) preg_match('~^/.+/[img]{0,3}$~', $value);
     }
 }
-

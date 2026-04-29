@@ -66,5 +66,3 @@ final class Test extends CallableFunction
         );
     }
 }
-
-

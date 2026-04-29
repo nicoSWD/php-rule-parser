@@ -18,4 +18,3 @@ final class ToUpperCase extends CallableFunction
         return new GenericToken(TokenKind::STRING, strtoupper((string) $this->token));
     }
 }
-

@@ -18,4 +18,3 @@ final class ToLowerCase extends CallableFunction
         return new GenericToken(TokenKind::STRING, strtolower((string) $this->token));
     }
 }
-
