@@ -5,3 +5,4 @@
 /vendor/
 /.idea
 /.composer
+.DS_Store
