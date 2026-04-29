@@ -6,9 +6,9 @@
 [![Code Quality][Master quality image]][Master quality] 
 [![StyleCI](https://styleci.io/repos/39503126/shield?branch=master&style=flat)](https://styleci.io/repos/39503126)
 
-You're looking at a standalone PHP library to parse and evaluate text based rules with a Javascript-like syntax. This project was born out of the necessity to evaluate hundreds of rules that were originally written and evaluated in JavaScript, and now needed to be evaluated on the server-side, using PHP.
+A standalone PHP library to parse and evaluate text-based rules using a JavaScript-like syntax. This project was born out of the need to evaluate hundreds of rules originally written in JavaScript on the server side, using PHP.
 
-This library has initially been used to change and configure the behavior of certain "Workflows" (without changing actual code) in an intranet application, but it may serve a purpose elsewhere.
+The library was initially used to configure the behavior of "Workflows" in an intranet application without changing actual code, but it may serve a purpose elsewhere.
 
 ## Install
 
@@ -73,9 +73,10 @@ $variables = [
 $rule = new Rule('user.points() > 300', $variables);
 var_dump($rule->isTrue()); // bool(true)
 ```
+
 For security reasons, PHP's magic methods like `__construct` and `__destruct` cannot be 
 called from within rules. However, `__call` will be invoked automatically if available,
-unless the called method is defined. 
+unless the called method is defined.
 
 ## Built-in Methods
 
@@ -120,7 +121,7 @@ Logical     | or                       | \|\|
 
 ## Error Handling
 
-Both, `$rule->isTrue()` and `$rule->isFalse()` will throw an exception if the syntax is invalid. These calls can either be placed inside a `try` / `catch` block, or it can be checked prior using `$rule->isValid()`.
+Both `$rule->isTrue()` and `$rule->isFalse()` will throw an exception if the syntax is invalid. These calls can either be placed inside a `try` / `catch` block, or validity can be checked beforehand using `$rule->isValid()`.
 
 ```php
 $ruleStr = '
@@ -143,18 +144,22 @@ Or alternatively:
 
 ```php
 if (!$rule->isValid()) {
-    echo $rule->getError();
+    echo $rule->error;
 }
 ```
 
-Both will output: `Unexpected token "(" at position 25 on line 3`
+Both will output: `Unexpected "(" at position 28`
 
 ## Syntax Highlighting
- 
+
 A custom syntax highlighter is also provided.
 
 ```php
-use nicoSWD\Rule;
+use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
+use nicoSWD\Rule\Highlighter\Highlighter;
+use nicoSWD\Rule\Tokenizer\Lexer;
+use nicoSWD\Rule\TokenStream\Token\TokenFactory;
+use nicoSWD\Rule\TokenStream\Token\TokenType;
 
 $ruleStr = '
     // This is true
@@ -170,7 +175,11 @@ $ruleStr = '
         bar > 6
     )';
 
-$highlighter = new Rule\Highlighter\Highlighter(new Rule\Tokenizer());
+$grammar = new JavaScript();
+$tokenFactory = new TokenFactory();
+$lexer = new Lexer($grammar, $tokenFactory);
+
+$highlighter = new Highlighter($lexer);
 
 // Optional custom styles
 $highlighter->setStyle(
@@ -184,11 +193,6 @@ echo $highlighter->highlightString($ruleStr);
 Outputs:
 
 ![Syntax preview](https://s3.amazonaws.com/f.cl.ly/items/0y1b0s0J2v2v1u3O1F3M/Screen%20Shot%202015-08-05%20at%2012.15.21.png)
-
-## Notes
-
-- Parentheses can be nested, and will be evaluated from right to left.
-- Only value/variable comparison expressions with optional logical ANDs/ORs, are supported.
 
 ## Security
 
@@ -209,19 +213,19 @@ Pull requests are very welcome! If they include tests, even better. This project
 - Support for object properties (foo.length)
 - Support for returning actual results, other than true or false
 - Support for array / string dereferencing: "foo"[1]
-- Don't force boolean comparison for tokens that are already booleans. `my_func() && 2 > 1` should work
-- Change regex and implementation for method calls. ".split(" should not be the token
-- Add / implement missing methods
+- ~~Don't force boolean comparison for tokens that are already booleans. `my_func() && 2 > 1` should work~~
 - Add "typeof" construct
 - Do math (?)
 - Allow string concatenating with "+"
-- Invalid regex modifiers should not result in an unknown token
 - Duplicate regex modifiers should throw an error
 - ~~Add support for function calls~~
 - ~~Support for regular expressions~~
 - ~~Fix build on PHP 7 / Nightly~~
 - ~~Allow variables in arrays~~
 - ~~Verify function and method name spelling (.tOuPpErCAse() is currently valid)~~
+- ~~Change regex and implementation for method calls~~
+- ~~Add / implement missing methods~~
+- ~~Invalid regex modifiers should not result in an unknown token~~
 - ...
 
 ## License
