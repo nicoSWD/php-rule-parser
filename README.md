@@ -66,10 +66,10 @@ var_dump($rule->isTrue()); // bool(true)
 
 Arithmetic operators follow standard precedence rules: `*`, `/`, `%` bind tighter than `+`, `-`. Parentheses can be used to override precedence.
 ```php
-$rule = new Rule('2 + 3 * 4 == 14', $variables);
+$rule = new Rule('2 + 3 * 4 == 14');
 var_dump($rule->isTrue()); // bool(true) - multiplication before addition
 
-$rule = new Rule('(2 + 3) * 4 == 20', $variables);
+$rule = new Rule('(2 + 3) * 4 == 20');
 var_dump($rule->isTrue()); // bool(true) - parentheses override precedence
 ```
 
