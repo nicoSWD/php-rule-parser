@@ -32,7 +32,6 @@ use nicoSWD\Rule\AST\VariableNode;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use nicoSWD\Rule\TokenStream\TokenIterator;
-use nicoSWD\Rule\TokenStream\TokenIteratorFactory;
 use nicoSWD\Rule\Tokenizer\TokenizerInterface;
 
 /**
@@ -58,7 +57,6 @@ use nicoSWD\Rule\Tokenizer\TokenizerInterface;
 final readonly class Parser
 {
     public function __construct(
-        private TokenIteratorFactory $tokenIteratorFactory,
         private TokenizerInterface $tokenizer,
     ) {
     }
@@ -66,7 +64,7 @@ final readonly class Parser
     /** @throws Exception\ParserException */
     public function parse(string $rule): Node
     {
-        $tokenIterator = $this->tokenIteratorFactory->create($this->tokenizer->tokenize($rule));
+        $tokenIterator = new TokenIterator($this->tokenizer->tokenize($rule));
 
         if (!$tokenIterator->valid()) {
             return new BoolNode(false);
@@ -77,7 +75,7 @@ final readonly class Parser
         // If there are remaining non-ignorable tokens, that's a syntax error
         $this->skipIgnoredTokens($tokenIterator);
         if ($tokenIterator->valid()) {
-            throw Exception\ParserException::unexpectedToken($tokenIterator->peekRaw());
+            throw Exception\ParserException::unexpectedToken($tokenIterator->current());
         }
 
         return $node;
@@ -194,7 +192,7 @@ final readonly class Parser
             throw Exception\ParserException::unexpectedEndOfString();
         }
 
-        $token = $tokens->peekRaw();
+        $token = $tokens->current();
 
         // Unary minus: -expr
         if ($token->isOfKind(TokenKind::MINUS)) {
@@ -224,7 +222,7 @@ final readonly class Parser
             throw Exception\ParserException::unexpectedEndOfString();
         }
 
-        $token = $tokens->peekRaw();
+        $token = $tokens->current();
 
         // Parenthesized expression
         if ($token->isOfKind(TokenKind::OPENING_PARENTHESIS)) {
@@ -278,7 +276,7 @@ final readonly class Parser
     /** @throws Exception\ParserException */
     private function parseFunctionCall(TokenIterator $tokens): FunctionCallNode
     {
-        $token = $tokens->peekRaw();
+        $token = $tokens->current();
         $functionName = $token->getValue();
         $offset = $token->getOffset();
 
@@ -295,8 +293,8 @@ final readonly class Parser
     {
         $this->skipIgnoredTokens($tokens);
 
-        while ($tokens->valid() && $tokens->peekRaw()->isOfKind(TokenKind::METHOD)) {
-            $methodToken = $tokens->peekRaw();
+        while ($tokens->valid() && $tokens->current()->isOfKind(TokenKind::METHOD)) {
+            $methodToken = $tokens->current();
             $methodName = $methodToken->getValue();
             $offset = $methodToken->getOffset();
             $tokens->next();
@@ -316,8 +314,8 @@ final readonly class Parser
     {
         // Consume the opening parenthesis
         $this->skipIgnoredTokens($tokens);
-        if (!$tokens->valid() || !$tokens->peekRaw()->isOfKind(TokenKind::OPENING_PARENTHESIS)) {
-            throw Exception\ParserException::unexpectedToken($tokens->valid() ? $tokens->peekRaw() : null);
+        if (!$tokens->valid() || !$tokens->current()->isOfKind(TokenKind::OPENING_PARENTHESIS)) {
+            throw Exception\ParserException::unexpectedToken($tokens->valid() ? $tokens->current() : null);
         }
         $tokens->next();
 
@@ -364,7 +362,7 @@ final readonly class Parser
                 throw Exception\ParserException::unexpectedEndOfString();
             }
 
-            $token = $tokens->peekRaw();
+            $token = $tokens->current();
 
             // Closing token ends the list
             if ($isTerminator($token)) {
@@ -403,7 +401,7 @@ final readonly class Parser
             throw Exception\ParserException::unexpectedEndOfString();
         }
 
-        $token = $tokens->peekRaw();
+        $token = $tokens->current();
 
         if (!$token->isOfKind(TokenKind::CLOSING_PARENTHESIS)) {
             throw Exception\ParserException::unexpectedToken($token);
@@ -433,7 +431,7 @@ final readonly class Parser
     {
         $this->skipIgnoredTokens($tokens);
 
-        return $tokens->valid() ? $tokens->peekRaw() : null;
+        return $tokens->valid() ? $tokens->current() : null;
     }
 
     private function consumeToken(TokenIterator $tokens): void
@@ -443,7 +441,7 @@ final readonly class Parser
 
     private function skipIgnoredTokens(TokenIterator $tokens): void
     {
-        while ($tokens->valid() && $tokens->peekRaw()->canBeIgnored()) {
+        while ($tokens->valid() && $tokens->current()->canBeIgnored()) {
             $tokens->next();
         }
     }

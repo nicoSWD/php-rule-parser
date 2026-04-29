@@ -17,13 +17,9 @@ use nicoSWD\Rule\AST\LogicalNode;
 use nicoSWD\Rule\AST\LogicalOperator;
 use nicoSWD\Rule\AST\StringNode;
 use nicoSWD\Rule\Parser\Parser;
-use nicoSWD\Rule\TokenStream\FunctionRegistry;
-use nicoSWD\Rule\TokenStream\MethodRegistry;
 use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\Token\GenericToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
-use nicoSWD\Rule\TokenStream\TokenIteratorFactory;
-use nicoSWD\Rule\TokenStream\VariableRegistry;
 use nicoSWD\Rule\Tokenizer\TokenizerInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -32,22 +28,13 @@ final class ParserTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private TokenIteratorFactory $tokenIteratorFactory;
     private TokenizerInterface|m\Mock $tokenizer;
     private Parser $parser;
 
     protected function setUp(): void
     {
-        $variableRegistry = m::mock(VariableRegistry::class);
-        $functionRegistry = m::mock(FunctionRegistry::class);
-        $methodRegistry = m::mock(MethodRegistry::class);
-        $this->tokenIteratorFactory = new TokenIteratorFactory(
-            $variableRegistry,
-            $functionRegistry,
-            $methodRegistry,
-        );
         $this->tokenizer = m::mock(TokenizerInterface::class);
-        $this->parser = new Parser($this->tokenIteratorFactory, $this->tokenizer);
+        $this->parser = new Parser($this->tokenizer);
     }
 
     #[Test]

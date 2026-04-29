@@ -17,7 +17,6 @@ use nicoSWD\Rule\TokenStream\FunctionRegistry;
 use nicoSWD\Rule\TokenStream\MethodRegistry;
 use nicoSWD\Rule\TokenStream\ObjectMethodCallerFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
-use nicoSWD\Rule\TokenStream\TokenIteratorFactory;
 use nicoSWD\Rule\TokenStream\VariableRegistry;
 
 /**
@@ -107,7 +106,6 @@ final class RuleEngineBuilder
         $methodRegistry = new MethodRegistry($grammar, $tokenFactory, new ObjectMethodCallerFactory());
 
         $parser = new Parser(
-            new TokenIteratorFactory(),
             $tokenizer,
         );
 

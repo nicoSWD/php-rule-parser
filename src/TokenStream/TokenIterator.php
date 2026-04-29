@@ -10,7 +10,7 @@ namespace nicoSWD\Rule\TokenStream;
 use Iterator;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
-readonly class TokenIterator implements Iterator
+class TokenIterator implements Iterator
 {
     public function __construct(
         private Iterator $stack,
@@ -29,16 +29,7 @@ readonly class TokenIterator implements Iterator
 
     public function current(): BaseToken
     {
-        return $this->getCurrentToken();
-    }
-
-    /**
-     * Returns the raw token without creating a node.
-     * Used by the AST parser to inspect tokens without resolving them.
-     */
-    public function peekRaw(): BaseToken
-    {
-        return $this->getCurrentToken();
+        return $this->stack->current();
     }
 
     public function key(): int
@@ -49,10 +40,5 @@ readonly class TokenIterator implements Iterator
     public function rewind(): void
     {
         $this->stack->rewind();
-    }
-
-    private function getCurrentToken(): BaseToken
-    {
-        return $this->stack->current();
     }
 }
