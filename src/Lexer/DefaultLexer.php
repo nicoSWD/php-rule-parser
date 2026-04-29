@@ -5,7 +5,7 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
-namespace nicoSWD\Rule\Tokenizer;
+namespace nicoSWD\Rule\Lexer;
 
 use Iterator;
 use nicoSWD\Rule\Grammar\Grammar;
@@ -27,7 +27,7 @@ use nicoSWD\Rule\TokenStream\Token\Type\Value;
  * The Lexer is stateless and reentrant: all mutable scanning state is held
  * in a LexerContext object that is local to each tokenize() call.
  */
-final class Lexer extends Tokenizer
+final class DefaultLexer extends Lexer
 {
     public function __construct(
         public Grammar $grammar,

@@ -11,8 +11,8 @@ use nicoSWD\Rule\AST\AstEvaluator;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rule\Parser\Parser;
-use nicoSWD\Rule\Tokenizer\Lexer;
-use nicoSWD\Rule\Tokenizer\Tokenizer;
+use nicoSWD\Rule\Lexer\DefaultLexer;
+use nicoSWD\Rule\Lexer\Lexer;
 use nicoSWD\Rule\TokenStream\FunctionRegistry;
 use nicoSWD\Rule\TokenStream\MethodRegistry;
 use nicoSWD\Rule\TokenStream\ObjectMethodCallerFactory;
@@ -34,7 +34,7 @@ use nicoSWD\Rule\TokenStream\VariableRegistry;
 final class RuleEngineBuilder
 {
     private ?Grammar $grammar = null;
-    private ?Tokenizer $tokenizer = null;
+    private ?Lexer $tokenizer = null;
     private array $defaultVariables = [];
 
     /**
@@ -65,10 +65,10 @@ final class RuleEngineBuilder
      *
      * The tokenizer converts a rule string into a stream of tokens.
      *
-     * @param Tokenizer $tokenizer
+     * @param Lexer $tokenizer
      * @return $this
      */
-    public function withTokenizer(Tokenizer $tokenizer): self
+    public function withTokenizer(Lexer $tokenizer): self
     {
         $this->tokenizer = $tokenizer;
 
@@ -99,7 +99,7 @@ final class RuleEngineBuilder
     {
         $tokenFactory = new TokenFactory();
         $grammar = $this->grammar ?? new JavaScript();
-        $tokenizer = $this->tokenizer ?? new Lexer($grammar, $tokenFactory);
+        $tokenizer = $this->tokenizer ?? new DefaultLexer($grammar, $tokenFactory);
 
         $variableRegistry = new VariableRegistry([], $tokenFactory);
         $functionRegistry = new FunctionRegistry($grammar);

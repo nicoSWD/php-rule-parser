@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\Highlighter;
 
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
-use nicoSWD\Rule\Tokenizer\Lexer;
+use nicoSWD\Rule\Lexer\DefaultLexer;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
 
@@ -64,7 +64,7 @@ final class Highlighter
         $styles = $this->getResolvedStyles();
         $grammar = $this->grammar ?? new JavaScript();
         $tokenFactory = new TokenFactory();
-        $lexer = new Lexer($grammar, $tokenFactory);
+        $lexer = new DefaultLexer($grammar, $tokenFactory);
         $tokens = $lexer->tokenize($rule);
         $output = '';
 

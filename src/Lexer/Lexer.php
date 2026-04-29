@@ -5,13 +5,13 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
-namespace nicoSWD\Rule\Tokenizer;
+namespace nicoSWD\Rule\Lexer;
 
 use Iterator;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
-abstract class Tokenizer
+abstract class Lexer
 {
     protected Grammar $grammar;
 

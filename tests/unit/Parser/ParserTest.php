@@ -20,7 +20,7 @@ use nicoSWD\Rule\Parser\Parser;
 use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\Token\GenericToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
-use nicoSWD\Rule\Tokenizer\Tokenizer;
+use nicoSWD\Rule\Lexer\Lexer;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -28,12 +28,12 @@ final class ParserTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private Tokenizer|m\Mock $tokenizer;
+    private Lexer|m\Mock $tokenizer;
     private Parser $parser;
 
     protected function setUp(): void
     {
-        $this->tokenizer = m::mock(Tokenizer::class);
+        $this->tokenizer = m::mock(Lexer::class);
         $this->parser = new Parser($this->tokenizer);
     }
 

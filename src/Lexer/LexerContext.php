@@ -5,7 +5,7 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
-namespace nicoSWD\Rule\Tokenizer;
+namespace nicoSWD\Rule\Lexer;
 
 /**
  * Internal value object that holds the mutable scanning state for the Lexer.

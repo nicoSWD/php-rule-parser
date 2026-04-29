@@ -5,10 +5,10 @@
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
-namespace nicoSWD\Rule\tests\unit\Tokenizer;
+namespace nicoSWD\Rule\tests\unit\Lexer;
 
 use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
-use nicoSWD\Rule\Tokenizer\Lexer;
+use nicoSWD\Rule\Lexer\DefaultLexer;
 use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
@@ -63,7 +63,7 @@ final class LexerTest extends TestCase
         $rule = '5 not 
                 in [4, 6, 7]';
 
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $lexerTokens = iterator_to_array($lexer->tokenize($rule));
 
         // Should produce 13 tokens
@@ -163,7 +163,7 @@ final class LexerTest extends TestCase
     {
         $rule = '"foo" . toUpperCase () === "FOO"';
 
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         // The old tokenizer includes ". toUpperCase (" as a single token.
@@ -320,7 +320,7 @@ final class LexerTest extends TestCase
         // The lexer correctly handles escaped quotes as a single string token.
         $rule = 'foo == "hello \\"world\\""';
 
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $lexerTokens = iterator_to_array($lexer->tokenize($rule));
 
         // Lexer correctly produces 5 tokens
@@ -361,7 +361,7 @@ final class LexerTest extends TestCase
         // The lexer correctly handles escaped single quotes as a single string token.
         $rule = "foo == 'hello \\'world\\''";
 
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $lexerTokens = iterator_to_array($lexer->tokenize($rule));
 
         // Lexer correctly produces 5 tokens
@@ -394,7 +394,7 @@ final class LexerTest extends TestCase
     {
         $rule = '"hello\nworld"';
 
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
@@ -407,7 +407,7 @@ final class LexerTest extends TestCase
     {
         $rule = '"tab\there"';
 
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
@@ -420,7 +420,7 @@ final class LexerTest extends TestCase
     {
         $rule = '"back\\\\slash"';
 
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
@@ -433,7 +433,7 @@ final class LexerTest extends TestCase
     {
         $rule = '"hello \\"world\\""';
 
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
@@ -446,7 +446,7 @@ final class LexerTest extends TestCase
     {
         $rule = "'hello \\'world\\''";
 
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
@@ -459,7 +459,7 @@ final class LexerTest extends TestCase
     {
         $rule = '"line1\rline2"';
 
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
@@ -472,7 +472,7 @@ final class LexerTest extends TestCase
     {
         $rule = '"null\0byte"';
 
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
@@ -485,7 +485,7 @@ final class LexerTest extends TestCase
     {
         $rule = "\"line1\\nline2\\tindented\\\\end\"";
 
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
@@ -498,7 +498,7 @@ final class LexerTest extends TestCase
     {
         $rule = '"foo\\xbar"';
 
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
@@ -508,7 +508,7 @@ final class LexerTest extends TestCase
 
     private function assertLexerMatchesTokenizer(string $rule): void
     {
-        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         // Verify the lexer produces tokens without errors
