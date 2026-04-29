@@ -59,4 +59,25 @@ final class ScalarTest extends AbstractTestBase
 
         $this->assertTrue($this->evaluate($rule, ['foo' => -1]));
     }
+
+    #[Test]
+    public function stringEscapeSequences(): void
+    {
+        // Newline escape
+        $this->assertTrue($this->evaluate('foo == "\n"', ['foo' => "\n"]));
+        $this->assertFalse($this->evaluate('foo == "\n"', ['foo' => '\n']));
+
+        // Tab escape
+        $this->assertTrue($this->evaluate('foo == "\t"', ['foo' => "\t"]));
+        $this->assertFalse($this->evaluate('foo == "\t"', ['foo' => '\t']));
+
+        // Backslash escape
+        $this->assertTrue($this->evaluate('foo == "\\\\"', ['foo' => "\\"]));
+
+        // Carriage return escape
+        $this->assertTrue($this->evaluate('foo == "\r"', ['foo' => "\r"]));
+
+        // Multiple escape sequences
+        $this->assertTrue($this->evaluate('foo == "line1\nline2\tend"', ['foo' => "line1\nline2\tend"]));
+    }
 }

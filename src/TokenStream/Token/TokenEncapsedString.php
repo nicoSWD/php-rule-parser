@@ -11,6 +11,44 @@ final class TokenEncapsedString extends TokenString
 {
     public function getValue(): string
     {
-        return substr(parent::getValue(), 1, -1);
+        $value = substr(parent::getValue(), 1, -1);
+
+        return $this->unescape($value);
+    }
+
+    /**
+     * Unescape common escape sequences in the string content.
+     *
+     * Handles the same sequences as JavaScript string literals:
+     * \n, \r, \t, \\, \", \', \$, \0
+     */
+    private function unescape(string $value): string
+    {
+        $result = '';
+        $length = strlen($value);
+
+        for ($i = 0; $i < $length; $i++) {
+            if ($value[$i] === '\\' && $i + 1 < $length) {
+                $next = $value[$i + 1];
+
+                $result .= match ($next) {
+                    'n' => "\n",
+                    'r' => "\r",
+                    't' => "\t",
+                    '\\' => '\\',
+                    '"' => '"',
+                    "'" => "'",
+                    '$' => '$',
+                    '0' => "\0",
+                    default => '\\' . $next,
+                };
+
+                $i++; // skip the escaped character
+            } else {
+                $result .= $value[$i];
+            }
+        }
+
+        return $result;
     }
 }

@@ -388,6 +388,123 @@ final class LexerTest extends TestCase
         $this->assertSame(7, $lexerTokens[4]->getOffset());
     }
 
+    #[Test]
+    public function itUnescapesNewlineInDoubleQuotedString(): void
+    {
+        $rule = '"hello\nworld"';
+
+        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $tokens = iterator_to_array($lexer->tokenize($rule));
+
+        $this->assertCount(1, $tokens);
+        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame("hello\nworld", $tokens[0]->getValue());
+    }
+
+    #[Test]
+    public function itUnescapesTabInDoubleQuotedString(): void
+    {
+        $rule = '"tab\there"';
+
+        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $tokens = iterator_to_array($lexer->tokenize($rule));
+
+        $this->assertCount(1, $tokens);
+        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame("tab\there", $tokens[0]->getValue());
+    }
+
+    #[Test]
+    public function itUnescapesBackslashInDoubleQuotedString(): void
+    {
+        $rule = '"back\\\\slash"';
+
+        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $tokens = iterator_to_array($lexer->tokenize($rule));
+
+        $this->assertCount(1, $tokens);
+        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame("back\\slash", $tokens[0]->getValue());
+    }
+
+    #[Test]
+    public function itUnescapesDoubleQuoteInDoubleQuotedString(): void
+    {
+        $rule = '"hello \\"world\\""';
+
+        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $tokens = iterator_to_array($lexer->tokenize($rule));
+
+        $this->assertCount(1, $tokens);
+        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame('hello "world"', $tokens[0]->getValue());
+    }
+
+    #[Test]
+    public function itUnescapesSingleQuoteInSingleQuotedString(): void
+    {
+        $rule = "'hello \\'world\\''";
+
+        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $tokens = iterator_to_array($lexer->tokenize($rule));
+
+        $this->assertCount(1, $tokens);
+        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame("hello 'world'", $tokens[0]->getValue());
+    }
+
+    #[Test]
+    public function itUnescapesCarriageReturnInDoubleQuotedString(): void
+    {
+        $rule = '"line1\rline2"';
+
+        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $tokens = iterator_to_array($lexer->tokenize($rule));
+
+        $this->assertCount(1, $tokens);
+        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame("line1\rline2", $tokens[0]->getValue());
+    }
+
+    #[Test]
+    public function itUnescapesNullByteInDoubleQuotedString(): void
+    {
+        $rule = '"null\0byte"';
+
+        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $tokens = iterator_to_array($lexer->tokenize($rule));
+
+        $this->assertCount(1, $tokens);
+        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame("null\0byte", $tokens[0]->getValue());
+    }
+
+    #[Test]
+    public function itUnescapesMultipleEscapeSequencesInString(): void
+    {
+        $rule = "\"line1\\nline2\\tindented\\\\end\"";
+
+        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $tokens = iterator_to_array($lexer->tokenize($rule));
+
+        $this->assertCount(1, $tokens);
+        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame("line1\nline2\tindented\\end", $tokens[0]->getValue());
+    }
+
+    #[Test]
+    public function itPreservesUnknownEscapeSequences(): void
+    {
+        $rule = '"foo\\xbar"';
+
+        $lexer = new Lexer(new JavaScript(), new TokenFactory());
+        $tokens = iterator_to_array($lexer->tokenize($rule));
+
+        $this->assertCount(1, $tokens);
+        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame('foo\\xbar', $tokens[0]->getValue());
+    }
+
     private function assertLexerMatchesTokenizer(string $rule): void
     {
         $lexer = new Lexer(new JavaScript(), new TokenFactory());
