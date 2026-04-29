@@ -14,11 +14,6 @@ final class IntegerNode extends ValueNode
     ) {
     }
 
-    public function getNativeValue(): int
-    {
-        return $this->value;
-    }
-
     public function evaluate(EvaluationContext $context): int
     {
         return $this->value;

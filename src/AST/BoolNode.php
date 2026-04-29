@@ -14,11 +14,6 @@ final class BoolNode extends ValueNode
     ) {
     }
 
-    public function getNativeValue(): bool
-    {
-        return $this->value;
-    }
-
     public function evaluate(EvaluationContext $context): bool
     {
         return $this->value;

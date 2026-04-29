@@ -9,5 +9,4 @@ namespace nicoSWD\Rule\AST;
 
 abstract class ValueNode extends Node
 {
-    abstract public function getNativeValue(): mixed;
 }

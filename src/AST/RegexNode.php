@@ -20,11 +20,6 @@ final class RegexNode extends ValueNode
         $this->originalToken = $originalToken;
     }
 
-    public function getNativeValue(): string
-    {
-        return $this->pattern;
-    }
-
     public function evaluate(EvaluationContext $context): string
     {
         return $this->pattern;

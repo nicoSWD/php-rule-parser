@@ -14,11 +14,6 @@ final class StringNode extends ValueNode
     ) {
     }
 
-    public function getNativeValue(): string
-    {
-        return $this->value;
-    }
-
     public function evaluate(EvaluationContext $context): string
     {
         return $this->value;

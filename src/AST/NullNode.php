@@ -9,11 +9,6 @@ namespace nicoSWD\Rule\AST;
 
 final class NullNode extends ValueNode
 {
-    public function getNativeValue(): null
-    {
-        return null;
-    }
-
     public function evaluate(EvaluationContext $context): null
     {
         return null;

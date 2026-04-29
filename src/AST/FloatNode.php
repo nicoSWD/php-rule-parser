@@ -14,11 +14,6 @@ final class FloatNode extends ValueNode
     ) {
     }
 
-    public function getNativeValue(): float
-    {
-        return $this->value;
-    }
-
     public function evaluate(EvaluationContext $context): float
     {
         return $this->value;
