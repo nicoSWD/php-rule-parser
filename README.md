@@ -73,6 +73,25 @@ $rule = new Rule('(2 + 3) * 4 == 20', $variables);
 var_dump($rule->isTrue()); // bool(true) - parentheses override precedence
 ```
 
+Get the actual computed result of an expression (not just true/false)
+```php
+$rule = new Rule('5 * 3');
+var_dump($rule->result()); // int(15)
+
+$rule = new Rule('"hello " + "world"');
+var_dump($rule->result()); // string("hello world")
+
+$rule = new Rule('parseInt("42")');
+var_dump($rule->result()); // int(42)
+
+$rule = new Rule('price * quantity', ['price' => 100, 'quantity' => 3]);
+var_dump($rule->result()); // int(300)
+
+// Comparison and logical expressions still return bool
+$rule = new Rule('foo > 5', ['foo' => 10]);
+var_dump($rule->result()); // bool(true)
+```
+
 Call methods on objects from within rules
 ```php
 class User
@@ -233,9 +252,8 @@ Pull requests are very welcome! If they include tests, even better. This project
 ## To Do
 
 - Support for object properties (foo.length)
-- Support for returning actual results, other than true or false
 - Support for array / string dereferencing: "foo"[1]
-- ~~Do math (addition, subtraction, multiplication, division, modulo)~~
+- ~~Support for returning actual results, other than true or false~~
 - ~~Don't force boolean comparison for tokens that are already booleans. `my_func() && 2 > 1` should work~~
 - ~~Allow string concatenating with "+"~~
 - ~~Duplicate regex modifiers should throw an error~~

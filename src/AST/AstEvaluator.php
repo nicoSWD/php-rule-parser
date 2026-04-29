@@ -29,14 +29,28 @@ final readonly class AstEvaluator
      */
     public function evaluate(Node $node): bool
     {
+        return (bool) $this->resolve($node);
+    }
+
+    /**
+     * Resolve a node to its actual computed value, without casting to bool.
+     *
+     * @throws ParserException
+     */
+    public function resolve(Node $node): mixed
+    {
         return match ($node::class) {
             LogicalNode::class => $this->evaluateLogical($node),
             ComparisonNode::class => $this->evaluateComparison($node),
             AdditionNode::class, SubtractionNode::class, MultiplicationNode::class,
-            DivisionNode::class, ModuloNode::class => (bool) $this->resolveValue($node),
+            DivisionNode::class, ModuloNode::class, MethodCallNode::class, FunctionCallNode::class => $this->resolveValue($node),
             BoolNode::class => $node->value,
-            VariableNode::class => $this->evaluateVariableAsBool($node),
-            MethodCallNode::class, FunctionCallNode::class => (bool) $this->resolveValue($node),
+            NullNode::class => null,
+            IntegerNode::class => $node->value,
+            FloatNode::class => $node->value,
+            StringNode::class => $node->value,
+            ArrayNode::class => $this->resolveArray($node),
+            VariableNode::class => $this->resolveValue($node),
             default => throw new \RuntimeException('Unexpected root node type: ' . $node::class),
         };
     }

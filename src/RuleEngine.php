@@ -92,7 +92,7 @@ final readonly class RuleEngine
      *
      * @param string $rule The rule expression to evaluate
      * @param array $variables Optional variables to use (merged with defaults)
-     * @return bool*
+     * @return bool
      * @throws ParserException
      */
     public function evaluate(string $rule, array $variables = []): bool
@@ -100,6 +100,24 @@ final readonly class RuleEngine
         $ast = $this->parse($rule, $variables);
 
         return $this->astEvaluator->evaluate($ast);
+    }
+
+    /**
+     * Evaluate a rule string and return the actual computed result.
+     *
+     * For pure value expressions (e.g. "5 * 3"), this returns the computed value.
+     * For comparison/logical expressions (e.g. "foo > 5"), this returns a bool.
+     *
+     * @param string $rule The rule expression to evaluate
+     * @param array $variables Optional variables to use (merged with defaults)
+     * @return mixed
+     * @throws ParserException
+     */
+    public function result(string $rule, array $variables = []): mixed
+    {
+        $ast = $this->parse($rule, $variables);
+
+        return $this->astEvaluator->resolve($ast);
     }
 
     /**

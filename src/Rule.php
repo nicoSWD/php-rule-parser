@@ -72,6 +72,24 @@ class Rule
     }
 
     /**
+     * Evaluate the rule and return the actual computed result.
+     *
+     * For pure value expressions (e.g. "5 * 3"), this returns the computed value.
+     * For comparison/logical expressions (e.g. "foo > 5"), this returns a bool.
+     *
+     * @return mixed
+     * @throws ParserException
+     */
+    public function result(): mixed
+    {
+        if ($this->ast === null) {
+            $this->ast = $this->engine->parse($this->rule, $this->variables);
+        }
+
+        return $this->engine->result($this->rule, $this->variables);
+    }
+
+    /**
      * Tells whether a rule is valid (as in "can be parsed and evaluated without error") or not.
      */
     public function isValid(): bool
