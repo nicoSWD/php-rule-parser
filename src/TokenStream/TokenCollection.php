@@ -8,21 +8,20 @@
 namespace nicoSWD\Rule\TokenStream;
 
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use SplObjectStorage;
 
-final class TokenCollection extends SplObjectStorage
+final class TokenCollection extends \ArrayObject
 {
     public function current(): BaseToken
     {
         /** @var BaseToken $token */
-        $token = parent::current();
+        $token = $this->offsetGet($this->key());
 
         return $token;
     }
 
     public function add(BaseToken $token): void
     {
-        $this->offsetSet($token);
+        $this->append($token);
     }
 
     public function toArray(): array
