@@ -11,6 +11,7 @@ use ArrayIterator;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use nicoSWD\Rule\Grammar\CallableFunction;
+use nicoSWD\Rule\Grammar\CallableInterface;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedFunctionException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedMethodException;
@@ -19,6 +20,7 @@ use nicoSWD\Rule\TokenStream\FunctionRegistry;
 use nicoSWD\Rule\TokenStream\MethodRegistry;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFunction;
+use nicoSWD\Rule\TokenStream\Token\TokenInteger;
 use nicoSWD\Rule\TokenStream\Token\TokenMethod;
 use nicoSWD\Rule\TokenStream\Token\TokenString;
 use nicoSWD\Rule\TokenStream\Token\TokenVariable;
@@ -99,10 +101,13 @@ final class TokenIteratorTest extends TestCase
     #[Test]
     public function givenAFunctionNameWhenFoundItShouldACallableClosure()
     {
-        $this->functionRegistry->shouldReceive('get')->once()->with('foo')->andReturn(fn () => 42);
+        $callable = \Mockery::mock(CallableInterface::class);
+        $callable->shouldReceive('call')->once()->with()->andReturn(new TokenInteger(42));
+
+        $this->functionRegistry->shouldReceive('get')->once()->with('foo')->andReturn($callable);
 
         $function = $this->tokenIterator->getFunction('foo');
-        $this->assertSame(42, $function());
+        $this->assertSame(42, $function->call()->getValue());
     }
 
     #[Test]

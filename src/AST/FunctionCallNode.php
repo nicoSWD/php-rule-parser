@@ -28,12 +28,12 @@ final class FunctionCallNode extends Node
         $args = $this->resolveArguments($context);
 
         try {
-            $closure = $context->functionRegistry->get($this->name);
+            $function = $context->functionRegistry->get($this->name);
         } catch (UndefinedFunctionException) {
             throw ParserException::undefinedFunction($this->name, $this->offset);
         }
 
-        return $closure(...$args)->getValue();
+        return $function->call(...$args)->getValue();
     }
 
     /**

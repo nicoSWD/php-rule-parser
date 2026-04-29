@@ -7,17 +7,18 @@
  */
 namespace nicoSWD\Rule\TokenStream;
 
-use Closure;
 use InvalidArgumentException;
 use nicoSWD\Rule\Grammar\CallableInterface;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedFunctionException;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 class FunctionRegistry
 {
-    /** @var array<string, Closure> */
+    /** @var array<string, class-string> */
     private array $functions;
+
+    /** @var array<string, CallableInterface> */
+    private array $instances = [];
 
     public function __construct(
         private readonly Grammar $grammar,
@@ -27,38 +28,37 @@ class FunctionRegistry
     }
 
     /** @throws UndefinedFunctionException */
-    public function get(string $functionName): Closure
+    public function get(string $functionName): CallableInterface
     {
         if (!isset($this->functions[$functionName])) {
             throw new UndefinedFunctionException($functionName);
         }
 
-        return $this->functions[$functionName];
+        return $this->instances[$functionName] ??= $this->createInstance($functionName);
+    }
+
+    private function createInstance(string $functionName): CallableInterface
+    {
+        $className = $this->functions[$functionName];
+        $function = new $className();
+
+        if (!$function instanceof CallableInterface) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    '%s must be an instance of %s',
+                    $className,
+                    CallableInterface::class
+                )
+            );
+        }
+
+        return $function;
     }
 
     private function registerFunctions(): void
     {
         foreach ($this->grammar->getInternalFunctions() as $internalCallable) {
-            $this->registerFunctionClass($internalCallable->name, $internalCallable->class);
+            $this->functions[$internalCallable->name] = $internalCallable->class;
         }
-    }
-
-    private function registerFunctionClass(string $functionName, string $className): void
-    {
-        $this->functions[$functionName] = function (?BaseToken ...$args) use ($className) {
-            $function = new $className();
-
-            if (!$function instanceof CallableInterface) {
-                throw new InvalidArgumentException(
-                    sprintf(
-                        '%s must be an instance of %s',
-                        $className,
-                        CallableInterface::class
-                    )
-                );
-            }
-
-            return $function->call(...$args);
-        };
     }
 }

@@ -7,7 +7,6 @@
  */
 namespace nicoSWD\Rule\TokenStream;
 
-use Closure;
 use Iterator;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Grammar\CallableInterface;
@@ -79,7 +78,7 @@ readonly class TokenIterator implements Iterator
     }
 
     /** @throws ParserException */
-    public function getFunction(string $functionName): Closure
+    public function getFunction(string $functionName): CallableInterface
     {
         try {
             return $this->functionRegistry->get($functionName);
