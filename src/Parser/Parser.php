@@ -7,6 +7,7 @@
  */
 namespace nicoSWD\Rule\Parser;
 
+use nicoSWD\Rule\AST\AdditionNode;
 use nicoSWD\Rule\AST\ArrayNode;
 use nicoSWD\Rule\AST\BoolNode;
 use nicoSWD\Rule\AST\ComparisonNode;
@@ -46,6 +47,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenNull;
 use nicoSWD\Rule\TokenStream\Token\TokenOpeningArray;
 use nicoSWD\Rule\TokenStream\Token\TokenOpeningParenthesis;
 use nicoSWD\Rule\TokenStream\Token\TokenOr;
+use nicoSWD\Rule\TokenStream\Token\TokenPlus;
 use nicoSWD\Rule\TokenStream\Token\TokenRegex;
 use nicoSWD\Rule\TokenStream\Token\TokenSmaller;
 use nicoSWD\Rule\TokenStream\Token\TokenSmallerEqual;
@@ -61,7 +63,8 @@ use nicoSWD\Rule\TokenStream\TokenStream;
  *   expression     -> logical_or
  *   logical_or     -> logical_and ( "||" logical_and )*
  *   logical_and    -> comparison ( "&&" comparison )*
- *   comparison     -> primary ( comparison_op primary )?
+ *   comparison     -> additive ( comparison_op additive )?
+ *   additive       -> primary ( "+" primary )*
  *   primary        -> "(" expression ")"
  *                   | value
  *   value          -> variable method_call*
@@ -133,7 +136,7 @@ final readonly class Parser
     /** @throws Exception\ParserException */
     private function parseComparison(TokenIterator $tokens): Node
     {
-        $left = $this->parsePrimary($tokens);
+        $left = $this->parseAdditive($tokens);
 
         $operatorToken = $this->peekToken($tokens);
 
@@ -142,10 +145,24 @@ final readonly class Parser
 
             if ($operator !== null) {
                 $this->consumeToken($tokens); // consume operator
-                $right = $this->parsePrimary($tokens);
+                $right = $this->parseAdditive($tokens);
 
                 return new ComparisonNode($left, $right, $operator);
             }
+        }
+
+        return $left;
+    }
+
+    /** @throws Exception\ParserException */
+    private function parseAdditive(TokenIterator $tokens): Node
+    {
+        $left = $this->parsePrimary($tokens);
+
+        while ($this->peekToken($tokens) instanceof TokenPlus) {
+            $this->consumeToken($tokens); // consume +
+            $right = $this->parsePrimary($tokens);
+            $left = new AdditionNode($left, $right);
         }
 
         return $left;

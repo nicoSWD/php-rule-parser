@@ -56,6 +56,7 @@ final class Lexer extends TokenizerInterface
                 $ch === '=' && $this->peek() === '=' => $this->emitOperator(Token::EQUAL, '==', 2),
                 $ch === '<' && $this->peek() === '=' => $this->emitOperator(Token::SMALLER_EQUAL, '<=', 2),
                 $ch === '>' && $this->peek() === '=' => $this->emitOperator(Token::GREATER_EQUAL, '>=', 2),
+                $ch === '+' => $this->emitOperator(Token::PLUS, '+', 1),
                 $ch === '<' && $this->peek() === '>' => $this->emitOperator(Token::NOT_EQUAL, '<>', 2),
                 $ch === '<' => $this->emitOperator(Token::SMALLER, '<', 1),
                 $ch === '>' => $this->emitOperator(Token::GREATER, '>', 1),

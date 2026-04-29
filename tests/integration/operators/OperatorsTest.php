@@ -86,4 +86,64 @@ final class OperatorsTest extends AbstractTestBase
         $this->assertFalse($this->evaluate('foo != 3 && 3 != foo', ['foo' => 3]));
         $this->assertTrue($this->evaluate('foo != 3 && 3 != foo', ['foo' => -3]));
     }
+
+    #[Test]
+    public function stringConcatenationWithPlus(): void
+    {
+        $this->assertTrue($this->evaluate('"foo" + "bar" == "foobar"'));
+        $this->assertTrue($this->evaluate('"hello " + "world" == "hello world"'));
+        $this->assertTrue($this->evaluate('"foo" + "bar" + "baz" == "foobarbaz"'));
+    }
+
+    #[Test]
+    public function stringConcatenationWithVariables(): void
+    {
+        $this->assertTrue($this->evaluate('foo + "bar" == "foobar"', ['foo' => 'foo']));
+        $this->assertTrue($this->evaluate('"foo" + bar == "foobar"', ['bar' => 'bar']));
+        $this->assertTrue($this->evaluate('foo + bar == "foobar"', ['foo' => 'foo', 'bar' => 'bar']));
+    }
+
+    #[Test]
+    public function stringConcatenationInComparison(): void
+    {
+        $this->assertTrue($this->evaluate('"hello " + "world" == "hello world"'));
+        $this->assertFalse($this->evaluate('"hello " + "world" == "goodbye"'));
+    }
+
+    #[Test]
+    public function stringConcatenationWithMethodCalls(): void
+    {
+        $this->assertTrue($this->evaluate('"foo".toUpperCase() + "bar" == "FOObar"'));
+        $this->assertTrue($this->evaluate('"foo" + "bar".toUpperCase() == "fooBAR"'));
+    }
+
+    #[Test]
+    public function numericAdditionWithPlus(): void
+    {
+        $this->assertTrue($this->evaluate('1 + 2 == 3'));
+        $this->assertTrue($this->evaluate('10 + 20 == 30'));
+        $this->assertTrue($this->evaluate('1 + 2 + 3 == 6'));
+    }
+
+    #[Test]
+    public function numericAdditionWithVariables(): void
+    {
+        $this->assertTrue($this->evaluate('foo + 2 == 5', ['foo' => 3]));
+        $this->assertTrue($this->evaluate('foo + bar == 7', ['foo' => 3, 'bar' => 4]));
+    }
+
+    #[Test]
+    public function numericAdditionInComparison(): void
+    {
+        $this->assertTrue($this->evaluate('1 + 2 > 2'));
+        $this->assertTrue($this->evaluate('1 + 2 < 4'));
+        $this->assertTrue($this->evaluate('1 + 2 == 3'));
+    }
+
+    #[Test]
+    public function concatenationWithLogicalOperators(): void
+    {
+        $this->assertTrue($this->evaluate('"foo" + "bar" == "foobar" && 1 + 2 == 3'));
+        $this->assertTrue($this->evaluate('"foo" + "bar" == "foobar" || 1 + 2 == 99'));
+    }
 }

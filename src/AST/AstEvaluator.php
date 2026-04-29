@@ -32,6 +32,7 @@ final readonly class AstEvaluator
         return match ($node::class) {
             LogicalNode::class => $this->evaluateLogical($node),
             ComparisonNode::class => $this->evaluateComparison($node),
+            AdditionNode::class => (bool) $this->resolveValue($node),
             BoolNode::class => $node->value,
             VariableNode::class => $this->evaluateVariableAsBool($node),
             MethodCallNode::class, FunctionCallNode::class => (bool) $this->resolveValue($node),
@@ -111,8 +112,24 @@ final readonly class AstEvaluator
             ArrayNode::class => $this->resolveArray($node),
             FunctionCallNode::class => $this->resolveFunction($node),
             MethodCallNode::class => $this->resolveMethod($node),
+            AdditionNode::class => $this->resolveAddition($node),
             default => throw new \RuntimeException('Unexpected node type: ' . $node::class),
         };
+    }
+
+    /**
+     * @throws ParserException
+     */
+    private function resolveAddition(AdditionNode $node): mixed
+    {
+        $left = $this->resolveValue($node->left);
+        $right = $this->resolveValue($node->right);
+
+        if (is_string($left) || is_string($right)) {
+            return (string) $left . (string) $right;
+        }
+
+        return $left + $right;
     }
 
     /**

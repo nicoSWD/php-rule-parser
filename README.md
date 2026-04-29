@@ -213,10 +213,10 @@ Pull requests are very welcome! If they include tests, even better. This project
 - Support for object properties (foo.length)
 - Support for returning actual results, other than true or false
 - Support for array / string dereferencing: "foo"[1]
-- ~~Don't force boolean comparison for tokens that are already booleans. `my_func() && 2 > 1` should work~~
 - Add "typeof" construct
 - Do math (?)
-- Allow string concatenating with "+"
+- ~~Don't force boolean comparison for tokens that are already booleans. `my_func() && 2 > 1` should work~~
+- ~~Allow string concatenating with "+"~~
 - ~~Duplicate regex modifiers should throw an error~~
 - ~~Add support for function calls~~
 - ~~Support for regular expressions~~

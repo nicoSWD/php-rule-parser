@@ -29,6 +29,7 @@ enum Token: string
     case SMALLER_EQUAL = 'SmallerEqual';
     case GREATER_EQUAL = 'GreaterEqual';
     case SMALLER = 'Smaller';
+    case PLUS = 'Plus';
     case GREATER = 'Greater';
     case OPENING_PARENTHESIS = 'OpeningParentheses';
     case CLOSING_PARENTHESIS = 'ClosingParentheses';

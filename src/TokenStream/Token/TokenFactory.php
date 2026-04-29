@@ -51,6 +51,7 @@ class TokenFactory
             Token::ENCAPSED_STRING => new TokenEncapsedString(...$args),
             Token::SMALLER_EQUAL => new TokenSmallerEqual(...$args),
             Token::GREATER_EQUAL => new TokenGreaterEqual(...$args),
+            Token::PLUS => new TokenPlus(...$args),
             Token::SMALLER => new TokenSmaller(...$args),
             Token::GREATER => new TokenGreater(...$args),
             Token::OPENING_PARENTHESIS => new TokenOpeningParenthesis(...$args),
