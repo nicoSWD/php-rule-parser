@@ -8,17 +8,12 @@
 namespace nicoSWD\Rule\TokenStream;
 
 use Iterator;
-use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\Grammar\CallableInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
 readonly class TokenIterator implements Iterator
 {
     public function __construct(
         private Iterator $stack,
-        private VariableRegistry $variableRegistry,
-        private FunctionRegistry $functionRegistry,
-        private MethodRegistry $methodRegistry,
     ) {
     }
 
@@ -56,46 +51,8 @@ readonly class TokenIterator implements Iterator
         $this->stack->rewind();
     }
 
-    /** @return Iterator<BaseToken> */
-    public function getStack(): Iterator
-    {
-        return $this->stack;
-    }
-
     private function getCurrentToken(): BaseToken
     {
         return $this->stack->current();
-    }
-
-    /** @throws ParserException */
-    public function getVariable(string $variableName): BaseToken
-    {
-        try {
-            return $this->variableRegistry->get($variableName);
-        } catch (Exception\UndefinedVariableException) {
-            throw ParserException::undefinedVariable($variableName, $this->getCurrentToken()->getOffset());
-        }
-    }
-
-    /** @throws ParserException */
-    public function getFunction(string $functionName): CallableInterface
-    {
-        try {
-            return $this->functionRegistry->get($functionName);
-        } catch (Exception\UndefinedFunctionException) {
-            throw ParserException::undefinedFunction($functionName, $this->getCurrentToken()->getOffset());
-        }
-    }
-
-    /** @throws ParserException */
-    public function getMethod(string $methodName, BaseToken $token): CallableInterface
-    {
-        try {
-            return $this->methodRegistry->get($methodName, $token);
-        } catch (Exception\UndefinedMethodException) {
-            throw ParserException::undefinedMethod($methodName, $this->getCurrentToken()->getOffset());
-        } catch (Exception\ForbiddenMethodException) {
-            throw ParserException::forbiddenMethod($methodName, $this->getCurrentToken());
-        }
     }
 }

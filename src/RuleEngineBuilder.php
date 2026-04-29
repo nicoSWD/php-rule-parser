@@ -107,11 +107,7 @@ final class RuleEngineBuilder
         $methodRegistry = new MethodRegistry($grammar, $tokenFactory, new ObjectMethodCallerFactory());
 
         $parser = new Parser(
-            new TokenIteratorFactory(
-                $variableRegistry,
-                $functionRegistry,
-                $methodRegistry,
-            ),
+            new TokenIteratorFactory(),
             $tokenizer,
         );
 

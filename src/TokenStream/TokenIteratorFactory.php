@@ -11,15 +11,8 @@ use Iterator;
 
 final readonly class TokenIteratorFactory
 {
-    public function __construct(
-        private VariableRegistry $variableRegistry,
-        private FunctionRegistry $functionRegistry,
-        private MethodRegistry   $methodRegistry,
-    ) {
-    }
-
     public function create(Iterator $stack): TokenIterator
     {
-        return new TokenIterator($stack, $this->variableRegistry, $this->functionRegistry, $this->methodRegistry);
+        return new TokenIterator($stack);
     }
 }
