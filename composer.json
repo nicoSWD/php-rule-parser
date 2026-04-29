@@ -33,11 +33,13 @@
     }
   },
   "require": {
-    "php": ">=8.4"
+    "php": ">=8.5",
+    "ext-ctype": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^12.3",
-    "mockery/mockery": "^1.6"
+    "phpunit/phpunit": "^13.1",
+    "mockery/mockery": "^1.6",
+    "squizlabs/php_codesniffer": "^4.0"
   },
   "scripts": {
     "test": "vendor/bin/phpunit"

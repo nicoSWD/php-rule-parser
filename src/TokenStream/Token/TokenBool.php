@@ -1,26 +1,30 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\TokenStream\Token;
 
-use nicoSWD\Rule\TokenStream\Token\Type\Value;
-
-abstract class TokenBool extends BaseToken implements Value
+final class TokenBool extends GenericToken
 {
-    public static function fromBool(bool $bool): TokenBool
-    {
-        return match ($bool) {
-            true => new TokenBoolTrue(true),
-            false => new TokenBoolFalse(false),
-        };
+    public function __construct(
+        private readonly TokenKind $kind,
+        mixed $value,
+        int $offset = 0,
+    ) {
+        parent::__construct($kind, $value, $offset);
     }
 
-    public function getType(): TokenType
+    public static function fromBool(bool $bool): self
     {
-        return TokenType::VALUE;
+        return new self(
+            $bool ? TokenKind::BOOL_TRUE : TokenKind::BOOL_FALSE,
+            $bool,
+        );
     }
 }

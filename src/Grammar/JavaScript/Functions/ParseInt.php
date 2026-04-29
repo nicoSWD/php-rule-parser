@@ -1,27 +1,30 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\Grammar\JavaScript\Functions;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
-use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenInteger;
+use nicoSWD\Rule\Grammar\CallableInterface;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
-final class ParseInt extends CallableFunction implements CallableUserFunctionInterface
+final class ParseInt extends CallableFunction implements CallableInterface
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): GenericToken
     {
         $value = $this->parseParameter($parameters, numParam: 0);
 
-        if (!isset($value)) {
-            return new TokenInteger(NAN);
+        if ($value === null) {
+            return new GenericToken(TokenKind::FLOAT, NAN);
         }
 
-        return new TokenInteger((int) $value->getValue());
+        return new GenericToken(TokenKind::INTEGER, (int) $value);
     }
 }

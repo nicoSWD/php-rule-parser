@@ -1,68 +1,100 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule;
 
-use Exception;
-use nicoSWD\Rule\Evaluator\EvaluatorInterface;
+use nicoSWD\Rule\AST\Node;
+use nicoSWD\Rule\Parser\Exception\ParserException;
 
+/**
+ * Convenience class for evaluating a single rule expression.
+ *
+ * This class provides a simple, familiar API for evaluating rules.
+ * For more advanced use cases (multiple rules, custom configuration),
+ * use RuleEngine directly.
+ *
+ * Usage:
+ * ```php
+ * // Simple usage (creates a default RuleEngine internally)
+ * $rule = new Rule('foo > 5', ['foo' => 10]);
+ * $rule->isTrue();  // true
+ *
+ * // With a shared engine (more efficient for multiple rules)
+ * $engine = RuleEngine::builder()->withDefaultVariables(['foo' => 10])->build();
+ * $rule1 = new Rule('foo > 5', engine: $engine);
+ * $rule2 = new Rule('foo < 3', engine: $engine);
+ * ```
+ */
 class Rule
 {
-    private readonly Parser\Parser $parser;
-    private string $rule;
-    private string $parsedRule = '';
-    private string $error = '';
-    private static object $container;
+    private readonly RuleEngine $engine;
+    private readonly string $rule;
+    private readonly array $variables;
+    private ?Node $ast = null;
+    public string $error = '';
 
-    public function __construct(string $rule, array $variables = [])
-    {
-        if (!isset(self::$container)) {
-            self::$container = require __DIR__ . '/container.php';
-        }
-
-        $this->parser = self::$container->parser($variables);
+    public function __construct(
+        string $rule,
+        array $variables = [],
+        ?RuleEngine $engine = null,
+    ) {
+        $this->engine = $engine ?? RuleEngine::builder()->build();
         $this->rule = $rule;
+        $this->variables = $variables;
     }
 
-    /** @throws Parser\Exception\ParserException */
+    /**
+     * @throws ParserException
+     */
     public function isTrue(): bool
     {
-        /** @var EvaluatorInterface $evaluator */
-        $evaluator = self::$container->evaluator();
+        if ($this->ast === null) {
+            $this->ast = $this->engine->parse($this->rule, $this->variables);
+        }
 
-        return $evaluator->evaluate(
-            $this->parsedRule ?:
-            $this->parser->parse($this->rule)
-        );
+        return $this->engine->evaluateNode($this->ast);
     }
 
-    /** @throws Parser\Exception\ParserException */
+    /**
+     * @throws ParserException
+     */
     public function isFalse(): bool
     {
         return !$this->isTrue();
     }
 
     /**
-     * Tells whether a rule is valid (as in "can be parsed without error") or not.
+     * Evaluate the rule and return the actual computed result.
+     *
+     * For pure value expressions (e.g. "5 * 3"), this returns the computed value.
+     * For comparison/logical expressions (e.g. "foo > 5"), this returns a bool.
+     *
+     * @return mixed
+     * @throws ParserException
+     */
+    public function result(): mixed
+    {
+        if ($this->ast === null) {
+            $this->ast = $this->engine->parse($this->rule, $this->variables);
+        }
+
+        return $this->engine->resolveNode($this->ast);
+    }
+
+    /**
+     * Tells whether a rule is valid (as in "can be parsed and evaluated without error") or not.
      */
     public function isValid(): bool
     {
-        try {
-            $this->parsedRule = $this->parser->parse($this->rule);
-        } catch (Exception $e) {
-            $this->error = $e->getMessage();
-            return false;
-        }
+        $this->error = $this->engine->getError($this->rule, $this->variables);
 
-        return true;
-    }
-
-    public function getError(): string
-    {
-        return $this->error;
+        return $this->error === '';
     }
 }

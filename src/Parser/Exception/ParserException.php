@@ -1,14 +1,16 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\Parser\Exception;
 
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\Type\Operator;
 
 final class ParserException extends \Exception
 {
@@ -17,24 +19,14 @@ final class ParserException extends \Exception
         return new self(sprintf('Unexpected "%s" at position %d', $token->getValue(), $token->getOffset()));
     }
 
-    public static function unknownToken(BaseToken $token): self
+    public static function undefinedVariable(string $name, int $offset): self
     {
-        return new self(sprintf('Unknown token "%s" at position %d', $token->getValue(), $token->getOffset()));
+        return new self(sprintf('Undefined variable "%s" at position %d', $name, $offset));
     }
 
-    public static function incompleteExpression(BaseToken $token): self
+    public static function undefinedMethod(string $name, int $offset): self
     {
-        return new self(sprintf('Incomplete expression for token "%s"', $token->getValue()));
-    }
-
-    public static function undefinedVariable(string $name, BaseToken $token): self
-    {
-        return new self(sprintf('Undefined variable "%s" at position %d', $name, $token->getOffset()));
-    }
-
-    public static function undefinedMethod(string $name, BaseToken $token): self
-    {
-        return new self(sprintf('Undefined method "%s" at position %d', $name, $token->getOffset()));
+        return new self(sprintf('Undefined method "%s" at position %d', $name, $offset));
     }
 
     public static function forbiddenMethod(string $name, BaseToken $token): self
@@ -42,9 +34,9 @@ final class ParserException extends \Exception
         return new self(sprintf('Forbidden method "%s" at position %d', $name, $token->getOffset()));
     }
 
-    public static function undefinedFunction(string $name, BaseToken $token): self
+    public static function undefinedFunction(string $name, int $offset): self
     {
-        return new self(sprintf('%s is not defined at position %d', $name, $token->getOffset()));
+        return new self(sprintf('%s is not defined at position %d', $name, $offset));
     }
 
     public static function unexpectedComma(BaseToken $token): self
@@ -62,10 +54,20 @@ final class ParserException extends \Exception
         return new self(sprintf('Unsupported PHP type: "%s"', $type));
     }
 
-    public static function unknownOperator(BaseToken & Operator $token): self
+    public static function unknownOperator(BaseToken $token): self
     {
         return new self(
             sprintf('Unexpected operator %s at position %d', $token->getOriginalValue(), $token->getOffset())
         );
+    }
+
+    public static function expectedArray(string $type): self
+    {
+        return new self(sprintf('Expected array, got "%s"', $type));
+    }
+
+    public static function duplicateRegexModifier(string $modifier, int $offset): self
+    {
+        return new self(sprintf('Duplicate regex modifier "%s" at position %d', $modifier, $offset));
     }
 }

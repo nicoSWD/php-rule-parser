@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\Rule;
@@ -43,7 +46,7 @@ final class ToUpperCaseTest extends AbstractTestBase
     {
         $rule = new Rule('1.toUpperCase() === "1"', ['foo' => 1]);
 
-        $this->assertFalse($rule->isValid());
-        $this->assertSame('Unknown token ".toUpperCase(" at position 1', $rule->getError());
+        $this->assertTrue($rule->isValid());
+        $this->assertTrue($rule->isTrue());
     }
 }

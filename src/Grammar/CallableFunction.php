@@ -1,22 +1,23 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\Grammar;
 
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
-
-abstract class CallableFunction implements CallableUserFunctionInterface
+abstract class CallableFunction implements CallableInterface
 {
     public function __construct(
-        protected readonly ?BaseToken $token = null,
+        protected readonly mixed $token = null,
     ) {
     }
 
-    protected function parseParameter(array $parameters, int $numParam): ?BaseToken
+    protected function parseParameter(array $parameters, int $numParam): mixed
     {
         return $parameters[$numParam] ?? null;
     }

@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
@@ -31,8 +34,8 @@ final class TestTest extends AbstractTestBase
     {
         $this->assertTrue($this->evaluate('/^foo$/i.test("FOO") === true'));
         $this->assertFalse($this->evaluate('/^foo$/.test("FOO") === true'));
-        $this->assertTrue($this->evaluate('/^foo$/m.test("' . "\n\n" .'foo") === true'));
-        $this->assertFalse($this->evaluate('/^foo$/.test("' . "\n\n" .'foo") === true'));
+        $this->assertTrue($this->evaluate('/^foo$/m.test("' . "\n\n" . 'foo") === true'));
+        $this->assertFalse($this->evaluate('/^foo$/.test("' . "\n\n" . 'foo") === true'));
     }
 
     #[Test]
@@ -56,5 +59,27 @@ final class TestTest extends AbstractTestBase
     public function withOmittedParameters(): void
     {
         $this->assertTrue($this->evaluate('/^foo$/.test() === false'));
+    }
+
+    #[Test]
+    public function testAsDirectLogicalOperandWithAnd(): void
+    {
+        $this->assertTrue($this->evaluate('/a/.test("a") && /x/.test("x")'));
+        $this->assertFalse($this->evaluate('/a/.test("b") && /x/.test("x")'));
+        $this->assertFalse($this->evaluate('/a/.test("a") && /x/.test("y")'));
+    }
+
+    #[Test]
+    public function testAsDirectLogicalOperandWithOr(): void
+    {
+        $this->assertTrue($this->evaluate('/a/.test("a") || /x/.test("y")'));
+        $this->assertFalse($this->evaluate('/a/.test("b") || /x/.test("y")'));
+    }
+
+    #[Test]
+    public function testAsDirectLogicalOperandWithStrictComparison(): void
+    {
+        $this->assertTrue($this->evaluate('/a/.test("a") === true && /x/.test("x") === true'));
+        $this->assertFalse($this->evaluate('/a/.test("b") === true && /x/.test("x") === true'));
     }
 }

@@ -1,46 +1,50 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenRegex;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class Replace extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): GenericToken
     {
-        $isRegExpr = false;
         $search = $this->parseParameter($parameters, numParam: 0);
 
-        if (!$search) {
+        if ($search === null || $search === '') {
             $search = '';
+            $isRegExpr = false;
         } else {
-            $isRegExpr = ($search instanceof TokenRegex);
-            $search = $search->getValue();
+            $isRegExpr = $this->isRegex($search);
         }
 
         $replace = $this->parseParameter($parameters, numParam: 1);
 
-        if (!$replace) {
+        if ($replace === null) {
             $replace = 'undefined';
-        } else {
-            $replace = $replace->getValue();
         }
 
         if ($isRegExpr) {
             $value = $this->doRegexReplace($search, $replace);
         } else {
-            $value = str_replace($search, $replace, $this->token->getValue());
+            $value = str_replace($search, $replace, $this->token);
         }
 
-        return new TokenString($value);
+        return new GenericToken(TokenKind::STRING, $value);
+    }
+
+    private function isRegex(string $value): bool
+    {
+        return (bool) preg_match('~^/.+/[img]{0,3}$~', $value);
     }
 
     private function doRegexReplace(string $search, string $replace): string
@@ -53,7 +57,7 @@ final class Replace extends CallableFunction
         return preg_replace(
             $expression . $modifiers,
             $replace,
-            $this->token->getValue(),
+            $this->token,
             $limit
         );
     }

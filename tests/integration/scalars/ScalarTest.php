@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\tests\integration\scalars;
 
 use nicoSWD\Rule\tests\integration\AbstractTestBase;
@@ -58,5 +61,26 @@ final class ScalarTest extends AbstractTestBase
         $rule = 'foo == -1';
 
         $this->assertTrue($this->evaluate($rule, ['foo' => -1]));
+    }
+
+    #[Test]
+    public function stringEscapeSequences(): void
+    {
+        // Newline escape
+        $this->assertTrue($this->evaluate('foo == "\n"', ['foo' => "\n"]));
+        $this->assertFalse($this->evaluate('foo == "\n"', ['foo' => '\n']));
+
+        // Tab escape
+        $this->assertTrue($this->evaluate('foo == "\t"', ['foo' => "\t"]));
+        $this->assertFalse($this->evaluate('foo == "\t"', ['foo' => '\t']));
+
+        // Backslash escape
+        $this->assertTrue($this->evaluate('foo == "\\\\"', ['foo' => "\\"]));
+
+        // Carriage return escape
+        $this->assertTrue($this->evaluate('foo == "\r"', ['foo' => "\r"]));
+
+        // Multiple escape sequences
+        $this->assertTrue($this->evaluate('foo == "line1\nline2\tend"', ['foo' => "line1\nline2\tend"]));
     }
 }

@@ -1,72 +1,104 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\Highlighter;
 
-use Iterator;
-use nicoSWD\Rule\Tokenizer\TokenizerInterface;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
+use nicoSWD\Rule\Grammar\Grammar;
+use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
+use nicoSWD\Rule\Lexer\DefaultLexer;
+use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
-use SplObjectStorage;
 
+/**
+ * Syntax highlighter for rule expressions.
+ *
+ * Takes a rule string and returns HTML with syntax-highlighted tokens,
+ * where each token type is wrapped in a <span> with configurable CSS styles.
+ *
+ * Usage:
+ * ```php
+ * $highlighter = new Highlighter();
+ *
+ * // Use default styles
+ * echo $highlighter->highlightString('2 < 3 && foo in [4, 6, 7]');
+ *
+ * // Or customize styles for specific token types
+ * $highlighter->setStyle(TokenType::VARIABLE, 'color: #007694; font-weight: 900;');
+ * echo $highlighter->highlightString($ruleStr);
+ * ```
+ */
 final class Highlighter
 {
-    private SplObjectStorage $styles;
+    /** @var array<string, string> */
+    private array $styles = [];
 
     public function __construct(
-        private readonly TokenizerInterface $tokenizer,
+        private readonly ?Grammar $grammar = null,
     ) {
-        $this->styles = $this->defaultStyles();
     }
 
-    public function setStyle(TokenType $group, string $style): void
+    /**
+     * Set the CSS style for a specific token type.
+     *
+     * If not called, default styles from DefaultStyles will be used.
+     */
+    public function setStyle(TokenType $type, string $css): self
     {
-        $this->styles[$group] = $style;
+        $this->styles[$type->name] = $css;
+
+        return $this;
     }
 
-    public function highlightString(string $string): string
+    /**
+     * Highlight a rule string and return HTML with syntax highlighting.
+     *
+     * @param string $rule The rule expression to highlight
+     * @return string HTML with <span> tags wrapping each token
+     */
+    public function highlightString(string $rule): string
     {
-        return $this->highlightTokens($this->tokenizer->tokenize($string));
-    }
-
-    public function highlightTokens(Iterator $tokens): string
-    {
-        $string = '';
+        $styles = $this->getResolvedStyles();
+        $grammar = $this->grammar ?? new JavaScript();
+        $tokenFactory = new TokenFactory();
+        $lexer = new DefaultLexer($grammar, $tokenFactory);
+        $tokens = $lexer->tokenize($rule);
+        $output = '';
 
         foreach ($tokens as $token) {
-            /** @var BaseToken $token */
-            $tokenType = $token->getType();
+            $type = $token->getType();
+            $value = $token->getOriginalValue();
+            $css = $styles[$type->name] ?? '';
 
-            if (isset($this->styles[$tokenType])) {
-                $string .= '<span style="' . $this->styles[$tokenType] . '">' . $this->encode($token) . '</span>';
+            if ($css === '') {
+                $output .= htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
             } else {
-                $string .= $token->getOriginalValue();
+                $output .= sprintf(
+                    '<span style="%s">%s</span>',
+                    $css,
+                    htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+                );
             }
         }
 
-        return '<pre><code>' . $string . '</code></pre>';
+        return $output;
     }
 
-    private function encode(BaseToken $token): string
+    /**
+     * @return array<string, string>
+     */
+    private function getResolvedStyles(): array
     {
-        return htmlentities($token->getOriginalValue(), ENT_QUOTES, 'utf-8');
-    }
+        if ($this->styles !== []) {
+            return $this->styles;
+        }
 
-    private function defaultStyles(): SplObjectStorage
-    {
-        $styles = new SplObjectStorage();
-        $styles[TokenType::COMMENT] = 'color: #948a8a; font-style: italic;';
-        $styles[TokenType::LOGICAL] = 'color: #c72d2d;';
-        $styles[TokenType::OPERATOR] = 'color: #000;';
-        $styles[TokenType::PARENTHESIS] = 'color: #000;';
-        $styles[TokenType::VALUE] = 'color: #e36700; font-style: italic;';
-        $styles[TokenType::VARIABLE] = 'color: #007694; font-weight: 900;';
-        $styles[TokenType::METHOD] = 'color: #000';
-
-        return $styles;
+        return DefaultStyles::getStyles();
     }
 }

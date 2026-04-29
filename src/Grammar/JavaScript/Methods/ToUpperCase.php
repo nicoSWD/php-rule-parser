@@ -1,20 +1,23 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class ToUpperCase extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): GenericToken
     {
-        return new TokenString(strtoupper((string) $this->token->getValue()));
+        return new GenericToken(TokenKind::STRING, strtoupper((string) $this->token));
     }
 }

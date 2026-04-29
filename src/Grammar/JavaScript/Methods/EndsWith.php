@@ -1,36 +1,33 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenBool;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
 
 final class EndsWith extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): TokenBool
     {
-        if (!$this->token instanceof TokenString) {
+        if (!is_string($this->token)) {
             throw new ParserException('Call to undefined method "endsWith" on non-string');
         }
 
         $needle = $this->parseParameter($parameters, numParam: 0);
-        $haystack = $this->token->getValue();
 
-        if (!$needle) {
-            $result = false;
-        } else {
-            $needle = $needle->getValue();
-            $result = str_ends_with($haystack, $needle);
+        if ($needle === null) {
+            return TokenBool::fromBool(false);
         }
 
-        return TokenBool::fromBool($result);
+        return TokenBool::fromBool(str_ends_with($this->token, $needle));
     }
 }

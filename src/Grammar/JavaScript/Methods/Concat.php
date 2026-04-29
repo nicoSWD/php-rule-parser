@@ -1,31 +1,33 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenArray;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class Concat extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): GenericToken
     {
-        $value = $this->token->getValue();
+        $value = $this->token;
 
         foreach ($parameters as $parameter) {
-            if ($parameter instanceof TokenArray) {
-                $value .= implode(',', $parameter->toArray());
+            if (is_array($parameter)) {
+                $value .= implode(',', $parameter);
             } else {
-                $value .= $parameter->getValue();
+                $value .= $parameter;
             }
         }
 
-        return new TokenString($value);
+        return new GenericToken(TokenKind::STRING, $value);
     }
 }

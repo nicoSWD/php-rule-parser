@@ -1,42 +1,40 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
 use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenBool;
-use nicoSWD\Rule\TokenStream\Token\TokenInteger;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
 
 final class StartsWith extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): TokenBool
     {
-        if (!$this->token instanceof TokenString) {
+        if (!is_string($this->token)) {
             throw new ParserException('Call to undefined method "startsWith" on non-string');
         }
 
         $needle = $this->parseParameter($parameters, numParam: 0);
         $offset = $this->getOffset($this->parseParameter($parameters, numParam: 1));
-        $position = strpos($this->token->getValue(), $needle->getValue(), $offset);
+        $position = strpos($this->token, $needle, $offset);
 
         return TokenBool::fromBool($position === $offset);
     }
 
-    private function getOffset(?BaseToken $offset): int
+    private function getOffset(mixed $offset): int
     {
-        if ($offset instanceof TokenInteger) {
-            $offset = $offset->getValue();
-        } else {
-            $offset = 0;
+        if ($offset !== null) {
+            return (int) $offset;
         }
 
-        return $offset;
+        return 0;
     }
 }

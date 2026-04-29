@@ -1,7 +1,8 @@
 /tests/log
 /composer.lock
 /coverage.clover
-/.phpunit.result.cache
+/.phpunit.*
 /vendor/
 /.idea
 /.composer
+.DS_Store

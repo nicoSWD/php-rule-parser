@@ -1,34 +1,33 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
 use nicoSWD\Rule\Grammar\CallableFunction;
-use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenInteger;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 
 final class CharAt extends CallableFunction
 {
-    public function call(?BaseToken ...$parameters): BaseToken
+    public function call(mixed ...$parameters): GenericToken
     {
-        $tokenValue = $this->token->getValue();
         $offset = $this->parseParameter($parameters, numParam: 0);
 
-        if (!$offset) {
+        if ($offset === null) {
             $offset = 0;
-        } elseif (!$offset instanceof TokenInteger) {
-            $offset = (int) $offset->getValue();
         } else {
-            $offset = $offset->getValue();
+            $offset = (int) $offset;
         }
 
-        $char = $tokenValue[$offset] ?? '';
+        $char = ($this->token)[$offset] ?? '';
 
-        return new TokenString($char);
+        return new GenericToken(TokenKind::STRING, $char);
     }
 }

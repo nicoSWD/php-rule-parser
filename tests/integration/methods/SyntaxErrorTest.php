@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\tests\integration\methods;
 
 use nicoSWD\Rule\Rule;
@@ -19,7 +22,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".charAt(1 2 ) === "b"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "2" at position 15', $rule->getError());
+        $this->assertSame('Unexpected "2" at position 15', $rule->error);
     }
 
     #[Test]
@@ -27,8 +30,8 @@ final class SyntaxErrorTest extends AbstractTestBase
     {
         $rule = new Rule('"foo".charAt(1 , ) === "b"');
 
-        $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "," at position 17', $rule->getError());
+        $this->assertTrue($rule->isValid());
+        $this->assertFalse($rule->isTrue());
     }
 
     #[Test]
@@ -37,7 +40,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".charAt(1 , , ) === "b"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "," at position 17', $rule->getError());
+        $this->assertSame('Unexpected "," at position 17', $rule->error);
     }
 
     #[Test]
@@ -46,7 +49,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".charAt(1 , < , ) === "b"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "<" at position 17', $rule->getError());
+        $this->assertSame('Unexpected "<" at position 17', $rule->error);
     }
 
     #[Test]
@@ -55,7 +58,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".charAt(1 , ');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected end of string', $rule->getError());
+        $this->assertSame('Unexpected end of string', $rule->error);
     }
 
     #[Test]
@@ -64,7 +67,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('/^foo$/.teddst("foo") === true');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Undefined method "teddst" at position 7', $rule->getError());
+        $this->assertSame('Undefined method "teddst" at position 7', $rule->error);
     }
 
     #[Test]
@@ -73,7 +76,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".ChARat(1) === "o"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Undefined method "ChARat" at position 5', $rule->getError());
+        $this->assertSame('Undefined method "ChARat" at position 5', $rule->error);
     }
 
     #[Test]
@@ -82,7 +85,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".join("|") === ""');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('foo.join is not a function', $rule->getError());
+        $this->assertSame('foo.join is not a function', $rule->error);
     }
 
     #[Test]
@@ -91,6 +94,6 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('"foo".test("foo") === false');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('test() is not a function', $rule->getError());
+        $this->assertSame('test() is not a function', $rule->error);
     }
 }

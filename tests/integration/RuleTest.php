@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\tests\integration;
 
 use nicoSWD\Rule;
@@ -48,7 +51,7 @@ final class RuleTest extends TestCase
         $rule = new Rule\Rule($ruleStr);
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "(" at position 28', $rule->getError());
+        $this->assertSame('Unexpected "(" at position 28', $rule->error);
     }
 
     #[Test]
@@ -59,7 +62,7 @@ final class RuleTest extends TestCase
         $rule = new Rule\Rule($ruleStr);
 
         $this->assertTrue($rule->isValid());
-        $this->assertEmpty($rule->getError());
+        $this->assertEmpty($rule->error);
         $this->assertTrue($rule->isTrue());
     }
     #[Test]
@@ -70,7 +73,7 @@ final class RuleTest extends TestCase
         $rule = new Rule\Rule($ruleStr);
 
         $this->assertTrue($rule->isValid());
-        $this->assertEmpty($rule->getError());
+        $this->assertEmpty($rule->error);
         $this->assertTrue($rule->isTrue());
 
         $ruleStr = '5 in [4, 6, 7]';
@@ -78,7 +81,7 @@ final class RuleTest extends TestCase
         $rule = new Rule\Rule($ruleStr);
 
         $this->assertTrue($rule->isValid());
-        $this->assertEmpty($rule->getError());
+        $this->assertEmpty($rule->error);
         $this->assertFalse($rule->isTrue());
     }
 
@@ -91,7 +94,7 @@ final class RuleTest extends TestCase
         $rule = new Rule\Rule($ruleStr);
 
         $this->assertTrue($rule->isValid());
-        $this->assertEmpty($rule->getError());
+        $this->assertEmpty($rule->error);
         $this->assertTrue($rule->isTrue());
 
         $ruleStr = '4 not in [4, 6, 7]';
@@ -99,7 +102,7 @@ final class RuleTest extends TestCase
         $rule = new Rule\Rule($ruleStr);
 
         $this->assertTrue($rule->isValid());
-        $this->assertEmpty($rule->getError());
+        $this->assertEmpty($rule->error);
         $this->assertFalse($rule->isTrue());
     }
 }

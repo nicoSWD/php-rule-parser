@@ -1,25 +1,19 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\TokenStream\Token;
 
-use nicoSWD\Rule\TokenStream\Node\NodeString;
-use nicoSWD\Rule\TokenStream\Token\Type\Value;
-use nicoSWD\Rule\TokenStream\TokenIterator;
-
-class TokenString extends BaseToken implements Value
+class TokenString extends BaseToken
 {
-    public function getType(): TokenType
+    public function getKind(): TokenKind
     {
-        return TokenType::VALUE;
-    }
-
-    public function createNode(TokenIterator $tokenStream): BaseToken
-    {
-        return (new NodeString($tokenStream))->getNode();
+        return TokenKind::STRING;
     }
 }

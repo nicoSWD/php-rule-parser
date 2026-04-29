@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\tests\integration\arrays;
 
 use nicoSWD\Rule\Rule;
@@ -57,8 +60,8 @@ final class ArraysTest extends AbstractTestBase
     {
         $rule = new Rule('["foo", "bar", ] === ["foo", "bar"]');
 
-        $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "," at position 15', $rule->getError());
+        $this->assertTrue($rule->isValid());
+        $this->assertTrue($rule->isTrue());
     }
 
     #[Test]
@@ -67,7 +70,7 @@ final class ArraysTest extends AbstractTestBase
         $rule = new Rule('["foo", "bar", ,] === ["foo", "bar"]');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "," at position 15', $rule->getError());
+        $this->assertSame('Unexpected "," at position 15', $rule->error);
     }
 
     #[Test]
@@ -76,7 +79,7 @@ final class ArraysTest extends AbstractTestBase
         $rule = new Rule('["foo"  "bar"] === ["foo", "bar"]');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "bar" at position 8', $rule->getError());
+        $this->assertSame('Unexpected "bar" at position 8', $rule->error);
     }
 
     #[Test]
@@ -85,7 +88,7 @@ final class ArraysTest extends AbstractTestBase
         $rule = new Rule('["foo", ===] === ["foo", "bar"]');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "===" at position 8', $rule->getError());
+        $this->assertSame('Unexpected "===" at position 8', $rule->error);
     }
 
     #[Test]
@@ -94,6 +97,6 @@ final class ArraysTest extends AbstractTestBase
         $rule = new Rule('["foo", "bar"');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected end of string', $rule->getError());
+        $this->assertSame('Unexpected end of string', $rule->error);
     }
 }

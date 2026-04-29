@@ -1,23 +1,22 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\TokenStream;
 
-use Closure;
 use Iterator;
-use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\Grammar\CallableUserFunctionInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
-readonly class TokenIterator implements Iterator
+class TokenIterator implements Iterator
 {
     public function __construct(
         private Iterator $stack,
-        private TokenStream $tokenStream,
     ) {
     }
 
@@ -31,10 +30,9 @@ readonly class TokenIterator implements Iterator
         return $this->stack->valid();
     }
 
-    /** @throws ParserException */
     public function current(): BaseToken
     {
-        return $this->getCurrentToken()->createNode($this);
+        return $this->stack->current();
     }
 
     public function key(): int
@@ -45,48 +43,5 @@ readonly class TokenIterator implements Iterator
     public function rewind(): void
     {
         $this->stack->rewind();
-    }
-
-    /** @return Iterator<BaseToken> */
-    public function getStack(): Iterator
-    {
-        return $this->stack;
-    }
-
-    private function getCurrentToken(): BaseToken
-    {
-        return $this->stack->current();
-    }
-
-    /** @throws ParserException */
-    public function getVariable(string $variableName): BaseToken
-    {
-        try {
-            return $this->tokenStream->getVariable($variableName);
-        } catch (Exception\UndefinedVariableException) {
-            throw ParserException::undefinedVariable($variableName, $this->getCurrentToken());
-        }
-    }
-
-    /** @throws ParserException */
-    public function getFunction(string $functionName): Closure
-    {
-        try {
-            return $this->tokenStream->getFunction($functionName);
-        } catch (Exception\UndefinedFunctionException) {
-            throw ParserException::undefinedFunction($functionName, $this->getCurrentToken());
-        }
-    }
-
-    /** @throws ParserException */
-    public function getMethod(string $methodName, BaseToken $token): CallableUserFunctionInterface
-    {
-        try {
-            return $this->tokenStream->getMethod($methodName, $token);
-        } catch (Exception\UndefinedMethodException) {
-            throw ParserException::undefinedMethod($methodName, $this->getCurrentToken());
-        } catch (Exception\ForbiddenMethodException) {
-            throw ParserException::forbiddenMethod($methodName, $this->getCurrentToken());
-        }
     }
 }

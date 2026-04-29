@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\tests\integration\functions;
 
 use nicoSWD\Rule\Rule;
@@ -19,7 +22,7 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('nope() === true');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('nope is not defined at position 0', $rule->getError());
+        $this->assertSame('nope is not defined at position 0', $rule->error);
     }
 
     #[Test]
@@ -28,6 +31,6 @@ final class SyntaxErrorTest extends AbstractTestBase
         $rule = new Rule('/* fail */ paRSeInt("2") === 2');
 
         $this->assertFalse($rule->isValid());
-        $this->assertSame('paRSeInt is not defined at position 11', $rule->getError());
+        $this->assertSame('paRSeInt is not defined at position 11', $rule->error);
     }
 }

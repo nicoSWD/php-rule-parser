@@ -1,18 +1,17 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\tests\unit\TokenStream\Token;
 
-use ArrayIterator;
-use Mockery\MockInterface;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenType;
-use nicoSWD\Rule\TokenStream\TokenIterator;
-use nicoSWD\Rule\TokenStream\TokenStream;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -23,10 +22,10 @@ final class BaseTokenTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->token = new class('&&', 1337) extends BaseToken {
-            public function getType(): TokenType
+        $this->token = new class ('&&', 1337) extends BaseToken {
+            public function getKind(): TokenKind
             {
-                return TokenType::LOGICAL;
+                return TokenKind::AND;
             }
         };
     }
@@ -50,19 +49,9 @@ final class BaseTokenTest extends TestCase
     }
 
     #[Test]
-    public function givenATokenIteratorWhenCreatingNodeItShouldReturnTheSameToken(): void
-    {
-        /** @var TokenStream|MockInterface $tokenStream */
-        $tokenStream = \Mockery::mock(TokenStream::class);
-        $iterator = new TokenIterator(new ArrayIterator([]), $tokenStream);
-
-        $this->assertSame($this->token, $this->token->createNode($iterator));
-    }
-
-    #[Test]
     public function givenALogicalTokenWhenCheckingTypeItShouldReturnTrueForLogicalAndFalseForComma(): void
     {
-        $this->assertTrue($this->token->isOfType(TokenType::LOGICAL));
-        $this->assertFalse($this->token->isOfType(TokenType::COMMA));
+        $this->assertTrue($this->token->isOfKind(TokenKind::AND));
+        $this->assertFalse($this->token->isOfKind(TokenKind::COMMA));
     }
 }

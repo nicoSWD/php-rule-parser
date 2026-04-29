@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license     http://opensource.org/licenses/mit-license.php MIT
  * @link        https://github.com/nicoSWD
  * @author      Nicolas Oelgart <hello@nico.es>
  */
+
+declare(strict_types=1);
+
 namespace nicoSWD\Rule\tests\unit\Grammar;
 
 use nicoSWD\Rule\Grammar\Grammar;
@@ -15,11 +18,6 @@ final class GrammarTest extends TestCase
     public function testDefaultValues()
     {
         $grammar = new class extends Grammar {
-            public function getDefinition(): array
-            {
-                return [];
-            }
-
             public function getInternalFunctions(): array
             {
                 return [];
@@ -31,7 +29,6 @@ final class GrammarTest extends TestCase
             }
         };
 
-        $this->assertSame([], $grammar->getDefinition());
         $this->assertSame([], $grammar->getInternalFunctions());
         $this->assertSame([], $grammar->getInternalMethods());
     }
