@@ -10,9 +10,8 @@ namespace nicoSWD\Rule\AST;
 final class DivisionNode extends Node
 {
     public function __construct(
-        public Node $left,
-        public Node $right,
-        public int $offset = 0,
+        public readonly Node $left,
+        public readonly Node $right,
     ) {
     }
 }
