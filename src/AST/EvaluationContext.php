@@ -7,20 +7,14 @@
  */
 namespace nicoSWD\Rule\AST;
 
-final class StringNode extends ValueNode
+use nicoSWD\Rule\TokenStream\Token\TokenFactory;
+use nicoSWD\Rule\TokenStream\TokenStream;
+
+final readonly class EvaluationContext
 {
     public function __construct(
-        public readonly string $value,
+        public TokenStream  $tokenStream,
+        public TokenFactory $tokenFactory,
     ) {
-    }
-
-    public function getNativeValue(): string
-    {
-        return $this->value;
-    }
-
-    public function evaluate(EvaluationContext $context): string
-    {
-        return $this->value;
     }
 }

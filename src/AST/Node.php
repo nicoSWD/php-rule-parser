@@ -9,4 +9,13 @@ namespace nicoSWD\Rule\AST;
 
 abstract class Node
 {
+    /**
+     * Evaluate this node and return its computed value.
+     *
+     * @throws \RuntimeException
+     */
+    public function evaluate(EvaluationContext $context): mixed
+    {
+        throw new \RuntimeException('Node type ' . static::class . ' does not support evaluation');
+    }
 }

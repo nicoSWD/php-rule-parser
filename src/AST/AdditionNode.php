@@ -14,4 +14,16 @@ final class AdditionNode extends Node
         public readonly Node $right,
     ) {
     }
+
+    public function evaluate(EvaluationContext $context): mixed
+    {
+        $left = $this->left->evaluate($context);
+        $right = $this->right->evaluate($context);
+
+        if (is_string($left) || is_string($right)) {
+            return (string) $left . (string) $right;
+        }
+
+        return $left + $right;
+    }
 }

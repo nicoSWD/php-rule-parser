@@ -13,4 +13,9 @@ final class NullNode extends ValueNode
     {
         return null;
     }
+
+    public function evaluate(EvaluationContext $context): null
+    {
+        return null;
+    }
 }

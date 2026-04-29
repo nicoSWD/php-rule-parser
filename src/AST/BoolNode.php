@@ -18,4 +18,9 @@ final class BoolNode extends ValueNode
     {
         return $this->value;
     }
+
+    public function evaluate(EvaluationContext $context): bool
+    {
+        return $this->value;
+    }
 }

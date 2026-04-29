@@ -18,4 +18,9 @@ final class FloatNode extends ValueNode
     {
         return $this->value;
     }
+
+    public function evaluate(EvaluationContext $context): float
+    {
+        return $this->value;
+    }
 }

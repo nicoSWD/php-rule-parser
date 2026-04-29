@@ -14,4 +14,14 @@ final class NotNode extends Node
         public readonly int $offset = 0,
     ) {
     }
+
+    /**
+     * @throws \RuntimeException
+     */
+    public function evaluate(EvaluationContext $context): mixed
+    {
+        $value = $this->node->evaluate($context);
+
+        return !$value;
+    }
 }

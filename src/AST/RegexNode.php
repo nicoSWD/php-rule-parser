@@ -24,4 +24,9 @@ final class RegexNode extends ValueNode
     {
         return $this->pattern;
     }
+
+    public function evaluate(EvaluationContext $context): string
+    {
+        return $this->pattern;
+    }
 }

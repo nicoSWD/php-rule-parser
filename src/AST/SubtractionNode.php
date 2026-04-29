@@ -14,4 +14,12 @@ final class SubtractionNode extends Node
         public readonly Node $right,
     ) {
     }
+
+    public function evaluate(EvaluationContext $context): mixed
+    {
+        $left = $this->left->evaluate($context);
+        $right = $this->right->evaluate($context);
+
+        return $left - $right;
+    }
 }

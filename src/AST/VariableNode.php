@@ -7,11 +7,33 @@
  */
 namespace nicoSWD\Rule\AST;
 
+use nicoSWD\Rule\Parser\Exception\ParserException;
+use nicoSWD\Rule\TokenStream\Exception\UndefinedVariableException;
+use nicoSWD\Rule\TokenStream\Token\TokenArray;
+
 final class VariableNode extends Node
 {
     public function __construct(
         public readonly string $name,
         public readonly int $offset = 0,
     ) {
+    }
+
+    /**
+     * @throws ParserException
+     */
+    public function evaluate(EvaluationContext $context): mixed
+    {
+        try {
+            $token = $context->tokenStream->getVariable($this->name);
+        } catch (UndefinedVariableException) {
+            throw ParserException::undefinedVariable($this->name, $this->offset);
+        }
+
+        if ($token instanceof TokenArray) {
+            return $token->toArray();
+        }
+
+        return $token->getValue();
     }
 }

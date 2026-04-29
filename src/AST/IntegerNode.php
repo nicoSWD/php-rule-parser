@@ -18,4 +18,9 @@ final class IntegerNode extends ValueNode
     {
         return $this->value;
     }
+
+    public function evaluate(EvaluationContext $context): int
+    {
+        return $this->value;
+    }
 }

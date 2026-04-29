@@ -7,6 +7,8 @@
  */
 namespace nicoSWD\Rule\AST;
 
+use nicoSWD\Rule\Parser\Exception\ParserException;
+
 final class LogicalNode extends Node
 {
     public function __construct(
@@ -14,5 +16,19 @@ final class LogicalNode extends Node
         public readonly Node $right,
         public readonly LogicalOperator $operator,
     ) {
+    }
+
+    /**
+     * @throws ParserException
+     */
+    public function evaluate(EvaluationContext $context): bool
+    {
+        $left = (bool) $this->left->evaluate($context);
+
+        // Short-circuit evaluation
+        return match ($this->operator) {
+            LogicalOperator::AND => $left && (bool) $this->right->evaluate($context),
+            LogicalOperator::OR => $left || (bool) $this->right->evaluate($context),
+        };
     }
 }

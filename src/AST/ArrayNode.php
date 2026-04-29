@@ -14,4 +14,18 @@ final class ArrayNode extends Node
         public readonly array $items,
     ) {
     }
+
+    /**
+     * @throws \RuntimeException
+     */
+    public function evaluate(EvaluationContext $context): array
+    {
+        $items = [];
+
+        foreach ($this->items as $item) {
+            $items[] = $item->evaluate($context);
+        }
+
+        return $items;
+    }
 }
