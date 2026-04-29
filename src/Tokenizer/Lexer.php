@@ -25,13 +25,12 @@ use nicoSWD\Rule\TokenStream\Token\Type\Value;
  * - Better error messages with precise character positions
  * - Context-sensitive lexing (e.g., distinguishing /regex/ from comments)
  * - Easier to extend with new syntax
+ *
+ * The Lexer is stateless and reentrant: all mutable scanning state is held
+ * in a LexerContext object that is local to each tokenize() call.
  */
 final class Lexer extends TokenizerInterface
 {
-    private string $input;
-    private int $pos;
-    private int $length;
-
     public function __construct(
         public Grammar $grammar,
         private readonly TokenFactory $tokenFactory,
@@ -40,49 +39,46 @@ final class Lexer extends TokenizerInterface
 
     public function tokenize(string $string): Iterator
     {
-        $this->input = $string;
-        $this->pos = 0;
-        $this->length = strlen($string);
-
+        $ctx = new LexerContext($string);
         $stack = [];
 
-        while ($this->pos < $this->length) {
-            $ch = $this->input[$this->pos];
+        while ($ctx->isValid()) {
+            $ch = $ctx->current();
 
             $token = match (true) {
-                $ch === '&' && $this->peek() === '&' => $this->emitOperator(Token::AND, '&&', 2),
-                $ch === '|' && $this->peek() === '|' => $this->emitOperator(Token::OR, '||', 2),
-                $ch === '!' && $this->peek() === '=' && $this->peek(1) === '=' => $this->emitOperator(Token::NOT_EQUAL_STRICT, '!==', 3),
-                $ch === '!' && $this->peek() === '=' => $this->emitOperator(Token::NOT_EQUAL, '!=', 2),
-                $ch === '!' => $this->emitOperator(Token::NOT, '!', 1),
-                $ch === '=' && $this->peek() === '=' && $this->peek(1) === '=' => $this->emitOperator(Token::EQUAL_STRICT, '===', 3),
-                $ch === '=' && $this->peek() === '=' => $this->emitOperator(Token::EQUAL, '==', 2),
-                $ch === '<' && $this->peek() === '=' => $this->emitOperator(Token::LESS_THAN_EQUAL, '<=', 2),
-                $ch === '>' && $this->peek() === '=' => $this->emitOperator(Token::GREATER_EQUAL, '>=', 2),
-                $ch === '+' => $this->emitOperator(Token::PLUS, '+', 1),
-                $ch === '-' && $this->lastTokenIsValue($stack) => $this->emitOperator(Token::MINUS, '-', 1),
-                $ch === '-' && $this->isDigit($this->peek()) => $this->readNumber(),
-                $ch === '-' => $this->emitOperator(Token::MINUS, '-', 1),
-                $ch === '*' => $this->emitOperator(Token::MULTIPLY, '*', 1),
-                $ch === '/' && ($this->peek() === '/' || $this->peek() === '*') => $this->readSlash(),
-                $ch === '/' && $this->lastTokenIsValue($stack) => $this->emitOperator(Token::DIVIDE, '/', 1),
-                $ch === '/' => $this->readSlash(),
-                $ch === '%' => $this->emitOperator(Token::MODULO, '%', 1),
-                $ch === '<' && $this->peek() === '>' => $this->emitOperator(Token::NOT_EQUAL, '<>', 2),
-                $ch === '<' => $this->emitOperator(Token::LESS_THAN, '<', 1),
-                $ch === '>' => $this->emitOperator(Token::GREATER, '>', 1),
-                $ch === '(' => $this->emitSimple(Token::OPENING_PARENTHESIS, '('),
-                $ch === ')' => $this->emitSimple(Token::CLOSING_PARENTHESIS, ')'),
-                $ch === '[' => $this->emitSimple(Token::OPENING_ARRAY, '['),
-                $ch === ']' => $this->emitSimple(Token::CLOSING_ARRAY, ']'),
-                $ch === ',' => $this->emitSimple(Token::COMMA, ','),
-                $ch === '.' => $this->readMethod(),
-                $ch === '"' || $ch === "'" => $this->readString(),
-                $this->isDigit($ch) => $this->readNumber(),
-                $ch === ' ' || $ch === "\t" => $this->readWhitespace(),
-                $ch === "\r" || $ch === "\n" => $this->readNewlineToken(),
-                $this->isAlpha($ch) || $ch === '_' => $this->readIdentifier(),
-                default => $this->emitSimple(Token::UNKNOWN, $ch),
+                $ch === '&' && $ctx->peek() === '&' => $this->emitOperator($ctx, Token::AND, '&&', 2),
+                $ch === '|' && $ctx->peek() === '|' => $this->emitOperator($ctx, Token::OR, '||', 2),
+                $ch === '!' && $ctx->peek() === '=' && $ctx->peek(1) === '=' => $this->emitOperator($ctx, Token::NOT_EQUAL_STRICT, '!==', 3),
+                $ch === '!' && $ctx->peek() === '=' => $this->emitOperator($ctx, Token::NOT_EQUAL, '!=', 2),
+                $ch === '!' => $this->emitOperator($ctx, Token::NOT, '!', 1),
+                $ch === '=' && $ctx->peek() === '=' && $ctx->peek(1) === '=' => $this->emitOperator($ctx, Token::EQUAL_STRICT, '===', 3),
+                $ch === '=' && $ctx->peek() === '=' => $this->emitOperator($ctx, Token::EQUAL, '==', 2),
+                $ch === '<' && $ctx->peek() === '=' => $this->emitOperator($ctx, Token::LESS_THAN_EQUAL, '<=', 2),
+                $ch === '>' && $ctx->peek() === '=' => $this->emitOperator($ctx, Token::GREATER_EQUAL, '>=', 2),
+                $ch === '+' => $this->emitOperator($ctx, Token::PLUS, '+', 1),
+                $ch === '-' && $this->lastTokenIsValue($stack) => $this->emitOperator($ctx, Token::MINUS, '-', 1),
+                $ch === '-' && $this->isDigit($ctx->peek()) => $this->readNumber($ctx),
+                $ch === '-' => $this->emitOperator($ctx, Token::MINUS, '-', 1),
+                $ch === '*' => $this->emitOperator($ctx, Token::MULTIPLY, '*', 1),
+                $ch === '/' && ($ctx->peek() === '/' || $ctx->peek() === '*') => $this->readSlash($ctx),
+                $ch === '/' && $this->lastTokenIsValue($stack) => $this->emitOperator($ctx, Token::DIVIDE, '/', 1),
+                $ch === '/' => $this->readSlash($ctx),
+                $ch === '%' => $this->emitOperator($ctx, Token::MODULO, '%', 1),
+                $ch === '<' && $ctx->peek() === '>' => $this->emitOperator($ctx, Token::NOT_EQUAL, '<>', 2),
+                $ch === '<' => $this->emitOperator($ctx, Token::LESS_THAN, '<', 1),
+                $ch === '>' => $this->emitOperator($ctx, Token::GREATER, '>', 1),
+                $ch === '(' => $this->emitSimple($ctx, Token::OPENING_PARENTHESIS, '('),
+                $ch === ')' => $this->emitSimple($ctx, Token::CLOSING_PARENTHESIS, ')'),
+                $ch === '[' => $this->emitSimple($ctx, Token::OPENING_ARRAY, '['),
+                $ch === ']' => $this->emitSimple($ctx, Token::CLOSING_ARRAY, ']'),
+                $ch === ',' => $this->emitSimple($ctx, Token::COMMA, ','),
+                $ch === '.' => $this->readMethod($ctx),
+                $ch === '"' || $ch === "'" => $this->readString($ctx),
+                $this->isDigit($ch) => $this->readNumber($ctx),
+                $ch === ' ' || $ch === "\t" => $this->readWhitespace($ctx),
+                $ch === "\r" || $ch === "\n" => $this->readNewlineToken($ctx),
+                $this->isAlpha($ch) || $ch === '_' => $this->readIdentifier($ctx),
+                default => $this->emitSimple($ctx, Token::UNKNOWN, $ch),
             };
 
             $stack[] = $token;
@@ -122,54 +118,47 @@ final class Lexer extends TokenizerInterface
         return false;
     }
 
-    private function peek(int $offset = 0): string
+    private function emitSimple(LexerContext $ctx, Token $token, string $value): BaseToken
     {
-        $index = $this->pos + $offset + 1;
-
-        return $index < $this->length ? $this->input[$index] : '';
-    }
-
-    private function emitSimple(Token $token, string $value): BaseToken
-    {
-        $offset = $this->pos;
-        $this->pos += strlen($value);
+        $offset = $ctx->pos;
+        $ctx->pos += strlen($value);
 
         return $this->tokenFactory->createFromToken($token, [$token->value => $value], $offset);
     }
 
-    private function emitOperator(Token $token, string $value, int $length): BaseToken
+    private function emitOperator(LexerContext $ctx, Token $token, string $value, int $length): BaseToken
     {
-        $offset = $this->pos;
-        $this->pos += $length;
+        $offset = $ctx->pos;
+        $ctx->pos += $length;
 
         return $this->tokenFactory->createFromToken($token, [$token->value => $value], $offset);
     }
 
-    private function readMethod(): BaseToken
+    private function readMethod(LexerContext $ctx): BaseToken
     {
-        $offset = $this->pos;
-        $this->pos++; // skip '.'
+        $offset = $ctx->pos;
+        $ctx->pos++; // skip '.'
 
         // Skip all whitespace (including newlines) between dot and method name
-        $this->skipAllWhitespace();
+        $this->skipAllWhitespace($ctx);
 
         // Read method name
         $name = '';
-        while ($this->pos < $this->length && ($this->isAlpha($this->input[$this->pos]) || $this->input[$this->pos] === '_' || $this->isDigit($this->input[$this->pos]))) {
-            $name .= $this->input[$this->pos];
-            $this->pos++;
+        while ($ctx->isValid() && ($this->isAlpha($ctx->current()) || $ctx->current() === '_' || $this->isDigit($ctx->current()))) {
+            $name .= $ctx->current();
+            $ctx->pos++;
         }
 
         return $this->tokenFactory->createFromToken(Token::METHOD, [Token::METHOD->value => $name], $offset);
     }
 
-    private function readString(): BaseToken
+    private function readString(LexerContext $ctx): BaseToken
     {
-        $offset = $this->pos;
-        $quote = $this->input[$this->pos];
-        $this->pos++; // skip opening quote
+        $offset = $ctx->pos;
+        $quote = $ctx->current();
+        $ctx->pos++; // skip opening quote
 
-        $value = $quote . $this->readDelimitedContent($quote);
+        $value = $quote . $this->readDelimitedContent($ctx, $quote);
 
         return $this->tokenFactory->createFromToken(Token::ENCAPSED_STRING, [Token::ENCAPSED_STRING->value => $value], $offset);
     }
@@ -179,30 +168,31 @@ final class Lexer extends TokenizerInterface
      *
      * The opening delimiter must already be consumed before calling this method.
      *
+     * @param LexerContext $ctx The lexer context.
      * @param string $delimiter The closing delimiter character to look for.
      * @param bool $disallowNewlines If true, newlines will stop reading (for regex).
      * @return string The content between (but not including) the delimiters.
      */
-    private function readDelimitedContent(string $delimiter, bool $disallowNewlines = false): string
+    private function readDelimitedContent(LexerContext $ctx, string $delimiter, bool $disallowNewlines = false): string
     {
         $value = '';
 
-        while ($this->pos < $this->length) {
-            $ch = $this->input[$this->pos];
+        while ($ctx->isValid()) {
+            $ch = $ctx->current();
 
             if ($ch === '\\') {
                 $value .= $ch;
-                $this->pos++;
-                if ($this->pos < $this->length) {
-                    $value .= $this->input[$this->pos];
-                    $this->pos++;
+                $ctx->pos++;
+                if ($ctx->isValid()) {
+                    $value .= $ctx->current();
+                    $ctx->pos++;
                 }
                 continue;
             }
 
             if ($ch === $delimiter) {
                 $value .= $ch;
-                $this->pos++;
+                $ctx->pos++;
                 break;
             }
 
@@ -211,55 +201,55 @@ final class Lexer extends TokenizerInterface
             }
 
             $value .= $ch;
-            $this->pos++;
+            $ctx->pos++;
         }
 
         return $value;
     }
 
-    private function readSlash(): BaseToken
+    private function readSlash(LexerContext $ctx): BaseToken
     {
-        $offset = $this->pos;
+        $offset = $ctx->pos;
 
         // Single-line comment
-        if ($this->peek() === '/') {
+        if ($ctx->peek() === '/') {
             $value = '//';
-            $this->pos += 2;
+            $ctx->pos += 2;
 
-            while ($this->pos < $this->length && $this->input[$this->pos] !== "\r" && $this->input[$this->pos] !== "\n") {
-                $value .= $this->input[$this->pos];
-                $this->pos++;
+            while ($ctx->isValid() && $ctx->current() !== "\r" && $ctx->current() !== "\n") {
+                $value .= $ctx->current();
+                $ctx->pos++;
             }
 
             return $this->tokenFactory->createFromToken(Token::COMMENT, [Token::COMMENT->value => $value], $offset);
         }
 
         // Multi-line comment
-        if ($this->peek() === '*') {
+        if ($ctx->peek() === '*') {
             $value = '/*';
-            $this->pos += 2;
+            $ctx->pos += 2;
 
-            while ($this->pos < $this->length) {
-                if ($this->input[$this->pos] === '*' && $this->peek() === '/') {
+            while ($ctx->isValid()) {
+                if ($ctx->current() === '*' && $ctx->peek() === '/') {
                     $value .= '*/';
-                    $this->pos += 2;
+                    $ctx->pos += 2;
                     break;
                 }
-                $value .= $this->input[$this->pos];
-                $this->pos++;
+                $value .= $ctx->current();
+                $ctx->pos++;
             }
 
             return $this->tokenFactory->createFromToken(Token::COMMENT, [Token::COMMENT->value => $value], $offset);
         }
 
         // Regex literal
-        $this->pos++; // skip opening '/'
-        $value = '/' . $this->readDelimitedContent('/', disallowNewlines: true);
+        $ctx->pos++; // skip opening '/'
+        $value = '/' . $this->readDelimitedContent($ctx, '/', disallowNewlines: true);
 
         // Read optional flags
         $seenFlags = [];
-        while ($this->pos < $this->length && str_contains('igm', $this->input[$this->pos])) {
-            $flag = $this->input[$this->pos];
+        while ($ctx->isValid() && str_contains('igm', $ctx->current())) {
+            $flag = $ctx->current();
 
             if (isset($seenFlags[$flag])) {
                 throw ParserException::duplicateRegexModifier($flag, $offset);
@@ -267,37 +257,37 @@ final class Lexer extends TokenizerInterface
 
             $seenFlags[$flag] = true;
             $value .= $flag;
-            $this->pos++;
+            $ctx->pos++;
         }
 
         return $this->tokenFactory->createFromToken(Token::REGEX, [Token::REGEX->value => $value], $offset);
     }
 
-    private function readNumber(): BaseToken
+    private function readNumber(LexerContext $ctx): BaseToken
     {
-        $offset = $this->pos;
+        $offset = $ctx->pos;
         $value = '';
 
         // Optional leading minus
-        if ($this->input[$this->pos] === '-') {
+        if ($ctx->current() === '-') {
             $value .= '-';
-            $this->pos++;
+            $ctx->pos++;
         }
 
         // Integer part
-        while ($this->pos < $this->length && $this->isDigit($this->input[$this->pos])) {
-            $value .= $this->input[$this->pos];
-            $this->pos++;
+        while ($ctx->isValid() && $this->isDigit($ctx->current())) {
+            $value .= $ctx->current();
+            $ctx->pos++;
         }
 
         // Float part
-        if ($this->pos < $this->length && $this->input[$this->pos] === '.' && $this->isDigit($this->peek())) {
+        if ($ctx->isValid() && $ctx->current() === '.' && $this->isDigit($ctx->peek())) {
             $value .= '.';
-            $this->pos++;
+            $ctx->pos++;
 
-            while ($this->pos < $this->length && $this->isDigit($this->input[$this->pos])) {
-                $value .= $this->input[$this->pos];
-                $this->pos++;
+            while ($ctx->isValid() && $this->isDigit($ctx->current())) {
+                $value .= $ctx->current();
+                $ctx->pos++;
             }
 
             return $this->tokenFactory->createFromToken(Token::FLOAT, [Token::FLOAT->value => $value], $offset);
@@ -306,28 +296,28 @@ final class Lexer extends TokenizerInterface
         return $this->tokenFactory->createFromToken(Token::INTEGER, [Token::INTEGER->value => $value], $offset);
     }
 
-    private function readWhitespace(): BaseToken
+    private function readWhitespace(LexerContext $ctx): BaseToken
     {
-        $offset = $this->pos;
+        $offset = $ctx->pos;
         $value = '';
 
-        while ($this->pos < $this->length && ($this->input[$this->pos] === ' ' || $this->input[$this->pos] === "\t")) {
-            $value .= $this->input[$this->pos];
-            $this->pos++;
+        while ($ctx->isValid() && ($ctx->current() === ' ' || $ctx->current() === "\t")) {
+            $value .= $ctx->current();
+            $ctx->pos++;
         }
 
         return $this->tokenFactory->createFromToken(Token::SPACE, [Token::SPACE->value => $value], $offset);
     }
 
-    private function readNewlineToken(): BaseToken
+    private function readNewlineToken(LexerContext $ctx): BaseToken
     {
-        $offset = $this->pos;
-        $ch = $this->input[$this->pos];
-        $this->pos++;
+        $offset = $ctx->pos;
+        $ch = $ctx->current();
+        $ctx->pos++;
 
         // Match \r optionally followed by \n (like old regex: \r?\n)
-        if ($ch === "\r" && $this->pos < $this->length && $this->input[$this->pos] === "\n") {
-            $this->pos++;
+        if ($ch === "\r" && $ctx->isValid() && $ctx->current() === "\n") {
+            $ctx->pos++;
 
             return $this->tokenFactory->createFromToken(Token::NEWLINE, [Token::NEWLINE->value => "\r\n"], $offset);
         }
@@ -335,27 +325,27 @@ final class Lexer extends TokenizerInterface
         return $this->tokenFactory->createFromToken(Token::NEWLINE, [Token::NEWLINE->value => $ch], $offset);
     }
 
-    private function readIdentifier(): BaseToken
+    private function readIdentifier(LexerContext $ctx): BaseToken
     {
-        $offset = $this->pos;
+        $offset = $ctx->pos;
         $name = '';
 
-        while ($this->pos < $this->length && ($this->isAlpha($this->input[$this->pos]) || $this->input[$this->pos] === '_' || $this->isDigit($this->input[$this->pos]))) {
-            $name .= $this->input[$this->pos];
-            $this->pos++;
+        while ($ctx->isValid() && ($this->isAlpha($ctx->current()) || $ctx->current() === '_' || $this->isDigit($ctx->current()))) {
+            $name .= $ctx->current();
+            $ctx->pos++;
         }
 
         // Check for "not in" keyword (must be checked before other keywords)
         if ($name === 'not') {
-            $savedPos = $this->pos;
-            $this->skipAllWhitespace();
+            $savedPos = $ctx->pos;
+            $this->skipAllWhitespace($ctx);
 
-            if ($this->startsWith('in')) {
-                $this->pos += 2; // skip 'in'
+            if ($ctx->startsWith('in')) {
+                $ctx->pos += 2; // skip 'in'
                 return $this->tokenFactory->createFromToken(Token::NOT_IN, [Token::NOT_IN->value => 'not in'], $offset);
             }
 
-            $this->pos = $savedPos;
+            $ctx->pos = $savedPos;
         }
 
         $token = match ($name) {
@@ -371,42 +361,31 @@ final class Lexer extends TokenizerInterface
         }
 
         // Check if it's a function call (identifier followed by optional whitespace and '(')
-        $savedPos = $this->pos;
-        $this->skipWhitespace();
+        $savedPos = $ctx->pos;
+        $this->skipWhitespace($ctx);
 
-        if ($this->pos < $this->length && $this->input[$this->pos] === '(') {
+        if ($ctx->isValid() && $ctx->current() === '(') {
             return $this->tokenFactory->createFromToken(Token::FUNCTION, [Token::FUNCTION->value => $name], $offset);
         }
 
-        $this->pos = $savedPos;
+        $ctx->pos = $savedPos;
 
         // It's a variable
         return $this->tokenFactory->createFromToken(Token::VARIABLE, [Token::VARIABLE->value => $name], $offset);
     }
 
-    private function skipWhitespace(): void
+    private function skipWhitespace(LexerContext $ctx): void
     {
-        while ($this->pos < $this->length && ($this->input[$this->pos] === ' ' || $this->input[$this->pos] === "\t")) {
-            $this->pos++;
+        while ($ctx->isValid() && ($ctx->current() === ' ' || $ctx->current() === "\t")) {
+            $ctx->pos++;
         }
     }
 
-    private function skipAllWhitespace(): void
+    private function skipAllWhitespace(LexerContext $ctx): void
     {
-        while ($this->pos < $this->length && ($this->input[$this->pos] === ' ' || $this->input[$this->pos] === "\t" || $this->input[$this->pos] === "\r" || $this->input[$this->pos] === "\n")) {
-            $this->pos++;
+        while ($ctx->isValid() && ($ctx->current() === ' ' || $ctx->current() === "\t" || $ctx->current() === "\r" || $ctx->current() === "\n")) {
+            $ctx->pos++;
         }
-    }
-
-    private function startsWith(string $needle): bool
-    {
-        $len = strlen($needle);
-
-        if ($this->pos + $len > $this->length) {
-            return false;
-        }
-
-        return substr($this->input, $this->pos, $len) === $needle;
     }
 
     private function isAlpha(string $ch): bool
