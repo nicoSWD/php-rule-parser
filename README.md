@@ -217,7 +217,7 @@ Pull requests are very welcome! If they include tests, even better. This project
 - Add "typeof" construct
 - Do math (?)
 - Allow string concatenating with "+"
-- Duplicate regex modifiers should throw an error
+- ~~Duplicate regex modifiers should throw an error~~
 - ~~Add support for function calls~~
 - ~~Support for regular expressions~~
 - ~~Fix build on PHP 7 / Nightly~~

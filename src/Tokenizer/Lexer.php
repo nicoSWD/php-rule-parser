@@ -10,6 +10,7 @@ namespace nicoSWD\Rule\Tokenizer;
 use ArrayIterator;
 use Iterator;
 use nicoSWD\Rule\Grammar\Grammar;
+use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\Token;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
@@ -215,8 +216,16 @@ final class Lexer extends TokenizerInterface
         $value = '/' . $this->readDelimitedContent('/', disallowNewlines: true);
 
         // Read optional flags
+        $seenFlags = [];
         while ($this->pos < $this->length && str_contains('igm', $this->input[$this->pos])) {
-            $value .= $this->input[$this->pos];
+            $flag = $this->input[$this->pos];
+
+            if (isset($seenFlags[$flag])) {
+                throw ParserException::duplicateRegexModifier($flag, $offset);
+            }
+
+            $seenFlags[$flag] = true;
+            $value .= $flag;
             $this->pos++;
         }
 

@@ -73,4 +73,9 @@ final class ParserException extends \Exception
     {
         return new self(sprintf('Expected array, got "%s"', $type));
     }
+
+    public static function duplicateRegexModifier(string $modifier, int $offset): self
+    {
+        return new self(sprintf('Duplicate regex modifier "%s" at position %d', $modifier, $offset));
+    }
 }
