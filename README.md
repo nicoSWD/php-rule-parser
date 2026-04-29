@@ -196,10 +196,7 @@ Both will output: `Unexpected "(" at position 28`
 A custom syntax highlighter is also provided.
 
 ```php
-use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rule\Highlighter\Highlighter;
-use nicoSWD\Rule\Tokenizer\Lexer;
-use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
 
 $ruleStr = '
@@ -216,11 +213,7 @@ $ruleStr = '
         bar > 6
     )';
 
-$grammar = new JavaScript();
-$tokenFactory = new TokenFactory();
-$lexer = new Lexer($grammar, $tokenFactory);
-
-$highlighter = new Highlighter($lexer);
+$highlighter = new Highlighter();
 
 // Optional custom styles
 $highlighter->setStyle(

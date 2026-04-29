@@ -7,7 +7,10 @@
  */
 namespace nicoSWD\Rule\Highlighter;
 
-use nicoSWD\Rule\Tokenizer\TokenizerInterface;
+use nicoSWD\Rule\Grammar\Grammar;
+use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
+use nicoSWD\Rule\Tokenizer\Lexer;
+use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenType;
 
 /**
@@ -18,7 +21,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenType;
  *
  * Usage:
  * ```php
- * $highlighter = new Highlighter($lexer);
+ * $highlighter = new Highlighter();
  *
  * // Use default styles
  * echo $highlighter->highlightString('2 < 3 && foo in [4, 6, 7]');
@@ -34,7 +37,7 @@ final class Highlighter
     private array $styles = [];
 
     public function __construct(
-        private readonly TokenizerInterface $tokenizer,
+        private readonly ?Grammar $grammar = null,
     ) {
     }
 
@@ -59,7 +62,10 @@ final class Highlighter
     public function highlightString(string $rule): string
     {
         $styles = $this->getResolvedStyles();
-        $tokens = $this->tokenizer->tokenize($rule);
+        $grammar = $this->grammar ?? new JavaScript();
+        $tokenFactory = new TokenFactory();
+        $lexer = new Lexer($grammar, $tokenFactory);
+        $tokens = $lexer->tokenize($rule);
         $output = '';
 
         foreach ($tokens as $token) {
