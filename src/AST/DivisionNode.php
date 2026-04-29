@@ -20,6 +20,14 @@ final class DivisionNode extends Node
         $left = $this->left->evaluate($context);
         $right = $this->right->evaluate($context);
 
+        if ($right == 0) {
+            if ($left == 0) {
+                return NAN;
+            }
+
+            return $left > 0 ? INF : -INF;
+        }
+
         return $left / $right;
     }
 }

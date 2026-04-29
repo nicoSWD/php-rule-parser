@@ -20,6 +20,10 @@ final class ModuloNode extends Node
         $left = $this->left->evaluate($context);
         $right = $this->right->evaluate($context);
 
+        if ($right == 0) {
+            return NAN;
+        }
+
         return $left % $right;
     }
 }

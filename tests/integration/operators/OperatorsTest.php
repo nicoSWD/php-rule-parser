@@ -388,4 +388,41 @@ final class OperatorsTest extends AbstractTestBase
         $this->assertTrue($this->evaluate('-!true == -0'));
         $this->assertTrue($this->evaluate('!(-1 == 1)'));
     }
+
+    #[Test]
+    public function divisionByZeroReturnsInfinity(): void
+    {
+        $this->assertTrue($this->evaluate('1 / 0 == foo', ['foo' => INF]));
+        $this->assertTrue($this->evaluate('-1 / 0 == foo', ['foo' => -INF]));
+    }
+
+    #[Test]
+    public function zeroDividedByZeroReturnsNan(): void
+    {
+        $this->assertFalse($this->evaluate('0 / 0 == 0'));
+        $this->assertFalse($this->evaluate('0 / 0 == foo', ['foo' => 0]));
+    }
+
+    #[Test]
+    public function moduloByZeroReturnsNan(): void
+    {
+        $this->assertFalse($this->evaluate('5 % 0 == 0'));
+        $this->assertFalse($this->evaluate('5 % 0 == foo', ['foo' => 0]));
+    }
+
+    #[Test]
+    public function normalDivisionStillWorks(): void
+    {
+        $this->assertTrue($this->evaluate('10 / 2 == 5'));
+        $this->assertTrue($this->evaluate('100 / 4 == 25'));
+        $this->assertTrue($this->evaluate('100 / 5 / 2 == 10'));
+    }
+
+    #[Test]
+    public function normalModuloStillWorks(): void
+    {
+        $this->assertTrue($this->evaluate('10 % 3 == 1'));
+        $this->assertTrue($this->evaluate('100 % 50 == 0'));
+        $this->assertTrue($this->evaluate('7 % 2 == 1'));
+    }
 }
