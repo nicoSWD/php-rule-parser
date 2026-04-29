@@ -7,8 +7,18 @@
  */
 namespace nicoSWD\Rule;
 
+use nicoSWD\Rule\AST\AstEvaluator;
 use nicoSWD\Rule\Grammar\Grammar;
+use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
+use nicoSWD\Rule\Parser\Parser;
+use nicoSWD\Rule\Tokenizer\Lexer;
 use nicoSWD\Rule\Tokenizer\TokenizerInterface;
+use nicoSWD\Rule\TokenStream\FunctionRegistry;
+use nicoSWD\Rule\TokenStream\MethodRegistry;
+use nicoSWD\Rule\TokenStream\ObjectMethodCallerFactory;
+use nicoSWD\Rule\TokenStream\Token\TokenFactory;
+use nicoSWD\Rule\TokenStream\TokenIteratorFactory;
+use nicoSWD\Rule\TokenStream\VariableRegistry;
 
 /**
  * Builder for creating a RuleEngine with custom configuration.
@@ -88,9 +98,34 @@ final class RuleEngineBuilder
      */
     public function build(): RuleEngine
     {
+        $tokenFactory = new TokenFactory();
+        $grammar = $this->grammar ?? new JavaScript();
+        $tokenizer = $this->tokenizer ?? new Lexer($grammar, $tokenFactory);
+
+        $variableRegistry = new VariableRegistry([], $tokenFactory);
+        $functionRegistry = new FunctionRegistry($grammar);
+        $methodRegistry = new MethodRegistry($grammar, $tokenFactory, new ObjectMethodCallerFactory());
+
+        $parser = new Parser(
+            new TokenIteratorFactory(
+                $variableRegistry,
+                $functionRegistry,
+                $methodRegistry,
+            ),
+            $tokenizer,
+        );
+
+        $astEvaluator = new AstEvaluator(
+            $variableRegistry,
+            $functionRegistry,
+            $methodRegistry,
+            $tokenFactory,
+        );
+
         return new RuleEngine(
-            tokenizer: $this->tokenizer,
-            grammar: $this->grammar,
+            parser: $parser,
+            astEvaluator: $astEvaluator,
+            variableRegistry: $variableRegistry,
             defaultVariables: $this->defaultVariables,
         );
     }

@@ -187,7 +187,7 @@ final class ResultTest extends TestCase
     #[Test]
     public function resultWithRuleEngine(): void
     {
-        $engine = new RuleEngine(defaultVariables: ['x' => 10]);
+        $engine = RuleEngine::builder()->withDefaultVariables(['x' => 10])->build();
         $this->assertSame(50, $engine->result('x * 5'));
     }
 

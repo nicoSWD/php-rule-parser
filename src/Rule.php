@@ -24,7 +24,7 @@ use nicoSWD\Rule\Parser\Exception\ParserException;
  * $rule->isTrue();  // true
  *
  * // With a shared engine (more efficient for multiple rules)
- * $engine = new RuleEngine(defaultVariables: ['foo' => 10]);
+ * $engine = RuleEngine::builder()->withDefaultVariables(['foo' => 10])->build();
  * $rule1 = new Rule('foo > 5', engine: $engine);
  * $rule2 = new Rule('foo < 3', engine: $engine);
  * ```
@@ -42,7 +42,7 @@ class Rule
         array $variables = [],
         ?RuleEngine $engine = null,
     ) {
-        $this->engine = $engine ?? new RuleEngine();
+        $this->engine = $engine ?? RuleEngine::builder()->build();
         $this->rule = $rule;
         $this->variables = $variables;
     }

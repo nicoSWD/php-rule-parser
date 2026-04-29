@@ -45,17 +45,6 @@ final class LexerContext
     }
 
     /**
-     * Advance the position by one and return the character.
-     */
-    public function advance(): string
-    {
-        $ch = $this->input[$this->pos] ?? '';
-        $this->pos++;
-
-        return $ch;
-    }
-
-    /**
      * Check if the current position is within bounds.
      */
     public function isValid(): bool

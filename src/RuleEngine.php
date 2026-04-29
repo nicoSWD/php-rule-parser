@@ -10,17 +10,8 @@ namespace nicoSWD\Rule;
 use Exception;
 use nicoSWD\Rule\AST\AstEvaluator;
 use nicoSWD\Rule\AST\Node;
-use nicoSWD\Rule\Grammar\Grammar;
-use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\Parser\Parser;
-use nicoSWD\Rule\Tokenizer\Lexer;
-use nicoSWD\Rule\Tokenizer\TokenizerInterface;
-use nicoSWD\Rule\TokenStream\FunctionRegistry;
-use nicoSWD\Rule\TokenStream\MethodRegistry;
-use nicoSWD\Rule\TokenStream\ObjectMethodCallerFactory;
-use nicoSWD\Rule\TokenStream\Token\TokenFactory;
-use nicoSWD\Rule\TokenStream\TokenIteratorFactory;
 use nicoSWD\Rule\TokenStream\VariableRegistry;
 
 /**
@@ -32,11 +23,13 @@ use nicoSWD\Rule\TokenStream\VariableRegistry;
  * Usage:
  * ```php
  * // Simple evaluation
- * $engine = new RuleEngine();
+ * $engine = RuleEngine::builder()->build();
  * $result = $engine->evaluate('foo > 5', ['foo' => 10]);
  *
  * // With default variables
- * $engine = new RuleEngine(defaultVariables: ['foo' => 10]);
+ * $engine = RuleEngine::builder()
+ *     ->withDefaultVariables(['foo' => 10])
+ *     ->build();
  * $result = $engine->evaluate('foo > 5');
  *
  * // Check rule validity
@@ -56,42 +49,12 @@ use nicoSWD\Rule\TokenStream\VariableRegistry;
  */
 final readonly class RuleEngine
 {
-    private TokenFactory $tokenFactory;
-    private TokenizerInterface $tokenizer;
-    private VariableRegistry $variableRegistry;
-    private FunctionRegistry $functionRegistry;
-    private MethodRegistry $methodRegistry;
-    private Parser $parser;
-    private AstEvaluator $astEvaluator;
-
     public function __construct(
-        ?TokenizerInterface $tokenizer = null,
-        ?Grammar $grammar = null,
+        private Parser $parser,
+        private AstEvaluator $astEvaluator,
+        private VariableRegistry $variableRegistry,
         private array $defaultVariables = [],
     ) {
-        $this->tokenFactory = new TokenFactory();
-        $grammar ??= new JavaScript();
-        $this->tokenizer = $tokenizer ?? new Lexer($grammar, $this->tokenFactory);
-
-        $this->variableRegistry = new VariableRegistry([], $this->tokenFactory);
-        $this->functionRegistry = new FunctionRegistry($grammar);
-        $this->methodRegistry = new MethodRegistry($grammar, $this->tokenFactory, new ObjectMethodCallerFactory());
-
-        $this->parser = new Parser(
-            new TokenIteratorFactory(
-                $this->variableRegistry,
-                $this->functionRegistry,
-                $this->methodRegistry,
-            ),
-            $this->tokenizer,
-        );
-
-        $this->astEvaluator = new AstEvaluator(
-            $this->variableRegistry,
-            $this->functionRegistry,
-            $this->methodRegistry,
-            $this->tokenFactory,
-        );
     }
 
     /**
