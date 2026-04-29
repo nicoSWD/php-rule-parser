@@ -34,6 +34,7 @@ class TokenFactory
         return match ($token) {
             Token::AND => new TokenAnd(...$args),
             Token::OR => new TokenOr(...$args),
+            Token::NOT => new TokenNot(...$args),
             Token::NOT_EQUAL_STRICT => new TokenNotEqualStrict(...$args),
             Token::NOT_EQUAL => new TokenNotEqual(...$args),
             Token::EQUAL_STRICT => new TokenEqualStrict(...$args),

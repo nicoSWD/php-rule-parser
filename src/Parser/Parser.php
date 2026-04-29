@@ -22,10 +22,12 @@ use nicoSWD\Rule\AST\MethodCallNode;
 use nicoSWD\Rule\AST\ModuloNode;
 use nicoSWD\Rule\AST\MultiplicationNode;
 use nicoSWD\Rule\AST\Node;
+use nicoSWD\Rule\AST\NotNode;
 use nicoSWD\Rule\AST\NullNode;
 use nicoSWD\Rule\AST\RegexNode;
 use nicoSWD\Rule\AST\StringNode;
 use nicoSWD\Rule\AST\SubtractionNode;
+use nicoSWD\Rule\AST\UnaryMinusNode;
 use nicoSWD\Rule\AST\VariableNode;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenAnd;
@@ -48,6 +50,7 @@ use nicoSWD\Rule\TokenStream\Token\TokenMethod;
 use nicoSWD\Rule\TokenStream\Token\TokenMinus;
 use nicoSWD\Rule\TokenStream\Token\TokenModulo;
 use nicoSWD\Rule\TokenStream\Token\TokenMultiply;
+use nicoSWD\Rule\TokenStream\Token\TokenNot;
 use nicoSWD\Rule\TokenStream\Token\TokenNotEqual;
 use nicoSWD\Rule\TokenStream\Token\TokenNotEqualStrict;
 use nicoSWD\Rule\TokenStream\Token\TokenNotIn;
@@ -73,7 +76,10 @@ use nicoSWD\Rule\TokenStream\TokenStream;
  *   logical_and      -> comparison ( "&&" comparison )*
  *   comparison       -> additive ( comparison_op additive )?
  *   additive         -> multiplicative ( ("+" | "-") multiplicative )*
- *   multiplicative   -> primary ( ("*" | "/" | "%") primary )*
+ *   multiplicative   -> unary ( ("*" | "/" | "%") unary )*
+ *   unary            -> "-" unary
+ *                     | "!" unary
+ *                     | primary
  *   primary          -> "(" expression ")"
  *                     | value
  *   value            -> variable method_call*
@@ -186,7 +192,7 @@ final readonly class Parser
     /** @throws Exception\ParserException */
     private function parseMultiplicative(TokenIterator $tokens): Node
     {
-        $left = $this->parsePrimary($tokens);
+        $left = $this->parseUnary($tokens);
 
         while (
             $this->peekToken($tokens) instanceof TokenMultiply
@@ -195,7 +201,7 @@ final readonly class Parser
         ) {
             $operator = $this->peekToken($tokens);
             $this->consumeToken($tokens); // consume *, /, or %
-            $right = $this->parsePrimary($tokens);
+            $right = $this->parseUnary($tokens);
 
             $left = match ($operator::class) {
                 TokenMultiply::class => new MultiplicationNode($left, $right),
@@ -206,6 +212,36 @@ final readonly class Parser
         }
 
         return $left;
+    }
+
+    /** @throws Exception\ParserException */
+    private function parseUnary(TokenIterator $tokens): Node
+    {
+        $this->skipIgnoredTokens($tokens);
+
+        if (!$tokens->valid()) {
+            throw Exception\ParserException::unexpectedEndOfString();
+        }
+
+        $token = $tokens->peekRaw();
+
+        // Unary minus: -expr
+        if ($token instanceof TokenMinus) {
+            $tokens->next();
+            $operand = $this->parseUnary($tokens);
+
+            return new UnaryMinusNode($operand);
+        }
+
+        // Logical NOT: !expr
+        if ($token instanceof TokenNot) {
+            $tokens->next();
+            $operand = $this->parseUnary($tokens);
+
+            return new NotNode($operand);
+        }
+
+        return $this->parsePrimary($tokens);
     }
 
     /** @throws Exception\ParserException */

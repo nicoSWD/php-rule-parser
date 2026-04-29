@@ -304,4 +304,88 @@ final class OperatorsTest extends AbstractTestBase
         // -3 alone should be a negative number
         $this->assertTrue($this->evaluate('-3 == -3'));
     }
+
+    // --- Unary operator tests ---
+
+    #[Test]
+    public function unaryMinusNegatesNumber(): void
+    {
+        $this->assertTrue($this->evaluate('-5 == -5'));
+        $this->assertTrue($this->evaluate('--5 == 5'));
+        $this->assertTrue($this->evaluate('---5 == -5'));
+    }
+
+    #[Test]
+    public function unaryMinusWithExpression(): void
+    {
+        $this->assertTrue($this->evaluate('-(5 + 3) == -8'));
+        $this->assertTrue($this->evaluate('-(5 - 3) == -2'));
+        $this->assertTrue($this->evaluate('-foo == -5', ['foo' => 5]));
+    }
+
+    #[Test]
+    public function unaryMinusWithVariable(): void
+    {
+        $this->assertTrue($this->evaluate('-foo == -10', ['foo' => 10]));
+        $this->assertTrue($this->evaluate('--foo == 10', ['foo' => 10]));
+    }
+
+    #[Test]
+    public function unaryMinusPrecedence(): void
+    {
+        // -5 * 3 should be (-5) * 3 = -15
+        $this->assertTrue($this->evaluate('-5 * 3 == -15'));
+        // -(5 * 3) = -15
+        $this->assertTrue($this->evaluate('-(5 * 3) == -15'));
+        // -5 + 3 should be (-5) + 3 = -2
+        $this->assertTrue($this->evaluate('-5 + 3 == -2'));
+    }
+
+    #[Test]
+    public function logicalNotWithBool(): void
+    {
+        $this->assertTrue($this->evaluate('!false'));
+        $this->assertFalse($this->evaluate('!true'));
+        $this->assertTrue($this->evaluate('!!true'));
+        $this->assertFalse($this->evaluate('!!false'));
+    }
+
+    #[Test]
+    public function logicalNotWithExpression(): void
+    {
+        $this->assertTrue($this->evaluate('!(1 == 2)'));
+        $this->assertFalse($this->evaluate('!(1 == 1)'));
+        $this->assertTrue($this->evaluate('!(1 == 2 && 2 == 2)'));
+    }
+
+    #[Test]
+    public function logicalNotWithVariable(): void
+    {
+        $this->assertTrue($this->evaluate('!foo', ['foo' => false]));
+        $this->assertFalse($this->evaluate('!foo', ['foo' => true]));
+        $this->assertTrue($this->evaluate('!!foo', ['foo' => true]));
+    }
+
+    #[Test]
+    public function logicalNotWithComparison(): void
+    {
+        $this->assertTrue($this->evaluate('!(1 > 2)'));
+        $this->assertFalse($this->evaluate('!(1 < 2)'));
+        $this->assertTrue($this->evaluate('!(1 == 2)'));
+    }
+
+    #[Test]
+    public function logicalNotWithMethodCall(): void
+    {
+        $this->assertFalse($this->evaluate('!"foo".indexOf("x") == -1'));
+        $this->assertTrue($this->evaluate('!"foo".indexOf("f") == -1'));
+    }
+
+    #[Test]
+    public function combinedUnaryOperators(): void
+    {
+        $this->assertTrue($this->evaluate('!(-5 == -5) == false'));
+        $this->assertTrue($this->evaluate('-!true == -0'));
+        $this->assertTrue($this->evaluate('!(-1 == 1)'));
+    }
 }

@@ -51,16 +51,10 @@ final readonly class AstEvaluator
             StringNode::class => $node->value,
             ArrayNode::class => $this->resolveArray($node),
             VariableNode::class => $this->resolveValue($node),
+            UnaryMinusNode::class => $this->resolveUnaryMinus($node),
+            NotNode::class => $this->resolveNot($node),
             default => throw new \RuntimeException('Unexpected root node type: ' . $node::class),
         };
-    }
-
-    /**
-     * @throws ParserException
-     */
-    private function evaluateVariableAsBool(VariableNode $node): bool
-    {
-        return (bool) $this->resolveValue($node);
     }
 
     /**
@@ -132,8 +126,32 @@ final readonly class AstEvaluator
             MultiplicationNode::class => $this->resolveMultiplication($node),
             DivisionNode::class => $this->resolveDivision($node),
             ModuloNode::class => $this->resolveModulo($node),
+            UnaryMinusNode::class => $this->resolveUnaryMinus($node),
+            NotNode::class => $this->resolveNot($node),
+            ComparisonNode::class => $this->evaluateComparison($node),
+            LogicalNode::class => $this->evaluateLogical($node),
             default => throw new \RuntimeException('Unexpected node type: ' . $node::class),
         };
+    }
+
+    /**
+     * @throws ParserException
+     */
+    private function resolveUnaryMinus(UnaryMinusNode $node): mixed
+    {
+        $value = $this->resolveValue($node->node);
+
+        return -$value;
+    }
+
+    /**
+     * @throws ParserException
+     */
+    private function resolveNot(NotNode $node): mixed
+    {
+        $value = $this->resolveValue($node->node);
+
+        return !$value;
     }
 
     /**

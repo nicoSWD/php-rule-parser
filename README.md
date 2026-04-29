@@ -73,6 +73,24 @@ $rule = new Rule('(2 + 3) * 4 == 20', $variables);
 var_dump($rule->isTrue()); // bool(true) - parentheses override precedence
 ```
 
+Unary minus and logical NOT operators are also supported:
+```php
+$rule = new Rule('-5 * 3 == -15');
+var_dump($rule->isTrue()); // bool(true) - unary minus binds tighter than multiplication
+
+$rule = new Rule('--5 == 5');
+var_dump($rule->isTrue()); // bool(true) - double negation
+
+$rule = new Rule('!false');
+var_dump($rule->isTrue()); // bool(true) - logical NOT
+
+$rule = new Rule('!(1 == 2)');
+var_dump($rule->isTrue()); // bool(true) - NOT with parenthesized comparison
+
+$rule = new Rule('!foo', ['foo' => false]);
+var_dump($rule->isTrue()); // bool(true) - NOT with variable
+```
+
 Get the actual computed result of an expression (not just true/false)
 ```php
 $rule = new Rule('5 * 3');
@@ -159,6 +177,8 @@ Arithmetic  | subtraction              | -
 Arithmetic  | multiplication           | *
 Arithmetic  | division                 | /
 Arithmetic  | modulo                   | %
+Unary       | negation                 | -
+Unary       | logical NOT              | !
 
 ## Error Handling
 

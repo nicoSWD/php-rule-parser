@@ -11,6 +11,7 @@ enum Token: string
 {
     case AND = 'And';
     case OR = 'Or';
+    case NOT = 'Not';
     case NOT_EQUAL_STRICT = 'NotEqualStrict';
     case NOT_EQUAL = 'NotEqual';
     case EQUAL_STRICT = 'EqualStrict';

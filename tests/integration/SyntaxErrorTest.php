@@ -72,12 +72,12 @@ final class SyntaxErrorTest extends AbstractTestBase
     }
 
     #[Test]
-    public function misplacedMinusThrowsException(): void
+    public function unaryMinusOnVariableIsValid(): void
     {
         $rule = new Rule('1 == 1 && -foo == 1', ['foo' => 1]);
 
-        $this->assertFalse($rule->isValid());
-        $this->assertSame('Unexpected "-" at position 10', $rule->error);
+        $this->assertTrue($rule->isValid());
+        $this->assertSame('', $rule->error);
     }
 
     #[Test]
