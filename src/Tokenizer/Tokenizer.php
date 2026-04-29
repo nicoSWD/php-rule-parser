@@ -11,9 +11,9 @@ use Iterator;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
-abstract class TokenizerInterface
+abstract class Tokenizer
 {
-    public Grammar $grammar;
+    protected Grammar $grammar;
 
     /**
      * @param string $string

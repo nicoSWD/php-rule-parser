@@ -27,7 +27,7 @@ use nicoSWD\Rule\TokenStream\Token\Type\Value;
  * The Lexer is stateless and reentrant: all mutable scanning state is held
  * in a LexerContext object that is local to each tokenize() call.
  */
-final class Lexer extends TokenizerInterface
+final class Lexer extends Tokenizer
 {
     public function __construct(
         public Grammar $grammar,

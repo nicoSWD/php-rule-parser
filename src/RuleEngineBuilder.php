@@ -12,7 +12,7 @@ use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rule\Parser\Parser;
 use nicoSWD\Rule\Tokenizer\Lexer;
-use nicoSWD\Rule\Tokenizer\TokenizerInterface;
+use nicoSWD\Rule\Tokenizer\Tokenizer;
 use nicoSWD\Rule\TokenStream\FunctionRegistry;
 use nicoSWD\Rule\TokenStream\MethodRegistry;
 use nicoSWD\Rule\TokenStream\ObjectMethodCallerFactory;
@@ -34,7 +34,7 @@ use nicoSWD\Rule\TokenStream\VariableRegistry;
 final class RuleEngineBuilder
 {
     private ?Grammar $grammar = null;
-    private ?TokenizerInterface $tokenizer = null;
+    private ?Tokenizer $tokenizer = null;
     private array $defaultVariables = [];
 
     /**
@@ -65,10 +65,10 @@ final class RuleEngineBuilder
      *
      * The tokenizer converts a rule string into a stream of tokens.
      *
-     * @param TokenizerInterface $tokenizer
+     * @param Tokenizer $tokenizer
      * @return $this
      */
-    public function withTokenizer(TokenizerInterface $tokenizer): self
+    public function withTokenizer(Tokenizer $tokenizer): self
     {
         $this->tokenizer = $tokenizer;
 

@@ -32,7 +32,7 @@ use nicoSWD\Rule\AST\VariableNode;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use nicoSWD\Rule\TokenStream\TokenIterator;
-use nicoSWD\Rule\Tokenizer\TokenizerInterface;
+use nicoSWD\Rule\Tokenizer\Tokenizer;
 
 /**
  * Recursive descent parser that builds an AST from the token stream.
@@ -57,7 +57,7 @@ use nicoSWD\Rule\Tokenizer\TokenizerInterface;
 final readonly class Parser
 {
     public function __construct(
-        private TokenizerInterface $tokenizer,
+        private Tokenizer $tokenizer,
     ) {
     }
 
