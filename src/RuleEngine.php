@@ -106,6 +106,21 @@ final readonly class RuleEngine
     {
         $ast = $this->parse($rule, $variables);
 
+        return $this->evaluateNode($ast);
+    }
+
+    /**
+     * Evaluate a pre-parsed AST node and return whether it's true or false.
+     *
+     * Use this when you already have a parsed Node (e.g., from a cached parse)
+     * to avoid re-parsing the rule string.
+     *
+     * @param Node $ast The pre-parsed AST node
+     * @return bool
+     * @throws ParserException
+     */
+    public function evaluateNode(Node $ast): bool
+    {
         return $this->astEvaluator->evaluate($ast);
     }
 
@@ -124,6 +139,21 @@ final readonly class RuleEngine
     {
         $ast = $this->parse($rule, $variables);
 
+        return $this->resolveNode($ast);
+    }
+
+    /**
+     * Resolve a pre-parsed AST node to its actual computed value, without casting to bool.
+     *
+     * Use this when you already have a parsed Node (e.g., from a cached parse)
+     * to avoid re-parsing the rule string.
+     *
+     * @param Node $ast The pre-parsed AST node
+     * @return mixed
+     * @throws ParserException
+     */
+    public function resolveNode(Node $ast): mixed
+    {
         return $this->astEvaluator->resolve($ast);
     }
 

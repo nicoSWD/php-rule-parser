@@ -60,7 +60,7 @@ class Rule
             $this->ast = $this->engine->parse($this->rule, $this->variables);
         }
 
-        return $this->engine->evaluate($this->rule, $this->variables);
+        return $this->engine->evaluateNode($this->ast);
     }
 
     /**
@@ -86,7 +86,7 @@ class Rule
             $this->ast = $this->engine->parse($this->rule, $this->variables);
         }
 
-        return $this->engine->result($this->rule, $this->variables);
+        return $this->engine->resolveNode($this->ast);
     }
 
     /**
