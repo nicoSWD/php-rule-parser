@@ -18,9 +18,4 @@ abstract class TokenBool extends BaseToken implements Value
             false => new TokenBoolFalse(false),
         };
     }
-
-    public function getType(): TokenType
-    {
-        return TokenType::VALUE;
-    }
 }

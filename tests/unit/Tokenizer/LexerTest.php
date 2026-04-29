@@ -11,6 +11,7 @@ use nicoSWD\Rule\Grammar\JavaScript\JavaScript;
 use nicoSWD\Rule\Tokenizer\Lexer;
 use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -69,55 +70,55 @@ final class LexerTest extends TestCase
         $this->assertCount(13, $lexerTokens);
 
         // Verify the lexer produces the correct tokens
-        $this->assertInstanceOf(Token\TokenInteger::class, $lexerTokens[0]);
+        $this->assertSame(TokenKind::INTEGER, $lexerTokens[0]->getKind());
         $this->assertSame('5', $lexerTokens[0]->getOriginalValue());
         $this->assertSame(0, $lexerTokens[0]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenSpace::class, $lexerTokens[1]);
+        $this->assertSame(TokenKind::SPACE, $lexerTokens[1]->getKind());
         $this->assertSame(' ', $lexerTokens[1]->getOriginalValue());
         $this->assertSame(1, $lexerTokens[1]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenNotIn::class, $lexerTokens[2]);
+        $this->assertSame(TokenKind::NOT_IN, $lexerTokens[2]->getKind());
         $this->assertSame('not in', $lexerTokens[2]->getOriginalValue());
         $this->assertSame(2, $lexerTokens[2]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenSpace::class, $lexerTokens[3]);
+        $this->assertSame(TokenKind::SPACE, $lexerTokens[3]->getKind());
         $this->assertSame(' ', $lexerTokens[3]->getOriginalValue());
         $this->assertSame(25, $lexerTokens[3]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenOpeningArray::class, $lexerTokens[4]);
+        $this->assertSame(TokenKind::OPENING_ARRAY, $lexerTokens[4]->getKind());
         $this->assertSame('[', $lexerTokens[4]->getOriginalValue());
         $this->assertSame(26, $lexerTokens[4]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenInteger::class, $lexerTokens[5]);
+        $this->assertSame(TokenKind::INTEGER, $lexerTokens[5]->getKind());
         $this->assertSame('4', $lexerTokens[5]->getOriginalValue());
         $this->assertSame(27, $lexerTokens[5]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenComma::class, $lexerTokens[6]);
+        $this->assertSame(TokenKind::COMMA, $lexerTokens[6]->getKind());
         $this->assertSame(',', $lexerTokens[6]->getOriginalValue());
         $this->assertSame(28, $lexerTokens[6]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenSpace::class, $lexerTokens[7]);
+        $this->assertSame(TokenKind::SPACE, $lexerTokens[7]->getKind());
         $this->assertSame(' ', $lexerTokens[7]->getOriginalValue());
         $this->assertSame(29, $lexerTokens[7]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenInteger::class, $lexerTokens[8]);
+        $this->assertSame(TokenKind::INTEGER, $lexerTokens[8]->getKind());
         $this->assertSame('6', $lexerTokens[8]->getOriginalValue());
         $this->assertSame(30, $lexerTokens[8]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenComma::class, $lexerTokens[9]);
+        $this->assertSame(TokenKind::COMMA, $lexerTokens[9]->getKind());
         $this->assertSame(',', $lexerTokens[9]->getOriginalValue());
         $this->assertSame(31, $lexerTokens[9]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenSpace::class, $lexerTokens[10]);
+        $this->assertSame(TokenKind::SPACE, $lexerTokens[10]->getKind());
         $this->assertSame(' ', $lexerTokens[10]->getOriginalValue());
         $this->assertSame(32, $lexerTokens[10]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenInteger::class, $lexerTokens[11]);
+        $this->assertSame(TokenKind::INTEGER, $lexerTokens[11]->getKind());
         $this->assertSame('7', $lexerTokens[11]->getOriginalValue());
         $this->assertSame(33, $lexerTokens[11]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenClosingArray::class, $lexerTokens[12]);
+        $this->assertSame(TokenKind::CLOSING_ARRAY, $lexerTokens[12]->getKind());
         $this->assertSame(']', $lexerTokens[12]->getOriginalValue());
         $this->assertSame(34, $lexerTokens[12]->getOffset());
     }
@@ -169,43 +170,43 @@ final class LexerTest extends TestCase
         // The lexer produces separate tokens: method name, space, and '('.
         $this->assertCount(10, $tokens);
 
-        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame(TokenKind::ENCAPSED_STRING, $tokens[0]->getKind());
         $this->assertSame('"foo"', $tokens[0]->getOriginalValue());
         $this->assertSame(0, $tokens[0]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenSpace::class, $tokens[1]);
+        $this->assertSame(TokenKind::SPACE, $tokens[1]->getKind());
         $this->assertSame(' ', $tokens[1]->getOriginalValue());
         $this->assertSame(5, $tokens[1]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenMethod::class, $tokens[2]);
+        $this->assertSame(TokenKind::METHOD, $tokens[2]->getKind());
         $this->assertSame('toUpperCase', $tokens[2]->getOriginalValue());
         $this->assertSame(6, $tokens[2]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenSpace::class, $tokens[3]);
+        $this->assertSame(TokenKind::SPACE, $tokens[3]->getKind());
         $this->assertSame(' ', $tokens[3]->getOriginalValue());
         $this->assertSame(19, $tokens[3]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenOpeningParenthesis::class, $tokens[4]);
+        $this->assertSame(TokenKind::OPENING_PARENTHESIS, $tokens[4]->getKind());
         $this->assertSame('(', $tokens[4]->getOriginalValue());
         $this->assertSame(20, $tokens[4]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenClosingParenthesis::class, $tokens[5]);
+        $this->assertSame(TokenKind::CLOSING_PARENTHESIS, $tokens[5]->getKind());
         $this->assertSame(')', $tokens[5]->getOriginalValue());
         $this->assertSame(21, $tokens[5]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenSpace::class, $tokens[6]);
+        $this->assertSame(TokenKind::SPACE, $tokens[6]->getKind());
         $this->assertSame(' ', $tokens[6]->getOriginalValue());
         $this->assertSame(22, $tokens[6]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenEqualStrict::class, $tokens[7]);
+        $this->assertSame(TokenKind::EQUAL_STRICT, $tokens[7]->getKind());
         $this->assertSame('===', $tokens[7]->getOriginalValue());
         $this->assertSame(23, $tokens[7]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenSpace::class, $tokens[8]);
+        $this->assertSame(TokenKind::SPACE, $tokens[8]->getKind());
         $this->assertSame(' ', $tokens[8]->getOriginalValue());
         $this->assertSame(26, $tokens[8]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[9]);
+        $this->assertSame(TokenKind::ENCAPSED_STRING, $tokens[9]->getKind());
         $this->assertSame('"FOO"', $tokens[9]->getOriginalValue());
         $this->assertSame(27, $tokens[9]->getOffset());
     }
@@ -326,23 +327,23 @@ final class LexerTest extends TestCase
         $this->assertCount(5, $lexerTokens);
 
         // Verify the lexer produces the correct tokens
-        $this->assertInstanceOf(Token\TokenVariable::class, $lexerTokens[0]);
+        $this->assertSame(TokenKind::VARIABLE, $lexerTokens[0]->getKind());
         $this->assertSame('foo', $lexerTokens[0]->getOriginalValue());
         $this->assertSame(0, $lexerTokens[0]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenSpace::class, $lexerTokens[1]);
+        $this->assertSame(TokenKind::SPACE, $lexerTokens[1]->getKind());
         $this->assertSame(' ', $lexerTokens[1]->getOriginalValue());
         $this->assertSame(3, $lexerTokens[1]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenEqual::class, $lexerTokens[2]);
+        $this->assertSame(TokenKind::EQUAL, $lexerTokens[2]->getKind());
         $this->assertSame('==', $lexerTokens[2]->getOriginalValue());
         $this->assertSame(4, $lexerTokens[2]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenSpace::class, $lexerTokens[3]);
+        $this->assertSame(TokenKind::SPACE, $lexerTokens[3]->getKind());
         $this->assertSame(' ', $lexerTokens[3]->getOriginalValue());
         $this->assertSame(6, $lexerTokens[3]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenEncapsedString::class, $lexerTokens[4]);
+        $this->assertSame(TokenKind::ENCAPSED_STRING, $lexerTokens[4]->getKind());
         $this->assertSame('"hello \\"world\\""', $lexerTokens[4]->getOriginalValue());
         $this->assertSame(7, $lexerTokens[4]->getOffset());
     }
@@ -367,23 +368,23 @@ final class LexerTest extends TestCase
         $this->assertCount(5, $lexerTokens);
 
         // Verify the lexer produces the correct tokens
-        $this->assertInstanceOf(Token\TokenVariable::class, $lexerTokens[0]);
+        $this->assertSame(TokenKind::VARIABLE, $lexerTokens[0]->getKind());
         $this->assertSame('foo', $lexerTokens[0]->getOriginalValue());
         $this->assertSame(0, $lexerTokens[0]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenSpace::class, $lexerTokens[1]);
+        $this->assertSame(TokenKind::SPACE, $lexerTokens[1]->getKind());
         $this->assertSame(' ', $lexerTokens[1]->getOriginalValue());
         $this->assertSame(3, $lexerTokens[1]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenEqual::class, $lexerTokens[2]);
+        $this->assertSame(TokenKind::EQUAL, $lexerTokens[2]->getKind());
         $this->assertSame('==', $lexerTokens[2]->getOriginalValue());
         $this->assertSame(4, $lexerTokens[2]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenSpace::class, $lexerTokens[3]);
+        $this->assertSame(TokenKind::SPACE, $lexerTokens[3]->getKind());
         $this->assertSame(' ', $lexerTokens[3]->getOriginalValue());
         $this->assertSame(6, $lexerTokens[3]->getOffset());
 
-        $this->assertInstanceOf(Token\TokenEncapsedString::class, $lexerTokens[4]);
+        $this->assertSame(TokenKind::ENCAPSED_STRING, $lexerTokens[4]->getKind());
         $this->assertSame("'hello \\'world\\''", $lexerTokens[4]->getOriginalValue());
         $this->assertSame(7, $lexerTokens[4]->getOffset());
     }
@@ -397,7 +398,7 @@ final class LexerTest extends TestCase
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
-        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame(TokenKind::ENCAPSED_STRING, $tokens[0]->getKind());
         $this->assertSame("hello\nworld", $tokens[0]->getValue());
     }
 
@@ -410,7 +411,7 @@ final class LexerTest extends TestCase
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
-        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame(TokenKind::ENCAPSED_STRING, $tokens[0]->getKind());
         $this->assertSame("tab\there", $tokens[0]->getValue());
     }
 
@@ -423,7 +424,7 @@ final class LexerTest extends TestCase
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
-        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame(TokenKind::ENCAPSED_STRING, $tokens[0]->getKind());
         $this->assertSame("back\\slash", $tokens[0]->getValue());
     }
 
@@ -436,7 +437,7 @@ final class LexerTest extends TestCase
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
-        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame(TokenKind::ENCAPSED_STRING, $tokens[0]->getKind());
         $this->assertSame('hello "world"', $tokens[0]->getValue());
     }
 
@@ -449,7 +450,7 @@ final class LexerTest extends TestCase
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
-        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame(TokenKind::ENCAPSED_STRING, $tokens[0]->getKind());
         $this->assertSame("hello 'world'", $tokens[0]->getValue());
     }
 
@@ -462,7 +463,7 @@ final class LexerTest extends TestCase
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
-        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame(TokenKind::ENCAPSED_STRING, $tokens[0]->getKind());
         $this->assertSame("line1\rline2", $tokens[0]->getValue());
     }
 
@@ -475,7 +476,7 @@ final class LexerTest extends TestCase
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
-        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame(TokenKind::ENCAPSED_STRING, $tokens[0]->getKind());
         $this->assertSame("null\0byte", $tokens[0]->getValue());
     }
 
@@ -488,7 +489,7 @@ final class LexerTest extends TestCase
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
-        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame(TokenKind::ENCAPSED_STRING, $tokens[0]->getKind());
         $this->assertSame("line1\nline2\tindented\\end", $tokens[0]->getValue());
     }
 
@@ -501,7 +502,7 @@ final class LexerTest extends TestCase
         $tokens = iterator_to_array($lexer->tokenize($rule));
 
         $this->assertCount(1, $tokens);
-        $this->assertInstanceOf(Token\TokenEncapsedString::class, $tokens[0]);
+        $this->assertSame(TokenKind::ENCAPSED_STRING, $tokens[0]->getKind());
         $this->assertSame('foo\\xbar', $tokens[0]->getValue());
     }
 

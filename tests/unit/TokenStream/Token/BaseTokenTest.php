@@ -8,7 +8,7 @@
 namespace nicoSWD\Rule\tests\unit\TokenStream\Token;
 
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenType;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -20,9 +20,9 @@ final class BaseTokenTest extends TestCase
     protected function setUp(): void
     {
         $this->token = new class('&&', 1337) extends BaseToken {
-            public function getType(): TokenType
+            public function getKind(): TokenKind
             {
-                return TokenType::LOGICAL;
+                return TokenKind::AND;
             }
         };
     }
@@ -48,7 +48,7 @@ final class BaseTokenTest extends TestCase
     #[Test]
     public function givenALogicalTokenWhenCheckingTypeItShouldReturnTrueForLogicalAndFalseForComma(): void
     {
-        $this->assertTrue($this->token->isOfType(TokenType::LOGICAL));
-        $this->assertFalse($this->token->isOfType(TokenType::COMMA));
+        $this->assertTrue($this->token->isOfKind(TokenKind::AND));
+        $this->assertFalse($this->token->isOfKind(TokenKind::COMMA));
     }
 }

@@ -11,9 +11,9 @@ use nicoSWD\Rule\TokenStream\Token\Type\Value;
 
 final class TokenFloat extends BaseToken implements Value
 {
-    public function getType(): TokenType
+    public function getKind(): TokenKind
     {
-        return TokenType::VALUE;
+        return TokenKind::FLOAT;
     }
 
     public function getValue(): float

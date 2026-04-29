@@ -32,43 +32,71 @@ class TokenFactory
         $args = [$matches[$token->value], $offset];
 
         return match ($token) {
-            Token::AND => new TokenAnd(...$args),
-            Token::OR => new TokenOr(...$args),
-            Token::NOT => new TokenNot(...$args),
-            Token::NOT_EQUAL_STRICT => new TokenNotEqualStrict(...$args),
-            Token::NOT_EQUAL => new TokenNotEqual(...$args),
-            Token::EQUAL_STRICT => new TokenEqualStrict(...$args),
-            Token::EQUAL => new TokenEqual(...$args),
-            Token::IN => new TokenIn(...$args),
-            Token::NOT_IN => new TokenNotIn(...$args),
             Token::BOOL_TRUE => new TokenBoolTrue(...$args),
             Token::BOOL_FALSE => new TokenBoolFalse(...$args),
             Token::NULL => new TokenNull(...$args),
-            Token::METHOD => new TokenMethod(...$args),
-            Token::FUNCTION => new TokenFunction(...$args),
-            Token::VARIABLE => new TokenVariable(...$args),
             Token::FLOAT => new TokenFloat(...$args),
             Token::INTEGER => new TokenInteger(...$args),
             Token::ENCAPSED_STRING => new TokenEncapsedString(...$args),
-            Token::LESS_THAN_EQUAL => new TokenLessThanEqual(...$args),
-            Token::GREATER_EQUAL => new TokenGreaterEqual(...$args),
-            Token::PLUS => new TokenPlus(...$args),
-            Token::MINUS => new TokenMinus(...$args),
-            Token::MULTIPLY => new TokenMultiply(...$args),
-            Token::DIVIDE => new TokenDivide(...$args),
-            Token::MODULO => new TokenModulo(...$args),
-            Token::LESS_THAN => new TokenLessThan(...$args),
-            Token::GREATER => new TokenGreater(...$args),
-            Token::OPENING_PARENTHESIS => new TokenOpeningParenthesis(...$args),
-            Token::CLOSING_PARENTHESIS => new TokenClosingParenthesis(...$args),
-            Token::OPENING_ARRAY => new TokenOpeningArray(...$args),
-            Token::CLOSING_ARRAY => new TokenClosingArray(...$args),
-            Token::COMMA => new TokenComma(...$args),
             Token::REGEX => new TokenRegex(...$args),
-            Token::COMMENT => new TokenComment(...$args),
-            Token::NEWLINE => new TokenNewline(...$args),
-            Token::SPACE => new TokenSpace(...$args),
-            Token::UNKNOWN => new TokenUnknown(...$args),
+            Token::VARIABLE => new TokenVariable(...$args),
+            Token::METHOD => new TokenMethod(...$args),
+            Token::FUNCTION => new TokenFunction(...$args),
+            default => $this->createGeneric($token, ...$args),
+        };
+    }
+
+    private function createGeneric(Token $token, mixed $value, int $offset): GenericToken
+    {
+        return new GenericToken(
+            $this->tokenToKind($token),
+            $value,
+            $offset,
+        );
+    }
+
+    private function tokenToKind(Token $token): TokenKind
+    {
+        return match ($token) {
+            Token::AND => TokenKind::AND,
+            Token::OR => TokenKind::OR,
+            Token::NOT => TokenKind::NOT,
+            Token::NOT_EQUAL_STRICT => TokenKind::NOT_EQUAL_STRICT,
+            Token::NOT_EQUAL => TokenKind::NOT_EQUAL,
+            Token::EQUAL_STRICT => TokenKind::EQUAL_STRICT,
+            Token::EQUAL => TokenKind::EQUAL,
+            Token::IN => TokenKind::IN,
+            Token::NOT_IN => TokenKind::NOT_IN,
+            Token::LESS_THAN_EQUAL => TokenKind::LESS_THAN_EQUAL,
+            Token::GREATER_EQUAL => TokenKind::GREATER_EQUAL,
+            Token::PLUS => TokenKind::PLUS,
+            Token::MINUS => TokenKind::MINUS,
+            Token::MULTIPLY => TokenKind::MULTIPLY,
+            Token::DIVIDE => TokenKind::DIVIDE,
+            Token::MODULO => TokenKind::MODULO,
+            Token::LESS_THAN => TokenKind::LESS_THAN,
+            Token::GREATER => TokenKind::GREATER,
+            Token::OPENING_PARENTHESIS => TokenKind::OPENING_PARENTHESIS,
+            Token::CLOSING_PARENTHESIS => TokenKind::CLOSING_PARENTHESIS,
+            Token::OPENING_ARRAY => TokenKind::OPENING_ARRAY,
+            Token::CLOSING_ARRAY => TokenKind::CLOSING_ARRAY,
+            Token::COMMA => TokenKind::COMMA,
+            Token::COMMENT => TokenKind::COMMENT,
+            Token::NEWLINE => TokenKind::NEWLINE,
+            Token::SPACE => TokenKind::SPACE,
+            Token::UNKNOWN => TokenKind::UNKNOWN,
+            Token::BOOL_TRUE => TokenKind::BOOL_TRUE,
+            Token::BOOL_FALSE => TokenKind::BOOL_FALSE,
+            Token::NULL => TokenKind::NULL,
+            Token::METHOD => TokenKind::METHOD,
+            Token::FUNCTION => TokenKind::FUNCTION,
+            Token::VARIABLE => TokenKind::VARIABLE,
+            Token::FLOAT => TokenKind::FLOAT,
+            Token::INTEGER => TokenKind::INTEGER,
+            Token::ENCAPSED_STRING => TokenKind::ENCAPSED_STRING,
+            Token::REGEX => TokenKind::REGEX,
+            default => throw new \RuntimeException('Unexpected token: ' . $token->name),
+
         };
     }
 

@@ -9,6 +9,11 @@ namespace nicoSWD\Rule\TokenStream\Token;
 
 final class TokenEncapsedString extends TokenString
 {
+    public function getKind(): TokenKind
+    {
+        return TokenKind::ENCAPSED_STRING;
+    }
+
     public function getValue(): string
     {
         $value = substr(parent::getValue(), 1, -1);

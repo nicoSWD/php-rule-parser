@@ -9,6 +9,11 @@ namespace nicoSWD\Rule\TokenStream\Token;
 
 final class TokenBoolTrue extends TokenBool
 {
+    public function getKind(): TokenKind
+    {
+        return TokenKind::BOOL_TRUE;
+    }
+
     public function getValue(): bool
     {
         return true;

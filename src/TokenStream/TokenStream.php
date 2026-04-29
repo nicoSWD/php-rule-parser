@@ -14,8 +14,8 @@ use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Exception\UndefinedVariableException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use nicoSWD\Rule\Tokenizer\TokenizerInterface;
-use nicoSWD\Rule\TokenStream\Token\TokenObject;
 
 class TokenStream
 {
@@ -46,7 +46,7 @@ class TokenStream
      */
     public function getMethod(string $methodName, BaseToken $token): CallableInterface
     {
-        if ($token instanceof TokenObject) {
+        if ($token->isOfKind(TokenKind::OBJECT)) {
             return $this->getObjectMethodCaller($token, $methodName);
         }
 

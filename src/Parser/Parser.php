@@ -30,40 +30,7 @@ use nicoSWD\Rule\AST\SubtractionNode;
 use nicoSWD\Rule\AST\UnaryMinusNode;
 use nicoSWD\Rule\AST\VariableNode;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
-use nicoSWD\Rule\TokenStream\Token\TokenAnd;
-use nicoSWD\Rule\TokenStream\Token\TokenBoolFalse;
-use nicoSWD\Rule\TokenStream\Token\TokenBoolTrue;
-use nicoSWD\Rule\TokenStream\Token\TokenClosingArray;
-use nicoSWD\Rule\TokenStream\Token\TokenClosingParenthesis;
-use nicoSWD\Rule\TokenStream\Token\TokenComma;
-use nicoSWD\Rule\TokenStream\Token\TokenDivide;
-use nicoSWD\Rule\TokenStream\Token\TokenEncapsedString;
-use nicoSWD\Rule\TokenStream\Token\TokenEqual;
-use nicoSWD\Rule\TokenStream\Token\TokenEqualStrict;
-use nicoSWD\Rule\TokenStream\Token\TokenFloat;
-use nicoSWD\Rule\TokenStream\Token\TokenFunction;
-use nicoSWD\Rule\TokenStream\Token\TokenGreater;
-use nicoSWD\Rule\TokenStream\Token\TokenGreaterEqual;
-use nicoSWD\Rule\TokenStream\Token\TokenIn;
-use nicoSWD\Rule\TokenStream\Token\TokenInteger;
-use nicoSWD\Rule\TokenStream\Token\TokenMethod;
-use nicoSWD\Rule\TokenStream\Token\TokenMinus;
-use nicoSWD\Rule\TokenStream\Token\TokenModulo;
-use nicoSWD\Rule\TokenStream\Token\TokenMultiply;
-use nicoSWD\Rule\TokenStream\Token\TokenNot;
-use nicoSWD\Rule\TokenStream\Token\TokenNotEqual;
-use nicoSWD\Rule\TokenStream\Token\TokenNotEqualStrict;
-use nicoSWD\Rule\TokenStream\Token\TokenNotIn;
-use nicoSWD\Rule\TokenStream\Token\TokenNull;
-use nicoSWD\Rule\TokenStream\Token\TokenOpeningArray;
-use nicoSWD\Rule\TokenStream\Token\TokenOpeningParenthesis;
-use nicoSWD\Rule\TokenStream\Token\TokenOr;
-use nicoSWD\Rule\TokenStream\Token\TokenPlus;
-use nicoSWD\Rule\TokenStream\Token\TokenRegex;
-use nicoSWD\Rule\TokenStream\Token\TokenLessThan;
-use nicoSWD\Rule\TokenStream\Token\TokenLessThanEqual;
-use nicoSWD\Rule\TokenStream\Token\TokenString;
-use nicoSWD\Rule\TokenStream\Token\TokenVariable;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use nicoSWD\Rule\TokenStream\TokenIterator;
 use nicoSWD\Rule\TokenStream\TokenStream;
 
@@ -125,7 +92,7 @@ final readonly class Parser
     {
         $left = $this->parseLogicalAnd($tokens);
 
-        while ($this->peekToken($tokens) instanceof TokenOr) {
+        while ($this->peekToken($tokens)?->isOfKind(TokenKind::OR)) {
             $this->consumeToken($tokens); // consume ||
             $right = $this->parseLogicalAnd($tokens);
             $left = new LogicalNode($left, $right, LogicalOperator::OR);
@@ -139,7 +106,7 @@ final readonly class Parser
     {
         $left = $this->parseComparison($tokens);
 
-        while ($this->peekToken($tokens) instanceof TokenAnd) {
+        while ($this->peekToken($tokens)?->isOfKind(TokenKind::AND)) {
             $this->consumeToken($tokens); // consume &&
             $right = $this->parseComparison($tokens);
             $left = new LogicalNode($left, $right, LogicalOperator::AND);
@@ -174,14 +141,17 @@ final readonly class Parser
     {
         $left = $this->parseMultiplicative($tokens);
 
-        while ($this->peekToken($tokens) instanceof TokenPlus || $this->peekToken($tokens) instanceof TokenMinus) {
+        while (
+            ($peeked = $this->peekToken($tokens)) !== null
+            && ($peeked->isOfKind(TokenKind::PLUS) || $peeked->isOfKind(TokenKind::MINUS))
+        ) {
             $operator = $this->peekToken($tokens);
             $this->consumeToken($tokens); // consume + or -
             $right = $this->parseMultiplicative($tokens);
 
-            $left = match ($operator::class) {
-                TokenPlus::class => new AdditionNode($left, $right),
-                TokenMinus::class => new SubtractionNode($left, $right),
+            $left = match ($operator->getKind()) {
+                TokenKind::PLUS => new AdditionNode($left, $right),
+                TokenKind::MINUS => new SubtractionNode($left, $right),
                 default => throw new \RuntimeException('Unexpected additive operator'),
             };
         }
@@ -195,18 +165,17 @@ final readonly class Parser
         $left = $this->parseUnary($tokens);
 
         while (
-            $this->peekToken($tokens) instanceof TokenMultiply
-            || $this->peekToken($tokens) instanceof TokenDivide
-            || $this->peekToken($tokens) instanceof TokenModulo
+            ($peeked = $this->peekToken($tokens)) !== null
+            && ($peeked->isOfKind(TokenKind::MULTIPLY) || $peeked->isOfKind(TokenKind::DIVIDE) || $peeked->isOfKind(TokenKind::MODULO))
         ) {
             $operator = $this->peekToken($tokens);
             $this->consumeToken($tokens); // consume *, /, or %
             $right = $this->parseUnary($tokens);
 
-            $left = match ($operator::class) {
-                TokenMultiply::class => new MultiplicationNode($left, $right),
-                TokenDivide::class => new DivisionNode($left, $right),
-                TokenModulo::class => new ModuloNode($left, $right),
+            $left = match ($operator->getKind()) {
+                TokenKind::MULTIPLY => new MultiplicationNode($left, $right),
+                TokenKind::DIVIDE => new DivisionNode($left, $right),
+                TokenKind::MODULO => new ModuloNode($left, $right),
                 default => throw new \RuntimeException('Unexpected multiplicative operator'),
             };
         }
@@ -226,7 +195,7 @@ final readonly class Parser
         $token = $tokens->peekRaw();
 
         // Unary minus: -expr
-        if ($token instanceof TokenMinus) {
+        if ($token->isOfKind(TokenKind::MINUS)) {
             $tokens->next();
             $operand = $this->parseUnary($tokens);
 
@@ -234,7 +203,7 @@ final readonly class Parser
         }
 
         // Logical NOT: !expr
-        if ($token instanceof TokenNot) {
+        if ($token->isOfKind(TokenKind::NOT)) {
             $tokens->next();
             $operand = $this->parseUnary($tokens);
 
@@ -256,7 +225,7 @@ final readonly class Parser
         $token = $tokens->peekRaw();
 
         // Parenthesized expression
-        if ($token instanceof TokenOpeningParenthesis) {
+        if ($token->isOfKind(TokenKind::OPENING_PARENTHESIS)) {
             $tokens->next();
             $node = $this->parseExpression($tokens);
             $this->expectClosingParenthesis($tokens);
@@ -265,13 +234,13 @@ final readonly class Parser
         }
 
         // Array literal (may have method calls chained)
-        if ($token instanceof TokenOpeningArray) {
+        if ($token->isOfKind(TokenKind::OPENING_ARRAY)) {
             $node = $this->parseArrayLiteral($tokens);
             return $this->parseMethodChain($node, $tokens);
         }
 
         // Function call
-        if ($token instanceof TokenFunction) {
+        if ($token->isOfKind(TokenKind::FUNCTION)) {
             $node = $this->parseFunctionCall($tokens);
             return $this->parseMethodChain($node, $tokens);
         }
@@ -291,15 +260,15 @@ final readonly class Parser
 
     private function parseSimpleValue(BaseToken $token): ?Node
     {
-        return match ($token::class) {
-            TokenVariable::class => new VariableNode($token->getOriginalValue(), $token->getOffset()),
-            TokenEncapsedString::class, TokenString::class => new StringNode($token->getValue()),
-            TokenInteger::class => new IntegerNode($token->getValue()),
-            TokenFloat::class => new FloatNode($token->getValue()),
-            TokenBoolTrue::class => new BoolNode(true),
-            TokenBoolFalse::class => new BoolNode(false),
-            TokenNull::class => new NullNode(),
-            TokenRegex::class => new RegexNode($token->getValue(), $token),
+        return match ($token->getKind()) {
+            TokenKind::VARIABLE => new VariableNode($token->getOriginalValue(), $token->getOffset()),
+            TokenKind::ENCAPSED_STRING, TokenKind::STRING => new StringNode($token->getValue()),
+            TokenKind::INTEGER => new IntegerNode($token->getValue()),
+            TokenKind::FLOAT => new FloatNode($token->getValue()),
+            TokenKind::BOOL_TRUE => new BoolNode(true),
+            TokenKind::BOOL_FALSE => new BoolNode(false),
+            TokenKind::NULL => new NullNode(),
+            TokenKind::REGEX => new RegexNode($token->getValue(), $token),
             default => null,
         };
     }
@@ -324,7 +293,7 @@ final readonly class Parser
     {
         $this->skipIgnoredTokens($tokens);
 
-        while ($tokens->valid() && $tokens->peekRaw() instanceof TokenMethod) {
+        while ($tokens->valid() && $tokens->peekRaw()->isOfKind(TokenKind::METHOD)) {
             $methodToken = $tokens->peekRaw();
             $methodName = $methodToken->getValue();
             $offset = $methodToken->getOffset();
@@ -345,7 +314,7 @@ final readonly class Parser
     {
         // Consume the opening parenthesis
         $this->skipIgnoredTokens($tokens);
-        if (!$tokens->valid() || !$tokens->peekRaw() instanceof TokenOpeningParenthesis) {
+        if (!$tokens->valid() || !$tokens->peekRaw()->isOfKind(TokenKind::OPENING_PARENTHESIS)) {
             throw Exception\ParserException::unexpectedToken($tokens->valid() ? $tokens->peekRaw() : null);
         }
         $tokens->next();
@@ -358,7 +327,7 @@ final readonly class Parser
     {
         return $this->parseCommaSeparatedList(
             $tokens,
-            static fn (BaseToken $token): bool => $token instanceof TokenClosingParenthesis,
+            static fn (BaseToken $token): bool => $token->isOfKind(TokenKind::CLOSING_PARENTHESIS),
         );
     }
 
@@ -370,7 +339,7 @@ final readonly class Parser
 
         $items = $this->parseCommaSeparatedList(
             $tokens,
-            static fn (BaseToken $token): bool => $token instanceof TokenClosingArray,
+            static fn (BaseToken $token): bool => $token->isOfKind(TokenKind::CLOSING_ARRAY),
         );
 
         return new ArrayNode($items);
@@ -401,7 +370,7 @@ final readonly class Parser
                 return $items;
             }
 
-            if ($token instanceof TokenComma) {
+            if ($token->isOfKind(TokenKind::COMMA)) {
                 if (!$expectComma) {
                     throw Exception\ParserException::unexpectedComma($token);
                 }
@@ -434,7 +403,7 @@ final readonly class Parser
 
         $token = $tokens->peekRaw();
 
-        if (!$token instanceof TokenClosingParenthesis) {
+        if (!$token->isOfKind(TokenKind::CLOSING_PARENTHESIS)) {
             throw Exception\ParserException::unexpectedToken($token);
         }
 
@@ -443,17 +412,17 @@ final readonly class Parser
 
     private function matchComparisonOperator(BaseToken $token): ?ComparisonOperator
     {
-        return match ($token::class) {
-            TokenEqual::class => ComparisonOperator::EQUAL,
-            TokenEqualStrict::class => ComparisonOperator::EQUAL_STRICT,
-            TokenNotEqual::class => ComparisonOperator::NOT_EQUAL,
-            TokenNotEqualStrict::class => ComparisonOperator::NOT_EQUAL_STRICT,
-            TokenLessThan::class => ComparisonOperator::LESS_THAN,
-            TokenGreater::class => ComparisonOperator::GREATER_THAN,
-            TokenLessThanEqual::class => ComparisonOperator::LESS_THAN_EQUAL,
-            TokenGreaterEqual::class => ComparisonOperator::GREATER_THAN_EQUAL,
-            TokenIn::class => ComparisonOperator::IN,
-            TokenNotIn::class => ComparisonOperator::NOT_IN,
+        return match ($token->getKind()) {
+            TokenKind::EQUAL => ComparisonOperator::EQUAL,
+            TokenKind::EQUAL_STRICT => ComparisonOperator::EQUAL_STRICT,
+            TokenKind::NOT_EQUAL => ComparisonOperator::NOT_EQUAL,
+            TokenKind::NOT_EQUAL_STRICT => ComparisonOperator::NOT_EQUAL_STRICT,
+            TokenKind::LESS_THAN => ComparisonOperator::LESS_THAN,
+            TokenKind::GREATER => ComparisonOperator::GREATER_THAN,
+            TokenKind::LESS_THAN_EQUAL => ComparisonOperator::LESS_THAN_EQUAL,
+            TokenKind::GREATER_EQUAL => ComparisonOperator::GREATER_THAN_EQUAL,
+            TokenKind::IN => ComparisonOperator::IN,
+            TokenKind::NOT_IN => ComparisonOperator::NOT_IN,
             default => null,
         };
     }

@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\tests\unit\Token;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token;
-use nicoSWD\Rule\TokenStream\Token\TokenEqualStrict;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -25,12 +25,12 @@ final class TokenFactoryTest extends TestCase
     #[Test]
     public function simpleTypeReturnsCorrectInstance(): void
     {
-        $this->assertInstanceOf(Token\TokenNull::class, $this->tokenFactory->createFromPHPType(null));
-        $this->assertInstanceOf(Token\TokenString::class, $this->tokenFactory->createFromPHPType('string sample'));
-        $this->assertInstanceOf(Token\TokenFloat::class, $this->tokenFactory->createFromPHPType(0.3));
-        $this->assertInstanceOf(Token\TokenInteger::class, $this->tokenFactory->createFromPHPType(4));
-        $this->assertInstanceOf(Token\TokenBoolTrue::class, $this->tokenFactory->createFromPHPType(true));
-        $this->assertInstanceOf(Token\TokenArray::class, $this->tokenFactory->createFromPHPType([1, 2]));
+        $this->assertSame(TokenKind::NULL, $this->tokenFactory->createFromPHPType(null)->getKind());
+        $this->assertSame(TokenKind::STRING, $this->tokenFactory->createFromPHPType('string sample')->getKind());
+        $this->assertSame(TokenKind::FLOAT, $this->tokenFactory->createFromPHPType(0.3)->getKind());
+        $this->assertSame(TokenKind::INTEGER, $this->tokenFactory->createFromPHPType(4)->getKind());
+        $this->assertSame(TokenKind::BOOL_TRUE, $this->tokenFactory->createFromPHPType(true)->getKind());
+        $this->assertSame(TokenKind::ARRAY, $this->tokenFactory->createFromPHPType([1, 2])->getKind());
     }
 
     #[Test]
@@ -45,6 +45,7 @@ final class TokenFactoryTest extends TestCase
     #[Test]
     public function givenAValidTokenNameItShouldReturnItsCorrespondingClassName(): void
     {
-        $this->assertInstanceOf(TokenEqualStrict::class, $this->tokenFactory->createFromToken(Token\Token::EQUAL_STRICT, ['EqualStrict' => '==='], 0));
+        $token = $this->tokenFactory->createFromToken(Token\Token::EQUAL_STRICT, ['EqualStrict' => '==='], 0);
+        $this->assertSame(TokenKind::EQUAL_STRICT, $token->getKind());
     }
 }

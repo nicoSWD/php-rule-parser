@@ -10,6 +10,8 @@ namespace nicoSWD\Rule\tests\unit\Expression;
 use nicoSWD\Rule\Expression;
 use nicoSWD\Rule\Expression\ExpressionFactory;
 use nicoSWD\Rule\TokenStream\Token;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -38,16 +40,16 @@ final class ExpressionFactoryTest extends TestCase
     public static function expressionProvider(): array
     {
         return [
-            [Expression\EqualExpression::class, new Token\TokenEqual('==')],
-            [Expression\EqualStrictExpression::class, new Token\TokenEqualStrict('===')],
-            [Expression\NotEqualExpression::class, new Token\TokenNotEqual('!=')],
-            [Expression\NotEqualStrictExpression::class, new Token\TokenNotEqualStrict('!==')],
-            [Expression\GreaterThanExpression::class, new Token\TokenGreater('>')],
-            [Expression\LessThanExpression::class, new Token\TokenLessThan('<')],
-            [Expression\LessThanEqualExpression::class, new Token\TokenLessThanEqual('<=')],
-            [Expression\GreaterThanEqualExpression::class, new Token\TokenGreaterEqual('>=')],
-            [Expression\InExpression::class, new Token\TokenIn('in')],
-            [Expression\NotInExpression::class, new Token\TokenNotIn('not in')],
+            [Expression\EqualExpression::class, new GenericToken(TokenKind::EQUAL, '==')],
+            [Expression\EqualStrictExpression::class, new GenericToken(TokenKind::EQUAL_STRICT, '===')],
+            [Expression\NotEqualExpression::class, new GenericToken(TokenKind::NOT_EQUAL, '!=')],
+            [Expression\NotEqualStrictExpression::class, new GenericToken(TokenKind::NOT_EQUAL_STRICT, '!==')],
+            [Expression\GreaterThanExpression::class, new GenericToken(TokenKind::GREATER, '>')],
+            [Expression\LessThanExpression::class, new GenericToken(TokenKind::LESS_THAN, '<')],
+            [Expression\LessThanEqualExpression::class, new GenericToken(TokenKind::LESS_THAN_EQUAL, '<=')],
+            [Expression\GreaterThanEqualExpression::class, new GenericToken(TokenKind::GREATER_EQUAL, '>=')],
+            [Expression\InExpression::class, new GenericToken(TokenKind::IN, 'in')],
+            [Expression\NotInExpression::class, new GenericToken(TokenKind::NOT_IN, 'not in')],
         ];
     }
 }

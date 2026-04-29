@@ -11,9 +11,9 @@ use nicoSWD\Rule\TokenStream\Token\Type\Value;
 
 final class TokenArray extends BaseToken implements Value
 {
-    public function getType(): TokenType
+    public function getKind(): TokenKind
     {
-        return TokenType::VALUE;
+        return TokenKind::ARRAY;
     }
 
     public function toArray(): array

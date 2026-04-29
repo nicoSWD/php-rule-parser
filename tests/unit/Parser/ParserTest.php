@@ -18,6 +18,9 @@ use nicoSWD\Rule\AST\LogicalOperator;
 use nicoSWD\Rule\AST\StringNode;
 use nicoSWD\Rule\Parser\Parser;
 use nicoSWD\Rule\TokenStream\Token;
+use nicoSWD\Rule\TokenStream\Token\GenericToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
+use nicoSWD\Rule\TokenStream\Token\TokenType;
 use nicoSWD\Rule\TokenStream\TokenIterator;
 use nicoSWD\Rule\TokenStream\TokenStream;
 use PHPUnit\Framework\TestCase;
@@ -40,17 +43,17 @@ final class ParserTest extends TestCase
     public function givenARuleStringWhenValidItShouldReturnTheCompiledRule(): void
     {
         $tokens = [
-            new Token\TokenOpeningParenthesis('('),
+            new GenericToken(TokenKind::OPENING_PARENTHESIS, '('),
             new Token\TokenInteger(1),
-            new Token\TokenEqual('=='),
+            new GenericToken(TokenKind::EQUAL, '=='),
             new Token\TokenString('1'),
-            new Token\TokenClosingParenthesis(')'),
-            new Token\TokenAnd('&&'),
+            new GenericToken(TokenKind::CLOSING_PARENTHESIS, ')'),
+            new GenericToken(TokenKind::AND, '&&'),
             new Token\TokenInteger(2),
-            new Token\TokenGreater('>'),
+            new GenericToken(TokenKind::GREATER, '>'),
             new Token\TokenInteger(1),
-            new Token\TokenSpace(' '),
-            new Token\TokenComment('// true dat!')
+            new GenericToken(TokenKind::SPACE, ' '),
+            new GenericToken(TokenKind::COMMENT, '// true dat!')
         ];
 
         $arrayIterator = new ArrayIterator($tokens);

@@ -11,8 +11,8 @@ use nicoSWD\Rule\TokenStream\Token\Type\Value;
 
 final class TokenVariable extends BaseToken implements Value
 {
-    public function getType(): TokenType
+    public function getKind(): TokenKind
     {
-        return TokenType::VARIABLE;
+        return TokenKind::VARIABLE;
     }
 }

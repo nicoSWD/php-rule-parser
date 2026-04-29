@@ -8,8 +8,8 @@
 namespace nicoSWD\Rule\Expression;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\TokenStream\Token;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use nicoSWD\Rule\TokenStream\Token\Type\Operator;
 
 final class ExpressionFactory implements ExpressionFactoryInterface
@@ -17,17 +17,17 @@ final class ExpressionFactory implements ExpressionFactoryInterface
     /** @throws ParserException */
     public function createFromOperator(BaseToken & Operator $operator): BaseExpression
     {
-        return match ($operator::class) {
-            Token\TokenEqual::class => new EqualExpression(),
-            Token\TokenEqualStrict::class => new EqualStrictExpression(),
-            Token\TokenNotEqual::class => new NotEqualExpression(),
-            Token\TokenNotEqualStrict::class => new NotEqualStrictExpression(),
-            Token\TokenGreater::class => new GreaterThanExpression(),
-            Token\TokenLessThan::class => new LessThanExpression(),
-            Token\TokenLessThanEqual::class => new LessThanEqualExpression(),
-            Token\TokenGreaterEqual::class => new GreaterThanEqualExpression(),
-            Token\TokenIn::class => new InExpression(),
-            Token\TokenNotIn::class => new NotInExpression(),
+        return match ($operator->getKind()) {
+            TokenKind::EQUAL => new EqualExpression(),
+            TokenKind::EQUAL_STRICT => new EqualStrictExpression(),
+            TokenKind::NOT_EQUAL => new NotEqualExpression(),
+            TokenKind::NOT_EQUAL_STRICT => new NotEqualStrictExpression(),
+            TokenKind::GREATER => new GreaterThanExpression(),
+            TokenKind::LESS_THAN => new LessThanExpression(),
+            TokenKind::LESS_THAN_EQUAL => new LessThanEqualExpression(),
+            TokenKind::GREATER_EQUAL => new GreaterThanEqualExpression(),
+            TokenKind::IN => new InExpression(),
+            TokenKind::NOT_IN => new NotInExpression(),
             default => throw ParserException::unknownOperator($operator),
         };
     }

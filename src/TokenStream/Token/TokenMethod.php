@@ -11,8 +11,8 @@ use nicoSWD\Rule\TokenStream\Token\Type\Method;
 
 final class TokenMethod extends BaseToken implements Method
 {
-    public function getType(): TokenType
+    public function getKind(): TokenKind
     {
-        return TokenType::METHOD;
+        return TokenKind::METHOD;
     }
 }

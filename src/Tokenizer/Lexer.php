@@ -13,9 +13,8 @@ use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\Token;
-use nicoSWD\Rule\TokenStream\Token\TokenClosingArray;
-use nicoSWD\Rule\TokenStream\Token\TokenClosingParenthesis;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
+use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use nicoSWD\Rule\TokenStream\Token\Type\Value;
 
 /**
@@ -114,8 +113,8 @@ final class Lexer extends TokenizerInterface
             // or if it's a closing parenthesis/array (which represent
             // the end of a sub-expression that evaluates to a value).
             return $token instanceof Value
-                || $token instanceof TokenClosingParenthesis
-                || $token instanceof TokenClosingArray;
+                || $token->isOfKind(TokenKind::CLOSING_PARENTHESIS)
+                || $token->isOfKind(TokenKind::CLOSING_ARRAY);
         }
 
         // Empty stack or only ignorable tokens means we're at the start

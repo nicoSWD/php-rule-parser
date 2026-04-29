@@ -9,7 +9,7 @@ namespace nicoSWD\Rule\AST;
 
 final class ArrayNode extends Node
 {
-    /** @param ValueNode[] $items */
+    /** @param Node[] $items */
     public function __construct(
         public readonly array $items,
     ) {
