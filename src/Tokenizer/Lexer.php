@@ -7,7 +7,6 @@
  */
 namespace nicoSWD\Rule\Tokenizer;
 
-use ArrayIterator;
 use Iterator;
 use nicoSWD\Rule\Grammar\Grammar;
 use nicoSWD\Rule\Parser\Exception\ParserException;
@@ -39,7 +38,7 @@ final class Lexer extends TokenizerInterface
     public function tokenize(string $string): Iterator
     {
         $ctx = new LexerContext($string);
-        $stack = [];
+        $lastValueToken = null;
 
         while ($ctx->isValid()) {
             $ch = $ctx->current();
@@ -55,12 +54,12 @@ final class Lexer extends TokenizerInterface
                 $ch === '<' && $ctx->peek() === '=' => $this->emitOperator($ctx, TokenKind::LESS_THAN_EQUAL, '<=', 2),
                 $ch === '>' && $ctx->peek() === '=' => $this->emitOperator($ctx, TokenKind::GREATER_EQUAL, '>=', 2),
                 $ch === '+' => $this->emitOperator($ctx, TokenKind::PLUS, '+', 1),
-                $ch === '-' && $this->lastTokenIsValue($stack) => $this->emitOperator($ctx, TokenKind::MINUS, '-', 1),
+                $ch === '-' && $this->isTokenValue($lastValueToken) => $this->emitOperator($ctx, TokenKind::MINUS, '-', 1),
                 $ch === '-' && $this->isDigit($ctx->peek()) => $this->readNumber($ctx),
                 $ch === '-' => $this->emitOperator($ctx, TokenKind::MINUS, '-', 1),
                 $ch === '*' => $this->emitOperator($ctx, TokenKind::MULTIPLY, '*', 1),
                 $ch === '/' && ($ctx->peek() === '/' || $ctx->peek() === '*') => $this->readSlash($ctx),
-                $ch === '/' && $this->lastTokenIsValue($stack) => $this->emitOperator($ctx, TokenKind::DIVIDE, '/', 1),
+                $ch === '/' && $this->isTokenValue($lastValueToken) => $this->emitOperator($ctx, TokenKind::DIVIDE, '/', 1),
                 $ch === '/' => $this->readSlash($ctx),
                 $ch === '%' => $this->emitOperator($ctx, TokenKind::MODULO, '%', 1),
                 $ch === '<' && $ctx->peek() === '>' => $this->emitOperator($ctx, TokenKind::NOT_EQUAL, '<>', 2),
@@ -80,41 +79,35 @@ final class Lexer extends TokenizerInterface
                 default => $this->emitSimple($ctx, TokenKind::UNKNOWN, $ch),
             };
 
-            $stack[] = $token;
-        }
+            // Track the last non-ignorable token for context-sensitive lexing
+            if (!$token->canBeIgnored()) {
+                $lastValueToken = $token;
+            }
 
-        return new ArrayIterator($stack);
+            yield $token;
+        }
     }
 
     /**
-     * Determine if the last meaningful (non-whitespace, non-comment) token
-     * was a "value" — meaning the next operator-like character should be
-     * treated as a binary operator rather than a unary prefix.
+     * Determine if the given token represents a "value" — meaning the next
+     * operator-like character should be treated as a binary operator rather
+     * than a unary prefix.
      *
-     * This replaces the fragile $afterValue boolean flag with a deterministic
-     * check against the actual token type hierarchy.
+     * This replaces the fragile $afterValue boolean flag and the O(n) stack
+     * walk with a deterministic O(1) check against the last meaningful token.
      */
-    private function lastTokenIsValue(array $stack): bool
+    private function isTokenValue(?BaseToken $token): bool
     {
-        // Walk backwards through the stack to find the last non-ignorable token
-        for ($i = count($stack) - 1; $i >= 0; $i--) {
-            $token = $stack[$i];
-
-            if ($token->canBeIgnored()) {
-                continue;
-            }
-
-            // A token is a "value" if it implements the Value interface,
-            // or if it's a closing parenthesis/array (which represent
-            // the end of a sub-expression that evaluates to a value).
-            return $token instanceof Value
-                || $token->isOfKind(TokenKind::CLOSING_PARENTHESIS)
-                || $token->isOfKind(TokenKind::CLOSING_ARRAY);
+        if ($token === null) {
+            return false;
         }
 
-        // Empty stack or only ignorable tokens means we're at the start
-        // of an expression — not after a value.
-        return false;
+        // A token is a "value" if it implements the Value interface,
+        // or if it's a closing parenthesis/array (which represent
+        // the end of a sub-expression that evaluates to a value).
+        return $token instanceof Value
+            || $token->isOfKind(TokenKind::CLOSING_PARENTHESIS)
+            || $token->isOfKind(TokenKind::CLOSING_ARRAY);
     }
 
     private function emitSimple(LexerContext $ctx, TokenKind $token, string $value): BaseToken
