@@ -8,18 +8,18 @@
 namespace nicoSWD\Rule\tests\unit\Token;
 
 use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\TokenStream\Token;
+use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
 final class TokenFactoryTest extends TestCase
 {
-    private readonly Token\TokenFactory $tokenFactory;
+    private readonly TokenFactory $tokenFactory;
 
     protected function setUp(): void
     {
-        $this->tokenFactory = new Token\TokenFactory();
+        $this->tokenFactory = new TokenFactory();
     }
 
     #[Test]
@@ -45,7 +45,7 @@ final class TokenFactoryTest extends TestCase
     #[Test]
     public function givenAValidTokenNameItShouldReturnItsCorrespondingClassName(): void
     {
-        $token = $this->tokenFactory->createFromToken(Token\Token::EQUAL_STRICT, ['EqualStrict' => '==='], 0);
+        $token = $this->tokenFactory->createFromToken(TokenKind::EQUAL_STRICT, ['EqualStrict' => '==='], 0);
         $this->assertSame(TokenKind::EQUAL_STRICT, $token->getKind());
     }
 }
