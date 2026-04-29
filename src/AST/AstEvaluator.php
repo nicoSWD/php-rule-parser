@@ -27,7 +27,7 @@ final readonly class AstEvaluator
      */
     public function evaluate(Node $node): bool
     {
-        return (bool) $node->evaluate($this->context);
+        return (bool) $this->resolve($node);
     }
 
     /**
