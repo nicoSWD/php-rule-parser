@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.3/phpunit.xsd"
-         bootstrap="src/autoload.php"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/13.1/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
          cacheDirectory=".phpunit.cache">
   <testsuites>
     <testsuite name="Unit tests">
@@ -10,7 +10,7 @@
   </testsuites>
   <source>
     <include>
-      <directory suffix=".php">src</directory>
+      <directory>src</directory>
     </include>
   </source>
 </phpunit>
