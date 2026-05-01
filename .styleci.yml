@@ -1,7 +1,7 @@
 ---
 preset: psr12
 risky: true
-version: 8.4
+version: 8.5
 finder:
   name:
     - "*.php"

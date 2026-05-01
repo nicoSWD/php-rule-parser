@@ -63,7 +63,7 @@ final class LexerTest extends TestCase
     public function itProducesSameTokensForNotInWithNewlines(): void
     {
         // The lexer produces a cleaner "not in" value even with newlines between "not" and "in".
-        $rule = '5 not 
+        $rule = '5 not
                 in [4, 6, 7]';
 
         $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());

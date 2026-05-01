@@ -33,7 +33,7 @@ final class ObjectMethodCallerTest extends TestCase
     #[Test]
     public function givenAnObjectWithAPublicWhenMethodMatchingItShouldBeUsed(): void
     {
-        $object = new class {
+        $object = new class () {
             // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
             public function my_test()
             {
@@ -47,7 +47,7 @@ final class ObjectMethodCallerTest extends TestCase
     #[Test]
     public function givenAnObjectWithAPublicWhenMethodNameWithIsPrefixMatchesItShouldBeUsed(): void
     {
-        $object = new class {
+        $object = new class () {
             // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
             public function is_my_test()
             {
@@ -67,7 +67,7 @@ final class ObjectMethodCallerTest extends TestCase
     #[Test]
     public function givenAnObjectWithAPublicWhenMethodNameWithGetPrefixMatchesItShouldBeUsed(): void
     {
-        $object = new class {
+        $object = new class () {
             // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
             public function get_my_test()
             {

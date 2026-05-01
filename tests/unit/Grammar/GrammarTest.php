@@ -17,7 +17,7 @@ final class GrammarTest extends TestCase
 {
     public function testDefaultValues()
     {
-        $grammar = new class extends Grammar {
+        $grammar = new class () extends Grammar {
             public function getInternalFunctions(): array
             {
                 return [];
