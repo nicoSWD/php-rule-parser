@@ -1,6 +1,9 @@
 name: "Static code analysis"
 
-on: [pull_request]
+on:
+  pull_request:
+  push:
+    branches: [master]
 
 jobs:
   static-code-analysis:
@@ -22,3 +25,27 @@ jobs:
         uses: docker://jakzal/phpqa:php8.5
         with:
           args: deptrac --config-file=depfile.yaml --no-interaction --ansi
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: "Install PHP with coverage"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          coverage: pcov
+          tools: composer:v2
+
+      - name: "Install dependencies"
+        run: composer install --no-interaction --no-progress
+
+      - name: "Run tests with coverage"
+        run: vendor/bin/phpunit --coverage-clover clover.xml
+
+      - name: "Upload coverage to Codecov"
+        uses: codecov/codecov-action@v6
+        with:
+          files: clover.xml
+          fail_ci_if_error: false

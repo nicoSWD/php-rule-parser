@@ -2,6 +2,8 @@
 /composer.lock
 /coverage.clover
 /.phpunit.*
+/.deptrac.cache
+/.php-cs-fixer.cache
 /vendor/
 /.idea
 /.composer

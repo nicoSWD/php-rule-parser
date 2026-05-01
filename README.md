@@ -2,9 +2,9 @@
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
 [![Total Downloads](https://img.shields.io/packagist/dt/nicoswd/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser) 
-[![Build status][Master coverage image]][Master coverage] 
 [![Code Quality][Master quality image]][Master quality] 
 [![StyleCI](https://styleci.io/repos/39503126/shield?branch=master&style=flat)](https://styleci.io/repos/39503126)
+[![Code Coverage](https://img.shields.io/codecov/c/github/nicoSWD/php-rule-parser)](https://codecov.io/gh/nicoSWD/php-rule-parser)
 
 A PHP library that parses and evaluates boolean expressions using a JavaScript-like syntax. It supports variables, comparison and logical operators, arithmetic, regular expressions, arrays, string methods, and function calls, all from plain text rules.
 
@@ -291,7 +291,5 @@ Pull requests are very welcome! If they include tests, even better. This project
 [![License](https://img.shields.io/packagist/l/nicoSWD/php-rule-parser.svg)](https://packagist.org/packages/nicoswd/php-rule-parser)
 
   [Master]: https://github.com/nicoSWD/php-rule-parser/tree/master
-  [Master coverage image]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/badges/coverage.png?b=master
-  [Master coverage]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master
   [Master quality image]: https://img.shields.io/scrutinizer/g/nicoswd/php-rule-parser.svg?b=master
   [Master quality]: https://scrutinizer-ci.com/g/nicoSWD/php-rule-parser/?branch=master
