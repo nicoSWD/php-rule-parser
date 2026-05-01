@@ -1,4 +1,4 @@
-name: Static code analysis
+name: "Static code analysis"
 
 on: [pull_request]
 
@@ -6,16 +6,19 @@ jobs:
   static-code-analysis:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: PHPStan
-        uses: docker://jakzal/phpqa:php8.4
+      - uses: actions/checkout@v6
+
+      - name: "PHPStan"
+        uses: docker://jakzal/phpqa:php8.5
         with:
           args: phpstan analyze src/ -l 1
-      - name: PHP-CS-Fixer
-        uses: docker://jakzal/phpqa:php8.4
+
+      - name: "PHP-CS-Fixer"
+        uses: docker://jakzal/phpqa:php8.5
         with:
-          args: php-cs-fixer --dry-run --allow-risky=yes --no-interaction --ansi fix
-      - name: Deptrac
-        uses: docker://jakzal/phpqa:php8.4
+          args: php-cs-fixer fix --dry-run --allow-risky=yes --no-interaction --ansi
+
+      - name: "Deptrac"
+        uses: docker://jakzal/phpqa:php8.5
         with:
-          args: deptrac --no-interaction --ansi --formatter-graphviz-display=0
+          args: deptrac --no-interaction --ansi

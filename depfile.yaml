@@ -1,0 +1,55 @@
+parameters:
+  paths:
+    - ./src
+  exclude_files:
+    - .*test.*
+  layers:
+    - name: AST
+      collectors:
+        - type: directory
+          value: src/AST/.*
+    - name: Grammar
+      collectors:
+        - type: directory
+          value: src/Grammar/.*
+    - name: Highlighter
+      collectors:
+        - type: directory
+          value: src/Highlighter/.*
+    - name: Lexer
+      collectors:
+        - type: directory
+          value: src/Lexer/.*
+    - name: Parser
+      collectors:
+        - type: directory
+          value: src/Parser/.*
+    - name: TokenStream
+      collectors:
+        - type: directory
+          value: src/TokenStream/.*
+    - name: Root
+      collectors:
+        - type: className
+          value: .*\\Rule(Engine|EngineBuilder)?
+  ruleset:
+    Root:
+      - Lexer
+      - Parser
+      - TokenStream
+      - Grammar
+      - AST
+      - Highlighter
+    Parser:
+      - Lexer
+      - AST
+    AST:
+      - Grammar
+    TokenStream:
+      - Grammar
+    Grammar:
+      - Lexer
+    Highlighter:
+      - Lexer
+      - Parser
+      - TokenStream
