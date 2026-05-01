@@ -2,8 +2,6 @@ name: "Static code analysis"
 
 on:
   pull_request:
-  push:
-    branches: [master]
 
 jobs:
   static-code-analysis:
