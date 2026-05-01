@@ -1,8 +1,0 @@
-{
-  "checkRunSettings": {
-    "vulnerableCheckRunConclusionLevel": "success"
-  },
-  "issueSettings": {
-    "minSeverityLevel": "LOW"
-  }
-}
