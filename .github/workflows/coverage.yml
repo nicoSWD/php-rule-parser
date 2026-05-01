@@ -1,0 +1,31 @@
+name: "Coverage"
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: "Install PHP with coverage"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          coverage: pcov
+          tools: composer:v2
+
+      - name: "Install dependencies"
+        run: composer install --no-interaction --no-progress
+
+      - name: "Run tests with coverage"
+        run: vendor/bin/phpunit --coverage-clover clover.xml
+
+      - name: "Upload coverage to Codecov"
+        uses: codecov/codecov-action@v6
+        with:
+          files: clover.xml
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
