@@ -31,7 +31,7 @@ parameters:
     - name: Root
       collectors:
         - type: classNameRegex
-          value: '.*Rule(Engine|EngineBuilder)?$'
+          value: '/.*Rule(Engine|EngineBuilder)?$/'
   ruleset:
     Root:
       - Lexer
