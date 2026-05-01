@@ -22,7 +22,7 @@ final class SyntaxErrorTest extends AbstractTestBase
     public function emptyParenthesisThrowException(): void
     {
         $rule = new Rule('(totalamount != 3) ()', [
-            'totalamount' => '-1'
+            'totalamount' => '-1',
         ]);
 
         $this->assertFalse($rule->isValid());

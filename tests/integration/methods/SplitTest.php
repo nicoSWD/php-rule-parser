@@ -55,7 +55,7 @@ final class SplitTest extends AbstractTestBase
             'foo.split(delimiter.toUpperCase()) === ["bbb", "bbb", "bbb"]',
             [
                 'foo'       => 'bbbAbbbAbbb',
-                'delimiter' => 'a'
+                'delimiter' => 'a',
             ]
         ));
     }

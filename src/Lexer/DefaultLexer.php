@@ -346,6 +346,7 @@ final class DefaultLexer extends Lexer
 
             if ($ctx->startsWith('in')) {
                 $ctx->pos += 2; // skip 'in'
+
                 return $this->tokenFactory->createFromToken(TokenKind::NOT_IN, [TokenKind::NOT_IN->value => 'not in'], $offset);
             }
 

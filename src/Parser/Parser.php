@@ -32,10 +32,10 @@ use nicoSWD\Rule\AST\StringNode;
 use nicoSWD\Rule\AST\SubtractionNode;
 use nicoSWD\Rule\AST\UnaryMinusNode;
 use nicoSWD\Rule\AST\VariableNode;
+use nicoSWD\Rule\Lexer\Lexer;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
 use nicoSWD\Rule\TokenStream\TokenIterator;
-use nicoSWD\Rule\Lexer\Lexer;
 
 /**
  * Recursive descent parser that builds an AST from the token stream.
@@ -237,12 +237,14 @@ final readonly class Parser
         // Array literal (may have method calls chained)
         if ($token->isOfKind(TokenKind::OPENING_ARRAY)) {
             $node = $this->parseArrayLiteral($tokens);
+
             return $this->parseMethodChain($node, $tokens);
         }
 
         // Function call
         if ($token->isOfKind(TokenKind::FUNCTION)) {
             $node = $this->parseFunctionCall($tokens);
+
             return $this->parseMethodChain($node, $tokens);
         }
 
@@ -368,6 +370,7 @@ final readonly class Parser
             // Closing token ends the list
             if ($isTerminator($token)) {
                 $tokens->next(); // consume the closing token
+
                 return $items;
             }
 

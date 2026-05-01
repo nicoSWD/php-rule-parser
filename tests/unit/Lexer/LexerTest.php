@@ -428,7 +428,7 @@ final class LexerTest extends TestCase
 
         $this->assertCount(1, $tokens);
         $this->assertSame(TokenKind::ENCAPSED_STRING, $tokens[0]->getKind());
-        $this->assertSame("back\\slash", $tokens[0]->getValue());
+        $this->assertSame('back\\slash', $tokens[0]->getValue());
     }
 
     #[Test]
@@ -486,7 +486,7 @@ final class LexerTest extends TestCase
     #[Test]
     public function itUnescapesMultipleEscapeSequencesInString(): void
     {
-        $rule = "\"line1\\nline2\\tindented\\\\end\"";
+        $rule = '"line1\\nline2\\tindented\\\\end"';
 
         $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $tokens = iterator_to_array($lexer->tokenize($rule));

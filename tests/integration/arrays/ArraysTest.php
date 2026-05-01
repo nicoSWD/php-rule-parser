@@ -26,7 +26,7 @@ final class ArraysTest extends AbstractTestBase
 
         $this->assertTrue($this->evaluate('[123, 12] === foo && bar === [23]', [
             'foo' => [123, 12],
-            'bar' => [23]
+            'bar' => [23],
         ]));
     }
 

@@ -13,8 +13,8 @@ namespace nicoSWD\Rule\tests\unit\Token;
 use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token\TokenFactory;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 final class TokenFactoryTest extends TestCase
 {

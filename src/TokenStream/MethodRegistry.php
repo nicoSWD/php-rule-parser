@@ -53,7 +53,6 @@ class MethodRegistry
         return new $this->methods[$methodName]($rawValue);
     }
 
-
     private function registerMethods(): void
     {
         foreach ($this->grammar->getInternalMethods() as $internalCallable) {
