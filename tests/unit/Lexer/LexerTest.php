@@ -87,43 +87,43 @@ final class LexerTest extends TestCase
 
         $this->assertSame(TokenKind::SPACE, $lexerTokens[3]->getKind());
         $this->assertSame(' ', $lexerTokens[3]->getOriginalValue());
-        $this->assertSame(25, $lexerTokens[3]->getOffset());
+        $this->assertSame(24, $lexerTokens[3]->getOffset());
 
         $this->assertSame(TokenKind::OPENING_ARRAY, $lexerTokens[4]->getKind());
         $this->assertSame('[', $lexerTokens[4]->getOriginalValue());
-        $this->assertSame(26, $lexerTokens[4]->getOffset());
+        $this->assertSame(25, $lexerTokens[4]->getOffset());
 
         $this->assertSame(TokenKind::INTEGER, $lexerTokens[5]->getKind());
         $this->assertSame('4', $lexerTokens[5]->getOriginalValue());
-        $this->assertSame(27, $lexerTokens[5]->getOffset());
+        $this->assertSame(26, $lexerTokens[5]->getOffset());
 
         $this->assertSame(TokenKind::COMMA, $lexerTokens[6]->getKind());
         $this->assertSame(',', $lexerTokens[6]->getOriginalValue());
-        $this->assertSame(28, $lexerTokens[6]->getOffset());
+        $this->assertSame(27, $lexerTokens[6]->getOffset());
 
         $this->assertSame(TokenKind::SPACE, $lexerTokens[7]->getKind());
         $this->assertSame(' ', $lexerTokens[7]->getOriginalValue());
-        $this->assertSame(29, $lexerTokens[7]->getOffset());
+        $this->assertSame(28, $lexerTokens[7]->getOffset());
 
         $this->assertSame(TokenKind::INTEGER, $lexerTokens[8]->getKind());
         $this->assertSame('6', $lexerTokens[8]->getOriginalValue());
-        $this->assertSame(30, $lexerTokens[8]->getOffset());
+        $this->assertSame(29, $lexerTokens[8]->getOffset());
 
         $this->assertSame(TokenKind::COMMA, $lexerTokens[9]->getKind());
         $this->assertSame(',', $lexerTokens[9]->getOriginalValue());
-        $this->assertSame(31, $lexerTokens[9]->getOffset());
+        $this->assertSame(30, $lexerTokens[9]->getOffset());
 
         $this->assertSame(TokenKind::SPACE, $lexerTokens[10]->getKind());
         $this->assertSame(' ', $lexerTokens[10]->getOriginalValue());
-        $this->assertSame(32, $lexerTokens[10]->getOffset());
+        $this->assertSame(31, $lexerTokens[10]->getOffset());
 
         $this->assertSame(TokenKind::INTEGER, $lexerTokens[11]->getKind());
         $this->assertSame('7', $lexerTokens[11]->getOriginalValue());
-        $this->assertSame(33, $lexerTokens[11]->getOffset());
+        $this->assertSame(32, $lexerTokens[11]->getOffset());
 
         $this->assertSame(TokenKind::CLOSING_ARRAY, $lexerTokens[12]->getKind());
         $this->assertSame(']', $lexerTokens[12]->getOriginalValue());
-        $this->assertSame(34, $lexerTokens[12]->getOffset());
+        $this->assertSame(33, $lexerTokens[12]->getOffset());
     }
 
     #[Test]
