@@ -17,8 +17,8 @@ use nicoSWD\Rule\TokenStream\Token\BaseToken;
 use nicoSWD\Rule\TokenStream\Token\TokenMethod;
 use nicoSWD\Rule\TokenStream\Token\TokenString;
 use nicoSWD\Rule\TokenStream\TokenIterator;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 final class TokenIteratorTest extends TestCase
 {

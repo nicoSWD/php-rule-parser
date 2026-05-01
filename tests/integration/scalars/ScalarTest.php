@@ -75,7 +75,7 @@ final class ScalarTest extends AbstractTestBase
         $this->assertFalse($this->evaluate('foo == "\t"', ['foo' => '\t']));
 
         // Backslash escape
-        $this->assertTrue($this->evaluate('foo == "\\\\"', ['foo' => "\\"]));
+        $this->assertTrue($this->evaluate('foo == "\\\\"', ['foo' => '\\']));
 
         // Carriage return escape
         $this->assertTrue($this->evaluate('foo == "\r"', ['foo' => "\r"]));

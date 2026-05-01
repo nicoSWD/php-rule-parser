@@ -10,31 +10,13 @@ declare(strict_types=1);
 
 namespace nicoSWD\Rule\TokenStream;
 
+use ArrayObject;
 use nicoSWD\Rule\TokenStream\Token\BaseToken;
 
-final class TokenCollection extends \ArrayObject
+final class TokenCollection extends ArrayObject
 {
-    public function current(): BaseToken
-    {
-        /** @var BaseToken $token */
-        $token = $this->offsetGet($this->key());
-
-        return $token;
-    }
-
     public function add(BaseToken $token): void
     {
         $this->append($token);
-    }
-
-    public function toArray(): array
-    {
-        $items = [];
-
-        foreach ($this as $item) {
-            $items[] = $item->getValue();
-        }
-
-        return $items;
     }
 }

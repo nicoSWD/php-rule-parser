@@ -19,7 +19,7 @@ final class ObjectTest extends AbstractTestBase
     #[Test]
     public function givenAnObjectHasMethodsWhenPublicTheyShouldBeAccessible(): void
     {
-        $myObj = new class {
+        $myObj = new class () {
             public function test()
             {
                 return 'test one two';
@@ -27,7 +27,7 @@ final class ObjectTest extends AbstractTestBase
 
             public function test2()
             {
-                return new class {
+                return new class () {
                     public function cat()
                     {
                         return 'meow';
@@ -47,7 +47,7 @@ final class ObjectTest extends AbstractTestBase
     #[Test]
     public function givenAnObjectHasPropertiesWhenPublicTheyShouldBeAccessible(): void
     {
-        $myObj = new class {
+        $myObj = new class () {
             public string $test = 'my string';
         };
 
@@ -61,7 +61,7 @@ final class ObjectTest extends AbstractTestBase
     #[Test]
     public function publicMethodsShouldBeAccessibleMagicallyViaGet(): void
     {
-        $myObj = new class {
+        $myObj = new class () {
             public function getString()
             {
                 return 'some string';
@@ -78,7 +78,7 @@ final class ObjectTest extends AbstractTestBase
     #[Test]
     public function publicMethodsShouldBeAccessibleMagicallyViaIs(): void
     {
-        $myObj = new class {
+        $myObj = new class () {
             public function isString($string)
             {
                 return $string;
@@ -100,7 +100,7 @@ final class ObjectTest extends AbstractTestBase
     #[Test]
     public function givenAnObjectWhenMagicMethodCallIsAvailableItShouldBeAccessible(): void
     {
-        $myObj = new class {
+        $myObj = new class () {
             public function __call(string $name, array $args): array
             {
                 return [$name, $args[0], $args[1]];
@@ -152,7 +152,7 @@ final class ObjectTest extends AbstractTestBase
     #[Test]
     public function givenAnObjectWithMagicMethodGetWhenPropertyDoesNotExistItShouldNotBeCalled(): void
     {
-        $myObj = new class {
+        $myObj = new class () {
             public function __get(string $name)
             {
                 return 'I should not be called';

@@ -29,7 +29,6 @@ final class CombinedTest extends AbstractTestBase
 
         $this->assertTrue($this->evaluate('"HeLLo World".charAt(3) === "l".toUpperCase()'));
 
-
         $this->assertTrue($this->evaluate(
             '// Something true
             1 === 1 &&

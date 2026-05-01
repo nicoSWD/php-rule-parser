@@ -11,20 +11,20 @@ declare(strict_types=1);
 namespace nicoSWD\Rule\tests\unit\Parser;
 
 use ArrayIterator;
-use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as m;
 use nicoSWD\Rule\AST\ComparisonNode;
 use nicoSWD\Rule\AST\ComparisonOperator;
 use nicoSWD\Rule\AST\IntegerNode;
 use nicoSWD\Rule\AST\LogicalNode;
 use nicoSWD\Rule\AST\LogicalOperator;
 use nicoSWD\Rule\AST\StringNode;
+use nicoSWD\Rule\Lexer\Lexer;
 use nicoSWD\Rule\Parser\Parser;
 use nicoSWD\Rule\TokenStream\Token\GenericToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
-use nicoSWD\Rule\Lexer\Lexer;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 final class ParserTest extends TestCase
 {
@@ -53,7 +53,7 @@ final class ParserTest extends TestCase
             new GenericToken(TokenKind::GREATER, '>'),
             new GenericToken(TokenKind::INTEGER, 1),
             new GenericToken(TokenKind::SPACE, ' '),
-            new GenericToken(TokenKind::COMMENT, '// true dat!')
+            new GenericToken(TokenKind::COMMENT, '// true dat!'),
         ];
 
         $arrayIterator = new ArrayIterator($tokens);

@@ -63,7 +63,7 @@ final class LexerTest extends TestCase
     public function itProducesSameTokensForNotInWithNewlines(): void
     {
         // The lexer produces a cleaner "not in" value even with newlines between "not" and "in".
-        $rule = '5 not 
+        $rule = '5 not
                 in [4, 6, 7]';
 
         $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
@@ -428,7 +428,7 @@ final class LexerTest extends TestCase
 
         $this->assertCount(1, $tokens);
         $this->assertSame(TokenKind::ENCAPSED_STRING, $tokens[0]->getKind());
-        $this->assertSame("back\\slash", $tokens[0]->getValue());
+        $this->assertSame('back\\slash', $tokens[0]->getValue());
     }
 
     #[Test]
@@ -486,7 +486,7 @@ final class LexerTest extends TestCase
     #[Test]
     public function itUnescapesMultipleEscapeSequencesInString(): void
     {
-        $rule = "\"line1\\nline2\\tindented\\\\end\"";
+        $rule = '"line1\\nline2\\tindented\\\\end"';
 
         $lexer = new DefaultLexer(new JavaScript(), new TokenFactory());
         $tokens = iterator_to_array($lexer->tokenize($rule));

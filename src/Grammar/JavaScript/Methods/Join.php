@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace nicoSWD\Rule\Grammar\JavaScript\Methods;
 
+use nicoSWD\Rule\Grammar\CallableFunction;
+use nicoSWD\Rule\Parser\Exception\ParserException;
 use nicoSWD\Rule\TokenStream\Token\GenericToken;
 use nicoSWD\Rule\TokenStream\Token\TokenKind;
-use nicoSWD\Rule\Parser\Exception\ParserException;
-use nicoSWD\Rule\Grammar\CallableFunction;
 
 final class Join extends CallableFunction
 {

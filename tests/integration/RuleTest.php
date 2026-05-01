@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace nicoSWD\Rule\tests\integration;
 
 use nicoSWD\Rule;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 final class RuleTest extends TestCase
 {
@@ -34,7 +34,7 @@ final class RuleTest extends TestCase
 
         $vars = [
             'foo' => 5,
-            'bar' => 7
+            'bar' => 7,
         ];
 
         $rule = new Rule\Rule($string, $vars);
@@ -88,7 +88,7 @@ final class RuleTest extends TestCase
     #[Test]
     public function basicNotInRule(): void
     {
-        $ruleStr = '5 not 
+        $ruleStr = '5 not
                 in [4, 6, 7]';
 
         $rule = new Rule\Rule($ruleStr);
