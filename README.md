@@ -13,12 +13,12 @@ A PHP library that parses and evaluates boolean expressions using a JavaScript-l
 Via Composer
 
 ```bash
-$ composer require nicoswd/php-rule-parser
+composer install nicoswd/php-rule-parser
 ```
 
 ## Usage Examples
 
-### E-commerce: Validate coupon eligibility
+E-commerce: Validate coupon eligibility
 ```php
 $variables = [
     'cart_total'     => 120,
@@ -26,34 +26,27 @@ $variables = [
     'is_blacklisted' => false,
 ];
 
-$rule = new Rule('cart_total >= 50 && user_tier in ["gold", "platinum"] && !is_blacklisted', $variables);
+$rule = new Rule('
+    cart_total >= 50 && 
+    user_tier in ["gold", "platinum"] &&
+    !is_blacklisted
+', $variables);
+
 var_dump($rule->isTrue()); // bool(true) — eligible for discount
 ```
 
-### Content moderation: Flag suspicious posts
-```php
-$variables = [
-    'body'             => 'Check this out http://spam.com',
-    'is_trusted_author' => false,
-];
-
-$rule = new Rule('body.test(/(https?:\/\/[^\s]+){3,}/) && !is_trusted_author', $variables);
-var_dump($rule->isTrue()); // bool(true) — flagged as spam
-```
-
-### Access control: Check user permissions
+Access control: Check user permissions
 ```php
 $variables = [
     'role'         => 'editor',
-    'status'       => 'active',
     'is_suspended' => false,
 ];
 
-$rule = new Rule('role in ["admin", "editor"] && status == "active" && !is_suspended', $variables);
+$rule = new Rule('role in ["admin", "editor"] && !is_suspended', $variables);
 var_dump($rule->isTrue()); // bool(true) — access granted
 ```
 
-### Pricing: Calculate order total with conditions
+Pricing: Calculate order total with conditions
 ```php
 $variables = [
     'base_price' => 29.99,
@@ -65,19 +58,18 @@ $rule = new Rule('(base_price + (base_price * tax_rate / 100)) * quantity', $var
 var_dump($rule->result()); // float(108.8571...) — total with tax
 ```
 
-### Form validation: Check input constraints
+Form validation: Check input constraints
 ```php
 $variables = [
-    'email'   => 'user@example.com',
     'age'     => 25,
     'country' => 'US',
 ];
 
-$rule = new Rule('email.test(/^[^@\s]+@[^@\s]+\.[^@\s]+$/) && age >= 18 && country in ["US", "CA", "UK"]', $variables);
+$rule = new Rule('age >= 18 && country in ["US", "CA", "UK"]', $variables);
 var_dump($rule->isTrue()); // bool(true) — valid registration
 ```
 
-### Notification routing: Target specific users
+Notification routing: Target specific users
 ```php
 $variables = [
     'plan'                 => 'pro',
@@ -85,22 +77,26 @@ $variables = [
     'notification_opt_out' => false,
 ];
 
-$rule = new Rule('plan in ["pro", "enterprise"] && last_login < 7 && !notification_opt_out', $variables);
+$rule = new Rule('
+    plan in ["pro", "enterprise"] &&
+    last_login < 7 &&
+    !notification_opt_out
+', $variables);
+
 var_dump($rule->isTrue()); // bool(true) — send notification
 ```
 
-### Feature flags: Roll out features gradually
+Feature flags: Roll out features gradually
 ```php
 $variables = [
-    'user_id'     => 7,
-    'environment' => 'production',
+    'user_id' => 7,
 ];
 
-$rule = new Rule('user_id % 10 < 3 && environment == "production"', $variables);
+$rule = new Rule('user_id % 10 < 3', $variables);
 var_dump($rule->isTrue()); // bool(true) — feature enabled for this user
 ```
 
-### String manipulation: Format user data
+String manipulation: Format user data
 ```php
 $variables = [
     'firstName' => 'John',
@@ -111,7 +107,7 @@ $rule = new Rule('firstName.toUpperCase() + " " + lastName.toUpperCase()', $vari
 var_dump($rule->result()); // string("JOHN DOE")
 ```
 
-### Object method calls: Evaluate complex conditions
+Object method calls: Evaluate complex conditions
 ```php
 class Subscription
 {
@@ -134,9 +130,31 @@ $rule = new Rule('subscription.isActive() && subscription.daysUntilExpiry() > 7'
 var_dump($rule->isTrue()); // bool(true) — subscription is active and not expiring soon
 ```
 
-For security reasons, PHP's magic methods like __construct and __destruct cannot be 
-called from within rules. However, __call will be invoked automatically if available,
-unless the called method is defined.
+Arithmetic: Operator precedence
+```php
+$rule = new Rule('2 + 3 * 4 == 14');
+var_dump($rule->isTrue()); // bool(true) - multiplication before addition
+
+$rule = new Rule('(2 + 3) * 4 == 20');
+var_dump($rule->isTrue()); // bool(true) - parentheses override precedence
+```
+
+Arithmetic: Unary operators
+```php
+$rule = new Rule('-5 * 3 == -15');
+var_dump($rule->isTrue()); // bool(true) - unary minus
+
+$rule = new Rule('!false');
+var_dump($rule->isTrue()); // bool(true) - logical NOT
+
+$rule = new Rule('!(1 == 2)');
+var_dump($rule->isTrue()); // bool(true) - NOT with comparison
+```
+
+> [!NOTE] 
+> For security reasons, PHP's magic methods like __construct and __destruct cannot be 
+> called from within rules. However, __call will be invoked automatically if available,
+> unless the called method is defined.
 
 ## Built-in Methods
 
