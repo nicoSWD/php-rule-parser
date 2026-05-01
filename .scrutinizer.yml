@@ -16,16 +16,15 @@ checks:
     fix_php_opening_tag: true
     fix_linefeed: true
     fix_line_ending: true
-    fix_identation_4spaces: true
+    fix_indentation_4spaces: true
     fix_doc_comments: true
 tools:
   external_code_coverage:
     timeout: 600
     runs: 2
-  php_code_coverage: true
   php_code_sniffer:
     config:
-      standard: PSR2
+      standard: PSR12
     filter:
       paths: ['src']
   php_loc:
@@ -35,9 +34,9 @@ tools:
     enabled: true
     excluded_dirs: [tests]
 build:
-  image: default-bionic
+  image: default-jammy
   environment:
-    php: 8.4.0
+    php: 8.5
   nodes:
     analysis:
       tests:
