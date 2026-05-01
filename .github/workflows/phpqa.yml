@@ -21,4 +21,4 @@ jobs:
       - name: "Deptrac"
         uses: docker://jakzal/phpqa:php8.5
         with:
-          args: deptrac --no-interaction --ansi
+          args: deptrac --config-file=depfile.yaml --no-interaction --ansi
