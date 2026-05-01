@@ -30,7 +30,7 @@ parameters:
           value: src/TokenStream/.*
     - name: Root
       collectors:
-        - type: className
+        - type: classNameRegex
           value: .*\\Rule(Engine|EngineBuilder)?
   ruleset:
     Root:
