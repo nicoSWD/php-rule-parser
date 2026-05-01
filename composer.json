@@ -40,7 +40,8 @@
     "phpunit/phpunit": "^13.1",
     "mockery/mockery": "^1.6",
     "squizlabs/php_codesniffer": "^4.0",
-    "friendsofphp/php-cs-fixer": "^3.95"
+    "friendsofphp/php-cs-fixer": "^3.95",
+    "qossmic/deptrac-shim": "^1.0"
   },
   "scripts": {
     "test": "vendor/bin/phpunit"

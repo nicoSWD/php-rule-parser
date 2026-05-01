@@ -43,13 +43,24 @@ parameters:
     Parser:
       - Lexer
       - AST
+      - TokenStream
     AST:
       - Grammar
+      - TokenStream
+      - Parser
     TokenStream:
       - Grammar
+      - Parser
     Grammar:
       - Lexer
+      - TokenStream
+      - Parser
+    Lexer:
+      - Grammar
+      - TokenStream
+      - Parser
     Highlighter:
       - Lexer
       - Parser
       - TokenStream
+      - Grammar
